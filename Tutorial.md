@@ -630,3 +630,5 @@ module.exports.loop = function () {
 
 [HoPGoldy](https://www.jianshu.com/u/3ee5572a4346)大佬的[Screep 中文教程](https://www.jianshu.com/p/5431cb7f42d3)
 
+[Screeps Tutorial](https://screeps.com/a/#!/sim/tutorial)
+
