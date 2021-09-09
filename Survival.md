@@ -1,14 +1,11 @@
 # Survival
 
+玩到后面，浏览器疯狂alt+1 alt+2 alt+3切换，无法停止，F5一按回到解放前，直接决定不等半价了。
+
 ### 已经完成的工作：
 
-- 组件随可用能源和总能源容量进行变化300-800
-- 道路自动维护
-  - role.repairer模块
-  - 闲置期间改变角色
-- 建立container
-- Harvester专门负责采集能源，运送到spawn，extension，container
-- Builder从container中拿能源（未验证）
+- 解决Harvester为0时，Harvester无法生成的问题
+  - 原因：newName没声明
 
 ### 需要完善的工作：
 
@@ -74,11 +71,10 @@ var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleRepairer = require('role.repairer');
-var harvestersNum = 10;
+var harvestersNum = 3;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ;
 var upgradersNum = 4;
 var repairersNum = 0;
-var buildersNum = 3;
-
+var buildersNum = 4;
 module.exports.loop = function () {
     // console.log(Game.spawns['Spawn1'].room.energyAvailable)
     // console.log(Game.rooms['sim'].name)
@@ -94,11 +90,13 @@ module.exports.loop = function () {
     }
     
     var ec = Game.rooms['sim'].energyCapacityAvailable;
+    // console.log(ec);
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-    // console.log(harvesters.length)
+    // console.log(harvesters.length);
     // console.log(harvesters.length < harvestersNum);
     if (harvesters.length == 0){
-        // console.log(Game.rooms['sim'].energyAvailable);
+        var newName = 'Harvester' + Game.time;
+        console.log(Game.rooms['sim'].energyAvailable);
         // console.log(parseInt(ec/100)*100);
         // console.log(Game.rooms['sim'].energyAvailable <= parseInt(ec/100)*100);
         if (Game.rooms['sim'].energyAvailable >= 600){
@@ -143,6 +141,8 @@ module.exports.loop = function () {
         }
         else if(harvesters.length < harvestersNum) {
             var newName = 'Harvester' + Game.time;
+            // console.log(Game.time);
+            // console.log(newName);
             // console.log(parseInt(ec/100)*100);
             // console.log(parseInt(ec/100)*100 == 300);
             // console.log(parseInt(ec/100)*100 == 400);
@@ -318,6 +318,7 @@ module.exports.loop = function () {
         }
     }
 }
+
 ```
 
 ##### role.builder
@@ -345,19 +346,25 @@ var roleBuilder = {
             }
 	    }
 	    else {
-	        var targets = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    // return (structure.structureType == STRUCTURE_CONTAINER) && structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0;//过滤器找到非空的建筑
-                    return (structure.structureType == STRUCTURE_CONTAINER);//过滤器找到非空的建筑
-                }
-            });
-            // if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-            //     creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-            // }
-            if(targets.length > 0) {
-                if(creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
-                }
+	       // var targets = creep.room.find(FIND_STRUCTURES, {
+        //         filter: (structure) => {
+        //             // return (structure.structureType == STRUCTURE_CONTAINER) && structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0;//过滤器找到非空的建筑
+        //             return (structure.structureType == STRUCTURE_CONTAINER);//过滤器找到非空的建筑
+        //         }
+        //     });
+        //     if(targets.length > 0) {
+        //         if(creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        //             creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+        //         }
+        //     }
+        //     else{
+        //         // creep.moveTo(Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#ffffff'}});
+        //         creep.moveTo(new RoomPosition(23, 26, 'sim'), {visualizePathStyle: {stroke: '#ffffff'}});
+        //     }
+            
+            var sources = creep.room.find(FIND_SOURCES);
+            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
             }
             else{
                 creep.moveTo(Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#ffffff'}});
@@ -377,6 +384,7 @@ var roleHarvester = {
     /** @param {Creep} creep **/
     run: function(creep) {
 	    if(creep.store.getFreeCapacity() > 0) {
+	    // if(creep.memory.source == 0) {
             var sources = creep.room.find(FIND_SOURCES);
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});//显示路径
@@ -405,6 +413,7 @@ var roleHarvester = {
 };
 
 module.exports = roleHarvester;
+
 ```
 
 ##### role.upgrader
@@ -414,7 +423,9 @@ var roleUpgrader = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-	    if(creep.store[RESOURCE_ENERGY] != creep.store.getCapacity()) {
+	   // if(creep.store[RESOURCE_ENERGY] != creep.store.getCapacity()) {
+	   // if(creep.store[RESOURCE_ENERGY] == 0) {
+	   if (creep.store.getFreeCapacity() > 0){
             var sources = creep.room.find(FIND_SOURCES);
             // if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
             //     creep.moveTo(sources[0]);
@@ -439,9 +450,10 @@ var roleUpgrader = {
 };
 
 module.exports = roleUpgrader;
+
 ```
 
-##### role.upgrader
+##### role.repairer
 
 ```
 var roleRepairer = {
@@ -465,9 +477,10 @@ var roleRepairer = {
                 if(creep.repair(target) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
-            }else{
-                creep.memory.role = 'harvester';
             }
+            // else{
+            //     creep.memory.role = 'builder';
+            // }
         }
         else {
             var source = creep.pos.findClosestByPath(FIND_SOURCES);
@@ -479,6 +492,7 @@ var roleRepairer = {
 };
 
 module.exports = roleRepairer;
+
 ```
 
 ### reference
