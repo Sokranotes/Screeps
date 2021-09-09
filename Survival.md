@@ -2,30 +2,32 @@
 
 ### 已经完成的工作：
 
-- 自动生成creep，避免手动生成，并通过全局变量来控制不同种类creep的
-- 组件随可用能源和总能源容量进行变化
-- Spawn在Spawning中最后一个spawnCreep生效的bug
-- 缓解资源采集点堵车，提高效率
-  - 增加creep的WORK组件，避免无事可做时Creep停留在此处。
+- 组件随可用能源和总能源容量进行变化300-800
+- 道路自动维护
+  - role.repairer模块
+  - 闲置期间改变角色
+- 建立container
+- Harvester专门负责采集能源，运送到spawn，extension，container
+- Builder从container中拿能源（未验证）
 
 ### 需要完善的工作：
 
 ##### 近期
 
 
+- 组件随可用能源和总能源容量进行变化，代码优化
 - 防御的建立
-- 道路自动维护
 - 控制器升级相关
 - 能源点能源耗尽的问题
+- 采集资源和其他任务解耦
 
 ##### 长远
 
 - 任务驱动设计模式
-- 完善组件自动调整功能
-- 闲置角色改变角色
+- 组件自动调整功能完善
+- 闲置角色改变角色完善
 - 寻找更近且闲置的能源点
 - 根据工作量进行控制creep的生成
-- 采集资源
 - 防御的自动维护
 - 攻击部队生成
 
@@ -71,14 +73,18 @@ extension 3000
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
-var harvestersNum = 4;
-var upgradersNum = 5;
-var buildersNum = 6;
+var roleRepairer = require('role.repairer');
+var harvestersNum = 10;
+var upgradersNum = 4;
+var repairersNum = 0;
+var buildersNum = 3;
 
 module.exports.loop = function () {
     // console.log(Game.spawns['Spawn1'].room.energyAvailable)
     // console.log(Game.rooms['sim'].name)
     // console.log(Game.rooms['sim'].energyAvailable)
+    
+    // console.log(Math.random())
 
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
@@ -126,6 +132,9 @@ module.exports.loop = function () {
         var upgrader = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
         console.log('Upgraders: ' + upgrader.length);
         
+        var repairer = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
+        console.log('Repairer: ' + repairer.length);
+        
         var builder = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
         console.log('Builders: ' + builder.length);
         
@@ -134,10 +143,10 @@ module.exports.loop = function () {
         }
         else if(harvesters.length < harvestersNum) {
             var newName = 'Harvester' + Game.time;
-            console.log(parseInt(ec/100)*100);
-            console.log(parseInt(ec/100)*100 == 300);
-            console.log(parseInt(ec/100)*100 == 400);
-            console.log(parseInt(ec/100)*100 == 500);
+            // console.log(parseInt(ec/100)*100);
+            // console.log(parseInt(ec/100)*100 == 300);
+            // console.log(parseInt(ec/100)*100 == 400);
+            // console.log(parseInt(ec/100)*100 == 500);
             if (parseInt(ec/100)*100 == 300){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, CARRY, MOVE: ' + newName);
@@ -154,27 +163,100 @@ module.exports.loop = function () {
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
+            else if (Game.rooms['sim'].energyAvailable == 650){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'harvester'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 700){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE], newName, {memory: {role: 'harvester'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 750){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'harvester'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable >= 800){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'harvester'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE: ' + newName);
+            }
         }
         else if(upgrader.length < upgradersNum) {
             var newName = 'Upgrader' + Game.time;
+            var sou = 0;
+            if (Math.random() < 0.75){
+                sou = 0;
+            }
+            else{
+                sou = 3;
+            }
             if (parseInt(ec/100)*100 == 300){
-                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader'}});
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new upgrader WORK, WORK, CARRY, MOVE: ' + newName);
             }
             else if (parseInt(ec/100)*100 == 400){
-                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader'}});
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new upgrader WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
             else if (parseInt(ec/100)*100 == 500){
-                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader'}});
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new upgrader WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
             else if (parseInt(ec/100)*100 >= 600){
-                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader'}});
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new upgrader WORK, WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
+            else if (Game.rooms['sim'].energyAvailable == 650){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 700){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 750){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable >= 800){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE: ' + newName);
+            }
         }
-        else if(builder.length < buildersNum) {
+        else if(repairer.length < repairersNum) {
+            var newName = 'Repairer' + Game.time;
+            if (parseInt(ec/100)*100 == 300){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'repairer'}});
+                console.log('Spawning new builder WORK, WORK, CARRY, MOVE: ' + newName);
+            }
+            else if (parseInt(ec/100)*100 == 400){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'repairer'}});
+                console.log('Spawning new builder WORK, WORK, WORK, CARRY, MOVE: ' + newName);
+            }
+            else if (parseInt(ec/100)*100 == 500){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'repairer'}});
+                console.log('Spawning new builder WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
+            }
+            else if (parseInt(ec/100)*100 == 600){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'repairer'}});
+                console.log('Spawning new builder WORK, WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 650){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'repairer'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 700){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE], newName, {memory: {role: 'repairer'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 750){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'repairer'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable >= 800){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'repairer'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE: ' + newName);
+            }
+        }else if(builder.length < buildersNum) {
             var newName = 'Builder' + Game.time;
             if (parseInt(ec/100)*100 == 300){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'builder'}});
@@ -191,6 +273,22 @@ module.exports.loop = function () {
             else if (parseInt(ec/100)*100 == 600){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'builder'}});
                 console.log('Spawning new builder WORK, WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 650){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'builder'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 700){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable == 750){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE: ' + newName);
+            }
+            else if (Game.rooms['sim'].energyAvailable >= 800){
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
+                console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE: ' + newName);
             }
         }
     }
@@ -211,6 +309,9 @@ module.exports.loop = function () {
         }
         if(creep.memory.role == 'upgrader') {
             roleUpgrader.run(creep);
+        }
+        if(creep.memory.role == 'repairer') {
+            roleRepairer.run(creep);
         }
         if(creep.memory.role == 'builder') {
             roleBuilder.run(creep);
@@ -244,9 +345,22 @@ var roleBuilder = {
             }
 	    }
 	    else {
-	        var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+	        var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    // return (structure.structureType == STRUCTURE_CONTAINER) && structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0;//过滤器找到非空的建筑
+                    return (structure.structureType == STRUCTURE_CONTAINER);//过滤器找到非空的建筑
+                }
+            });
+            // if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+            //     creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            // }
+            if(targets.length > 0) {
+                if(creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            }
+            else{
+                creep.moveTo(Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#ffffff'}});
             }
 	    }
 	}
@@ -271,7 +385,10 @@ var roleHarvester = {
         else {
             var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+                        return (structure.structureType == STRUCTURE_EXTENSION ||
+                                structure.structureType == STRUCTURE_SPAWN ||
+                                structure.structureType == STRUCTURE_TOWER ||
+                                structure.structureType == STRUCTURE_CONTAINER) &&
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;//过滤器找到extension或spawn类型且空间未满的建筑
                     }
             });
@@ -297,10 +414,20 @@ var roleUpgrader = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-	    if(creep.store[RESOURCE_ENERGY] == 0) {
+	    if(creep.store[RESOURCE_ENERGY] != creep.store.getCapacity()) {
             var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+            // if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+            //     creep.moveTo(sources[0]);
+            // }
+            if (creep.memory.source == 0){
+                if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[0]);
+                }
+            }
+            else{
+                if(creep.harvest(sources[3]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[3]);
+                }
             }
         }
         else {
@@ -312,6 +439,46 @@ var roleUpgrader = {
 };
 
 module.exports = roleUpgrader;
+```
+
+##### role.upgrader
+
+```
+var roleRepairer = {
+
+    /** @param {Creep} creep **/
+    run: function(creep){
+        if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
+            creep.memory.building = false;
+            creep.say('🔄 harvest');
+        }
+        if(!creep.memory.building && creep.store.getFreeCapacity() == 0) {
+            creep.memory.building = true;
+            creep.say('🚧 repair');
+        }
+
+        if(creep.memory.building) {
+            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
+            });
+            if(target) {
+                if(creep.repair(target) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            }else{
+                creep.memory.role = 'harvester';
+            }
+        }
+        else {
+            var source = creep.pos.findClosestByPath(FIND_SOURCES);
+            if(source && creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+        }
+    }
+};
+
+module.exports = roleRepairer;
 ```
 
 ### reference
