@@ -1,6 +1,7 @@
 import clear from 'rollup-plugin-clear'
 import screeps from 'rollup-plugin-screeps'
 import copy from 'rollup-plugin-copy'
+import typescript from 'rollup-plugin-typescript2'
 
 let config
 // 根据指定的目标获取对应的配置项
@@ -32,7 +33,7 @@ const pluginDeploy = config && config.copyPath ?
     screeps({ config, dryRun: !config })
 
 export default {
-    input: 'src/main.js',
+    input: 'src/main.ts',
     output: {
         file: 'dest/main.js',
         format: 'cjs',
@@ -45,6 +46,8 @@ export default {
         resolve(),
         // 模块化依赖
         commonjs(),
+		// 编译 ts
+        typescript({ tsconfig: "./tsconfig.json" }), // <== 新增这一行，注意先后顺序不要搞错了
         // 执行上传或者复制
         pluginDeploy
     ]
