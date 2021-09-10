@@ -1,4 +1,6 @@
-// 游戏入口函数
+// 引入外部依赖
+import { sayHello } from './modules/utils'
+
 export const loop = function () {
-    console.log('hello world')
+    sayHello()
 }
