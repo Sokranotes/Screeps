@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup -cw",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "push": "rollup -cw --environment DEST:main",
+    "local": "rollup -cw --environment DEST:local"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,8 @@
   },
   "homepage": "https://github.com/Sokranotes/Screeps#readme",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
     "@types/lodash": "^3.10.1",
     "@types/screeps": "^3.2.4",
     "rollup": "^2.56.3",
@@ -26,10 +30,7 @@
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-screeps": "^1.0.1"
   },
-  "scripts": {
-  "build": "rollup -cw",
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "push": "rollup -cw --environment DEST:main",
-  "local": "rollup -cw --environment DEST:local"
+  "dependencies": {
+    "source-map": "^0.6.1"
   }
 }
