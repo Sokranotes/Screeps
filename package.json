@@ -1,0 +1,29 @@
+{
+  "name": "Screeps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sokranotes/Screeps.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sokranotes/Screeps/issues"
+  },
+  "homepage": "https://github.com/Sokranotes/Screeps#readme",
+  "devDependencies": {
+    "@types/lodash": "^3.10.1",
+    "@types/screeps": "^3.2.4",
+    "rollup": "^2.56.3"
+  },
+  "scripts": {
+  "build": "rollup -cw",
+  "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

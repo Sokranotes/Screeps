@@ -1,0 +1,1 @@
+{"version":3,"file":"main.js","sources":["../src/main.js"],"sourcesContent":["// 游戏入口函数\r\nexport const loop = function () {\r\n    console.log('hello world')\r\n}"],"names":[],"mappings":";;;;AAAA;AACY,MAAC,IAAI,GAAG,YAAY;AAChC,IAAI,OAAO,CAAC,GAAG,CAAC,aAAa,EAAC;AAC9B;;;;"}
