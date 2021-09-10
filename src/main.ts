@@ -1,7 +1,20 @@
 // 引入外部依赖
 import { errorMapper } from './modules/errorMapper'
+import {builder_work} from './role/builder'
+import { harvester_work } from './role/harvester';
+import { repairer_work } from './role/repairer';
+import { upgrader_work } from './role/upgrader';
+
+var roomName: string = 'W47S14'
+
+var harvestersNum: number = 12;
+var upgradersNum: number = 8;
+var repairersNum: number = 3;
+var buildersNum: number = 6;
+
 
 export const loop = errorMapper(() => {
+    // console.log('hello')
     // console.log(Game.spawns['Spawn1'].room.energyAvailable)
     // console.log(Game.rooms['sim'].name)
     // console.log(Game.rooms['sim'].energyAvailable)
@@ -15,26 +28,26 @@ export const loop = errorMapper(() => {
         }
     }
     
-    var ec = Game.rooms[roomname].energyCapacityAvailable;
+    var ec: number = Game.rooms[roomName].energyCapacityAvailable;
     // console.log(ec);
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     // console.log(harvesters.length);
     // console.log(harvesters.length < harvestersNum);
     if (harvesters.length == 0){
         var newName = 'Harvester' + Game.time;
-        console.log(Game.rooms[roomname].energyAvailable);
-        // console.log(parseInt(ec/100)*100);
-        // console.log(Game.rooms['sim'].energyAvailable <= parseInt(ec/100)*100);
-        if (Game.rooms[roomname].energyAvailable >= 600){
+        console.log(Game.rooms[roomName].energyAvailable);
+        // console.log(Math.floor(ec/100)*100);
+        // console.log(Game.rooms['sim'].energyAvailable <= Math.floor(ec/100)*100);
+        if (Game.rooms[roomName].energyAvailable >= 600){
             Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester'}});
             console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
         }
-        else if (Game.rooms[roomname].energyAvailable >= 500){
+        else if (Game.rooms[roomName].energyAvailable >= 500){
             Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester'}});
             console.log('Spawning new harvester WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
         }
         
-        else if (Game.rooms[roomname].energyAvailable >= 400){
+        else if (Game.rooms[roomName].energyAvailable >= 400){
             Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester'}});
             console.log('Spawning new harvester WORK, WORK, WORK, CARRY, MOVE: ' + newName);
         }
@@ -43,9 +56,9 @@ export const loop = errorMapper(() => {
             console.log('Spawning new harvester WORK, WORK, CARRY, MOVE: ' + newName);
         }
     }
-    // console.log('energyAvailable:' + Game.rooms['sim'].energyAvailable + " energyCapacityAvailable:" + parseInt(ec/100)*100);
-    // console.log(Game.rooms['sim'].energyAvailable + " " + parseInt(ec/100)*100);
-    if (Game.rooms[roomname].energyAvailable >= parseInt(ec/100)*100){
+    // console.log('energyAvailable:' + Game.rooms['sim'].energyAvailable + " energyCapacityAvailable:" + Math.floor(ec/100)*100);
+    // console.log(Game.rooms['sim'].energyAvailable + " " + Math.floor(ec/100)*100);
+    if (Game.rooms[roomName].energyAvailable >= Math.floor(ec/100)*100){
         // console.log('energy full');
         
         console.log('Harvesters: ' + harvesters.length);
@@ -69,39 +82,39 @@ export const loop = errorMapper(() => {
             var newName = 'Harvester' + Game.time;
             // console.log(Game.time);
             // console.log(newName);
-            // console.log(parseInt(ec/100)*100);
-            // console.log(parseInt(ec/100)*100 == 300);
-            // console.log(parseInt(ec/100)*100 == 400);
-            // console.log(parseInt(ec/100)*100 == 500);
-            if (parseInt(ec/100)*100 == 300){
+            // console.log(Math.floor(ec/100)*100);
+            // console.log(Math.floor(ec/100)*100 == 300);
+            // console.log(Math.floor(ec/100)*100 == 400);
+            // console.log(Math.floor(ec/100)*100 == 500);
+            if (Math.floor(ec/100)*100 == 300){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 400){
+            else if (Math.floor(ec/100)*100 == 400){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 500){
+            else if (Math.floor(ec/100)*100 == 500){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 600){
+            else if (Math.floor(ec/100)*100 == 600){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 650){
+            else if (Game.rooms[roomName].energyAvailable == 650){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 700){
+            else if (Game.rooms[roomName].energyAvailable == 700){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 750){
+            else if (Game.rooms[roomName].energyAvailable == 750){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable >= 800){
+            else if (Game.rooms[roomName].energyAvailable >= 800){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'harvester'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE: ' + newName);
             }
@@ -115,31 +128,31 @@ export const loop = errorMapper(() => {
             else{
                 sou = 3;
             }
-            if (parseInt(ec/100)*100 == 300){
+            if (Math.floor(ec/100)*100 == 300){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new upgrader WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 400){
+            else if (Math.floor(ec/100)*100 == 400){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new upgrader WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 500){
+            else if (Math.floor(ec/100)*100 == 500){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new upgrader WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 >= 600){
+            else if (Math.floor(ec/100)*100 >= 600){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new upgrader WORK, WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 650){
+            else if (Game.rooms[roomName].energyAvailable == 650){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 700){
+            else if (Game.rooms[roomName].energyAvailable == 700){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 750){
+            else if (Game.rooms[roomName].energyAvailable == 750){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader', source: sou}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE: ' + newName);
             }
@@ -150,69 +163,69 @@ export const loop = errorMapper(() => {
         }
         else if(repairer.length < repairersNum) {
             var newName = 'Repairer' + Game.time;
-            if (parseInt(ec/100)*100 == 300){
+            if (Math.floor(ec/100)*100 == 300){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'repairer'}});
                 console.log('Spawning new builder WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 400){
+            else if (Math.floor(ec/100)*100 == 400){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'repairer'}});
                 console.log('Spawning new builder WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 500){
+            else if (Math.floor(ec/100)*100 == 500){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'repairer'}});
                 console.log('Spawning new builder WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 600){
+            else if (Math.floor(ec/100)*100 == 600){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'repairer'}});
                 console.log('Spawning new builder WORK, WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 650){
+            else if (Game.rooms[roomName].energyAvailable == 650){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'repairer'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 700){
+            else if (Game.rooms[roomName].energyAvailable == 700){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE], newName, {memory: {role: 'repairer'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 750){
+            else if (Game.rooms[roomName].energyAvailable == 750){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'repairer'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable >= 800){
+            else if (Game.rooms[roomName].energyAvailable >= 800){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'repairer'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE: ' + newName);
             }
         }else if(builder.length < buildersNum) {
             var newName = 'Builder' + Game.time;
-            if (parseInt(ec/100)*100 == 300){
+            if (Math.floor(ec/100)*100 == 300){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'builder'}});
                 console.log('Spawning new builder WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 400){
+            else if (Math.floor(ec/100)*100 == 400){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'builder'}});
                 console.log('Spawning new builder WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 500){
+            else if (Math.floor(ec/100)*100 == 500){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'builder'}});
                 console.log('Spawning new builder WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (parseInt(ec/100)*100 == 600){
+            else if (Math.floor(ec/100)*100 == 600){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'builder'}});
                 console.log('Spawning new builder WORK, WORK, WORK, WORK, WORK, CARRY, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 650){
+            else if (Game.rooms[roomName].energyAvailable == 650){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'builder'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 700){
+            else if (Game.rooms[roomName].energyAvailable == 700){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable == 750){
+            else if (Game.rooms[roomName].energyAvailable == 750){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE: ' + newName);
             }
-            else if (Game.rooms[roomname].energyAvailable >= 800){
+            else if (Game.rooms[roomName].energyAvailable >= 800){
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
                 console.log('Spawning new harvester WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE: ' + newName);
             }
@@ -231,16 +244,16 @@ export const loop = errorMapper(() => {
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         if(creep.memory.role == 'harvester') {
-            roleHarvester.run(creep);
+            harvester_work(creep);
         }
         if(creep.memory.role == 'upgrader') {
-            roleUpgrader.run(creep);
+            upgrader_work(creep);
         }
         if(creep.memory.role == 'repairer') {
-            roleRepairer.run(creep);
+            repairer_work(creep);
         }
         if(creep.memory.role == 'builder') {
-            roleBuilder.run(creep);
+            builder_work(creep);
         }
     }
 })

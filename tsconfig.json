@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "es2017",
         "moduleResolution": "Node", 
-        "outDir": "dist/",
+        "outDir": "dest/",
         "baseUrl": "./",
         "sourceMap": true,
         "allowSyntheticDefaultImports": true,
