@@ -3426,8 +3426,8 @@ const upgrader_work = function (creep) {
         // if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
         //     creep.moveTo(sources[0]);
         // }
-        if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(sources[0]);
+        if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(sources[1]);
         }
         //  if (creep.memory.source == 1){
         //      if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
@@ -3473,9 +3473,9 @@ const upgrader_work = function (creep) {
 
 // 引入外部依赖
 var roomName = 'W47S14';
-var harvestersNum = 12;
+var harvestersNum = 6;
 var upgradersNum = 8;
-var repairersNum = 3;
+var repairersNum = 2;
 var buildersNum = 6;
 const loop = errorMapper(() => {
     // console.log('hello')

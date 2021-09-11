@@ -6,8 +6,8 @@ export const upgrader_work = function(creep: Creep){
         // if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
         //     creep.moveTo(sources[0]);
         // }
-        if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(sources[0]);
+        if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(sources[1]);
         }
         //  if (creep.memory.source == 1){
         //      if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
