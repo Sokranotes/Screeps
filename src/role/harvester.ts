@@ -9,7 +9,7 @@ export const harvester_work = function(creep: Creep, roomName: string){
     // }
     // console.log('I am a harvester')
     if(creep.store.getFreeCapacity() > 0) {
-        creep.say('🔄 harvest');
+        // creep.say('🔄 harvest');
         // creep.memory.source_idx = 1 //近的这个，坐标13 29
         // creep.memory.source_idx = 0 //远的， 坐标5， 11
         var source: Source
@@ -41,13 +41,13 @@ export const harvester_work = function(creep: Creep, roomName: string){
                 Memory.rooms[roomName].source_ids[i] = sources[i].id;
             }
         }
-        else if (code == ERR_NOT_OWNER  || code == ERR_NOT_FOUND || code == ERR_TIRED || ERR_NO_BODYPART){
-            // || code == ERR_BUSY: 忽略
+        else if (code == ERR_NOT_OWNER  || code == ERR_NOT_FOUND || code == ERR_TIRED || code == ERR_NO_BODYPART){
+            // code == ERR_BUSY: 忽略
             console.log("code: " + code + " havester line 45")
         }
     }
     else {
-        creep.say('🚧transfer');
+        // creep.say('🚧transfer');
         var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||

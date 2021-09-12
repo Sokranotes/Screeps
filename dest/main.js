@@ -3307,8 +3307,9 @@ const builder_work = function (creep, roomName) {
                 Memory.rooms[roomName].source_ids[i] = sources[i].id;
             }
         }
-        else if (code == ERR_NOT_OWNER || code == ERR_BUSY || code == ERR_NOT_FOUND || code == ERR_TIRED || ERR_NO_BODYPART) {
-            console.log("code: " + code + " havester line 45");
+        else if (code == ERR_NOT_OWNER || code == ERR_NOT_FOUND || code == ERR_TIRED || code == ERR_NO_BODYPART) {
+            // || code == ERR_BUSY: 忽略
+            console.log("code: " + code + " builder line 63");
         }
         // else{
         // 千万不要写这个else，不然会在资源采集点进进出出，一下子就采集完成的事情，拖好久
@@ -3340,7 +3341,7 @@ const harvester_work = function (creep, roomName) {
     // }
     // console.log('I am a harvester')
     if (creep.store.getFreeCapacity() > 0) {
-        creep.say('🔄 harvest');
+        // creep.say('🔄 harvest');
         // creep.memory.source_idx = 1 //近的这个，坐标13 29
         // creep.memory.source_idx = 0 //远的， 坐标5， 11
         var source;
@@ -3373,13 +3374,13 @@ const harvester_work = function (creep, roomName) {
                 Memory.rooms[roomName].source_ids[i] = sources[i].id;
             }
         }
-        else if (code == ERR_NOT_OWNER || code == ERR_NOT_FOUND || code == ERR_TIRED || ERR_NO_BODYPART) {
-            // || code == ERR_BUSY: 忽略
+        else if (code == ERR_NOT_OWNER || code == ERR_NOT_FOUND || code == ERR_TIRED || code == ERR_NO_BODYPART) {
+            // code == ERR_BUSY: 忽略
             console.log("code: " + code + " havester line 45");
         }
     }
     else {
-        creep.say('🚧transfer');
+        // creep.say('🚧transfer');
         var targets = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_EXTENSION ||
@@ -3454,7 +3455,7 @@ const upgrader_work = function (creep, roomName) {
     // if (creep.room.name != roomName){
     //     creep.moveTo(new RoomPosition(49, 31, 'w48S14'), {visualizePathStyle: {stroke: '#ff0000'}})
     // }
-    console.log(creep.memory.is_working);
+    // console.log(creep.memory.is_working)
     if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
         creep.say('🔄 harvest');
@@ -3485,19 +3486,25 @@ const upgrader_work = function (creep, roomName) {
         if (!source) {
             source = Game.getObjectById(Memory.rooms[roomName].source_ids[1 - creep.memory.source_idx]);
         }
-        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+        var code;
+        code = creep.harvest(source);
+        if (code == OK) ;
+        else if (code == ERR_NOT_IN_RANGE)
             creep.moveTo(source, { visualizePathStyle: { stroke: '#808080' } });
-        }
-        if (creep.harvest(source) == ERR_NOT_ENOUGH_RESOURCES) {
+        else if (code == ERR_NOT_ENOUGH_RESOURCES) {
             console.log(creep.name + ' change source to :' + (1 - creep.memory.source_idx));
             creep.memory.source_idx = 1 - creep.memory.source_idx;
         }
-        if (creep.harvest(source) == ERR_INVALID_TARGET) {
+        else if (code == ERR_INVALID_TARGET) {
             var sources = creep.room.find(FIND_SOURCES);
             Memory.rooms[roomName].source_ids = new Array(sources.length);
             for (var i = 0; i < sources.length; i++) {
                 Memory.rooms[roomName].source_ids[i] = sources[i].id;
             }
+        }
+        else if (code == ERR_NOT_OWNER || code == ERR_NOT_FOUND || code == ERR_TIRED || code == ERR_NO_BODYPART) {
+            // || code == ERR_BUSY: 忽略
+            console.log("code: " + code + " upgrader line 58");
         }
     }
 };
@@ -3595,8 +3602,8 @@ const spawn_work = function (roomName, harvestersNum, upgradersNum, repairersNum
             console.log('Miner     : ' + miners.length + "\t", buildersNum);
             if (harvesters.length < harvestersNum) {
                 var newName = 'Harvester' + Game.time;
-                // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: Math.random() > 0.5 ? 1 : 0}});
-                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 1 } });
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: Math.random() > 0.5 ? 1 : 0 } });
+                // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
                 console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
             }
             else if (upgraders.length < upgradersNum) {

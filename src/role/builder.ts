@@ -58,8 +58,9 @@ export const builder_work = function(creep: Creep, roomName: string){
                 Memory.rooms[roomName].source_ids[i] = sources[i].id;
             }
         }
-        else if (code == ERR_NOT_OWNER || code == ERR_BUSY || code == ERR_NOT_FOUND || code == ERR_TIRED || ERR_NO_BODYPART){
-            console.log("code: " + code + " havester line 45")
+        else if (code == ERR_NOT_OWNER  || code == ERR_NOT_FOUND || code == ERR_TIRED || code == ERR_NO_BODYPART){
+            // || code == ERR_BUSY: 忽略
+            console.log("code: " + code + " builder line 63")
         }
         // else{
             // 千万不要写这个else，不然会在资源采集点进进出出，一下子就采集完成的事情，拖好久

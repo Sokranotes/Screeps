@@ -122,8 +122,8 @@ export const spawn_work = function(
                     source_idx = 0
                 }
                 var newName = 'Harvester' + Game.time;
-                // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: Math.random() > 0.5 ? 1 : 0}});
-                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: Math.random() > 0.5 ? 1 : 0}});
+                // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
                 console.log('Spawning new harvester: ' + newName  + " body: " + body_list[idx]);
             }
             else if(upgraders.length < upgradersNum) {
