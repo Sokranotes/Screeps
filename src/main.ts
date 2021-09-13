@@ -12,6 +12,7 @@ import { harder_work } from './role/harder';
 import { doctor_work } from './role/doctor';
 import { transfer_work } from './role/transfer';
 import { outharvester_work } from './role/outharvester';
+import { cleaner_work } from './role/cleaner';
 // import * as $ from './超级移动优化bypass (临时)'
 
 var roomName: string = 'W47S14'
@@ -76,6 +77,9 @@ export const loop = errorMapper(() => {
         }
         if(creep.memory.role == 'repairer') {
             repairer_work(creep, roomName);
+        }
+        if (creep.memory.role == 'cleaner'){
+            cleaner_work(creep, roomName)
         }
         if (creep.memory.role == 'harder'){
             harder_work(creep, roomName)

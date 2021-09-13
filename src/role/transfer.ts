@@ -60,7 +60,7 @@ export const transfer_work = function(creep: Creep, roomName: string){
     else{
         // console.log(creep.name, creep.memory.is_working)
         if (creep.memory.is_working == undefined){
-            creep.moveTo(new RoomPosition(34, 43, 'W48S14'), {visualizePathStyle: {stroke: '#ffff00'}})
+            creep.moveTo(new RoomPosition(34, 46, 'W48S14'), {visualizePathStyle: {stroke: '#ffff00'}})
         }
         // console.log(creep.name, creep.memory.is_working)
         if(creep.memory.is_working) {
@@ -70,11 +70,14 @@ export const transfer_work = function(creep: Creep, roomName: string){
             var farm_creeps = creep.room.find(FIND_MY_CREEPS, {
                 filter: (cre) => {
                     return (cre.memory.role == 'outharvester' &&
-                            cre.store.getCapacity(RESOURCE_ENERGY) > 0);
+                            cre.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
                 }
             });
             if (farm_creeps.length > 0){
                 creep.moveTo(farm_creeps[0], {visualizePathStyle: {stroke: '#008cff'}});
+            }
+            else{
+                creep.moveTo(new RoomPosition(34, 46, 'W48S14'), {visualizePathStyle: {stroke: '#ffff00'}})
             }
         }
     }

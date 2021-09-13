@@ -1,6 +1,7 @@
 // import * as $ from '../超级移动优化bypass (临时)'
 
 export const outharvester_work = function(creep: Creep, roomName: string){
+    // creep.say('🔄 Here');
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         // 如果在工作状态，且没有能量了，那么退出工作状态
         creep.memory.is_working = false;
@@ -24,7 +25,7 @@ export const outharvester_work = function(creep: Creep, roomName: string){
         if (creep.memory.is_working == undefined)
         {
             creep.moveTo(new RoomPosition(34, 43, 'W48S14'), {visualizePathStyle: {stroke: '#00ff0e'}})
-            if (creep.pos.x < 35){
+            if (creep.pos.x <= 36){
                 creep.memory.is_working = false
             }
         }
@@ -50,10 +51,12 @@ export const outharvester_work = function(creep: Creep, roomName: string){
                 Memory.rooms[creep.room.name].source_ids = new Array(1)
                 Memory.rooms[creep.room.name].source_ids[0] = single_source.id;
             }
-            // creep.memory.source_idx = 0
+            creep.memory.source_idx = 0
+            // console.log(creep.memory.source_idx)
             source = Game.getObjectById(Memory.rooms[creep.room.name].source_ids[creep.memory.source_idx])
             var code:number
             code = creep.harvest(source)
+            // console.log(creep.name, ' ', code)
             var flag: number = 1
             if (code == OK){
                 flag = 0
