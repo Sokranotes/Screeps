@@ -9,10 +9,20 @@ interface CreepMemory {
     source_ids?: Id<Source>[]
     mine_idx?: number
     soldier_room_flag?: number
+    room_flag?: number
 }
 
 interface RoomMemory {
     source_ids?: Id<Source>[]
     source_ids_flag?: Id<Source>[]
     mine_ids?: Id<Mineral>[]
+}
+
+interface MY_STRUCTURE_TOWER{
+    find?: Function
+    attack?: Function
+    repair?: Function
+    pos?: RoomPosition
+    hits?: number
+    hitsMax?: number
 }

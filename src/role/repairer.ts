@@ -1,4 +1,7 @@
+// import * as $ from '../超级移动优化bypass (临时)'
+
 export const repairer_work = function(creep: Creep, roomName: string){
+    // creep.memory.source_idx = 1 //近的这个，坐标13 29
     var dropEngry = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES)
     if(creep.pickup(dropEngry) == ERR_NOT_IN_RANGE) {
         creep.moveTo(dropEngry, {visualizePathStyle: {stroke: '#ffffff'}})
@@ -14,8 +17,8 @@ export const repairer_work = function(creep: Creep, roomName: string){
 
     if(creep.memory.is_working) {
         var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            // filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
-            filter: (s) => s.hits < 100
+            filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
+            // filter: (s) => s.hits < s.hitsMax
         });
         if(target) {
             if(creep.repair(target) == ERR_NOT_IN_RANGE) {

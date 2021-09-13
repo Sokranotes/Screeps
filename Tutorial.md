@@ -558,7 +558,7 @@ var roleBuilder = require('role.builder');
 
 module.exports.loop = function () {
 
-    var tower = Game.getObjectById('15314c9ebe825bc34a2ad2e0');
+    var tower = Game.getObjectById('613e1e2c2acf7910898bae98');
     if(tower) {
         var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if(closestHostile) {

@@ -15,5 +15,5 @@
     ],
     "include": [
         "src/**/*.ts"
-    ]
+, "src/超级移动优化bypass (临时).js"    ]
 }

@@ -16,6 +16,17 @@
 
 import { floor, random } from "lodash";
 
+var harvesters0Num: number = 8;
+var harvesters1Num: number = 3;
+var upgradersNum: number = 4;
+var left_fetcherNum: number = 0;
+var repairersNum: number = 2;
+var buildersNum: number = 2;
+var minerNum: number = 0;
+var soliderNum: number = 10;
+var transferNum: number = 0;
+var minerNum: number = 0;
+
 const body_list: BodyPartConstant[][]= [
     [WORK, WORK, CARRY, MOVE], // 300
     [WORK, WORK, CARRY, MOVE, MOVE], // 350
@@ -32,44 +43,25 @@ const body_list: BodyPartConstant[][]= [
 
 export const spawn_work = function(
     roomName: string, 
-    harvestersNum: number, 
-    upgradersNum: number, 
-    repairersNum: number, 
-    buildersNum: number, 
-    mimerNum: number,
-    soliderNum: number,
-    transferNum: number,
     spawnName?: string)
 {
     var home: Room = Game.rooms[roomName]
     var energyCapacityAvailable: number = home.energyCapacityAvailable;
     var energyAvailable: number = home.energyAvailable;
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+    var harvesters0 = _.filter(harvesters, ((creep) => creep.memory.source_idx == 0));
+    var harvesters1 = _.filter(harvesters, ((creep) => creep.memory.source_idx == 1));
 
-    // // war
-    // var war_flag: boolean = false
-    // // var war_flag: boolean = true
-    // if (war_flag){
-    //     // status check
-    //     if (Game.spawns['Spawn1'].spawning){
-    //         var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
-    //         Game.spawns['Spawn1'].room.visual.text(
-    //             '🛠️' + spawningCreep.memory.role,
-    //             Game.spawns['Spawn1'].pos.x + 1, 
-    //             Game.spawns['Spawn1'].pos.y, 
-    //             {align: 'left', opacity: 0.8});
-    //     }
-    //     else {
-    //         var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'soldier');
-    //         var idx = Math.floor((energyAvailable-300) / 50);
-    //         if(soldiers.length < soliderNum){
-    //             console.log('Soldiers  : ' + harvesters.length + "\t" + harvestersNum);
-    //             var newName = 'Soldier' + Game.time;
-    //             Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'soldier', source_idx: source_idx}});
-    //             console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE]');
-    //         }
-    //     }
-    // }
+    var war_flag: boolean = false
+
+    var closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
+    if (closestHostiles){
+        if (closestHostiles.length > 0){
+            war_flag = true
+            soliderNum = Math.floor(closestHostiles.length * 1.5) + 1
+        }
+    }
+
     // else 
     if (Game.spawns['Spawn1'].spawning){
         var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
@@ -96,33 +88,50 @@ export const spawn_work = function(
 
         // routine
         else if (energyAvailable == energyCapacityAvailable){
+
+            var worker0 = _.filter(Game.creeps, ((creep) => creep.memory.source_idx == 0));
+            var worker1 = _.filter(Game.creeps, ((creep) => creep.memory.source_idx == 1));
+            console.log('0 far:' + worker0.length)
+            console.log('1 clo:' + worker1.length)
             var idx = Math.floor((energyAvailable-300) / 50);
+
+            var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
+            console.log(constructions.length)
+            if (constructions){
+                if (constructions.length == 0)
+                {
+                    buildersNum = 0
+                }
+            }
+            else{
+                buildersNum = 0
+            }
 
             var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
             var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
             var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
             var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
-            var transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'transfer');
+            var left_fetchers = _.filter(Game.creeps, (creep) => creep.memory.role == 'left_fetcher');
 
             console.log('***************reuqired number with different role****************')
-            console.log('Harvesters: ' + harvesters.length + "\t" + harvestersNum);
+            console.log('harvester0: ' + harvesters0.length + "\t" + harvesters0Num);
+            console.log('harvester1: ' + harvesters1.length + "\t" + harvesters1Num);
             console.log('Upgraders : ' + upgraders.length + "\t" + upgradersNum);
-            console.log('Transfer  : ' + transfers.length + "\t" + transferNum);
+            console.log('Lfetcher  : ' + left_fetchers.length + "\t" + left_fetcherNum);
             console.log('Repairer  : ' + repairers.length + "\t", repairersNum);
             console.log('Builders  : ' + builders.length + "\t", buildersNum);
-            console.log('Miner     : ' + miners.length + "\t", buildersNum);
+            console.log('Miner     : ' + miners.length + "\t", minerNum);
             
             
-            if(harvesters.length < harvestersNum) {
-                var source_idx: number
-                if (Math.random() > 0.67) {
-                    source_idx = 1
-                }
-                else {
-                    source_idx = 0
-                }
+            if(harvesters1.length < harvesters1Num) {
                 var newName = 'Harvester' + Game.time;
-                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: Math.random() > 0.5 ? 1 : 0}});
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
+                // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
+                console.log('Spawning new harvester: ' + newName  + " body: " + body_list[idx]);
+            }
+            else if(harvesters0.length < harvesters0Num) {
+                var newName = 'Harvester' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 0}});
                 // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
                 console.log('Spawning new harvester: ' + newName  + " body: " + body_list[idx]);
             }
@@ -132,30 +141,56 @@ export const spawn_work = function(
                 console.log('Spawning new upgrader : ' + newName  + " body: " + body_list[idx]);
                 
             }
-            else if (builders.length <= upgraders.length)
-            {
-                // else if(builder.length < buildersNum) {
-                var newName = 'Builder' + Game.time;
-                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0}});
-                console.log('Spawning new builder  : ' + newName  + " body: " + body_list[idx]);
-                // }
-            }
             else if(repairers.length < repairersNum) {
                 var newName = 'Repairer' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'repairer', source_idx: Math.random() > 0.5 ? 1 : 0}});
                 console.log('Spawning new repairer : ' + newName  + " body:" + body_list[idx]);
             }
-            // else if (transfers.length < transferNum){
-                
-            //     var newName = 'Transfer' + Game.time;
-            //     Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'transfer', source_idx: source_idx}});
-            //     console.log('Spawning new transfer: ' + newName  + " body: " + body_list[idx]);
-            // }
-            // else if(miners.length < mimerNum) {
-            //     var newName = 'Miner' + Game.time;
-            //     Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'miner'}});
-            //     console.log('Spawning new miner    : ' + newName  + " body:  " + body_list[idx]);
-            // }
+            else if (builders.length <= buildersNum)
+            {
+                var newName = 'Builder' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0}});
+                console.log('Spawning new builder  : ' + newName  + " body: " + body_list[idx]);
+            }
+            else if (war_flag){
+                // // war
+                // var war_flag: boolean = false
+                if (war_flag){
+                    // status check
+                    if (Game.spawns['Spawn1'].spawning){
+                        var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
+                        Game.spawns['Spawn1'].room.visual.text(
+                            '🛠️' + spawningCreep.memory.role,
+                            Game.spawns['Spawn1'].pos.x + 1, 
+                            Game.spawns['Spawn1'].pos.y, 
+                            {align: 'left', opacity: 0.8});
+                    }
+                    else {
+                            
+                            if (energyAvailable >= 670){
+                            var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'soldier');
+                            var idx = Math.floor((energyAvailable-300) / 50);
+                            if(soldiers.length < soliderNum){
+                                console.log('Soldiers  : ' + soldiers.length + "\t" + soliderNum);
+                                var newName = 'Soldier' + Game.time;
+                                Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'soldier', source_idx: 1}});
+                                console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
+                            }
+                        }
+                    }
+                }
+            }
+           
+                // else if (left_fetchers.length < left_fetcherNum){
+                //     var newName = 'Left_fetchers' + Game.time;
+                //     Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'left_fetcher', source_idx: source_idx}});
+                //     console.log('Spawning new left_fetcher: ' + newName  + " body: " + body_list[idx]);
+                // }
+                // else if(miners.length < mimerNum) {
+                //     var newName = 'Miner' + Game.time;
+                //     Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'miner'}});
+                //     console.log('Spawning new miner    : ' + newName  + " body:  " + body_list[idx]);
+                // }
         }
     }
 }

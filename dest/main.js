@@ -3256,6 +3256,7 @@ const builder_work = function (creep, roomName) {
     //     creep.moveTo(new RoomPosition(49, 31, 'w48S14'), {visualizePathStyle: {stroke: '#ff0000'}})
     // }
     // console.log(creep.memory.is_working)
+    // creep.memory.source_idx = 1 //近的这个，坐标13 29
     if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
         creep.say('🔄 harvest');
@@ -3265,15 +3266,29 @@ const builder_work = function (creep, roomName) {
         creep.say('🚧 build');
     }
     if (creep.memory.is_working) {
+        // console.log('building')
         var constructions = creep.room.find(FIND_CONSTRUCTION_SITES);
-        if (constructions.length) {
-            if (creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(constructions[0], { visualizePathStyle: { stroke: '#008cff' } });
+        // console.log(constructions.length)
+        if (constructions)
+            if (constructions.length > 0) {
+                // console.log(creep.build(constructions[0]))
+                if (creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(constructions[0], { visualizePathStyle: { stroke: '#008cff' } });
+                }
             }
-        }
-        else {
-            creep.memory.role = 'upgrader';
-        }
+            else {
+                if (Math.random() > 0.33) {
+                    if (Math.random() > 0.5) {
+                        creep.memory.role = 'harvester';
+                    }
+                    else {
+                        creep.memory.role = 'upgrader';
+                    }
+                }
+                else {
+                    creep.memory.role = 'repairer';
+                }
+            }
     }
     else {
         // creep.memory.source_idx = 1 //近的这个，坐标13 29
@@ -3288,48 +3303,51 @@ const builder_work = function (creep, roomName) {
             }
         }
         source = Game.getObjectById(Memory.rooms[roomName].source_ids[creep.memory.source_idx]);
-        if (!source) {
-            source = Game.getObjectById(Memory.rooms[roomName].source_ids[1 - creep.memory.source_idx]);
-        }
+        // if (!source){
+        //     source = Game.getObjectById(Memory.rooms[roomName].source_ids[1-creep.memory.source_idx])
+        // }
         var code;
+        var flag = 1;
         code = creep.harvest(source);
-        if (code == OK) ;
+        if (code == OK) {
+            flag = 0;
+        }
         else if (code == ERR_NOT_IN_RANGE)
             creep.moveTo(source, { visualizePathStyle: { stroke: '#808080' } });
         else if (code == ERR_NOT_ENOUGH_RESOURCES) {
-            console.log(creep.name + ' change source to :' + (1 - creep.memory.source_idx));
-            creep.memory.source_idx = 1 - creep.memory.source_idx;
+            // console.log(creep.name + ' change source to :' + (1 - creep.memory.source_idx))
+            // creep.memory.source_idx = 1 - creep.memory.source_idx
+            if (flag == 0) {
+                console.log('挖光了, 剩余时间：' + source.ticksToRegeneration);
+            }
+            var containers = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_CONTAINER) &&
+                        structure.store.getCapacity(RESOURCE_ENERGY) > 0;
+                }
+            });
+            if (containers.length > 0) {
+                if (creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(containers[0], { visualizePathStyle: { stroke: '#808080' } });
+                }
+            }
         }
         else if (code == ERR_INVALID_TARGET) {
-            var sources = creep.room.find(FIND_SOURCES);
-            Memory.rooms[roomName].source_ids = new Array(sources.length);
-            for (var i = 0; i < sources.length; i++) {
-                Memory.rooms[roomName].source_ids[i] = sources[i].id;
-            }
+            console.log("");
+            // var sources = creep.room.find(FIND_SOURCES)
+            // Memory.rooms[roomName].source_ids = new Array(sources.length)
+            // for (var i: number = 0; i < sources.length; i++){
+            //     Memory.rooms[roomName].source_ids[i] = sources[i].id;
+            // }
         }
         else if (code == ERR_NOT_OWNER || code == ERR_NOT_FOUND || code == ERR_TIRED || code == ERR_NO_BODYPART) {
             // || code == ERR_BUSY: 忽略
             console.log("code: " + code + " builder line 63");
         }
-        // else{
-        // 千万不要写这个else，不然会在资源采集点进进出出，一下子就采集完成的事情，拖好久
-        // }
-        // var containers = creep.room.find(FIND_STRUCTURES, {
-        //     filter: (structure) => {
-        //         return (structure.structureType == STRUCTURE_CONTAINER) && 
-        //         structure.store.getCapacity(RESOURCE_ENERGY) > 0;
-        //     }
-        // });
-        // if(containers.length > 0) {
-        //     if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-        //         creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#808080'}});
-        //     }
-        // }
-        // else{
-        // }
     }
 };
 
+// import * as $ from '../超级移动优化bypass (临时)'
 const harvester_work = function (creep, roomName) {
     // if (creep.room.name != roomName){
     //     if (creep.room.name == 'W47S15'){
@@ -3354,18 +3372,24 @@ const harvester_work = function (creep, roomName) {
             }
         }
         source = Game.getObjectById(Memory.rooms[roomName].source_ids[creep.memory.source_idx]);
-        if (!source) {
-            source = Game.getObjectById(Memory.rooms[roomName].source_ids[1 - creep.memory.source_idx]);
-        }
+        // if (!source){
+        //     source = Game.getObjectById(Memory.rooms[roomName].source_ids[1-creep.memory.source_idx])
+        // }
         // console.log(creep.harvest(source))
         var code;
         code = creep.harvest(source);
-        if (code == OK) ;
+        var flag = 1;
+        if (code == OK) {
+            flag = 0;
+        }
         else if (code == ERR_NOT_IN_RANGE)
             creep.moveTo(source, { visualizePathStyle: { stroke: '#808080' } });
         else if (code == ERR_NOT_ENOUGH_RESOURCES) {
-            console.log(creep.name + ' chang source to :' + (1 - creep.memory.source_idx));
-            creep.memory.source_idx = 1 - creep.memory.source_idx;
+            // console.log(creep.name + ' chang source to :' + (1 - creep.memory.source_idx))
+            // creep.memory.source_idx = 1 - creep.memory.source_idx
+            if (flag == 0) {
+                console.log('挖光了,剩余时间：' + source.ticksToRegeneration);
+            }
         }
         else if (code == ERR_INVALID_TARGET) {
             var sources = creep.room.find(FIND_SOURCES);
@@ -3383,9 +3407,8 @@ const harvester_work = function (creep, roomName) {
         // creep.say('🚧transfer');
         var targets = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_EXTENSION ||
-                    structure.structureType == STRUCTURE_SPAWN) &&
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                return (structure.structureType == STRUCTURE_TOWER &&
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
             }
         });
         if (targets.length > 0) {
@@ -3394,10 +3417,10 @@ const harvester_work = function (creep, roomName) {
             }
         }
         else {
-            targets = creep.room.find(FIND_STRUCTURES, {
+            var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_TOWER ||
-                        structure.structureType == STRUCTURE_CONTAINER) &&
+                    return (structure.structureType == STRUCTURE_EXTENSION ||
+                        structure.structureType == STRUCTURE_SPAWN) &&
                         structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
             });
@@ -3406,11 +3429,26 @@ const harvester_work = function (creep, roomName) {
                     creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
                 }
             }
+            else {
+                targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_CONTAINER) &&
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                    }
+                });
+                if (targets.length > 0) {
+                    if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                    }
+                }
+            }
         }
     }
 };
 
+// import * as $ from '../超级移动优化bypass (临时)'
 const repairer_work = function (creep, roomName) {
+    // creep.memory.source_idx = 1 //近的这个，坐标13 29
     var dropEngry = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
     if (creep.pickup(dropEngry) == ERR_NOT_IN_RANGE) {
         creep.moveTo(dropEngry, { visualizePathStyle: { stroke: '#ffffff' } });
@@ -3425,8 +3463,8 @@ const repairer_work = function (creep, roomName) {
     }
     if (creep.memory.is_working) {
         var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            // filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
-            filter: (s) => s.hits < 100
+            filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
+            // filter: (s) => s.hits < s.hitsMax
         });
         if (target) {
             if (creep.repair(target) == ERR_NOT_IN_RANGE) {
@@ -3446,6 +3484,79 @@ const repairer_work = function (creep, roomName) {
     }
 };
 
+// import * as $ from '../超级移动优化bypass (临时)'
+const soldier_work = function (creep, roomName) {
+    // let exit = creep.pos.findClosestByPath(creep.room.find(FIND_EXIT_LEFT));
+    // creep.moveTo(new RoomPosition(6, 31, roomName), {visualizePathStyle: {stroke: '#ffffff'}})
+    // creep.moveTo(exit)
+    // creep.moveTo(Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#ffff00'}});
+    // var flag = 0
+    // if (flag == 1){
+    //     const targets = creep.room.find(FIND_HOSTILE_SPAWNS);
+    //     if(targets.length) {
+    //         if (creep.attack(targets[0]) == ERR_NOT_IN_RANGE)
+    //         {
+    //             creep.moveTo(targets[0]);
+    //         }
+    //     }
+    // }
+    // else if (flag == 0){
+    //     let backhome = creep.pos.findClosestByPath(creep.room.find(FIND_EXIT_RIGHT));
+    //     creep.moveTo(backhome)
+    // }
+    // console.log(creep.name + ' yes, sir!')
+    // console.log(creep.room.name)
+    if (creep.room.name == roomName) {
+        // console.log('yes, sir')
+        // console.log(creep.memory.soldier_room_flag)
+        // if (creep.memory.soldier_room_flag == undefined){
+        //     // console.log('yes, undefined')
+        //     creep.memory.soldier_room_flag = 1
+        // }
+        // if (creep.memory.soldier_room_flag == 1){
+        //     // console.log('you still at home')
+        //     creep.moveTo(new RoomPosition(0, 33, roomName), {visualizePathStyle: {stroke: '#ff0000'}})
+        // }
+        // else{
+        //     console.log('you are in the other place')
+        // }
+        // creep.moveTo(new RoomPosition(2, 30, roomName), {visualizePathStyle: {stroke: '#ff0000'}})
+        creep.room.find(FIND_HOSTILE_CREEPS);
+        var invade_targets = creep.room.find(FIND_HOSTILE_CREEPS, {
+            filter: (s) => s.pos.x > 2 && s.pos.x < 48 && s.pos.y < 47 && s.pos.y > 2
+        });
+        if (invade_targets.length) {
+            if (creep.rangedAttack(invade_targets[0]) != OK) {
+                // if (creep.rangedAttack(invade_targets[0])){
+                creep.moveTo(invade_targets[0]);
+                // }
+            }
+        }
+        // else if (creep.attack(invade_targets[0]))
+        // {
+        //     creep.moveTo(invade_targets[0])
+        // }
+        //     // for (var i: number = 0; i < targets.length; i++)
+        //     // {
+        //     //     if ((targets[i].pos.x > 2 && targets[i].pos.x < 48) && ())
+        //     //     if (creep.rangedAttack(targets[i]) == ERR_NO_BODYPART)
+        //     //     {
+        //     //         if (creep.attack(targets[0]))
+        //     //         {
+        //     //             creep.moveTo(targets[i])
+        //     //         }
+        //     //     }
+        //     // }
+        // }
+        // else{
+        //     if ((creep.pos.x > 5) || (creep.pos.y < 27 || creep.pos.y > 33)){
+        //         creep.moveTo(new RoomPosition(2, 30, roomName), {visualizePathStyle: {stroke: '#ff0000'}})
+        //     }
+        // }
+    }
+};
+
+// import * as $ from '../超级移动优化bypass (临时)'
 const upgrader_work = function (creep, roomName) {
     // if (creep.room.name != roomName){
     //     if (creep.room.name == 'W47S15'){
@@ -3456,6 +3567,7 @@ const upgrader_work = function (creep, roomName) {
     //     creep.moveTo(new RoomPosition(49, 31, 'w48S14'), {visualizePathStyle: {stroke: '#ff0000'}})
     // }
     // console.log(creep.memory.is_working)
+    // creep.memory.source_idx = 0
     if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
         creep.say('🔄 harvest');
@@ -3483,17 +3595,23 @@ const upgrader_work = function (creep, roomName) {
             }
         }
         source = Game.getObjectById(Memory.rooms[roomName].source_ids[creep.memory.source_idx]);
-        if (!source) {
-            source = Game.getObjectById(Memory.rooms[roomName].source_ids[1 - creep.memory.source_idx]);
-        }
+        // if (!source){
+        //     source = Game.getObjectById(Memory.rooms[roomName].source_ids[1-creep.memory.source_idx])
+        // }
         var code;
+        var flag = 1;
         code = creep.harvest(source);
-        if (code == OK) ;
+        if (code == OK) {
+            flag = 0;
+        }
         else if (code == ERR_NOT_IN_RANGE)
             creep.moveTo(source, { visualizePathStyle: { stroke: '#808080' } });
         else if (code == ERR_NOT_ENOUGH_RESOURCES) {
-            console.log(creep.name + ' change source to :' + (1 - creep.memory.source_idx));
-            creep.memory.source_idx = 1 - creep.memory.source_idx;
+            // console.log(creep.name + ' change source to :' + (1 - creep.memory.source_idx))
+            // creep.memory.source_idx = 1 - creep.memory.source_idx
+            if (flag == 0) {
+                console.log('挖光了,剩余时间：' + source.ticksToRegeneration);
+            }
         }
         else if (code == ERR_INVALID_TARGET) {
             var sources = creep.room.find(FIND_SOURCES);
@@ -3524,6 +3642,15 @@ const upgrader_work = function (creep, roomName) {
 //     [750, 6, 4, 1],
 //     [800, 7, 4, 1],
 // ];
+var harvesters0Num = 8;
+var harvesters1Num = 3;
+var upgradersNum = 4;
+var left_fetcherNum = 0;
+var repairersNum = 2;
+var buildersNum = 2;
+var minerNum = 0;
+var soliderNum = 10;
+var minerNum = 0;
 const body_list = [
     [WORK, WORK, CARRY, MOVE],
     [WORK, WORK, CARRY, MOVE, MOVE],
@@ -3537,35 +3664,21 @@ const body_list = [
     [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
     [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], // 800
 ];
-const spawn_work = function (roomName, harvestersNum, upgradersNum, repairersNum, buildersNum, mimerNum, soliderNum, transferNum, spawnName) {
+const spawn_work = function (roomName, spawnName) {
     var home = Game.rooms[roomName];
     var energyCapacityAvailable = home.energyCapacityAvailable;
     var energyAvailable = home.energyAvailable;
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-    // // war
-    // var war_flag: boolean = false
-    // // var war_flag: boolean = true
-    // if (war_flag){
-    //     // status check
-    //     if (Game.spawns['Spawn1'].spawning){
-    //         var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
-    //         Game.spawns['Spawn1'].room.visual.text(
-    //             '🛠️' + spawningCreep.memory.role,
-    //             Game.spawns['Spawn1'].pos.x + 1, 
-    //             Game.spawns['Spawn1'].pos.y, 
-    //             {align: 'left', opacity: 0.8});
-    //     }
-    //     else {
-    //         var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'soldier');
-    //         var idx = Math.floor((energyAvailable-300) / 50);
-    //         if(soldiers.length < soliderNum){
-    //             console.log('Soldiers  : ' + harvesters.length + "\t" + harvestersNum);
-    //             var newName = 'Soldier' + Game.time;
-    //             Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'soldier', source_idx: source_idx}});
-    //             console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE]');
-    //         }
-    //     }
-    // }
+    var harvesters0 = _.filter(harvesters, ((creep) => creep.memory.source_idx == 0));
+    var harvesters1 = _.filter(harvesters, ((creep) => creep.memory.source_idx == 1));
+    var war_flag = false;
+    var closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
+    if (closestHostiles) {
+        if (closestHostiles.length > 0) {
+            war_flag = true;
+            soliderNum = Math.floor(closestHostiles.length * 1.5) + 1;
+        }
+    }
     // else 
     if (Game.spawns['Spawn1'].spawning) {
         var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
@@ -3587,22 +3700,43 @@ const spawn_work = function (roomName, harvestersNum, upgradersNum, repairersNum
         }
         // routine
         else if (energyAvailable == energyCapacityAvailable) {
+            var worker0 = _.filter(Game.creeps, ((creep) => creep.memory.source_idx == 0));
+            var worker1 = _.filter(Game.creeps, ((creep) => creep.memory.source_idx == 1));
+            console.log('0 far:' + worker0.length);
+            console.log('1 clo:' + worker1.length);
             var idx = Math.floor((energyAvailable - 300) / 50);
+            var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
+            console.log(constructions.length);
+            if (constructions) {
+                if (constructions.length == 0) {
+                    buildersNum = 0;
+                }
+            }
+            else {
+                buildersNum = 0;
+            }
             var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
             var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
             var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
             var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
-            var transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'transfer');
+            var left_fetchers = _.filter(Game.creeps, (creep) => creep.memory.role == 'left_fetcher');
             console.log('***************reuqired number with different role****************');
-            console.log('Harvesters: ' + harvesters.length + "\t" + harvestersNum);
+            console.log('harvester0: ' + harvesters0.length + "\t" + harvesters0Num);
+            console.log('harvester1: ' + harvesters1.length + "\t" + harvesters1Num);
             console.log('Upgraders : ' + upgraders.length + "\t" + upgradersNum);
-            console.log('Transfer  : ' + transfers.length + "\t" + transferNum);
+            console.log('Lfetcher  : ' + left_fetchers.length + "\t" + left_fetcherNum);
             console.log('Repairer  : ' + repairers.length + "\t", repairersNum);
             console.log('Builders  : ' + builders.length + "\t", buildersNum);
-            console.log('Miner     : ' + miners.length + "\t", buildersNum);
-            if (harvesters.length < harvestersNum) {
+            console.log('Miner     : ' + miners.length + "\t", minerNum);
+            if (harvesters1.length < harvesters1Num) {
                 var newName = 'Harvester' + Game.time;
-                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: Math.random() > 0.5 ? 1 : 0 } });
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 1 } });
+                // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
+                console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
+            }
+            else if (harvesters0.length < harvesters0Num) {
+                var newName = 'Harvester' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 0 } });
                 // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
                 console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
             }
@@ -3611,22 +3745,43 @@ const spawn_work = function (roomName, harvestersNum, upgradersNum, repairersNum
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'upgrader', source_idx: Math.random() > 0.5 ? 1 : 0 } });
                 console.log('Spawning new upgrader : ' + newName + " body: " + body_list[idx]);
             }
-            else if (builders.length <= upgraders.length) {
-                // else if(builder.length < buildersNum) {
-                var newName = 'Builder' + Game.time;
-                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0 } });
-                console.log('Spawning new builder  : ' + newName + " body: " + body_list[idx]);
-                // }
-            }
             else if (repairers.length < repairersNum) {
                 var newName = 'Repairer' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'repairer', source_idx: Math.random() > 0.5 ? 1 : 0 } });
                 console.log('Spawning new repairer : ' + newName + " body:" + body_list[idx]);
             }
-            // else if (transfers.length < transferNum){
-            //     var newName = 'Transfer' + Game.time;
-            //     Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'transfer', source_idx: source_idx}});
-            //     console.log('Spawning new transfer: ' + newName  + " body: " + body_list[idx]);
+            else if (builders.length <= buildersNum) {
+                var newName = 'Builder' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0 } });
+                console.log('Spawning new builder  : ' + newName + " body: " + body_list[idx]);
+            }
+            else if (war_flag) {
+                // // war
+                // var war_flag: boolean = false
+                if (war_flag) {
+                    // status check
+                    if (Game.spawns['Spawn1'].spawning) {
+                        var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
+                        Game.spawns['Spawn1'].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns['Spawn1'].pos.x + 1, Game.spawns['Spawn1'].pos.y, { align: 'left', opacity: 0.8 });
+                    }
+                    else {
+                        if (energyAvailable >= 670) {
+                            var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'soldier');
+                            var idx = Math.floor((energyAvailable - 300) / 50);
+                            if (soldiers.length < soliderNum) {
+                                console.log('Soldiers  : ' + soldiers.length + "\t" + soliderNum);
+                                var newName = 'Soldier' + Game.time;
+                                Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'soldier', source_idx: 1 } });
+                                console.log('Spawning new soldier: ' + newName + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
+                            }
+                        }
+                    }
+                }
+            }
+            // else if (left_fetchers.length < left_fetcherNum){
+            //     var newName = 'Left_fetchers' + Game.time;
+            //     Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'left_fetcher', source_idx: source_idx}});
+            //     console.log('Spawning new left_fetcher: ' + newName  + " body: " + body_list[idx]);
             // }
             // else if(miners.length < mimerNum) {
             //     var newName = 'Miner' + Game.time;
@@ -3637,15 +3792,75 @@ const spawn_work = function (roomName, harvestersNum, upgradersNum, repairersNum
     }
 };
 
+const left_fetch_work = function (creep, roomName, destRoom) {
+    if (creep.room.name == roomName) {
+        if ((creep.memory.soldier_room_flag == undefined) || (creep.memory.soldier_room_flag == 1)) {
+            creep.moveTo(new RoomPosition(4, 30, roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+        }
+        if (creep.memory.room_flag == 4) {
+            creep.moveTo(new RoomPosition(13, 29, roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+            if (((creep.pos.x - 13) * (creep.pos.x - 13) + (creep.pos.y - 29) * (creep.pos.y - 29)) <= 2) {
+                creep.memory.room_flag = 5;
+            }
+        }
+        if (creep.memory.room_flag == 5) {
+            var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_TOWER ||
+                        structure.structureType == STRUCTURE_CONTAINER) &&
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                }
+            });
+            if (targets.length > 0) {
+                if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+            }
+            if (creep.store.getCapacity() == 0) {
+                creep.memory.soldier_room_flag = 1;
+            }
+        }
+    }
+    else {
+        if (creep.room.name == destRoom && (creep.memory.soldier_room_flag == undefined || creep.memory.soldier_room_flag == 1)) {
+            creep.memory.room_flag = 1;
+            creep.moveTo(new RoomPosition(45, 30, destRoom), { visualizePathStyle: { stroke: '#ff0000' } });
+            if (((creep.pos.x - 45) * (creep.pos.x - 45) + (creep.pos.y - 30) * (creep.pos.y - 30)) <= 2) {
+                creep.memory.room_flag = 2;
+            }
+        }
+        if (creep.memory.room_flag == 2) {
+            var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_EXTENSION ||
+                        structure.structureType == STRUCTURE_CONTAINER) &&
+                        structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0;
+                }
+            });
+            if (targets.length > 0) {
+                if (creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+            }
+            if (creep.store.getFreeCapacity() == 0 || targets.length == 0) {
+                creep.memory.room_flag = 3;
+            }
+        }
+        if (creep.memory.room_flag == 3) {
+            creep.moveTo(new RoomPosition(45, 30, destRoom), { visualizePathStyle: { stroke: '#ff0000' } });
+            if (((creep.pos.x - 45) * (creep.pos.x - 45) + (creep.pos.y - 30) * (creep.pos.y - 30)) <= 2) {
+                creep.memory.room_flag = 4;
+            }
+        }
+        if (creep.memory.room_flag == 4) {
+            creep.moveTo(new RoomPosition(49, 31, destRoom), { visualizePathStyle: { stroke: '#ff0000' } });
+        }
+    }
+};
+
 // 引入外部依赖
+// import * as $ from './超级移动优化bypass (临时)'
 var roomName = 'W47S14';
-var harvestersNum = 13;
-var upgradersNum = 10;
-var repairersNum = 1;
-var buildersNum = 2;
-var minerNum = 0;
-var soliderNum = 0;
-var transferNum = 0;
 const loop = errorMapper(() => {
     // console.log('test 2021 09 11 19 54')
     for (var name in Memory.creeps) {
@@ -3654,26 +3869,46 @@ const loop = errorMapper(() => {
             console.log('Clearing non-existing creep memory:', name);
         }
     }
-    spawn_work(roomName, harvestersNum, upgradersNum, repairersNum, buildersNum, minerNum, soliderNum, transferNum);
+    spawn_work(roomName);
+    var tower = Game.getObjectById('613e1e2c2acf7910898bae98');
+    if (tower.hits <= 0.5 * tower.hitsMax || Game.spawns['Spawn1'].hits <= 0.5 * Game.spawns['Spawn1'].hitsMax) {
+        Game.rooms[roomName].controller.activateSafeMode();
+    }
+    if (tower) {
+        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if (closestHostile) {
+            console.log(Game.time + ' 发现敌军 ' + closestHostile.pos.x + " " + closestHostile.pos.y + closestHostile.owner);
+            tower.attack(closestHostile);
+        }
+        // else{
+        //     var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+        //         filter: (structure) => structure.hits < structure.hitsMax
+        //     });
+        //     if(closestDamagedStructure) {
+        //         tower.repair(closestDamagedStructure);
+        //     }
+        // }
+    }
     for (var name in Game.creeps) {
         var creep = Game.creeps[name];
-        // if (creep.memory.role == 'soldier'){
-        //     soldier_work(creep, roomName);
-        // }
-        // if (creep.memory.role == 'transfer'){
-        //     transfer_work(creep, roomName)
-        // }
+        if (creep.memory.role == 'soldier') {
+            soldier_work(creep, roomName);
+        }
         if (creep.memory.role == 'harvester') {
             harvester_work(creep, roomName);
         }
         if (creep.memory.role == 'upgrader') {
             upgrader_work(creep, roomName);
         }
-        if (creep.memory.role == 'repairer') {
-            repairer_work(creep, roomName);
-        }
         if (creep.memory.role == 'builder') {
             builder_work(creep, roomName);
+        }
+        if (creep.memory.role == 'left_fetcher') {
+            var dest = "W48S14";
+            left_fetch_work(creep, roomName, dest);
+        }
+        if (creep.memory.role == 'repairer') {
+            repairer_work(creep, roomName);
         }
         // if (creep.memory.role == 'miner'){
         //     miner_work(creep, roomName)
