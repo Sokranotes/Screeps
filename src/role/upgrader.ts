@@ -54,6 +54,18 @@ export const upgrader_work = function(creep: Creep, roomName: string){
             if (flag == 0){
                 console.log('挖光了,剩余时间：' + source.ticksToRegeneration)
             }
+            var containers = creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_STORAGE || 
+                        structure.structureType == STRUCTURE_CONTAINER) && 
+                structure.store.getCapacity(RESOURCE_ENERGY) > 0;
+                }
+            });
+            if(containers.length > 0) {
+                if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#808080'}});
+                }
+            }
         }
         else if (code == ERR_INVALID_TARGET){
             var sources = creep.room.find(FIND_SOURCES)

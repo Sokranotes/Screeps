@@ -58,7 +58,8 @@ export const builder_work = function(creep: Creep, roomName: string){
                 }
                 var containers = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER) && 
+                    return (structure.structureType == STRUCTURE_STORAGE || 
+                            structure.structureType == STRUCTURE_CONTAINER) && 
                     structure.store.getCapacity(RESOURCE_ENERGY) > 0;
                     }
                 });

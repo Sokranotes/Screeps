@@ -3307,7 +3307,8 @@ const builder_work = function (creep, roomName) {
                 }
                 var containers = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_CONTAINER) &&
+                        return (structure.structureType == STRUCTURE_STORAGE ||
+                            structure.structureType == STRUCTURE_CONTAINER) &&
                             structure.store.getCapacity(RESOURCE_ENERGY) > 0;
                     }
                 });
@@ -3405,7 +3406,8 @@ const harvester_work = function (creep, roomName) {
                 else {
                     targets = creep.room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
-                            return (structure.structureType == STRUCTURE_CONTAINER) &&
+                            return (structure.structureType == STRUCTURE_STORAGE ||
+                                structure.structureType == STRUCTURE_CONTAINER) &&
                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                         }
                     });
@@ -3589,6 +3591,18 @@ const upgrader_work = function (creep, roomName) {
             if (flag == 0) {
                 console.log('挖光了,剩余时间：' + source.ticksToRegeneration);
             }
+            var containers = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_STORAGE ||
+                        structure.structureType == STRUCTURE_CONTAINER) &&
+                        structure.store.getCapacity(RESOURCE_ENERGY) > 0;
+                }
+            });
+            if (containers.length > 0) {
+                if (creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(containers[0], { visualizePathStyle: { stroke: '#808080' } });
+                }
+            }
         }
         else if (code == ERR_INVALID_TARGET) {
             var sources = creep.room.find(FIND_SOURCES);
@@ -3628,11 +3642,11 @@ var buildersNum = 3;
 var minerNum = 0;
 var soliderNum = 10;
 var transferNum = 10;
-var outharvesterNum = 3;
+var outharvesterNum = 2;
 var minerNum = 0;
 var harderNum = 0;
 var doctorNum = 0;
-var cleanerNum = 1;
+var cleanerNum = 0;
 const body_list = [
     [WORK, WORK, CARRY, MOVE],
     [WORK, WORK, CARRY, MOVE, MOVE],
@@ -3648,7 +3662,7 @@ const body_list = [
 ];
 const spawn_work = function (roomName, spawnName) {
     var home = Game.rooms[roomName];
-    var energyCapacityAvailable = home.energyCapacityAvailable;
+    home.energyCapacityAvailable;
     var energyAvailable = home.energyAvailable;
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     var harvesters0 = _.filter(harvesters, ((creep) => creep.memory.source_idx == 0));
@@ -3675,6 +3689,8 @@ const spawn_work = function (roomName, spawnName) {
             var newName = 'Harvester' + Game.time;
             var idx = Math.floor((energyAvailable - 300) / 50);
             if (idx >= 0) {
+                if (idx > 10)
+                    idx = 10;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 1 } });
                 console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
             }
@@ -3689,17 +3705,14 @@ const spawn_work = function (roomName, spawnName) {
             // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
             console.log('Spawning new Doctor: ' + newName + " body: 2 HEAL  2 MOVE");
         }
-        else if (cleaners.length <= cleanerNum && cleaners.length < cleanerNum) {
-            var newName = 'Cleaner' + Game.time;
-            Game.spawns['Spawn1'].spawnCreep([CARRY, MOVE], newName, { memory: { role: 'cleaner' } });
-            console.log('Spawning new cleaner  : ' + newName + " body: CARRY, MOVE");
-        }
-        else if (energyAvailable == energyCapacityAvailable) {
+        else if (energyAvailable >= 800) {
             var worker0 = _.filter(Game.creeps, ((creep) => creep.memory.source_idx == 0));
             var worker1 = _.filter(Game.creeps, ((creep) => creep.memory.source_idx == 1));
             console.log('0 far:' + worker0.length);
             console.log('1 clo:' + worker1.length);
             var idx = Math.floor((energyAvailable - 300) / 50);
+            if (idx > 10)
+                idx = 10;
             var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
             console.log("constructions.length:", constructions.length);
             if (constructions.length == 0) {
@@ -3732,10 +3745,40 @@ const spawn_work = function (roomName, spawnName) {
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'harder' } });
                 console.log('Spawning new Harder: ' + newName + " body: 13 TOUGH  13MOVE");
             }
-            else if (outharvesters.length < outharvesterNum) {
+            else if (harvesters1.length < 0.5 * harvesters1Num) {
+                var newName = 'Harvester' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 1 } });
+                console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
+            }
+            else if (harvesters0.length < 0.5 * harvesters0Num) {
+                var newName = 'Harvester' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 0 } });
+                console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
+            }
+            else if (outharvesters.length < 0.5 * outharvesterNum) {
                 var newName = 'Out Havester' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], newName, { memory: { role: 'outharvester' } });
                 console.log('Spawning new outharvester: ' + newName + " body: WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE");
+            }
+            else if (transfers.length < 0.5 * transferNum) {
+                var newName = 'Transfer' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep([CARRY, MOVE], newName, { memory: { role: 'transfer' } });
+                console.log('Spawning new transfer: ' + newName + " body: CARRY, MOVE");
+            }
+            else if (upgraders.length < 0.5 * upgradersNum) {
+                var newName = 'Upgrader' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'upgrader', source_idx: Math.random() > 0.5 ? 1 : 0 } });
+                console.log('Spawning new upgrader : ' + newName + " body: " + body_list[idx]);
+            }
+            else if (repairers.length < 0.5 * repairersNum) {
+                var newName = 'Repairer' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'repairer', source_idx: Math.random() > 0.5 ? 1 : 0 } });
+                console.log('Spawning new repairer : ' + newName + " body:" + body_list[idx]);
+            }
+            else if (builders.length <= 0.5 * buildersNum) {
+                var newName = 'Builder' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0 } });
+                console.log('Spawning new builder  : ' + newName + " body: " + body_list[idx]);
             }
             else if (harvesters1.length < harvesters1Num) {
                 var newName = 'Harvester' + Game.time;
@@ -3746,6 +3789,11 @@ const spawn_work = function (roomName, spawnName) {
                 var newName = 'Harvester' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 0 } });
                 console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
+            }
+            else if (outharvesters.length < outharvesterNum) {
+                var newName = 'Out Havester' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], newName, { memory: { role: 'outharvester' } });
+                console.log('Spawning new outharvester: ' + newName + " body: WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE");
             }
             else if (transfers.length < transferNum) {
                 var newName = 'Transfer' + Game.time;
@@ -3766,6 +3814,11 @@ const spawn_work = function (roomName, spawnName) {
                 var newName = 'Builder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0 } });
                 console.log('Spawning new builder  : ' + newName + " body: " + body_list[idx]);
+            }
+            else if (cleaners.length <= cleanerNum && cleaners.length < cleanerNum) {
+                var newName = 'Cleaner' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep([CARRY, MOVE], newName, { memory: { role: 'cleaner' } });
+                console.log('Spawning new cleaner  : ' + newName + " body: CARRY, MOVE");
             }
             else if (war_flag) {
                 // // war
@@ -3947,7 +4000,8 @@ const transfer_work = function (creep, roomName) {
                 else {
                     targets = creep.room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
-                            return (structure.structureType == STRUCTURE_CONTAINER) &&
+                            return (structure.structureType == STRUCTURE_STORAGE ||
+                                structure.structureType == STRUCTURE_CONTAINER) &&
                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                         }
                     });
