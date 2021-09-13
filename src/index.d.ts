@@ -26,3 +26,7 @@ interface MY_STRUCTURE_TOWER{
     hits?: number
     hitsMax?: number
 }
+
+interface MY_Ruin{
+    store?: StoreDefinitionUnlimited;
+}

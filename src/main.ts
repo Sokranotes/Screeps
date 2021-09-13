@@ -8,6 +8,10 @@ import { soldier_work } from './role/soldier';
 import { upgrader_work } from './role/upgrader';
 import { spawn_work } from './spawn';
 import { left_fetch_work } from './role/left_fetch';
+import { harder_work } from './role/harder';
+import { doctor_work } from './role/doctor';
+import { transfer_work } from './role/transfer';
+import { outharvester_work } from './role/outharvester';
 // import * as $ from './超级移动优化bypass (临时)'
 
 var roomName: string = 'W47S14'
@@ -54,6 +58,12 @@ export const loop = errorMapper(() => {
         if(creep.memory.role == 'harvester') {
             harvester_work(creep, roomName);
         }
+        if (creep.memory.role == 'outharvester'){
+            outharvester_work(creep, roomName);
+        }
+        if (creep.memory.role == 'transfer'){
+            transfer_work(creep, roomName);
+        }
         if(creep.memory.role == 'upgrader') {
             upgrader_work(creep, roomName);
         }
@@ -66,6 +76,12 @@ export const loop = errorMapper(() => {
         }
         if(creep.memory.role == 'repairer') {
             repairer_work(creep, roomName);
+        }
+        if (creep.memory.role == 'harder'){
+            harder_work(creep, roomName)
+        }
+        if (creep.memory.role == 'doctor'){
+            doctor_work(creep, roomName)
         }
         // if (creep.memory.role == 'miner'){
         //     miner_work(creep, roomName)
