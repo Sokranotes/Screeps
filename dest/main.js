@@ -3427,6 +3427,7 @@ const harvester_work = function (creep, roomName) {
 
 // import * as $ from '../超级移动优化bypass (临时)'
 const repairer_work = function (creep, roomName) {
+    // creep.say('🔄 Here');
     // creep.memory.source_idx = 1 //近的这个，坐标13 29
     var dropEngry = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
     if (creep.pickup(dropEngry) == ERR_NOT_IN_RANGE) {
@@ -3715,6 +3716,7 @@ const spawn_work = function (roomName, spawnName) {
                 idx = 10;
             var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
             console.log("constructions.length:", constructions.length);
+            console.log(constructions.length == 0);
             if (constructions.length == 0) {
                 buildersNum = 0;
             }
@@ -3775,7 +3777,7 @@ const spawn_work = function (roomName, spawnName) {
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'repairer', source_idx: Math.random() > 0.5 ? 1 : 0 } });
                 console.log('Spawning new repairer : ' + newName + " body:" + body_list[idx]);
             }
-            else if (builders.length <= 0.5 * buildersNum) {
+            else if (builders.length < 0.5 * buildersNum) {
                 var newName = 'Builder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0 } });
                 console.log('Spawning new builder  : ' + newName + " body: " + body_list[idx]);
@@ -3810,7 +3812,7 @@ const spawn_work = function (roomName, spawnName) {
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'repairer', source_idx: Math.random() > 0.5 ? 1 : 0 } });
                 console.log('Spawning new repairer : ' + newName + " body:" + body_list[idx]);
             }
-            else if (builders.length <= buildersNum) {
+            else if (builders.length < buildersNum) {
                 var newName = 'Builder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0 } });
                 console.log('Spawning new builder  : ' + newName + " body: " + body_list[idx]);

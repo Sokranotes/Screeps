@@ -114,6 +114,7 @@ export const spawn_work = function(
             var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
             
             console.log("constructions.length:", constructions.length)
+            console.log(constructions.length == 0)
             if (constructions.length == 0)
             {
                 buildersNum = 0
@@ -183,7 +184,7 @@ export const spawn_work = function(
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'repairer', source_idx: Math.random() > 0.5 ? 1 : 0}});
                 console.log('Spawning new repairer : ' + newName  + " body:" + body_list[idx]);
             }
-            else if (builders.length <= 0.5*buildersNum)
+            else if (builders.length < 0.5*buildersNum)
             {
                 var newName = 'Builder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0}});
@@ -220,7 +221,7 @@ export const spawn_work = function(
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'repairer', source_idx: Math.random() > 0.5 ? 1 : 0}});
                 console.log('Spawning new repairer : ' + newName  + " body:" + body_list[idx]);
             }
-            else if (builders.length <= buildersNum)
+            else if (builders.length < buildersNum)
             {
                 var newName = 'Builder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'builder', source_idx: Math.random() > 0.5 ? 1 : 0}});
