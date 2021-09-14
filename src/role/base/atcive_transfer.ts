@@ -1,15 +1,13 @@
-// import * as $ from '../超级移动优化bypass (临时)'
-
-export const transfer_work = function(creep: Creep, roomName: string){
+export const active_transfer_work = function(creep: Creep, roomName: string){
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
-        // 如果在工作状态，且没有能量了，那么退出工作状态
+        // 如果在transfer状态，且没有能量了，那么退出transfer状态
         creep.memory.is_working = false;
-        creep.say('🔄 harvest');
+        creep.say('🔄 transfer');
     }
     if(!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
-        //如果在采集状态，且采集不了了，装满了，退出采集状态
+        //如果在withdraw状态，且取不了了，装满了，退出withdraw状态
         creep.memory.is_working = true;
-        creep.say('🚧 transfer');
+        creep.say('🚧 withdraw');
     }
     if (creep.room.name == roomName){
         if (creep.memory.is_working){
@@ -40,9 +38,11 @@ export const transfer_work = function(creep: Creep, roomName: string){
                 else{
                     targets = creep.room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
-                            return (structure.structureType == STRUCTURE_STORAGE ||
-                                    structure.structureType == STRUCTURE_CONTAINER) &&
+                            return (structure.structureType == STRUCTURE_STORAGE) &&
                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                            // return (structure.structureType == STRUCTURE_STORAGE ||
+                            //     structure.structureType == STRUCTURE_CONTAINER) &&
+                            // structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                         }
                     
                     });

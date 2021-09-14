@@ -1,19 +1,23 @@
 // 引入外部依赖
 import { errorMapper } from './modules/errorMapper'
-import {builder_work} from './role/builder'
-import { harvester_work } from './role/harvester';
-import { miner_work } from './role/miner';
-import { repairer_work } from './role/repairer';
-import { soldier_work } from './role/soldier';
-import { upgrader_work } from './role/upgrader';
+
 import { spawn_work } from './spawn';
-import { left_fetch_work } from './role/left_fetch';
-import { harder_work } from './role/harder';
-import { doctor_work } from './role/doctor';
-import { transfer_work } from './role/transfer';
-import { outharvester_work } from './role/outharvester';
-import { cleaner_work } from './role/cleaner';
-// import * as $ from './超级移动优化bypass (临时)'
+
+// role for base
+import { harvester_work } from './role/base/harvester';
+import { outharvester_work } from './role/base/outharvester';
+import { repairer_work } from './role/base/repairer';
+import { transfer_work } from './role/base/transfer';
+import { upgrader_work } from './role/base/upgrader';
+import { builder_work } from './role/base/builder';
+
+// role for war
+import { doctor_work } from './role/war/doctor';
+import { harder_work } from './role/war/harder';
+import { soldier_work } from './role/war/soldier';
+
+// import { cleaner_work } from './role/cleaner';
+// import { miner_work } from './role/miner';
 
 var roomName: string = 'W47S14'
 
@@ -21,6 +25,7 @@ export const loop = errorMapper(() => {
 
     // console.log('test 2021 09 11 19 54')
 
+    // 清楚死亡的creep的内存，对于一些未完成的操作也可以在此时检查
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
@@ -28,8 +33,10 @@ export const loop = errorMapper(() => {
         }
     }
 
+    // 控制creep的生成
     spawn_work(roomName)
 
+    // Tower防御及safe mode的激活
     var tower: MY_STRUCTURE_TOWER = Game.getObjectById('613e1e2c2acf7910898bae98');
     if (tower.hits <= 0.5*tower.hitsMax || Game.spawns['Spawn1'].hits <= 0.5*Game.spawns['Spawn1'].hitsMax)
     {
@@ -51,6 +58,7 @@ export const loop = errorMapper(() => {
         // }
     }
 
+    // 不同role的creep工作
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         if (creep.memory.role == 'soldier'){
@@ -71,15 +79,8 @@ export const loop = errorMapper(() => {
         if(creep.memory.role == 'builder') {
             builder_work(creep, roomName);
         }
-        if (creep.memory.role == 'left_fetcher'){
-            var dest: string = "W48S14"
-            left_fetch_work(creep, roomName, dest);
-        }
         if(creep.memory.role == 'repairer') {
             repairer_work(creep, roomName);
-        }
-        if (creep.memory.role == 'cleaner'){
-            cleaner_work(creep, roomName)
         }
         if (creep.memory.role == 'harder'){
             harder_work(creep, roomName)
@@ -87,6 +88,9 @@ export const loop = errorMapper(() => {
         if (creep.memory.role == 'doctor'){
             doctor_work(creep, roomName)
         }
+        // if (creep.memory.role == 'cleaner'){
+        //     cleaner_work(creep, roomName)
+        // }
         // if (creep.memory.role == 'miner'){
         //     miner_work(creep, roomName)
         // }

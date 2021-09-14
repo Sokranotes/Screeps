@@ -113,8 +113,8 @@ export const spawn_work = function(
 
             var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
             
-            console.log("constructions.length:", constructions.length)
-            console.log(constructions.length == 0)
+            //console.log("constructions.length:", constructions.length, ' ', buildersNum);
+            //console.log(constructions.length == 0);
             if (constructions.length == 0)
             {
                 buildersNum = 0
