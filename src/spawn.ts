@@ -25,11 +25,11 @@ var buildersNum: number = 3;
 var minerNum: number = 0;
 var soliderNum: number = 10;
 var transferNum: number = 10;
-var outharvesterNum: number = 2;
+var outharvesterNum: number = 1;
 var minerNum: number = 0;
 var harderNum: number = 0;
 var doctorNum: number = 0;
-var cleanerNum: number = 0;
+var cleanerNum: number = 1;
 
 const body_list: BodyPartConstant[][]= [
     [WORK, WORK, CARRY, MOVE], // 300

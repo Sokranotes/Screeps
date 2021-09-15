@@ -15,6 +15,7 @@ import { builder_work } from './role/base/builder';
 import { doctor_work } from './role/war/doctor';
 import { harder_work } from './role/war/harder';
 import { soldier_work } from './role/war/soldier';
+import { cleaner_work } from './role/base/cleaner';
 
 // import { cleaner_work } from './role/cleaner';
 // import { miner_work } from './role/miner';
@@ -58,6 +59,9 @@ export const loop = errorMapper(() => {
         // }
     }
 
+    // // 某房间挖矿
+    // room_energy_mine(Game.rooms['W47S14'])
+
     // 不同role的creep工作
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
@@ -88,9 +92,9 @@ export const loop = errorMapper(() => {
         if (creep.memory.role == 'doctor'){
             doctor_work(creep, roomName)
         }
-        // if (creep.memory.role == 'cleaner'){
-        //     cleaner_work(creep, roomName)
-        // }
+        if (creep.memory.role == 'cleaner'){
+            cleaner_work(creep, roomName)
+        }
         // if (creep.memory.role == 'miner'){
         //     miner_work(creep, roomName)
         // }
