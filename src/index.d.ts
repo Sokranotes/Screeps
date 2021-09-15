@@ -19,22 +19,9 @@ interface CreepMemory {
 interface RoomMemory {
     source_ids?: Id<Source>[]
     source_creep_ids?: Id<Creep>[]
-    container_ids?: Id<STRUCTURE_CONTAINER>[]
+    container_ids?: Id<StructureContainer>[]
     
     // source_ids_flag?: Id<Source>[]
 
     // mine_ids?: Id<Mineral>[]  //暂未启用
-}
-
-interface MY_STRUCTURE_TOWER{ // main.ts Tower类型检查
-    find?: Function
-    attack?: Function
-    repair?: Function
-    pos?: RoomPosition
-    hits?: number
-    hitsMax?: number
-}
-
-interface MY_CONTAINER{ // room_energy_mine.ts
-    pos?: RoomPosition
 }

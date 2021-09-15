@@ -38,7 +38,7 @@ export const loop = errorMapper(() => {
     spawn_work(roomName)
 
     // Tower防御及safe mode的激活
-    var tower: MY_STRUCTURE_TOWER = Game.getObjectById('613e1e2c2acf7910898bae98');
+    var tower: StructureTower = Game.getObjectById('613e1e2c2acf7910898bae98');
     if (tower.hits <= 0.5*tower.hitsMax || Game.spawns['Spawn1'].hits <= 0.5*Game.spawns['Spawn1'].hitsMax)
     {
         Game.rooms[roomName].controller.activateSafeMode()

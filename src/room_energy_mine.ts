@@ -25,12 +25,12 @@ export const room_energy_mine = function(roomName: string, spawnName?: string)
                 var source: Source = Game.getObjectById(room.memory.source_ids[i])
                 var j_limit: number = room.memory.container_ids.length
                 for (var j: number = 0; j < j_limit; j++){
-                    var container = Game.getObjectById(room.memory.container_ids[j])
+                    var container: StructureContainer = Game.getObjectById(room.memory.container_ids[j])
                     if (container){
                         // 两个container source距离太近可能会导致bug
                         if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 && 
                         (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1){
-
+                            
                         }
                     }
                     // else{
