@@ -27,7 +27,7 @@ var minerNum: number = 0;
 var soliderNum: number = 10;
 var transferNum: number = 13;
 var outharvesterNum: number = 1;
-var transfer1Num: number = 18;
+var transfer1Num: number = 20;
 var outharvester1Num: number = 1;
 var minerNum: number = 0;
 var harderNum: number = 0;
@@ -165,6 +165,8 @@ export const spawn_work = function(
             console.log('Cleaner   : ' + cleaners.length + "\t", cleanerNum);
             console.log('Basetrsasf: ' + base_transfers.length + "\t", base_transferNum);
             
+            var controller: StructureController = Game.getObjectById("5bbcaa729099fc012e631609")
+
             if (harders.length < harderNum){
                 var newName = 'Harder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, 
@@ -176,7 +178,7 @@ export const spawn_work = function(
                 Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier'}});
                 console.log('Spawning new carrier: ' + newName  + " body: CARRY 16 MOVE 1");
             }
-            else if (reservers.length < reserverNum){
+            else if (controller.reservation.ticksToEnd < 2000 && reservers.length < reserverNum){
                 var newName = 'reserver' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, {memory: {role: 'reserver', source_idx: 1}});
                 console.log('Spawning new reserver: ' + newName  + " body: CLAIM 2 MOVE 2");

@@ -18,5 +18,6 @@ export const reserver_work = function(creep: Creep, roomName: string){
         var controller: StructureController = Game.getObjectById("5bbcaa729099fc012e631609")
         console.log('status:', creep.reserveController(controller))
         creep.signController(controller, '喵呜')
+        creep.memory.reservation_tick = controller.reservation.ticksToEnd
     }
 }

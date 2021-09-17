@@ -8,6 +8,7 @@ interface CreepMemory {
     source_idx?: number // harvester.ts 存采集的source对应id的下标
     source_container_idx?: number
     container_pos?: RoomPosition // 固定点取能量的creep的固定点，即container位置
+    reservation_tick?: number
 
     // transfer_start?:
     // transfer_type?:
