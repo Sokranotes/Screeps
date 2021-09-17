@@ -1,3 +1,5 @@
+import * as $ from "./../../超级移动优化"
+
 export const cleaner_work = function(creep: Creep, roomName: string){
     // creep.say('🔄 Here');
     if(creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
@@ -11,25 +13,25 @@ export const cleaner_work = function(creep: Creep, roomName: string){
         creep.say('🚧 pickup');
     }
     if (creep.memory.is_working){
-        var tomb = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
-            filter: (structure) => {
-                return (structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
-            }
-        });
-        if (tomb != null){
-            if (creep.withdraw(tomb, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
-                creep.moveTo(tomb, {visualizePathStyle: {stroke: '#ffff00'}})
+        var res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+        if (res != null){
+            if (creep.pickup(res) == ERR_NOT_IN_RANGE){
+                creep.moveTo(res, {visualizePathStyle: {stroke: '#ffff00'}})
             }
         }
         else{
-            var res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-            if (res != null){
-                if (creep.pickup(res) == ERR_NOT_IN_RANGE){
-                    creep.moveTo(res, {visualizePathStyle: {stroke: '#ffff00'}})
+            var tomb = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
+                filter: (structure) => {
+                    return (structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
+                }
+            });
+            if (tomb != null){
+                if (creep.withdraw(tomb, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
+                    creep.moveTo(tomb, {visualizePathStyle: {stroke: '#ffff00'}})
                 }
             }
             else{
-                creep.moveTo(new RoomPosition(12, 24, roomName));
+                creep.moveTo(new RoomPosition(12, 24, roomName));    
             }
         }
     }

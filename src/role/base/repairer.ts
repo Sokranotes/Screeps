@@ -1,4 +1,4 @@
-// import * as $ from '../超级移动优化bypass (临时)'
+import * as $ from "./../../超级移动优化"
 
 export const repairer_work = function(creep: Creep, roomName: string){
     // creep.say('🔄 Here');
@@ -26,14 +26,20 @@ export const repairer_work = function(creep: Creep, roomName: string){
             }
         }
         else{
-            creep.moveTo(Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#ffffff'}});
-            // creep.memory.role = 'builder';
+            creep.moveTo(new RoomPosition(21, 33, roomName));    
         }
     }
     else {
-        var source = creep.pos.findClosestByPath(FIND_SOURCES);
-        if(source && creep.harvest(source) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+        var containers = creep.room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_STORAGE) && 
+            structure.store.getCapacity(RESOURCE_ENERGY) > 0;
+            }
+        });
+        if(containers.length > 0) {
+            if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#808080'}});
+            }
         }
     }
 }

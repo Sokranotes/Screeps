@@ -1,4 +1,4 @@
-// import * as $ from '../超级移动优化bypass (临时)'
+import * as $ from "./../../超级移动优化"
 
 export const harvester_work = function(creep: Creep, roomName: string){
     if (creep.room.name == roomName){

@@ -1,6 +1,6 @@
 import * as $ from "./../../超级移动优化"
 
-export const outharvester_work = function(creep: Creep, roomName: string){
+export const outharvester1_work = function(creep: Creep, roomName: string){
     // creep.say('🔄 Here');
 
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
@@ -13,6 +13,7 @@ export const outharvester_work = function(creep: Creep, roomName: string){
         creep.memory.is_working = true;
         creep.say('🚧 transfer');
     }
+    // if (creep.pos.x > 14)creep.moveTo(new RoomPosition(12, 31, 'W48S14'), {visualizePathStyle: {stroke: '#00ff0e'}})
     if (creep.room.name == roomName){
         if (creep.memory.is_working){
             ;
@@ -25,9 +26,15 @@ export const outharvester_work = function(creep: Creep, roomName: string){
     else{
         if (creep.memory.is_working == undefined)
         {
-            creep.moveTo(new RoomPosition(34, 43, 'W48S14'), {visualizePathStyle: {stroke: '#00ff0e'}})
-            if (creep.pos.x <= 36){
+            creep.moveTo(new RoomPosition(12, 31, 'W48S14'), {visualizePathStyle: {stroke: '#00ff0e'}})
+            if (creep.pos.x <= 14){
                 creep.memory.is_working = false
+            }
+            var source: Source
+            if (creep.room.memory.source_ids == undefined){
+                var sources = creep.room.find(FIND_SOURCES)
+                Memory.rooms[creep.room.name].source_ids[0] = sources[0].id;
+                Memory.rooms[creep.room.name].source_ids[1] = sources[1].id;
             }
         }
         // console.log(creep.store.getCapacity())
@@ -35,20 +42,22 @@ export const outharvester_work = function(creep: Creep, roomName: string){
         {
             var transfer_creep = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
                 filter: (cre) => {
-                    return (cre.memory.role == 'transfer' &&
+                    return (cre.memory.role == 'transfer1' &&
                             cre.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
                 }
             });
             creep.transfer(transfer_creep, RESOURCE_ENERGY)
         }
         if(creep.memory.is_working == true) {
-            ;
-            // creep.moveTo(new RoomPosition(49, 31, 'W48S14'), {visualizePathStyle: {stroke: '#00ff0e'}})
+            creep.moveTo(new RoomPosition(12, 30, 'W48S14'), {visualizePathStyle: {stroke: '#00ff0e'}})
+            if (creep.pos.x <= 14){
+                creep.memory.is_working = false
+            }
         }
         else {
-            creep.memory.source_idx = 1
+            creep.memory.source_idx = 0
             // console.log(creep.memory.source_idx)
-            var source: Source = Game.getObjectById(Memory.rooms[creep.room.name].source_ids[creep.memory.source_idx])
+            source = Game.getObjectById(Memory.rooms[creep.room.name].source_ids[creep.memory.source_idx])
             var code:number
             code = creep.harvest(source)
             // console.log(creep.name, ' ', code)

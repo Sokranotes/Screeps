@@ -1,4 +1,4 @@
-// import * as $ from '../超级移动优化bypass (临时)'
+import * as $ from "./../../超级移动优化"
 
 export const soldier_work = function(creep: Creep, roomName: string){
     // let exit = creep.pos.findClosestByPath(creep.room.find(FIND_EXIT_LEFT));
