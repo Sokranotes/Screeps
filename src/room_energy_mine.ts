@@ -7,12 +7,14 @@ import * as $ from "./超级移动优化"
 import { contains } from "lodash"
 import { transfer_work } from "./role/base/transfer";
 
-var transfer_num: number[] = [5, 3]
+var transfer_num: number[] = [4, 3]
 
 export const room_energy_mine = function(roomName: string, spawnName?: string)
 {
+    // 目标房间
     var room: Room = Game.rooms[roomName]
-    var energyAvailable: number = room.energyAvailable;
+    var myroom: Room = Game.rooms['W47S14']
+    var energyAvailable: number = myroom.energyAvailable;
     if (room.memory.auto_energy_mine == undefined){
         var sources: Source[]
         var sources_num: number

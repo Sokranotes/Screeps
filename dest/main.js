@@ -3246,7 +3246,7 @@ const errorMapper = function (next) {
     }
 };
 
-var upgradersNum = 3;
+var upgradersNum = 5;
 var left_fetcherNum = 0;
 var repairersNum = 2;
 var buildersNum = 3;
@@ -3254,12 +3254,12 @@ var minerNum = 0;
 var soliderNum = 10;
 var transferNum = 13;
 var outharvesterNum = 1;
-var transfer1Num = 18;
+var transfer1Num = 20;
 var outharvester1Num = 1;
 var minerNum = 0;
 var harderNum = 0;
 var doctorNum = 0;
-var cleanerNum = 1;
+var cleanerNum = 2;
 var base_transferNum = 1;
 var carrierNum = 1;
 var reserverNum = 1;
@@ -3287,7 +3287,7 @@ const spawn_work = function (roomName, spawnName) {
     var war_flag = false;
     var closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
     if (closestHostiles) {
-        if (closestHostiles.length > 0) {
+        if (closestHostiles.length > 1) {
             war_flag = true;
             soliderNum = Math.floor(closestHostiles.length * 1.5) + 1;
         }
@@ -3334,8 +3334,8 @@ const spawn_work = function (roomName, spawnName) {
             if (idx > 10)
                 idx = 10;
             var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
-            //console.log("constructions.length:", constructions.length, ' ', buildersNum);
-            //console.log(constructions.length == 0);
+            // console.log("constructions.length:", constructions.length, ' ', buildersNum);
+            // console.log(constructions.length == 0);
             if (constructions.length == 0) {
                 buildersNum = 0;
             }
@@ -3365,6 +3365,10 @@ const spawn_work = function (roomName, spawnName) {
             console.log('Out harv1s: ' + outharvester1s.length + "\t", outharvester1Num);
             console.log('Cleaner   : ' + cleaners.length + "\t", cleanerNum);
             console.log('Basetrsasf: ' + base_transfers.length + "\t", base_transferNum);
+            var controller = Game.getObjectById("5bbcaa729099fc012e631609");
+            // console.log(controller.reservation.ticksToEnd)
+            // console.log(reservers.length)
+            // console.log(controller.reservation.ticksToEnd < 3000 && reservers.length < reserverNum)
             if (harders.length < harderNum) {
                 var newName = 'Harder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,
@@ -3376,7 +3380,7 @@ const spawn_work = function (roomName, spawnName) {
                 Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, { memory: { role: 'carrier' } });
                 console.log('Spawning new carrier: ' + newName + " body: CARRY 16 MOVE 1");
             }
-            else if (reservers.length < reserverNum) {
+            else if (controller.reservation.ticksToEnd < 3000 && reservers.length < reserverNum) {
                 var newName = 'reserver' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', source_idx: 1 } });
                 console.log('Spawning new reserver: ' + newName + " body: CLAIM 2 MOVE 2");
@@ -3988,12 +3992,12 @@ const cleaner_work = function (creep, roomName) {
                 }
             }
             else {
-                creep.moveTo(new RoomPosition(12, 24, roomName));
+                creep.moveTo(new RoomPosition(0, 37, roomName));
             }
         }
     }
     else {
-        var targets = creep.room.find(FIND_STRUCTURES, {
+        var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_TOWER &&
                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
@@ -4005,7 +4009,7 @@ const cleaner_work = function (creep, roomName) {
             }
         }
         else {
-            var targets = creep.room.find(FIND_STRUCTURES, {
+            var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                         structure.structureType == STRUCTURE_SPAWN) &&
@@ -4018,7 +4022,7 @@ const cleaner_work = function (creep, roomName) {
                 }
             }
             else {
-                var targets = creep.room.find(FIND_STRUCTURES, {
+                var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_STORAGE) &&
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
@@ -4153,10 +4157,12 @@ const energy_harvester_no_carry_work = function (creep, roomName) {
     }
 };
 
-var transfer_num = [5, 3];
+var transfer_num = [4, 3];
 const room_energy_mine = function (roomName, spawnName) {
+    // 目标房间
     var room = Game.rooms[roomName];
-    var energyAvailable = room.energyAvailable;
+    var myroom = Game.rooms['W47S14'];
+    var energyAvailable = myroom.energyAvailable;
     if (room.memory.auto_energy_mine == undefined) {
         var sources;
         var sources_num;
@@ -4587,6 +4593,7 @@ const reserver_work = function (creep, roomName) {
         var controller = Game.getObjectById("5bbcaa729099fc012e631609");
         console.log('status:', creep.reserveController(controller));
         creep.signController(controller, '喵呜');
+        creep.memory.reservation_tick = controller.reservation.ticksToEnd;
     }
 };
 
@@ -4605,6 +4612,7 @@ const loop = errorMapper(() => {
     }
     // Tower防御及safe mode的激活
     var tower = Game.getObjectById('613e1e2c2acf7910898bae98');
+    var tower1 = Game.getObjectById('6144e55dfd720ff16b30cffa');
     if (tower.hits <= 0.5 * tower.hitsMax || Game.spawns['Spawn1'].hits <= 0.5 * Game.spawns['Spawn1'].hitsMax) {
         Game.rooms[roomName].controller.activateSafeMode();
     }
@@ -4613,15 +4621,67 @@ const loop = errorMapper(() => {
         if (closestHostile) {
             console.log(Game.time + ' 发现敌军 ' + closestHostile.pos.x + " " + closestHostile.pos.y + closestHostile.owner);
             tower.attack(closestHostile);
+            if (tower1) {
+                if (closestHostile) {
+                    tower1.attack(closestHostile);
+                }
+            }
         }
-        // else{
-        //     var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-        //         filter: (structure) => structure.hits < structure.hitsMax
-        //     });
-        //     if(closestDamagedStructure) {
-        //         tower.repair(closestDamagedStructure);
-        //     }
-        // }
+        else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower.store.getCapacity(RESOURCE_ENERGY)) {
+            var ramparts = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => structure.hits < 1000 && structure.structureType == STRUCTURE_RAMPART
+            });
+            if (ramparts) {
+                console.log('tower repair ramparts 1');
+                tower.repair(ramparts);
+                if (tower1) {
+                    if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
+                        tower1.repair(ramparts);
+                    }
+                }
+            }
+        }
+        else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower.store.getCapacity(RESOURCE_ENERGY) && tower.room.energyAvailable == tower.room.energyCapacityAvailable) {
+            var ramparts = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_RAMPART
+            });
+            if (ramparts) {
+                console.log('tower repair ramparts 2');
+                tower.repair(ramparts);
+                if (tower1) {
+                    if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY) && tower.room.energyAvailable == tower.room.energyCapacityAvailable) {
+                        tower1.repair(ramparts);
+                    }
+                }
+            }
+            else {
+                var structures = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (structure) => structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_WALL
+                });
+                if (structures) {
+                    console.log('tower repair structures');
+                    tower.repair(structures);
+                    if (tower1) {
+                        if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY) && tower.room.energyAvailable == tower.room.energyCapacityAvailable) {
+                            tower1.repair(structures);
+                        }
+                    }
+                }
+                else {
+                    var walls = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                        filter: (structure) => structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_WALL
+                    });
+                    if (walls) {
+                        tower.repair(walls);
+                        if (tower1) {
+                            if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY) && tower.room.energyAvailable == tower.room.energyCapacityAvailable) {
+                                tower1.repair(walls);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     // // 某房间挖矿
     var spawnName = 'Spawn1';

@@ -31,12 +31,12 @@ export const cleaner_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                creep.moveTo(new RoomPosition(12, 24, roomName));    
+                creep.moveTo(new RoomPosition(0, 37, roomName));    
             }
         }
     }
     else{
-        var targets = creep.room.find(FIND_STRUCTURES, {
+        var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_TOWER &&
                         structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
@@ -48,7 +48,7 @@ export const cleaner_work = function(creep: Creep, roomName: string){
             }
         }
         else{
-            var targets = creep.room.find(FIND_STRUCTURES, {
+            var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                             structure.structureType == STRUCTURE_SPAWN) &&
@@ -61,7 +61,7 @@ export const cleaner_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                var targets = creep.room.find(FIND_STRUCTURES, {
+                var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_STORAGE) &&
                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;

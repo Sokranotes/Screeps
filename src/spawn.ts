@@ -19,7 +19,7 @@ import { floor, random } from "lodash";
 
 var harvesters0Num: number = 0;
 var harvesters1Num: number = 0;
-var upgradersNum: number = 3;
+var upgradersNum: number = 5;
 var left_fetcherNum: number = 0;
 var repairersNum: number = 2;
 var buildersNum: number = 3;
@@ -32,7 +32,7 @@ var outharvester1Num: number = 1;
 var minerNum: number = 0;
 var harderNum: number = 0;
 var doctorNum: number = 0;
-var cleanerNum: number = 1;
+var cleanerNum: number = 2;
 var base_transferNum: number = 1;
 var carrierNum: number = 1;
 var reserverNum: number = 1;
@@ -68,7 +68,7 @@ export const spawn_work = function(
 
     var closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
     if (closestHostiles){
-        if (closestHostiles.length > 0){
+        if (closestHostiles.length > 1){
             war_flag = true
             soliderNum = Math.floor(closestHostiles.length * 1.5) + 1
         }
@@ -124,8 +124,8 @@ export const spawn_work = function(
 
             var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
             
-            //console.log("constructions.length:", constructions.length, ' ', buildersNum);
-            //console.log(constructions.length == 0);
+            // console.log("constructions.length:", constructions.length, ' ', buildersNum);
+            // console.log(constructions.length == 0);
             if (constructions.length == 0)
             {
                 buildersNum = 0
@@ -166,6 +166,9 @@ export const spawn_work = function(
             console.log('Basetrsasf: ' + base_transfers.length + "\t", base_transferNum);
             
             var controller: StructureController = Game.getObjectById("5bbcaa729099fc012e631609")
+            // console.log(controller.reservation.ticksToEnd)
+            // console.log(reservers.length)
+            // console.log(controller.reservation.ticksToEnd < 3000 && reservers.length < reserverNum)
 
             if (harders.length < harderNum){
                 var newName = 'Harder' + Game.time;
@@ -178,7 +181,7 @@ export const spawn_work = function(
                 Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier'}});
                 console.log('Spawning new carrier: ' + newName  + " body: CARRY 16 MOVE 1");
             }
-            else if (controller.reservation.ticksToEnd < 2000 && reservers.length < reserverNum){
+            else if (controller.reservation.ticksToEnd < 3000 && reservers.length < reserverNum){
                 var newName = 'reserver' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, {memory: {role: 'reserver', source_idx: 1}});
                 console.log('Spawning new reserver: ' + newName  + " body: CLAIM 2 MOVE 2");
