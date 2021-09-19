@@ -123,7 +123,7 @@ export const loop = errorMapper(() => {
 
     // // 某房间挖矿
     var spawnName: string = 'Spawn1'
-    room_energy_mine(roomName, spawnName)
+    // room_energy_mine(roomName, spawnName)
     // room_energy_mine("W47S15", spawnName)
 
     // 控制creep的生成
