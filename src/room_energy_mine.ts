@@ -114,7 +114,7 @@ export const room_energy_mine = function(roomName: string, spawnName?: string)
                                 room.memory.source_harvester_states[i] = 1
                                 room.memory.source_costs[i] = 750
                                 room.memory.auto_energy_mine = true
-                                console.log('Spawning new Harvester_no_carry  : ' + newName  + " body: WORK 5, MOVE 5");
+                                // console.log('Spawning new Harvester_no_carry  : ' + newName  + " body: WORK 5, MOVE 5");
                                 break
                             }
                     }
@@ -124,7 +124,7 @@ export const room_energy_mine = function(roomName: string, spawnName?: string)
                                 room.memory.source_harvester_states[i] = 1
                                 room.memory.source_costs[i] = 450
                                 room.memory.auto_energy_mine = true
-                                console.log('Spawning new Harvester_no_carry  : ' + newName  + " body: WORK 3, MOVE 3");
+                                // console.log('Spawning new Harvester_no_carry  : ' + newName  + " body: WORK 3, MOVE 3");
                                 break
                             }
                     }
@@ -177,7 +177,7 @@ export const room_energy_mine = function(roomName: string, spawnName?: string)
                         {memory: {role: 'energy_harvester_no_carry', source_idx: i, container_pos: pos}}) == OK){
                             room.memory.source_harvester_states[i] = 1
                             room.memory.source_costs[i] = room.memory.source_costs[i] + 750
-                            console.log('Spawning new energy_harvester_no_carry  : ' + newName  + " body: WORK 5, MOVE 5");
+                            // console.log('Spawning new energy_harvester_no_carry  : ' + newName  + " body: WORK 5, MOVE 5");
                             break
                         }
                 }
@@ -186,7 +186,7 @@ export const room_energy_mine = function(roomName: string, spawnName?: string)
                         {memory: {role: 'energy_harvester_no_carry', source_idx: i, container_pos: pos}}) == OK){
                             room.memory.source_harvester_states[i] = 1
                             room.memory.source_costs[i] = room.memory.source_costs[i] + 450
-                            console.log('Spawning new energy_harvester_no_carry  : ' + newName  + " body: WORK 3, MOVE 3");
+                            // console.log('Spawning new energy_harvester_no_carry  : ' + newName  + " body: WORK 3, MOVE 3");
                             break
                         }
                 }
@@ -202,7 +202,7 @@ export const room_energy_mine = function(roomName: string, spawnName?: string)
                             {memory: {role: 'active_transfer', source_container_idx: i}}) == OK){
                                 room.memory.source_transfer_states[i] = room.memory.source_transfer_states[i] + 1
                                 room.memory.source_costs[i] = room.memory.source_costs[i] + 500
-                                console.log('Spawning new active_transfer  : ' + newName  + " body: CARRY 5, MOVE 5");
+                                // console.log('Spawning new active_transfer  : ' + newName  + " body: CARRY 5, MOVE 5");
                                 break
                             }
                     }

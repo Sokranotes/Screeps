@@ -3249,21 +3249,13 @@ const errorMapper = function (next) {
 var harvesters0Num = 0;
 var harvesters1Num = 0;
 var upgradersNum = 5;
-// var upgradersNum: number = 2;
-var left_fetcherNum = 0;
 var repairersNum = 2;
 var buildersNum = 3;
-var minerNum = 0;
 var soliderNum = 10;
 var transferNum = 13;
 var outharvesterNum = 1;
 var transfer1Num = 20;
 var outharvester1Num = 1;
-// var transferNum: number = 0;
-// var outharvesterNum: number = 0;
-// var transfer1Num: number = 0;
-// var outharvester1Num: number = 0;
-var minerNum = 0;
 var harderNum = 0;
 var doctorNum = 0;
 var cleanerNum = 2;
@@ -3321,10 +3313,7 @@ const spawn_work = function (roomName, spawnName) {
                 if (idx > 10)
                     idx = 10;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 1 } });
-                console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
-            }
-            else {
-                console.log('lack of energy, energyAvailable: ' + energyAvailable);
+                // console.log('Spawning new harvester: ' + newName  + " body: " + body_list[idx]);
             }
         }
         // routine
@@ -3332,7 +3321,7 @@ const spawn_work = function (roomName, spawnName) {
             var newName = 'Doctor' + Game.time;
             Game.spawns['Spawn1'].spawnCreep([HEAL, HEAL, MOVE, MOVE], newName, { memory: { role: 'doctor' } });
             // Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'harvester', source_idx: 1}});
-            console.log('Spawning new Doctor: ' + newName + " body: 2 HEAL  2 MOVE");
+            // console.log('Spawning new Doctor: ' + newName  + " body: 2 HEAL  2 MOVE");
         }
         else if (energyAvailable >= 800) {
             // var worker0 = _.filter(Game.creeps, ((creep) => creep.memory.source_idx == 0));
@@ -3351,29 +3340,29 @@ const spawn_work = function (roomName, spawnName) {
             var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
             var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
             var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-            var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
-            var left_fetchers = _.filter(Game.creeps, (creep) => creep.memory.role == 'left_fetcher');
+            _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
+            _.filter(Game.creeps, (creep) => creep.memory.role == 'left_fetcher');
             var harders = _.filter(Game.creeps, (creep) => creep.memory.role == 'harder');
             var transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'transfer');
             var transfer1s = _.filter(Game.creeps, (creep) => creep.memory.role == 'transfer1');
             var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 50);
             var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.ticksToLive > 80);
-            console.log('***************reuqired number with different role****************');
-            console.log('harvester0: ' + harvesters0.length + "\t" + harvesters0Num);
-            console.log('harvester1: ' + harvesters1.length + "\t" + harvesters1Num);
-            console.log('Upgraders : ' + upgraders.length + "\t" + upgradersNum);
-            console.log('Lfetcher  : ' + left_fetchers.length + "\t" + left_fetcherNum);
-            console.log('Repairer  : ' + repairers.length + "\t", repairersNum);
-            console.log('Builders  : ' + builders.length + "\t", buildersNum);
-            console.log('Miner     : ' + miners.length + "\t", minerNum);
-            console.log('Harder    : ' + harders.length + "\t", harderNum);
-            console.log('Doctor    : ' + doctors.length + "\t", doctorNum);
-            console.log('Transfer  : ' + transfers.length + "\t", transferNum);
-            console.log('Out harves: ' + outharvesters.length + "\t", outharvesterNum);
-            console.log('Transfer1 : ' + transfer1s.length + "\t", transfer1Num);
-            console.log('Out harv1s: ' + outharvester1s.length + "\t", outharvester1Num);
-            console.log('Cleaner   : ' + cleaners.length + "\t", cleanerNum);
-            console.log('Basetrsasf: ' + base_transfers.length + "\t", base_transferNum);
+            // console.log('***************reuqired number with different role****************')
+            // console.log('harvester0: ' + harvesters0.length + "\t" + harvesters0Num);
+            // console.log('harvester1: ' + harvesters1.length + "\t" + harvesters1Num);
+            // console.log('Upgraders : ' + upgraders.length + "\t" + upgradersNum);
+            // console.log('Lfetcher  : ' + left_fetchers.length + "\t" + left_fetcherNum);
+            // console.log('Repairer  : ' + repairers.length + "\t", repairersNum);
+            // console.log('Builders  : ' + builders.length + "\t", buildersNum);
+            // console.log('Miner     : ' + miners.length + "\t", minerNum);
+            // console.log('Harder    : ' + harders.length + "\t", harderNum);
+            // console.log('Doctor    : ' + doctors.length + "\t", doctorNum);
+            // console.log('Transfer  : ' + transfers.length + "\t", transferNum);
+            // console.log('Out harves: ' + outharvesters.length + "\t", outharvesterNum);
+            // console.log('Transfer1 : ' + transfer1s.length + "\t", transfer1Num);
+            // console.log('Out harv1s: ' + outharvester1s.length + "\t", outharvester1Num);
+            // console.log('Cleaner   : ' + cleaners.length + "\t", cleanerNum);
+            // console.log('Basetrsasf: ' + base_transfers.length + "\t", base_transferNum);
             var controller = Game.getObjectById("5bbcaa729099fc012e631609");
             // console.log(controller.reservation.ticksToEnd)
             // console.log(reservers.length)
@@ -3382,126 +3371,128 @@ const spawn_work = function (roomName, spawnName) {
                 var newName = 'Harder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'harder' } });
-                console.log('Spawning new Harder: ' + newName + " body: 13 TOUGH  13MOVE");
+                // console.log('Spawning new Harder: ' + newName  + " body: 13 TOUGH  13MOVE");
             }
             else if (builders.length < 0.5 * buildersNum) {
                 var newName = 'Builder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'builder' } });
-                console.log('Spawning new builder  : ' + newName + " body: body: WORK 5, CARRY 2, MOVE 7");
+                // console.log('Spawning new builder  : ' + newName  + " body: body: WORK 5, CARRY 2, MOVE 7");
             }
             else if (carriers.length < carrierNum) {
                 var newName = 'Carrier' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, { memory: { role: 'carrier' } });
-                console.log('Spawning new carrier: ' + newName + " body: CARRY 16 MOVE 1");
+                // console.log('Spawning new carrier: ' + newName  + " body: CARRY 16 MOVE 1");
             }
             else if (controller.reservation == undefined && reservers.length < reserverNum) {
                 var newName = 'reserver' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', source_idx: 1 } });
-                console.log('Spawning new reserver: ' + newName + " body: CLAIM 2 MOVE 2");
+                // console.log('Spawning new reserver: ' + newName  + " body: CLAIM 2 MOVE 2");
             }
-            else if (controller.reservation.ticksToEnd < 3000 && reservers.length < reserverNum) {
-                var newName = 'reserver' + Game.time;
-                Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', source_idx: 1 } });
-                console.log('Spawning new reserver: ' + newName + " body: CLAIM 2 MOVE 2");
+            else if (controller.reservation != undefined) {
+                if (controller.reservation.ticksToEnd < 3000 && reservers.length < reserverNum) {
+                    var newName = 'reserver' + Game.time;
+                    Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', source_idx: 1 } });
+                    // console.log('Spawning new reserver: ' + newName  + " body: CLAIM 2 MOVE 2");
+                }
             }
             else if (base_transfers.length < base_transferNum) {
                 var newName = 'base_transfer' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], newName, { memory: { role: 'base_transfer', source_idx: 1 } });
-                console.log('Spawning new harvester: ' + newName + " body: CARRY 2 MOVE 3");
+                // console.log('Spawning new harvester: ' + newName  + " body: CARRY 2 MOVE 3");
             }
             else if (harvesters1.length < 0.5 * harvesters1Num) {
                 var newName = 'Harvester' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 1 } });
-                console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
+                // console.log('Spawning new harvester: ' + newName  + " body: " + body_list[idx]);
             }
             else if (harvesters0.length < 0.5 * harvesters0Num) {
                 var newName = 'Harvester' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 0 } });
-                console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
+                // console.log('Spawning new harvester: ' + newName  + " body: " + body_list[idx]);
             }
             else if (outharvesters.length < 0.5 * outharvesterNum) {
                 var newName = 'Out Havester' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'outharvester' } });
-                console.log('Spawning new outharvester: ' + newName + " body: WORK 5, CARRY 5, MOVE 5");
+                // console.log('Spawning new outharvester: ' + newName  + " body: WORK 5, CARRY 5, MOVE 5");
             }
             else if (transfers.length < 0.5 * transferNum) {
                 var newName = 'Transfer' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CARRY, MOVE], newName, { memory: { role: 'transfer' } });
-                console.log('Spawning new transfer: ' + newName + " body: CARRY, MOVE");
+                // console.log('Spawning new transfer: ' + newName  + " body: CARRY, MOVE");
             }
             else if (outharvester1s.length < 0.5 * outharvester1Num) {
                 var newName = 'Out Havester1 ' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'outharvester1' } });
-                console.log('Spawning new outharvester: ' + newName + " body: WORK 5, CARRY 5, MOVE 5");
+                // console.log('Spawning new outharvester: ' + newName  + " body: WORK 5, CARRY 5, MOVE 5");
             }
             else if (transfer1s.length < 0.5 * transfer1Num) {
                 var newName = 'Transfer1 ' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CARRY, MOVE], newName, { memory: { role: 'transfer1' } });
-                console.log('Spawning new transfer1: ' + newName + " body: CARRY, MOVE");
+                // console.log('Spawning new transfer1: ' + newName  + " body: CARRY, MOVE");
             }
             else if (upgraders.length < 0.5 * upgradersNum) {
                 var newName = 'Upgrader' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
                     CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'upgrader' } });
-                console.log('Spawning new upgrader : ' + newName + " body: WORK 5, CARRY 2, MOVE 7");
+                // console.log('Spawning new upgrader : ' + newName  + " body: WORK 5, CARRY 2, MOVE 7");
             }
             else if (repairers.length < 0.5 * repairersNum) {
                 var newName = 'Repairer' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'repairer' } });
-                console.log('Spawning new repairer : ' + newName + " body:" + body_list[idx]);
+                // console.log('Spawning new repairer : ' + newName  + " body:" + body_list[idx]);
             }
             else if (harvesters1.length < harvesters1Num) {
                 var newName = 'Harvester' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 1 } });
-                console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
+                // console.log('Spawning new harvester: ' + newName  + " body: " + body_list[idx]);
             }
             else if (harvesters0.length < harvesters0Num) {
                 var newName = 'Harvester' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'harvester', source_idx: 0 } });
-                console.log('Spawning new harvester: ' + newName + " body: " + body_list[idx]);
+                // console.log('Spawning new harvester: ' + newName  + " body: " + body_list[idx]);
             }
             else if (outharvesters.length < outharvesterNum) {
                 var newName = 'Out Havester' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'outharvester' } });
-                console.log('Spawning new outharvester: ' + newName + " body: WORK 5, CARRY 5, MOVE 5");
+                // console.log('Spawning new outharvester: ' + newName  + " body: WORK 5, CARRY 5, MOVE 5");
             }
             else if (transfers.length < transferNum) {
                 var newName = 'Transfer' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CARRY, MOVE], newName, { memory: { role: 'transfer' } });
-                console.log('Spawning new transfer: ' + newName + " body: CARRY, MOVE");
+                // console.log('Spawning new transfer: ' + newName  + " body: CARRY, MOVE");
             }
             else if (outharvester1s.length < outharvester1Num) {
                 var newName = 'Out Havester1 ' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'outharvester1' } });
-                console.log('Spawning new outharvester: ' + newName + " body: WORK 5, CARRY 5, MOVE 5");
+                // console.log('Spawning new outharvester: ' + newName  + " body: WORK 5, CARRY 5, MOVE 5");
             }
             else if (transfer1s.length < transfer1Num) {
                 var newName = 'Transfer1 ' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CARRY, MOVE], newName, { memory: { role: 'transfer1' } });
-                console.log('Spawning new transfer1: ' + newName + " body: CARRY, MOVE");
+                // console.log('Spawning new transfer1: ' + newName  + " body: CARRY, MOVE");
             }
             else if (upgraders.length < upgradersNum) {
                 var newName = 'Upgrader' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
                     CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'upgrader' } });
-                console.log('Spawning new upgrader : ' + newName + " body: " + body_list[idx]);
+                // console.log('Spawning new upgrader : ' + newName  + " body: " + body_list[idx]);
             }
             else if (repairers.length < repairersNum) {
                 var newName = 'Repairer' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'repairer' } });
-                console.log('Spawning new repairer : ' + newName + " body:" + body_list[idx]);
+                // console.log('Spawning new repairer : ' + newName  + " body:" + body_list[idx]);
             }
             else if (builders.length < buildersNum) {
                 var newName = 'Builder' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, { memory: { role: 'builder' } });
-                console.log('Spawning new builder  : ' + newName + " body: " + body_list[idx]);
+                // console.log('Spawning new builder  : ' + newName  + " body: " + body_list[idx]);
             }
             else if (cleaners.length <= cleanerNum && cleaners.length < cleanerNum) {
                 var newName = 'Cleaner' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], newName, { memory: { role: 'cleaner' } });
-                console.log('Spawning new cleaner  : ' + newName + " body: CARRY, MOVE");
+                // console.log('Spawning new cleaner  : ' + newName  + " body: CARRY, MOVE");
             }
             else if (war_flag) {
                 // // war
@@ -3517,10 +3508,10 @@ const spawn_work = function (roomName, spawnName) {
                             var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'soldier');
                             var idx = Math.floor((energyAvailable - 300) / 50);
                             if (soldiers.length < soliderNum) {
-                                console.log('Soldiers  : ' + soldiers.length + "\t" + soliderNum);
+                                // console.log('Soldiers  : ' + soldiers.length + "\t" + soliderNum);
                                 var newName = 'Soldier' + Game.time;
                                 Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'soldier', source_idx: 1 } });
-                                console.log('Spawning new soldier: ' + newName + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
+                                // console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
                             }
                         }
                     }
@@ -4271,7 +4262,7 @@ const room_energy_mine = function (roomName, spawnName) {
                             room.memory.source_harvester_states[i] = 1;
                             room.memory.source_costs[i] = 750;
                             room.memory.auto_energy_mine = true;
-                            console.log('Spawning new Harvester_no_carry  : ' + newName + " body: WORK 5, MOVE 5");
+                            // console.log('Spawning new Harvester_no_carry  : ' + newName  + " body: WORK 5, MOVE 5");
                             break;
                         }
                     }
@@ -4280,7 +4271,7 @@ const room_energy_mine = function (roomName, spawnName) {
                             room.memory.source_harvester_states[i] = 1;
                             room.memory.source_costs[i] = 450;
                             room.memory.auto_energy_mine = true;
-                            console.log('Spawning new Harvester_no_carry  : ' + newName + " body: WORK 3, MOVE 3");
+                            // console.log('Spawning new Harvester_no_carry  : ' + newName  + " body: WORK 3, MOVE 3");
                             break;
                         }
                     }
@@ -4332,7 +4323,7 @@ const room_energy_mine = function (roomName, spawnName) {
                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'energy_harvester_no_carry', source_idx: i, container_pos: pos } }) == OK) {
                         room.memory.source_harvester_states[i] = 1;
                         room.memory.source_costs[i] = room.memory.source_costs[i] + 750;
-                        console.log('Spawning new energy_harvester_no_carry  : ' + newName + " body: WORK 5, MOVE 5");
+                        // console.log('Spawning new energy_harvester_no_carry  : ' + newName  + " body: WORK 5, MOVE 5");
                         break;
                     }
                 }
@@ -4340,7 +4331,7 @@ const room_energy_mine = function (roomName, spawnName) {
                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, MOVE, MOVE, MOVE], newName, { memory: { role: 'energy_harvester_no_carry', source_idx: i, container_pos: pos } }) == OK) {
                         room.memory.source_harvester_states[i] = 1;
                         room.memory.source_costs[i] = room.memory.source_costs[i] + 450;
-                        console.log('Spawning new energy_harvester_no_carry  : ' + newName + " body: WORK 3, MOVE 3");
+                        // console.log('Spawning new energy_harvester_no_carry  : ' + newName  + " body: WORK 3, MOVE 3");
                         break;
                     }
                 }
@@ -4355,7 +4346,7 @@ const room_energy_mine = function (roomName, spawnName) {
                         if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], newName, { memory: { role: 'active_transfer', source_container_idx: i } }) == OK) {
                             room.memory.source_transfer_states[i] = room.memory.source_transfer_states[i] + 1;
                             room.memory.source_costs[i] = room.memory.source_costs[i] + 500;
-                            console.log('Spawning new active_transfer  : ' + newName + " body: CARRY 5, MOVE 5");
+                            // console.log('Spawning new active_transfer  : ' + newName  + " body: CARRY 5, MOVE 5");
                             break;
                         }
                     }
@@ -4618,7 +4609,7 @@ const reserver_work = function (creep, roomName) {
     }
     else {
         var controller = Game.getObjectById("5bbcaa729099fc012e631609");
-        console.log('status:', creep.reserveController(controller));
+        // console.log('status:', creep.reserveController(controller))
         creep.signController(controller, '喵呜');
         creep.memory.reservation_tick = controller.reservation.ticksToEnd;
     }
