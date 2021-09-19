@@ -11,8 +11,23 @@ var transfer_num: number[] = [4, 3]
 
 export const room_energy_mine = function(roomName: string, spawnName?: string)
 {
+    
     // 目标房间
     var room: Room = Game.rooms[roomName]
+
+    // 找到所有containers
+    containers = room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_CONTAINER);
+        }
+    });
+    containers_num = containers.length
+    // 找到该房间所有container并存id
+    room.memory.container_ids = new Array(containers_num)
+    for (var i: number = 0; i < containers_num; i++){
+        room.memory.container_ids[i] = containers[i].id;
+    }
+
     var myroom: Room = Game.rooms['W47S14']
     var energyAvailable: number = myroom.energyAvailable;
     if (room.memory.auto_energy_mine == undefined){

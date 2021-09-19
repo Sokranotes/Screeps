@@ -24,6 +24,7 @@ import { outharvester1_work } from './role/base/outharvester1';
 import { transfer1_work } from './role/base/transfer1';
 import { carrier_work } from './role/base/carrier';
 import { reserver_work } from './role/base/reserver';
+import { room_base_running } from './role/base/room_base_running';
 
 // import { cleaner_work } from './role/cleaner';
 // import { miner_work } from './role/miner';
@@ -32,8 +33,6 @@ var roomName: string = 'W47S14'
 
 export const loop = errorMapper(() => {
 
-    // console.log('test 2021 09 11 19 54')
-
     // 清楚死亡的creep的内存，对于一些未完成的操作也可以在此时检查
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
@@ -41,6 +40,12 @@ export const loop = errorMapper(() => {
             console.log('Clearing non-existing creep memory:', name);
         }
     }
+
+    // for (var room_name in Game.rooms){
+    //     if (Game.rooms[room_name].controller.my){
+    //         room_base_running(roomName)
+    //     }
+    // }
 
     // Tower防御及safe mode的激活
     var tower: StructureTower = Game.getObjectById('613e1e2c2acf7910898bae98');
@@ -123,7 +128,7 @@ export const loop = errorMapper(() => {
 
     // // 某房间挖矿
     var spawnName: string = 'Spawn1'
-    // room_energy_mine(roomName, spawnName)
+    room_energy_mine(roomName, spawnName)
     // room_energy_mine("W47S15", spawnName)
 
     // 控制creep的生成

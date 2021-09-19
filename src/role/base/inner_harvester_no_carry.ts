@@ -1,4 +1,4 @@
-import * as $ from "./../../超级移动优化"
+// import * as $ from "./../../超级移动优化"
 
 export const outharvester_work = function(creep: Creep, roomName: string){
     // creep.say('🔄 Here');
@@ -9,7 +9,7 @@ export const outharvester_work = function(creep: Creep, roomName: string){
         Memory.rooms[creep.room.name].source_ids = new Array(sources.length)
         for (var i: number = 0; i < sources.length; i++){
             Memory.rooms[creep.room.name].source_ids[0] = single_source.id;
-        }++
+        }
     }
     creep.memory.source_idx = 0
     // console.log(creep.memory.source_idx)
