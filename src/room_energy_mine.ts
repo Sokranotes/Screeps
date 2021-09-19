@@ -7,7 +7,7 @@ import * as $ from "./超级移动优化"
 import { contains } from "lodash"
 import { transfer_work } from "./role/base/transfer";
 
-var transfer_num: number[] = [4, 3]
+var transfer_num: number[] = [2, 1]
 
 export const room_energy_mine = function(roomName: string, spawnName?: string)
 {
@@ -198,7 +198,7 @@ export const room_energy_mine = function(roomName: string, spawnName?: string)
                 if (energyAvailable >= 500){
                     if (room.memory.source_types[i]){
                         newName = 'active_transfer' + Game.time;
-                        if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], newName, 
+                        if (Game.spawns[spawnName].spawnCreep([CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE], newName, 
                             {memory: {role: 'active_transfer', source_container_idx: i}}) == OK){
                                 room.memory.source_transfer_states[i] = room.memory.source_transfer_states[i] + 1
                                 room.memory.source_costs[i] = room.memory.source_costs[i] + 500

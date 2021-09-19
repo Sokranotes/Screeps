@@ -37,7 +37,7 @@ export const loop = errorMapper(() => {
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
-            console.log('Clearing non-existing creep memory:', name);
+            // console.log('Clearing non-existing creep memory:', name);
         }
     }
 
@@ -46,6 +46,13 @@ export const loop = errorMapper(() => {
     //         room_base_running(roomName)
     //     }
     // }
+
+    var closestHostile1 = Game.rooms["W48S14"].find(FIND_HOSTILE_CREEPS);
+    if(closestHostile1.length > 0) {
+        for (var i: number = 0; i < closestHostile1.length; i++){
+            console.log(Game.time + ' 发现敌军 ' + closestHostile1[0].pos.x + " " + closestHostile1[0].pos.y + closestHostile1[0].owner)
+        }
+    }
 
     // Tower防御及safe mode的激活
     var tower: StructureTower = Game.getObjectById('613e1e2c2acf7910898bae98');

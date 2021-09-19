@@ -35,4 +35,6 @@ interface RoomMemory {
     source_distance?: number[]
     source_gets?: number[]
     source_costs?: number[]
+
+    war_flag?: boolean
 }

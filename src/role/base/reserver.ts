@@ -2,6 +2,9 @@ import * as $ from "./../../超级移动优化"
 
 export const reserver_work = function(creep: Creep, roomName: string){
     creep.say('🔄 Here');
+    if (Game.rooms["W48S14"].memory.war_flag){
+        creep.moveTo(new RoomPosition(5, 25, roomName), {visualizePathStyle: {stroke: '#00ff0e'}})
+    }
     // console.log("测试")
     // console.log(creep.pos.x != 22 || creep.pos.y != 27 || creep.room.name != "W48S14")
     // if (creep.room.name == roomName){
@@ -16,8 +19,13 @@ export const reserver_work = function(creep: Creep, roomName: string){
     }
     else{
         var controller: StructureController = Game.getObjectById("5bbcaa729099fc012e631609")
+        creep.reserveController(controller)
         // console.log('status:', creep.reserveController(controller))
         creep.signController(controller, '喵呜')
-        creep.memory.reservation_tick = controller.reservation.ticksToEnd
+        if (controller != null && controller != undefined){
+            if (controller.reservation != null && controller.reservation != undefined){
+                creep.memory.reservation_tick = controller.reservation.ticksToEnd
+            }
+        }
     }
 }

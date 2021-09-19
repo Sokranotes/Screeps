@@ -22,6 +22,7 @@ export const soldier_work = function(creep: Creep, roomName: string){
     // console.log(creep.name + ' yes, sir!')
     // console.log(creep.room.name)
     if (creep.room.name == roomName){
+        creep.moveTo(new RoomPosition(25, 25, 'W48S14'), {visualizePathStyle: {stroke: '#ff0000'}})
         // console.log('yes, sir')
         // console.log(creep.memory.soldier_room_flag)
         // if (creep.memory.soldier_room_flag == undefined){
@@ -38,19 +39,19 @@ export const soldier_work = function(creep: Creep, roomName: string){
 
         // creep.moveTo(new RoomPosition(2, 30, roomName), {visualizePathStyle: {stroke: '#ff0000'}})
 
-        var targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS)
-        var invade_targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS, {
-            filter: (s) => s.pos.x > 2 && s.pos.x < 48 && s.pos.y < 47 && s.pos.y > 2
-        });
-        if (invade_targets.length)
-        {
-            if (creep.rangedAttack(invade_targets[0]) != OK)
-            {
-                // if (creep.rangedAttack(invade_targets[0])){
-                    creep.moveTo(invade_targets[0])
-                // }
-            }
-        }
+        // var targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS)
+        // var invade_targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS, {
+        //     filter: (s) => s.pos.x > 2 && s.pos.x < 48 && s.pos.y < 47 && s.pos.y > 2
+        // });
+        // if (invade_targets.length)
+        // {
+        //     if (creep.rangedAttack(invade_targets[0]) != OK)
+        //     {
+        //         // if (creep.rangedAttack(invade_targets[0])){
+        //             creep.moveTo(invade_targets[0])
+        //         // }
+        //     }
+        // }
             // else if (creep.attack(invade_targets[0]))
             // {
             //     creep.moveTo(invade_targets[0])
@@ -74,6 +75,31 @@ export const soldier_work = function(creep: Creep, roomName: string){
         // }
     }
     else{
+        if (creep.pos.x > 47){
+            creep.moveTo(new RoomPosition(25, 25, 'W48S14'), {visualizePathStyle: {stroke: '#ff0000'}})
+        }
+
+        // var targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS)
+        // var invade_targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS, {
+        //     filter: (s) => s.pos.x > 2 && s.pos.x < 48 && s.pos.y < 47 && s.pos.y > 2
+        // });
+        var invade_targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS);
+        if (invade_targets.length)
+        {
+            creep.room.memory.war_flag = true
+            if (creep.rangedAttack(invade_targets[0]) != OK)
+            {
+                // if (creep.rangedAttack(invade_targets[0])){
+                    creep.moveTo(invade_targets[0])
+                // }
+            }
+            // if (invade_targets[0].pos)
+        }
+        else{
+            creep.room.memory.war_flag = false
+            creep.moveTo(new RoomPosition(25, 25, 'W48S14'), {visualizePathStyle: {stroke: '#ff0000'}})
+        }
+
         // console.log('sir, not in this room.')
         // creep.moveTo(new RoomPosition(33, 23, 'W48S14'), {visualizePathStyle: {stroke: '#ff0000'}})
         // var targets = creep.room.find(FIND_HOSTILE_SPAWNS)
