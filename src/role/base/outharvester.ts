@@ -1,6 +1,7 @@
 import * as $ from "./../../超级移动优化"
 
 export const outharvester_work = function(creep: Creep, roomName: string){
+    creep.say('🔄 Here');
     if (Game.rooms["W48S14"].memory.war_flag){
         creep.memory.is_working = false
         creep.moveTo(new RoomPosition(5, 25, roomName), {visualizePathStyle: {stroke: '#00ff0e'}})
@@ -48,11 +49,11 @@ export const outharvester_work = function(creep: Creep, roomName: string){
             }
             else {
                 creep.memory.source_idx = 1
-                // console.log(creep.memory.source_idx)
+                console.log(creep.memory.source_idx)
                 var source: Source = Game.getObjectById(Memory.rooms[creep.room.name].source_ids[creep.memory.source_idx])
                 var code:number
                 code = creep.harvest(source)
-                // console.log(creep.name, ' ', code)
+                console.log(creep.name, ' ', code)
                 var flag: number = 1
                 if (code == OK){
                     flag = 0

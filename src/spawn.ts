@@ -22,7 +22,7 @@ var harvesters1Num: number = 0;
 // var upgradersNum: number = 5;
 var upgradersNum: number = 2;
 var left_fetcherNum: number = 0;
-var repairersNum: number = 2;
+var repairersNum: number = 0;
 var buildersNum: number = 3;
 var minerNum: number = 0;
 

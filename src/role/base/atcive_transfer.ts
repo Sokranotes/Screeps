@@ -15,19 +15,21 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
     }
     // console.log(creep.memory.is_working)
     if (creep.memory.is_working){
-        var targets = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_TOWER &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-            }
-        });
-        if(targets.length > 0) {
-            code = creep.transfer(targets[0], RESOURCE_ENERGY)
-            if(code == ERR_NOT_IN_RANGE) {
-                creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
-            }
-            else if(code == OK){
-                creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY)
+        if(creep.room.memory.war_flag ||  creep.room.energyAvailable > 0.75*creep.room.energyCapacityAvailable){
+            var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_TOWER &&
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                }
+            });
+            if(targets.length > 0) {
+                code = creep.transfer(targets[0], RESOURCE_ENERGY)
+                if(code == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                }
+                else if(code == OK){
+                    creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY)
+                }
             }
         }
         else{
@@ -48,12 +50,11 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                targets = creep.room.find(FIND_STRUCTURES, {
+                var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE) &&
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        return (structure.structureType == STRUCTURE_TOWER &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
                     }
-                
                 });
                 if(targets.length > 0) {
                     code = creep.transfer(targets[0], RESOURCE_ENERGY)
@@ -62,6 +63,24 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
                     }
                     else if(code == OK){
                         creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY)
+                    }
+                }
+                else{
+                    targets = creep.room.find(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_STORAGE) &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        }
+                    
+                    });
+                    if(targets.length > 0) {
+                        code = creep.transfer(targets[0], RESOURCE_ENERGY)
+                        if(code == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                        }
+                        else if(code == OK){
+                            creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY)
+                        }
                     }
                 }
             }

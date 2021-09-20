@@ -63,7 +63,11 @@ export const loop = errorMapper(() => {
     }
     if(tower) {
         var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        // console.log(tower.store.getUsedCapacity(RESOURCE_ENERGY))
+        // console.log(0.75*tower.store.getCapacity(RESOURCE_ENERGY))
+        // console.log()
         if(closestHostile) {
+            tower.room.memory.war_flag = true
             console.log(Game.time + ' 发现敌军 ' + closestHostile.pos.x + " " + closestHostile.pos.y + closestHostile.owner)
             tower.attack(closestHostile);
             if(tower1) {
@@ -73,31 +77,32 @@ export const loop = errorMapper(() => {
             }
         }
         else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower.store.getCapacity(RESOURCE_ENERGY)){
-            var ramparts = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < 1000  && structure.structureType == STRUCTURE_RAMPART
+            var ramparts = tower.room.find(FIND_STRUCTURES, {
+                filter: (structure) => structure.hits < structure.hitsMax  && structure.structureType == STRUCTURE_RAMPART
             });
+            // console.log(ramparts)
             if(ramparts) {
-                console.log('tower repair ramparts 1')
-                tower.repair(ramparts);
+                // console.log('tower repair ramparts 1')
+                tower.repair(ramparts[0]);
                 if(tower1) {
                     if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY))
                     {
-                        tower1.repair(ramparts);
+                        tower1.repair(ramparts[0]);
                     }
                 }
             }
         }
-        else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower.store.getCapacity(RESOURCE_ENERGY) && tower.room.energyAvailable == tower.room.energyCapacityAvailable){
-            var ramparts = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+        else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower.store.getCapacity(RESOURCE_ENERGY)){
+            var ramparts = tower.room.find(FIND_STRUCTURES, {
                 filter: (structure) => structure.hits < structure.hitsMax  && structure.structureType == STRUCTURE_RAMPART
             });
             if(ramparts) {
-                console.log('tower repair ramparts 2')
-                tower.repair(ramparts);
+                // console.log('tower repair ramparts 2')
+                tower.repair(ramparts[0]);
                 if(tower1) {
-                    if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY)  && tower.room.energyAvailable == tower.room.energyCapacityAvailable)
+                    if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY))
                     {
-                        tower1.repair(ramparts);
+                        tower1.repair(ramparts[0]);
                     }
                 }
             }
@@ -106,10 +111,10 @@ export const loop = errorMapper(() => {
                     filter: (structure) => structure.hits < structure.hitsMax  && structure.structureType != STRUCTURE_WALL
                 });
                 if(structures) {
-                    console.log('tower repair structures')
+                    // console.log('tower repair structures')
                     tower.repair(structures);
                     if(tower1) {
-                        if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY)  && tower.room.energyAvailable == tower.room.energyCapacityAvailable)
+                        if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY))
                         {
                             tower1.repair(structures);
                         }

@@ -3250,7 +3250,7 @@ var harvesters0Num = 0;
 var harvesters1Num = 0;
 // var upgradersNum: number = 5;
 var upgradersNum = 2;
-var repairersNum = 2;
+var repairersNum = 0;
 var buildersNum = 3;
 // var soliderNum: number = 10;
 var soliderNum = 2;
@@ -3635,6 +3635,7 @@ const harvester_work = function (creep, roomName) {
 };
 
 const outharvester_work = function (creep, roomName) {
+    creep.say('🔄 Here');
     if (Game.rooms["W48S14"].memory.war_flag) {
         creep.memory.is_working = false;
         creep.moveTo(new RoomPosition(5, 25, roomName), { visualizePathStyle: { stroke: '#00ff0e' } });
@@ -3680,11 +3681,11 @@ const outharvester_work = function (creep, roomName) {
             }
             else {
                 creep.memory.source_idx = 1;
-                // console.log(creep.memory.source_idx)
+                console.log(creep.memory.source_idx);
                 var source = Game.getObjectById(Memory.rooms[creep.room.name].source_ids[creep.memory.source_idx]);
                 var code;
                 code = creep.harvest(source);
-                // console.log(creep.name, ' ', code)
+                console.log(creep.name, ' ', code);
                 var flag = 1;
                 if (code == OK) {
                     flag = 0;
@@ -3722,7 +3723,7 @@ const repairer_work = function (creep, roomName) {
     }
     if (creep.memory.is_working) {
         var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
+            filter: (s) => s.hits < 0.5 * s.hitsMax && s.structureType != STRUCTURE_WALL
             // filter: (s) => s.hits < s.hitsMax
         });
         if (target) {
@@ -3731,7 +3732,18 @@ const repairer_work = function (creep, roomName) {
             }
         }
         else {
-            creep.moveTo(new RoomPosition(21, 33, roomName));
+            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
+                // filter: (s) => s.hits < s.hitsMax
+            });
+            if (target) {
+                if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
+                }
+            }
+            else {
+                creep.moveTo(new RoomPosition(21, 33, roomName));
+            }
         }
     }
     else {
@@ -3900,7 +3912,7 @@ const builder_work = function (creep, roomName) {
                 }
             }
             else {
-                creep.memory.role = 'upgrader';
+                creep.memory.role = 'repairer';
             }
     }
     else {
@@ -4139,19 +4151,21 @@ const active_transfer_work = function (creep, roomName) {
     }
     // console.log(creep.memory.is_working)
     if (creep.memory.is_working) {
-        var targets = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_TOWER &&
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-            }
-        });
-        if (targets.length > 0) {
-            code = creep.transfer(targets[0], RESOURCE_ENERGY);
-            if (code == ERR_NOT_IN_RANGE) {
-                creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-            }
-            else if (code == OK) {
-                creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY);
+        if (creep.room.memory.war_flag || creep.room.energyAvailable > 0.75 * creep.room.energyCapacityAvailable) {
+            var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_TOWER &&
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                }
+            });
+            if (targets.length > 0) {
+                code = creep.transfer(targets[0], RESOURCE_ENERGY);
+                if (code == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+                else if (code == OK) {
+                    creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY);
+                }
             }
         }
         else {
@@ -4172,10 +4186,10 @@ const active_transfer_work = function (creep, roomName) {
                 }
             }
             else {
-                targets = creep.room.find(FIND_STRUCTURES, {
+                var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE) &&
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        return (structure.structureType == STRUCTURE_TOWER &&
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
                     }
                 });
                 if (targets.length > 0) {
@@ -4185,6 +4199,23 @@ const active_transfer_work = function (creep, roomName) {
                     }
                     else if (code == OK) {
                         creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY);
+                    }
+                }
+                else {
+                    targets = creep.room.find(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_STORAGE) &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        }
+                    });
+                    if (targets.length > 0) {
+                        code = creep.transfer(targets[0], RESOURCE_ENERGY);
+                        if (code == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                        }
+                        else if (code == OK) {
+                            creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY);
+                        }
                     }
                 }
             }
@@ -4452,16 +4483,18 @@ const base_transfer_work = function (creep, roomName) {
     }
     // console.log(creep.memory.is_working)
     if (creep.memory.is_working) {
-        var targets = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_TOWER &&
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-            }
-        });
-        if (targets.length > 0) {
-            code = creep.transfer(targets[0], RESOURCE_ENERGY);
-            if (code == ERR_NOT_IN_RANGE) {
-                creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+        if (creep.room.memory.war_flag || creep.room.energyAvailable > 0.75 * creep.room.energyCapacityAvailable) {
+            var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_TOWER &&
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                }
+            });
+            if (targets.length > 0) {
+                code = creep.transfer(targets[0], RESOURCE_ENERGY);
+                if (code == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
             }
         }
         else {
@@ -4478,7 +4511,21 @@ const base_transfer_work = function (creep, roomName) {
                 }
             }
             else {
-                creep.moveTo(new RoomPosition(27, 24, roomName));
+                var targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_TOWER &&
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                    }
+                });
+                if (targets.length > 0) {
+                    code = creep.transfer(targets[0], RESOURCE_ENERGY);
+                    if (code == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                    }
+                }
+                else {
+                    creep.moveTo(new RoomPosition(27, 24, roomName));
+                }
             }
         }
     }
@@ -4748,7 +4795,11 @@ const loop = errorMapper(() => {
     }
     if (tower) {
         var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        // console.log(tower.store.getUsedCapacity(RESOURCE_ENERGY))
+        // console.log(0.75*tower.store.getCapacity(RESOURCE_ENERGY))
+        // console.log()
         if (closestHostile) {
+            tower.room.memory.war_flag = true;
             console.log(Game.time + ' 发现敌军 ' + closestHostile.pos.x + " " + closestHostile.pos.y + closestHostile.owner);
             tower.attack(closestHostile);
             if (tower1) {
@@ -4758,29 +4809,30 @@ const loop = errorMapper(() => {
             }
         }
         else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower.store.getCapacity(RESOURCE_ENERGY)) {
-            var ramparts = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < 1000 && structure.structureType == STRUCTURE_RAMPART
+            var ramparts = tower.room.find(FIND_STRUCTURES, {
+                filter: (structure) => structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_RAMPART
             });
+            // console.log(ramparts)
             if (ramparts) {
-                console.log('tower repair ramparts 1');
-                tower.repair(ramparts);
+                // console.log('tower repair ramparts 1')
+                tower.repair(ramparts[0]);
                 if (tower1) {
                     if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
-                        tower1.repair(ramparts);
+                        tower1.repair(ramparts[0]);
                     }
                 }
             }
         }
-        else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower.store.getCapacity(RESOURCE_ENERGY) && tower.room.energyAvailable == tower.room.energyCapacityAvailable) {
-            var ramparts = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+        else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower.store.getCapacity(RESOURCE_ENERGY)) {
+            var ramparts = tower.room.find(FIND_STRUCTURES, {
                 filter: (structure) => structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_RAMPART
             });
             if (ramparts) {
-                console.log('tower repair ramparts 2');
-                tower.repair(ramparts);
+                // console.log('tower repair ramparts 2')
+                tower.repair(ramparts[0]);
                 if (tower1) {
-                    if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY) && tower.room.energyAvailable == tower.room.energyCapacityAvailable) {
-                        tower1.repair(ramparts);
+                    if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
+                        tower1.repair(ramparts[0]);
                     }
                 }
             }
@@ -4789,10 +4841,10 @@ const loop = errorMapper(() => {
                     filter: (structure) => structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_WALL
                 });
                 if (structures) {
-                    console.log('tower repair structures');
+                    // console.log('tower repair structures')
                     tower.repair(structures);
                     if (tower1) {
-                        if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY) && tower.room.energyAvailable == tower.room.energyCapacityAvailable) {
+                        if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
                             tower1.repair(structures);
                         }
                     }

@@ -20,7 +20,7 @@ export const builder_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                creep.memory.role = 'upgrader'
+                creep.memory.role = 'repairer'
             }
     }
     else {
