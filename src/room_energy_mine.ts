@@ -8,6 +8,9 @@ import * as $ from "./超级移动优化"
 
 import { contains, initial } from "lodash"
 import { transfer_work } from "./role/base/transfer";
+import { active_transfer_work } from "./role/base/atcive_transfer";
+import { energy_harvester_no_carry_work } from "./role/base/energy_harvester_no_carry";
+import { harvester_work } from "./role/base/harvester";
 
 var transfer_num: number[] = [2, 1]
 var harvester_num: number[] = [1, 1]
@@ -135,33 +138,17 @@ const room_energy_mine_routine = function(room: Room, spawnName: string){
                                                                 && creep.ticksToLive > 100);
         room.memory.source_transfer_states[i] = active_transfers.length
     }
-    // 判断container是否有变化(老化, 被摧毁, 重建)
+
+    // 判断container是否有变化(老化, 被摧毁, 重建) 待完善
+    for (var i: number = 0; i < sources_num; i++){
+        if (Game.getObjectById(room.memory.source_container_ids[i]) == undefined){
+            
+        }
+    }
+
     for (var i: number = 0; i < sources_num; i++){
         source = Game.getObjectById(room.memory.sources_id[i])
-        if (source == undefined){
-            continue
-        }
         if (room.memory.source_harvester_states[i] < room.memory.source_harvester_num[i]){
-            for (var j: number = 0; j < containers_num; j++){
-                container = Game.getObjectById(room.memory.containers_id[j])
-                if (container == undefined){
-                    continue
-                }
-                // 两个container source距离太近可能会导致bug
-                // judge source是否有container, 只考虑source周围8个格子中最先扫描到的那一个
-                if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 && 
-                (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1){
-                    if (container == undefined){
-                        pos = new RoomPosition(6, 12, 'W47S14')
-                    }
-                    else{
-                        pos = container.pos
-                    }
-                    room.memory.source_container_ids[i] = container.id
-                    break
-                }
-            }
-
             if (!Game.spawns[spawnName].spawning){
                 // 判断是否有container
                 if (room.memory.source_container_ids[i] != undefined && room.energyCapacityAvailable >= 750){
@@ -267,4 +254,14 @@ export const room_energy_mine = function(roomName: string, spawnName?: string){
     }
     room_energy_mine_init(room)
     room_energy_mine_routine(room, spawnName)
+    // 不同role的creep工作
+    for(var name in Game.creeps) {
+        var creep = Game.creeps[name];
+        if (creep.memory.role == 'active_transfer'){
+            active_transfer_work(creep, roomName)
+        }
+        if (creep.memory.role == 'energy_harvester_no_carry'){
+            energy_harvester_no_carry_work(creep, roomName)
+        }
+    }
 }

@@ -48,7 +48,7 @@ export const loop = errorMapper(() => {
     // room_energy_mine("W47S15", spawnName)
 
     // 控制creep的生成
-    spawn_work(roomName)
+    // spawn_work(roomName)
 
     // for (var room_name in Game.rooms){
     //     if (Game.rooms[room_name].controller.my){
@@ -67,61 +67,55 @@ export const loop = errorMapper(() => {
     tower_work(roomName)
 
     // 不同role的creep工作
-    for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
-        if (creep.memory.role == 'active_transfer'){
-            active_transfer_work(creep, roomName)
-        }
-        if (creep.memory.role == 'soldier'){
-            soldier_work(creep, roomName);
-        }
-        if (creep.memory.role == 'carrier'){
-            carrier_work(creep, roomName)
-        }
-        if (creep.memory.role == 'reserver'){
-            reserver_work(creep, roomName)
-        }
-        if(creep.memory.role == 'harvester') {
-            harvester_work(creep, roomName);
-        }
-        if (creep.memory.role == 'outharvester'){
-            outharvester_work(creep, roomName);
-        }
-        if (creep.memory.role == 'transfer'){
-            transfer_work(creep, roomName);
-        }
-        if (creep.memory.role == 'outharvester1'){
-            outharvester1_work(creep, roomName);
-        }
-        if (creep.memory.role == 'transfer1'){
-            transfer1_work(creep, roomName);
-        }
-        if(creep.memory.role == 'upgrader') {
-            upgrader_work(creep, roomName);
-        }
-        if(creep.memory.role == 'builder') {
-            builder_work(creep, roomName);
-        }
-        if(creep.memory.role == 'repairer') {
-            repairer_work(creep, roomName);
-        }
-        if (creep.memory.role == 'cleaner'){
-            cleaner_work(creep, roomName)
-        }
-        if (creep.memory.role == 'energy_harvester_no_carry'){
-            energy_harvester_no_carry_work(creep, roomName)
-        }
-        if (creep.memory.role == 'base_transfer'){
-            base_transfer_work(creep, roomName)
-        }
-        // if (creep.memory.role == 'harder'){
-        //     harder_work(creep, roomName)
-        // }
-        // if (creep.memory.role == 'doctor'){
-        //     doctor_work(creep, roomName)
-        // }
-        // if (creep.memory.role == 'miner'){
-        //     miner_work(creep, roomName)
-        // }
-    }
+    // for(var name in Game.creeps) {
+    //     var creep = Game.creeps[name];
+    //     if (creep.memory.role == 'soldier'){
+    //         soldier_work(creep, roomName);
+    //     }
+    //     if (creep.memory.role == 'carrier'){
+    //         carrier_work(creep, roomName)
+    //     }
+    //     if (creep.memory.role == 'reserver'){
+    //         reserver_work(creep, roomName)
+    //     }
+    //     if(creep.memory.role == 'harvester') {
+    //         harvester_work(creep, roomName);
+    //     }
+    //     if (creep.memory.role == 'outharvester'){
+    //         outharvester_work(creep, roomName);
+    //     }
+    //     if (creep.memory.role == 'transfer'){
+    //         transfer_work(creep, roomName);
+    //     }
+    //     if (creep.memory.role == 'outharvester1'){
+    //         outharvester1_work(creep, roomName);
+    //     }
+    //     if (creep.memory.role == 'transfer1'){
+    //         transfer1_work(creep, roomName);
+    //     }
+    //     if(creep.memory.role == 'upgrader') {
+    //         upgrader_work(creep, roomName);
+    //     }
+    //     if(creep.memory.role == 'builder') {
+    //         builder_work(creep, roomName);
+    //     }
+    //     if(creep.memory.role == 'repairer') {
+    //         repairer_work(creep, roomName);
+    //     }
+    //     if (creep.memory.role == 'cleaner'){
+    //         cleaner_work(creep, roomName)
+    //     }
+    //     if (creep.memory.role == 'base_transfer'){
+    //         base_transfer_work(creep, roomName)
+    //     }
+    //     // if (creep.memory.role == 'harder'){
+    //     //     harder_work(creep, roomName)
+    //     // }
+    //     // if (creep.memory.role == 'doctor'){
+    //     //     doctor_work(creep, roomName)
+    //     // }
+    //     // if (creep.memory.role == 'miner'){
+    //     //     miner_work(creep, roomName)
+    //     // }
+    // }
 })
