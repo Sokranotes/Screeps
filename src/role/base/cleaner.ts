@@ -31,15 +31,16 @@ export const cleaner_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                creep.moveTo(new RoomPosition(0, 37, roomName));    
+                creep.moveTo(new RoomPosition(11, 24, roomName));    
             }
         }
     }
     else{
         var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_TOWER &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                return (structure.structureType == STRUCTURE_EXTENSION ||
+                        structure.structureType == STRUCTURE_SPAWN) &&
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
             }
         });
         if(targets.length > 0) {
@@ -50,8 +51,7 @@ export const cleaner_work = function(creep: Creep, roomName: string){
         else{
             var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION ||
-                            structure.structureType == STRUCTURE_SPAWN) &&
+                    return (structure.structureType == STRUCTURE_STORAGE) &&
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
             });
@@ -63,8 +63,8 @@ export const cleaner_work = function(creep: Creep, roomName: string){
             else{
                 var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE) &&
-                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        return (structure.structureType == STRUCTURE_TOWER &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
                     }
                 });
                 if(targets.length > 0) {

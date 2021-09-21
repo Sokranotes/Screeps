@@ -15,24 +15,7 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
     }
     // console.log(creep.memory.is_working)
     if (creep.memory.is_working){
-        if(creep.room.memory.war_flag ||  creep.room.energyAvailable > 0.75*creep.room.energyCapacityAvailable){
-            var targets = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_TOWER &&
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-                }
-            });
-            if(targets.length > 0) {
-                code = creep.transfer(targets[0], RESOURCE_ENERGY)
-                if(code == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
-                }
-                else if(code == OK){
-                    creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY)
-                }
-            }
-        }
-        else{
+        if (creep.store.getUsedCapacity() > 0){
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
@@ -53,7 +36,7 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
                 var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_TOWER &&
-                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2*structure.store.getCapacity(RESOURCE_ENERGY));
                     }
                 });
                 if(targets.length > 0) {
@@ -69,9 +52,8 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
                     targets = creep.room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
                             return (structure.structureType == STRUCTURE_STORAGE) &&
-                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                         }
-                    
                     });
                     if(targets.length > 0) {
                         code = creep.transfer(targets[0], RESOURCE_ENERGY)

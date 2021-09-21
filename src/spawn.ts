@@ -17,39 +17,40 @@ import * as $ from "./超级移动优化"
 
 import { floor, random } from "lodash";
 
-var harvesters0Num: number = 0;
-var harvesters1Num: number = 0;
+var harvesters0Num: number = 0
+var harvesters1Num: number = 0
+
 // var upgradersNum: number = 5;
-var upgradersNum: number = 2;
+var upgradersNum: number = 1;
 var left_fetcherNum: number = 0;
-var repairersNum: number = 0;
-var buildersNum: number = 3;
+var repairersNum: number = 2;
+var buildersNum: number = 1;
 var minerNum: number = 0;
 
 // var soliderNum: number = 10;
-var soliderNum: number = 2;
+var soliderNum: number = 0;
 
-var transferNum: number = 3;
-var outharvesterNum: number = 1;
-var transfer1Num: number = 4;
-var outharvester1Num: number = 1;
+// var transferNum: number = 3;
+// var outharvesterNum: number = 1;
+// var transfer1Num: number = 4;
+// var outharvester1Num: number = 1;
 
-// var transferNum: number = 0;
-// var outharvesterNum: number = 0;
-// var transfer1Num: number = 0;
-// var outharvester1Num: number = 0;
+var transferNum: number = 0;
+var outharvesterNum: number = 0;
+var transfer1Num: number = 0;
+var outharvester1Num: number = 0;
 
 var minerNum: number = 0;
 var harderNum: number = 0;
 var doctorNum: number = 0;
-var cleanerNum: number = 2;
-var base_transferNum: number = 1;
+var cleanerNum: number = 1;
+var base_transferNum: number = 0;
 
-var carrierNum: number = 1;
-var reserverNum: number = 1;
+// var carrierNum: number = 1;
+// var reserverNum: number = 1;
 
-// var carrierNum: number = 0;
-// var reserverNum: number = 0;
+var carrierNum: number = 0;
+var reserverNum: number = 0;
 
 const body_list: BodyPartConstant[][]= [
     [WORK, WORK, CARRY, MOVE], // 300
@@ -72,13 +73,7 @@ export const spawn_work = function(
     var home: Room = Game.rooms[roomName]
     var energyCapacityAvailable: number = home.energyCapacityAvailable;
     var energyAvailable: number = home.energyAvailable;
-    var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-    var harvesters0 = _.filter(harvesters, ((creep) => creep.memory.source_idx == 0));
-    var harvesters1 = _.filter(harvesters, ((creep) => creep.memory.source_idx == 1));
-
-    var base_transfers = _.filter(Game.creeps, ((creep) => creep.memory.role == 'base_transfer'));
-
-    var war_flag: boolean = true
+    var war_flag: boolean = false
 
     // var closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
     // if (closestHostiles){
@@ -98,12 +93,18 @@ export const spawn_work = function(
             {align: 'left', opacity: 0.8});
     }
     else{
-
         var doctors = _.filter(Game.creeps, (creep) => creep.memory.role == 'doctor');
         var cleaners = _.filter(Game.creeps, (creep) => creep.memory.role == 'cleaner');
         var outharvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'outharvester' && creep.ticksToLive > 200);
         var outharvester1s = _.filter(Game.creeps, (creep) => creep.memory.role == 'outharvester1'  && creep.ticksToLive > 200);
         var energy_harvesters_no_carry = _.filter(Game.creeps, (creep) => creep.memory.role == 'energy_harvester_no_carry');
+
+        var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+        var harvesters0 = _.filter(harvesters, ((creep) => creep.memory.source_idx == 0));
+        var harvesters1 = _.filter(harvesters, ((creep) => creep.memory.source_idx == 1));
+
+        var base_transfers = _.filter(Game.creeps, ((creep) => creep.memory.role == 'base_transfer'));
+
         //Emergency situation
         //else if (harvesters.length == 0){
         if (harvesters.length == 0 && outharvesters.length == 0 && energy_harvesters_no_carry.length == 0){

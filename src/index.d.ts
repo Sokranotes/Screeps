@@ -19,14 +19,21 @@ interface CreepMemory {
 }
 
 interface RoomMemory {
-    source_ids?: Id<Source>[]
-    source_harvester_states?: number[]
-    source_transfer_states?: number[]
-    source_types?: string[]
-    source_transfer_num?: number[]
-    source_container_ids?: Id<StructureContainer>[]
+    // 本房间内所有source的ID, 永远不会改变, 只需要判断undefined
+    sources_num?: number
+    sources_id?: Id<Source>[]
 
-    container_ids?: Id<StructureContainer>[]
+
+    source_harvester_states?: number[]
+    // 对应不同source的harvester的个数，通常为1个
+    // 对于3000能量的源, 只要有一个5WORK组件的creep在工作, 就能够保持最大效率
+
+    source_transfer_states?: number[] // 对应不同source的transfer的个数
+    source_harvester_num?: number[]
+    source_transfer_num?: number[] // 对应不同source, transfer的限制个数
+    source_container_ids?: Id<StructureContainer>[] // 对应下标的source的container的ID
+    containers_id?: Id<StructureContainer>[] // 同一房间内所有container的ID, 避免多次重复扫描查找
+    containers_num?: number
     
     // source_ids_flag?: Id<Source>[]
 

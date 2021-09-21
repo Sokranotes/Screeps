@@ -17,7 +17,7 @@ export const repairer_work = function(creep: Creep, roomName: string){
     }
     if(creep.memory.is_working) {
         var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: (s) => s.hits < 0.5*s.hitsMax && s.structureType != STRUCTURE_WALL
+            filter: (s) => s.hits < 0.5*s.hitsMax && s.structureType == STRUCTURE_CONTAINER
             // filter: (s) => s.hits < s.hitsMax
         });
         if(target) {
@@ -27,7 +27,7 @@ export const repairer_work = function(creep: Creep, roomName: string){
         }
         else{
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
+                filter: (s) => s.hits < 0.5*s.hitsMax && s.structureType != STRUCTURE_WALL
                 // filter: (s) => s.hits < s.hitsMax
             });
             if(target) {
@@ -36,7 +36,18 @@ export const repairer_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                creep.moveTo(new RoomPosition(21, 33, roomName));
+                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
+                    // filter: (s) => s.hits < s.hitsMax
+                });
+                if(target) {
+                    if(creep.repair(target) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+                }
+                else{
+                    creep.moveTo(new RoomPosition(21, 33, roomName));
+                }
             }
         }
     }

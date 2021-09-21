@@ -1,21 +1,21 @@
 // import * as $ from "./../../超级移动优化"
 
 export const harvester_work = function(creep: Creep, roomName: string){
-    creep.say('👋 Here');
+    // creep.say('👋 Here');
     if (creep.room.name == roomName){
         if(creep.store.getFreeCapacity() > 0) {
             // creep.say('🔄 harvest');
             // creep.memory.source_idx = 1 //近的这个，坐标13 29
             // creep.memory.source_idx = 0 //远的， 坐标5， 11
             var source: Source
-            if (creep.room.memory.source_ids == undefined){
+            if (creep.room.memory.sources_id == undefined){
                 var sources = creep.room.find(FIND_SOURCES)
-                Memory.rooms[creep.room.name].source_ids = new Array(sources.length)
+                Memory.rooms[creep.room.name].sources_id = new Array(sources.length)
                 for (var i: number = 0; i < sources.length; i++){
-                    Memory.rooms[creep.room.name].source_ids[i] = sources[i].id;
+                    Memory.rooms[creep.room.name].sources_id[i] = sources[i].id;
                 }
             }
-            source = Game.getObjectById(Memory.rooms[creep.room.name].source_ids[creep.memory.source_idx])
+            source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
             // if (!source){
             //     source = Game.getObjectById(Memory.rooms[roomName].source_ids[1-creep.memory.source_idx])
             // }
@@ -36,9 +36,9 @@ export const harvester_work = function(creep: Creep, roomName: string){
             }
             else if (code == ERR_INVALID_TARGET){
                 var sources = creep.room.find(FIND_SOURCES)
-                Memory.rooms[creep.room.name].source_ids = new Array(sources.length)
+                Memory.rooms[creep.room.name].sources_id = new Array(sources.length)
                 for (var i: number = 0; i < sources.length; i++){
-                    Memory.rooms[creep.room.name].source_ids[i] = sources[i].id;
+                    Memory.rooms[creep.room.name].sources_id[i] = sources[i].id;
                 }
             }
             else if (code == ERR_NOT_OWNER  || code == ERR_NOT_FOUND || code == ERR_TIRED || code == ERR_NO_BODYPART){
@@ -47,11 +47,12 @@ export const harvester_work = function(creep: Creep, roomName: string){
             }
         }
         else {
-            // creep.say('🚧transfer');
+            creep.say('🚧transfer');
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_TOWER &&
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                    return (structure.structureType == STRUCTURE_EXTENSION ||
+                            structure.structureType == STRUCTURE_SPAWN) &&
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
             });
             if(targets.length > 0) {
@@ -60,11 +61,13 @@ export const harvester_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                var targets = creep.room.find(FIND_STRUCTURES, {
+                targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_EXTENSION ||
-                                structure.structureType == STRUCTURE_SPAWN) &&
-                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        return (structure.structureType == STRUCTURE_STORAGE) &&
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        // return (structure.structureType == STRUCTURE_STORAGE ||
+                        //         structure.structureType == STRUCTURE_CONTAINER) &&
+                        //         structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                     }
                 });
                 if(targets.length > 0) {
@@ -73,13 +76,10 @@ export const harvester_work = function(creep: Creep, roomName: string){
                     }
                 }
                 else{
-                    targets = creep.room.find(FIND_STRUCTURES, {
+                    var targets = creep.room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
-                            return (structure.structureType == STRUCTURE_STORAGE) &&
-                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                            // return (structure.structureType == STRUCTURE_STORAGE ||
-                            //         structure.structureType == STRUCTURE_CONTAINER) &&
-                            //         structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                            return (structure.structureType == STRUCTURE_TOWER &&
+                                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
                         }
                     });
                     if(targets.length > 0) {

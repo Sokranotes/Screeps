@@ -50,7 +50,7 @@ export const outharvester_work = function(creep: Creep, roomName: string){
             else {
                 creep.memory.source_idx = 1
                 console.log(creep.memory.source_idx)
-                var source: Source = Game.getObjectById(Memory.rooms[creep.room.name].source_ids[creep.memory.source_idx])
+                var source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
                 var code:number
                 code = creep.harvest(source)
                 console.log(creep.name, ' ', code)

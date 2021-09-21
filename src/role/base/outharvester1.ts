@@ -35,10 +35,10 @@ export const outharvester1_work = function(creep: Creep, roomName: string){
                     creep.memory.is_working = false
                 }
                 var source: Source
-                if (creep.room.memory.source_ids == undefined){
+                if (creep.room.memory.sources_id == undefined){
                     var sources = creep.room.find(FIND_SOURCES)
-                    Memory.rooms[creep.room.name].source_ids[0] = sources[0].id;
-                    Memory.rooms[creep.room.name].source_ids[1] = sources[1].id;
+                    Memory.rooms[creep.room.name].sources_id[0] = sources[0].id;
+                    Memory.rooms[creep.room.name].sources_id[1] = sources[1].id;
                 }
             }
             // console.log(creep.store.getCapacity())
@@ -52,7 +52,7 @@ export const outharvester1_work = function(creep: Creep, roomName: string){
                 });
                 creep.transfer(transfer_creep, RESOURCE_ENERGY)
             }
-            if(creep.memory.is_working == true && creep.pos.x > 47) {
+            if(creep.memory.is_working == true) {
                 creep.moveTo(new RoomPosition(12, 30, 'W48S14'), {visualizePathStyle: {stroke: '#00ff0e'}})
                 if (creep.pos.x <= 14){
                     creep.memory.is_working = false
@@ -61,7 +61,7 @@ export const outharvester1_work = function(creep: Creep, roomName: string){
             else {
                 creep.memory.source_idx = 0
                 // console.log(creep.memory.source_idx)
-                source = Game.getObjectById(Memory.rooms[creep.room.name].source_ids[creep.memory.source_idx])
+                source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
                 var code:number
                 code = creep.harvest(source)
                 // console.log(creep.name, ' ', code)
