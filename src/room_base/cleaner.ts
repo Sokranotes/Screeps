@@ -1,4 +1,4 @@
-import * as $ from "./../../超级移动优化"
+import * as $ from "../modules/超级移动优化"
 
 export const cleaner_work = function(creep: Creep, roomName: string){
     // creep.say('🔄 Here');
@@ -31,7 +31,19 @@ export const cleaner_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                creep.moveTo(new RoomPosition(11, 24, roomName));    
+                var ruin = creep.pos.findClosestByRange(FIND_RUINS, {
+                    filter: (structure) => {
+                        return (structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
+                    }
+                });
+                if (ruin != null){
+                    if (creep.withdraw(ruin, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
+                        creep.moveTo(ruin, {visualizePathStyle: {stroke: '#ffff00'}})
+                    }
+                }
+                else{
+                    creep.moveTo(new RoomPosition(13, 24, roomName));
+                }
             }
         }
     }

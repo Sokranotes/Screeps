@@ -1,4 +1,4 @@
-import * as $ from "./../../超级移动优化"
+import * as $ from "../../modules/超级移动优化"
 
 export const doctor_work = function(creep: Creep, roomName: string){
 

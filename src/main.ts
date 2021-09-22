@@ -1,31 +1,31 @@
 // 引入外部依赖
 import { errorMapper } from './modules/errorMapper'
-import * as $ from "./超级移动优化"
+import * as $ from "./modules/超级移动优化"
 import { spawn_work } from './spawn';
 
 // role for base
 import { harvester_work } from './role/base/harvester';
 import { outharvester_work } from './role/base/outharvester';
-import { repairer_work } from './role/base/repairer';
+import { repairer_work } from './room_base/repairer';
 import { transfer_work } from './role/base/transfer';
-import { upgrader_work } from './role/base/upgrader';
-import { builder_work } from './role/base/builder';
+import { upgrader_work } from './room_base/upgrader';
+import { builder_work } from './room_base/builder';
 
 // role for war
 import { doctor_work } from './role/war/doctor';
 import { harder_work } from './role/war/harder';
 import { soldier_work } from './role/war/soldier';
-import { cleaner_work } from './role/base/cleaner';
-import { active_transfer_work } from './role/base/atcive_transfer';
-import { energy_harvester_no_carry_work } from './role/base/energy_harvester_no_carry';
-import { room_energy_mine } from './room_energy_mine';
+import { cleaner_work } from './room_base/cleaner';
+import { active_transfer_work } from './room_base/atcive_transfer';
+import { energy_harvester_no_carry_work } from './room_base/energy_harvester_no_carry';
+import { room_energy_mine } from './room_base/room_energy_mine';
 import { base_transfer_work } from './role/base/base_transfer';
 import { outharvester1_work } from './role/base/outharvester1';
 import { transfer1_work } from './role/base/transfer1';
 import { carrier_work } from './role/base/carrier';
 import { reserver_work } from './role/base/reserver';
-import { room_base_running } from './role/base/room_base_running';
-import { tower_work } from './role/base/tower';
+import { room_base_running } from './room_base/room_base_running';
+import { tower_work } from './room_base/tower';
 
 // import { cleaner_work } from './role/cleaner';
 // import { miner_work } from './role/miner';
@@ -42,13 +42,22 @@ export const loop = errorMapper(() => {
         }
     }
 
-    // 房间能量采集工作
-    var spawnName: string = 'Spawn1'
-    room_energy_mine(roomName, spawnName)
+    room_base_running(roomName)
+
+    if (Game.spawns['Spawn1'].spawning){
+        var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
+        Game.spawns['Spawn1'].room.visual.text(
+            '🛠️' + spawningCreep.memory.role,
+            Game.spawns['Spawn1'].pos.x + 1, 
+            Game.spawns['Spawn1'].pos.y, 
+            {align: 'left', opacity: 0.8});
+    }
     // room_energy_mine("W47S15", spawnName)
 
     // 控制creep的生成
     // spawn_work(roomName)
+
+    tower_work(roomName)
 
     // for (var room_name in Game.rooms){
     //     if (Game.rooms[room_name].controller.my){
@@ -63,8 +72,6 @@ export const loop = errorMapper(() => {
     //         }
     //     }
     // }
-
-    tower_work(roomName)
 
     // 不同role的creep工作
     // for(var name in Game.creeps) {

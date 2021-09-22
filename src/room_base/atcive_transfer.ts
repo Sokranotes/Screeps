@@ -1,8 +1,19 @@
-import * as $ from "./../../超级移动优化"
+import * as $ from "../modules/超级移动优化"
 
 var code:number
-export const active_transfer_work = function(creep: Creep, roomName: string){
+export const active_transfer_work = function(creep: Creep){
     // creep.say('👋 active transfer');
+    var source_room: Room = Game.rooms[creep.memory.source_roomName]
+    var dest_room: Room = Game.rooms[creep.memory.dest_roomName]
+    // room空值检查
+    if (source_room == undefined){
+        console.log(Game.time, " ", creep.memory.source_roomName, ' undefined')
+        return
+    }
+    if (dest_room == undefined){
+        console.log(Game.time, " ", creep.memory.dest_roomName, ' undefined')
+        return
+    }
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         // 如果在transfer状态，且没有能量了，那么退出transfer状态
         creep.memory.is_working = false;
@@ -16,7 +27,7 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
     // console.log(creep.memory.is_working)
     if (creep.memory.is_working){
         if (creep.store.getUsedCapacity() > 0){
-            var targets = creep.room.find(FIND_STRUCTURES, {
+            var targets = dest_room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                             structure.structureType == STRUCTURE_SPAWN) &&
@@ -29,11 +40,11 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
                 }
                 else if(code == OK){
-                    creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY)
+                    source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
                 }
             }
             else{
-                var targets = creep.room.find(FIND_STRUCTURES, {
+                var targets = source_room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_TOWER &&
                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2*structure.store.getCapacity(RESOURCE_ENERGY));
@@ -45,11 +56,11 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
                         creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
                     }
                     else if(code == OK){
-                        creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY)
+                        source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
                     }
                 }
                 else{
-                    targets = creep.room.find(FIND_STRUCTURES, {
+                    targets = source_room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
                             return (structure.structureType == STRUCTURE_STORAGE) &&
                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
@@ -61,7 +72,7 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
                             creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
                         }
                         else if(code == OK){
-                            creep.room.memory.source_gets[creep.memory.source_container_idx] = creep.room.memory.source_gets[creep.memory.source_container_idx] + creep.store.getCapacity(RESOURCE_ENERGY)
+                            source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
                         }
                     }
                 }
@@ -69,8 +80,8 @@ export const active_transfer_work = function(creep: Creep, roomName: string){
         }
     }
     else{
-        var container: StructureContainer = Game.getObjectById(creep.room.memory.source_container_ids[creep.memory.source_container_idx])
-        var code: number =  creep.withdraw(container, RESOURCE_ENERGY)
+        var container: StructureContainer = Game.getObjectById(source_room.memory.source_container_ids[creep.memory.source_container_idx])
+        code =  creep.withdraw(container, RESOURCE_ENERGY)
         if(code == ERR_NOT_IN_RANGE) {
             creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}});
         }

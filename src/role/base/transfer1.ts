@@ -1,4 +1,4 @@
-import * as $ from "./../../超级移动优化"
+import * as $ from "../../modules/超级移动优化"
 
 export const transfer1_work = function(creep: Creep, roomName: string){
     if (Game.rooms["W48S14"].memory.war_flag){

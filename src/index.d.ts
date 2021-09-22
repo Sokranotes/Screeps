@@ -5,6 +5,9 @@ interface CreepMemory {
     role: string
     is_working?: boolean // 工作中，区别于需要去取能量的状态
 
+    source_roomName?: string
+    dest_roomName?: string
+
     source_idx?: number // harvester.ts 存采集的source对应id的下标
     source_container_idx?: number
     container_pos?: RoomPosition // 固定点取能量的creep的固定点，即container位置
@@ -34,6 +37,8 @@ interface RoomMemory {
     source_container_ids?: Id<StructureContainer>[] // 对应下标的source的container的ID
     containers_id?: Id<StructureContainer>[] // 同一房间内所有container的ID, 避免多次重复扫描查找
     containers_num?: number
+    check_containers_state?: boolean
+    energy_mine_chain_ok?: boolean
     
     // source_ids_flag?: Id<Source>[]
 
