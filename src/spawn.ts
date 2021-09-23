@@ -13,9 +13,6 @@
 //     [750, 6, 4, 1],
 //     [800, 7, 4, 1],
 // ];
-import * as $ from "./modules/超级移动优化"
-
-import { floor, random } from "lodash";
 
 var harvesters0Num: number = 0
 var harvesters1Num: number = 0

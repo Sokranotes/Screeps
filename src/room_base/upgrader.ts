@@ -1,5 +1,3 @@
-import * as $ from "../modules/超级移动优化"
-
 export const upgrader_work = function(creep: Creep, roomName: string){
     // creep.say('🔄 Here');
     // 如果在升级且没能量了，那退出升级状态

@@ -3764,7 +3764,7 @@ const cleaner_work = function (creep, roomName) {
                     }
                 }
                 else {
-                    creep.moveTo(new RoomPosition(13, 24, roomName));
+                    creep.moveTo(new RoomPosition(11, 28, roomName));
                 }
             }
         }
@@ -3811,9 +3811,6 @@ const cleaner_work = function (creep, roomName) {
     }
 };
 
-// 需要用到的
-// creep.memory.source_idx
-// creep.memory.container_pos
 const energy_harvester_no_carry_work = function (creep) {
     // creep.say('👋 Here');
     // console.log(creep.name)
@@ -4305,8 +4302,6 @@ const tower_work = function (roomName) {
 };
 
 // 引入外部依赖
-// import { cleaner_work } from './role/cleaner';
-// import { miner_work } from './role/miner';
 var roomName = 'W47S14';
 const loop = errorMapper(() => {
     // 清楚死亡的creep的内存，对于一些未完成的操作也可以在此时检查

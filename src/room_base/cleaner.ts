@@ -42,7 +42,7 @@ export const cleaner_work = function(creep: Creep, roomName: string){
                     }
                 }
                 else{
-                    creep.moveTo(new RoomPosition(13, 24, roomName));
+                    creep.moveTo(new RoomPosition(11, 28, roomName));
                 }
             }
         }

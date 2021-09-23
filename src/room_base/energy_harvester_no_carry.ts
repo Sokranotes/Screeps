@@ -1,7 +1,3 @@
-// 需要用到的
-// creep.memory.source_idx
-// creep.memory.container_pos
-
 import * as $ from "../modules/超级移动优化"
 
 export const energy_harvester_no_carry_work = function(creep: Creep){

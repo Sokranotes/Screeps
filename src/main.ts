@@ -1,34 +1,7 @@
 // 引入外部依赖
 import { errorMapper } from './modules/errorMapper'
-import * as $ from "./modules/超级移动优化"
-import { spawn_work } from './spawn';
-
-// role for base
-import { harvester_work } from './role/base/harvester';
-import { outharvester_work } from './role/base/outharvester';
-import { repairer_work } from './room_base/repairer';
-import { transfer_work } from './role/base/transfer';
-import { upgrader_work } from './room_base/upgrader';
-import { builder_work } from './room_base/builder';
-
-// role for war
-import { doctor_work } from './role/war/doctor';
-import { harder_work } from './role/war/harder';
-import { soldier_work } from './role/war/soldier';
-import { cleaner_work } from './room_base/cleaner';
-import { active_transfer_work } from './room_base/atcive_transfer';
-import { energy_harvester_no_carry_work } from './room_base/energy_harvester_no_carry';
-import { room_energy_mine } from './room_base/room_energy_mine';
-import { base_transfer_work } from './role/base/base_transfer';
-import { outharvester1_work } from './role/base/outharvester1';
-import { transfer1_work } from './role/base/transfer1';
-import { carrier_work } from './role/base/carrier';
-import { reserver_work } from './role/base/reserver';
 import { room_base_running } from './room_base/room_base_running';
 import { tower_work } from './room_base/tower';
-
-// import { cleaner_work } from './role/cleaner';
-// import { miner_work } from './role/miner';
 
 var roomName: string = 'W47S14'
 

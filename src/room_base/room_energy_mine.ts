@@ -1,13 +1,3 @@
-import * as $ from "../modules/超级移动优化"
-
-import { contains, initial } from "lodash"
-import { transfer_work } from "../role/base/transfer";
-import { active_transfer_work } from "./atcive_transfer";
-import { energy_harvester_no_carry_work } from "./energy_harvester_no_carry";
-import { harvester_work } from "../role/base/harvester";
-import { energy_harvester_with_carry_work } from "./energy_harvester_with_carry";
-import { passive_transfer_work } from "./passive_transfer";
-
 const room_energy_mine_init = function(source_room: Room){
     /* 如果没开启自动挖矿, 则进行初始化操作
     初始化的值有:
