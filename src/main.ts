@@ -1,7 +1,6 @@
 // 引入外部依赖
 import { errorMapper } from './modules/errorMapper'
 import { room_base_running } from './room_base/room_base_running';
-import { tower_work } from './room_base/tower';
 
 var roomName: string = 'W47S14'
 
@@ -29,8 +28,6 @@ export const loop = errorMapper(() => {
 
     // 控制creep的生成
     // spawn_work(roomName)
-
-    tower_work(roomName)
 
     // for (var room_name in Game.rooms){
     //     if (Game.rooms[room_name].controller.my){

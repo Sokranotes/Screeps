@@ -8,9 +8,6 @@ export const tower_work = function(roomName: string){
     }
     if(tower) {
         var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        // console.log(tower.store.getUsedCapacity(RESOURCE_ENERGY))
-        // console.log(0.75*tower.store.getCapacity(RESOURCE_ENERGY))
-        // console.log()
         if(closestHostile) {
             tower.room.memory.war_flag = true
             console.log(Game.time + ' 发现敌军 ' + closestHostile.pos.x + " " + closestHostile.pos.y + closestHostile.owner)

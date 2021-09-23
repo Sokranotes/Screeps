@@ -4055,6 +4055,101 @@ const repairer_work = function (creep, roomName) {
     }
 };
 
+const tower_work = function (roomName) {
+    // Tower防御及safe mode的激活
+    var tower = Game.getObjectById('613e1e2c2acf7910898bae98');
+    var tower1 = Game.getObjectById('6144e55dfd720ff16b30cffa');
+    if (tower.hits <= 0.5 * tower.hitsMax || Game.spawns['Spawn1'].hits <= 0.5 * Game.spawns['Spawn1'].hitsMax) {
+        Game.rooms[roomName].controller.activateSafeMode();
+    }
+    if (tower) {
+        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        // console.log(tower.store.getUsedCapacity(RESOURCE_ENERGY))
+        // console.log(0.75*tower.store.getCapacity(RESOURCE_ENERGY))
+        // console.log()
+        if (closestHostile) {
+            tower.room.memory.war_flag = true;
+            console.log(Game.time + ' 发现敌军 ' + closestHostile.pos.x + " " + closestHostile.pos.y + closestHostile.owner);
+            tower.attack(closestHostile);
+            if (tower1) {
+                if (closestHostile) {
+                    tower1.attack(closestHostile);
+                }
+            }
+        }
+        else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower.store.getCapacity(RESOURCE_ENERGY)) {
+            var ramparts = tower.room.find(FIND_STRUCTURES, {
+                filter: (structure) => structure.hits < 100000 && structure.structureType == STRUCTURE_RAMPART
+            });
+            if (ramparts) {
+                // console.log('tower repair ramparts 2')
+                tower.repair(ramparts[0]);
+                if (tower1) {
+                    if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
+                        tower1.repair(ramparts[0]);
+                    }
+                }
+            }
+            else {
+                var structures = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (structure) => structure.hits < structure.hitsMax
+                        && structure.structureType == STRUCTURE_CONTAINER
+                });
+                if (structures) {
+                    tower.repair(structures);
+                    if (tower1) {
+                        if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
+                            tower1.repair(structures);
+                        }
+                    }
+                }
+                else {
+                    var structures = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                        filter: (structure) => structure.hits < structure.hitsMax
+                            && structure.structureType != STRUCTURE_WALL
+                            && structure.structureType != STRUCTURE_RAMPART
+                    });
+                    if (structures) {
+                        tower.repair(structures);
+                        if (tower1) {
+                            if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
+                                tower1.repair(structures);
+                            }
+                        }
+                    }
+                }
+                // else{
+                //     var structures = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                //         filter: (structure) => structure.hits < structure.hitsMax  && structure.structureType != STRUCTURE_WALL
+                //     });
+                //     if(structures) {
+                //         // console.log('tower repair structures')
+                //         tower.repair(structures);
+                //         if(tower1) {
+                //             if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY))
+                //             {
+                //                 tower1.repair(structures);
+                //             }
+                //         }
+                //     }
+                // var walls = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                //     filter: (structure) => structure.hits < structure.hitsMax  && structure.structureType == STRUCTURE_WALL
+                // });
+                // if(walls) {
+                //     tower.repair(walls);
+                //     if(tower1) {
+                //         if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY)  && tower.room.energyAvailable == tower.room.energyCapacityAvailable)
+                //         {
+                //             tower1.repair(walls);
+                //         }
+                //     }
+                // }
+                // }
+            }
+        }
+    }
+};
+
 const upgrader_work = function (creep, roomName) {
     // creep.say('🔄 Here');
     // 如果在升级且没能量了，那退出升级状态
@@ -4102,11 +4197,17 @@ const body_list = [
     [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], // 800
 ];
 const room_base_running = function (roomName) {
+    // 状态显示
+    if (Game.spawns['Spawn1'].spawning) {
+        var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
+        Game.spawns['Spawn1'].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns['Spawn1'].pos.x + 1, Game.spawns['Spawn1'].pos.y, { align: 'left', opacity: 0.8 });
+    }
     // 房间能量采集工作
     var spawnName = 'Spawn1';
     var transfer_num = [2, 1];
     var harvester_num = [1, 1];
     room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num);
+    tower_work(roomName);
     var room = Game.rooms[roomName];
     var room = Game.rooms[roomName];
     var energyAvailable = room.energyAvailable;
@@ -4206,101 +4307,6 @@ const room_base_running = function (roomName) {
     // }
 };
 
-const tower_work = function (roomName) {
-    // Tower防御及safe mode的激活
-    var tower = Game.getObjectById('613e1e2c2acf7910898bae98');
-    var tower1 = Game.getObjectById('6144e55dfd720ff16b30cffa');
-    if (tower.hits <= 0.5 * tower.hitsMax || Game.spawns['Spawn1'].hits <= 0.5 * Game.spawns['Spawn1'].hitsMax) {
-        Game.rooms[roomName].controller.activateSafeMode();
-    }
-    if (tower) {
-        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        // console.log(tower.store.getUsedCapacity(RESOURCE_ENERGY))
-        // console.log(0.75*tower.store.getCapacity(RESOURCE_ENERGY))
-        // console.log()
-        if (closestHostile) {
-            tower.room.memory.war_flag = true;
-            console.log(Game.time + ' 发现敌军 ' + closestHostile.pos.x + " " + closestHostile.pos.y + closestHostile.owner);
-            tower.attack(closestHostile);
-            if (tower1) {
-                if (closestHostile) {
-                    tower1.attack(closestHostile);
-                }
-            }
-        }
-        else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower.store.getCapacity(RESOURCE_ENERGY)) {
-            var ramparts = tower.room.find(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < 100000 && structure.structureType == STRUCTURE_RAMPART
-            });
-            if (ramparts) {
-                // console.log('tower repair ramparts 2')
-                tower.repair(ramparts[0]);
-                if (tower1) {
-                    if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
-                        tower1.repair(ramparts[0]);
-                    }
-                }
-            }
-            else {
-                var structures = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (structure) => structure.hits < structure.hitsMax
-                        && structure.structureType == STRUCTURE_CONTAINER
-                });
-                if (structures) {
-                    tower.repair(structures);
-                    if (tower1) {
-                        if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
-                            tower1.repair(structures);
-                        }
-                    }
-                }
-                else {
-                    var structures = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                        filter: (structure) => structure.hits < structure.hitsMax
-                            && structure.structureType != STRUCTURE_WALL
-                            && structure.structureType != STRUCTURE_RAMPART
-                    });
-                    if (structures) {
-                        tower.repair(structures);
-                        if (tower1) {
-                            if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75 * tower1.store.getCapacity(RESOURCE_ENERGY)) {
-                                tower1.repair(structures);
-                            }
-                        }
-                    }
-                }
-                // else{
-                //     var structures = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                //         filter: (structure) => structure.hits < structure.hitsMax  && structure.structureType != STRUCTURE_WALL
-                //     });
-                //     if(structures) {
-                //         // console.log('tower repair structures')
-                //         tower.repair(structures);
-                //         if(tower1) {
-                //             if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY))
-                //             {
-                //                 tower1.repair(structures);
-                //             }
-                //         }
-                //     }
-                // var walls = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                //     filter: (structure) => structure.hits < structure.hitsMax  && structure.structureType == STRUCTURE_WALL
-                // });
-                // if(walls) {
-                //     tower.repair(walls);
-                //     if(tower1) {
-                //         if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY)  && tower.room.energyAvailable == tower.room.energyCapacityAvailable)
-                //         {
-                //             tower1.repair(walls);
-                //         }
-                //     }
-                // }
-                // }
-            }
-        }
-    }
-};
-
 // 引入外部依赖
 var roomName = 'W47S14';
 const loop = errorMapper(() => {
@@ -4319,7 +4325,6 @@ const loop = errorMapper(() => {
     // room_energy_mine("W47S15", spawnName)
     // 控制creep的生成
     // spawn_work(roomName)
-    tower_work(roomName);
     // for (var room_name in Game.rooms){
     //     if (Game.rooms[room_name].controller.my){
     //         room_base_running(roomName)
