@@ -35,7 +35,7 @@ export const room_base_running = function(roomName: string){
     var room: Room = Game.rooms[roomName]
     var energyAvailable: number = room.energyAvailable;
 
-    var upgradersNum: number = 1;
+    var upgradersNum: number = 3;
     var repairersNum: number = 1;
     var buildersNum: number = 1;
     var cleanerNum: number = 1;

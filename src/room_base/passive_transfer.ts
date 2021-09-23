@@ -91,5 +91,17 @@ export const passive_transfer_work = function(creep: Creep){
         if (farm_creeps.length > 0){
             creep.moveTo(farm_creeps[0], {visualizePathStyle: {stroke: '#008cff'}})
         }
+        else{
+            farm_creeps = source_room.find(FIND_MY_CREEPS, {
+                filter: (cre) => {
+                    return (cre.memory.role == 'energy_harvester_no_carry' &&
+                            cre.memory.source_container_idx == creep.memory.source_idx &&
+                        cre.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
+                }
+            });
+            if (farm_creeps.length > 0){
+                creep.memory.role = 'cleaner'
+            }
+        }
     }
 }

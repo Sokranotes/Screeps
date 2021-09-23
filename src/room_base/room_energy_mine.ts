@@ -174,6 +174,7 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
 
     // 是否新增container或原有的对应source的container有变化
     for (var i: number = 0; i < sources_num; i++){
+        source = Game.getObjectById(source_room.memory.sources_id[i])
         // source旁原来没有container现在是否新建了
         if (source_room.memory.source_container_ids[i] == undefined){
             for (var j: number = 0; j < containers_num; j++){
