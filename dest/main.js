@@ -3492,21 +3492,21 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                     if (source.energyCapacity == 3000) {
                         if (source_room.memory.energy_mine_chain_ok) {
                             if (energyCapacity >= 650) {
-                                if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos: container.pos } }) == OK) {
+                                if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                                     source_room.memory.source_harvester_states[i] += 1;
                                     source_room.memory.source_costs[i] += 650;
                                     break;
                                 }
                             }
                             else if (energyCapacity >= 400) {
-                                if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, MOVE, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos: container.pos } }) == OK) {
+                                if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, MOVE, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                                     source_room.memory.source_harvester_states[i] += 1;
                                     source_room.memory.source_costs[i] += 400;
                                     break;
                                 }
                             }
                         }
-                        else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos: container.pos } }) == OK) {
+                        else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                             source_room.memory.source_harvester_states[i] += 1;
                             source_room.memory.source_costs[i] += 250;
                             break;
@@ -3515,14 +3515,14 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                     else if (source.energyCapacity == 1500) {
                         if (source_room.memory.energy_mine_chain_ok) {
                             if (energyCapacity >= 450) {
-                                if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, MOVE, MOVE, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos: container.pos } }) == OK) {
+                                if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, MOVE, MOVE, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                                     source_room.memory.source_harvester_states[i] += 1;
                                     source_room.memory.source_costs[i] += 450;
                                     break;
                                 }
                             }
                         }
-                        else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos: container.pos } }) == OK) {
+                        else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                             source_room.memory.source_harvester_states[i] += 1;
                             source_room.memory.source_costs[i] += 300;
                             break;
@@ -4215,10 +4215,10 @@ const room_base_running = function (roomName) {
     tower_work(roomName);
     var room = Game.rooms[roomName];
     var energyAvailable = room.energyAvailable;
-    var upgradersNum = 3;
-    var repairersNum = 1;
-    var buildersNum = 1;
-    var cleanerNum = 1;
+    var upgradersNum = 1;
+    var repairersNum = 0;
+    var buildersNum = 0;
+    var cleanerNum = 0;
     var cleaners = _.filter(Game.creeps, (creep) => creep.memory.role == 'cleaner');
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');

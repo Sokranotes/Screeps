@@ -35,10 +35,10 @@ export const room_base_running = function(roomName: string){
     var room: Room = Game.rooms[roomName]
     var energyAvailable: number = room.energyAvailable;
 
-    var upgradersNum: number = 3;
-    var repairersNum: number = 1;
-    var buildersNum: number = 1;
-    var cleanerNum: number = 1;
+    var upgradersNum: number = 1;
+    var repairersNum: number = 0;
+    var buildersNum: number = 0;
+    var cleanerNum: number = 0;
 
     var cleaners = _.filter(Game.creeps, (creep) => creep.memory.role == 'cleaner');
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
