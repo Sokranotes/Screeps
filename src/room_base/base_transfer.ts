@@ -1,4 +1,4 @@
-import * as $ from "../../modules/超级移动优化"
+import * as $ from "../modules/超级移动优化"
 
 
 var code:number
@@ -56,8 +56,23 @@ export const base_transfer_work = function(creep: Creep, roomName: string){
                         creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
                     }
                 }
+                else{
+                    var targets = creep.room.find(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_STORAGE) &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                        }
+                    });
+                    if(targets.length > 0) {
+                        code = creep.transfer(targets[0], RESOURCE_ENERGY)
+                        if(code == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                        }
+                    }
+                    creep.memory.role = 'cleaner'
+                }
             }
-        }   
+        }
     }
     else{
         targets = creep.room.find(FIND_STRUCTURES, {
@@ -65,15 +80,11 @@ export const base_transfer_work = function(creep: Creep, roomName: string){
                 return (structure.structureType == STRUCTURE_STORAGE) &&
                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
             }
-        
         });
         if(targets.length > 0) {
             if(creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
             }
-        }
-        else{
-            creep.moveTo(new RoomPosition(27, 24, roomName));
         }
     }
 }

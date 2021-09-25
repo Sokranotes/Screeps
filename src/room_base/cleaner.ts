@@ -42,7 +42,12 @@ export const cleaner_work = function(creep: Creep, roomName: string){
                     }
                 }
                 else{
-                    creep.moveTo(new RoomPosition(11, 28, roomName));
+                    if (creep.pos.x != 25 && creep.pos.y != 23){
+                        creep.moveTo(new RoomPosition(25, 23, roomName))
+                    }
+                    else{
+                        creep.memory.role = 'base_transfer'
+                    }
                 }
             }
         }

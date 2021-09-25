@@ -44,19 +44,50 @@ Builder/Repairer/Upgrader/Harvester需要Worker
 
 ##### 能量流图
 
-![energy flow diagram](energy%20flow%20diagram.png)
+![single room energy flow diagram](single room energy flow diagram.png)
 
-根据能量流图，如果采用挖运分离策略，基本运维功能需要5种Creep
+根据能量流图，采用挖运分离策略，有三种能量采集途径
 
-1. Harvester with carry：采集能源放在身上等passive transfer来运走（教程中由自己运走）
+1. 配备container采集能量
 
-2. Harvester without carry：采集能源直接掉落在地上OR Container
+   creep角色设计
 
-3. active transfer：主动取能源再运输
+   1. harvester without carry：采集能源直接掉落在地上or container
+   2. active transfer：主动取能源再运输
 
-4. passive transfer：被动接受能源再运输
+   要求：
 
-5. Builder/Repair/Upgrader：依赖于WORK
+   1. container一定与source相邻
+   2. active transfer memory存source_container_idx, 从source_containers_id中查找id
+   3. active transfer memory存source_roomName与dest_roomName（本房间不需要）
+   4. 需要及时检查container是否有效
+
+2. 配备link采集能量（效率最高，不需要transfer）
+
+   creep角色设计
+
+   1. harvester link，类似于harvester with carry，但是energy transfer给link，且需要类似于harvester without carry一样到达指定位置
+
+   要求
+
+   1. 只能在自己房间（其他房间不能建link）
+
+3. 不配任何建筑采集能量
+
+   creep角色设计
+
+   1. harvester with carry：采集能源放在身上等passive transfer来运走（教程中由自己运走）
+   2. passive transfer：被动接受能源再运输
+
+   要求：
+
+   1. passive transfer存source_idx，根据source_idx查找对应的harvester
+   2. passive transfer存source_roomName与dest_roomName（本房间不需要）
+
+其他角色
+
+1. builder/repair/upgrader: WORK,CARRY,MOVE组件需要均衡
+2. cleaner
 
 ##### 抽象角色分析设计
 
