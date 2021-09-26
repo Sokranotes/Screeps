@@ -1,4 +1,6 @@
 import { out_room_energy_mine } from "@/out_energy_mine/out_room_energy_mine";
+import { out_soldier_work } from "@/out_energy_mine/out_soldier";
+import { soldier_work } from "@/role/war/soldier";
 import { room_energy_mine } from "@/room_base/room_energy_mine"
 import { active_transfer_work } from "./atcive_transfer";
 import { base_transfer_work } from "./base_transfer";
@@ -151,7 +153,16 @@ export const room_base_running = function(roomName: string){
             cleaner_work(creep, roomName)
         }
 
-        else if (creep.memory.role == 'out_energy_harvester_with_carry')
+        // else if (creep.memory.role == 'out_energy_harvester_with_carry')
+        // {
+        //     out_energy_harvester_with_carry_work(creep)
+        // }
+        // else if (creep.memory.role == 'out_passive_transfer'){
+        //     out_passive_transfer_work(creep)
+        // }
+        // else if (creep.memory.role == 'out_sodiler'){
+        //     out_soldier_work(creep, roomName, 'W48S14')
+        // }
     }
     // switch (room.controller.level){
     //     // case 0:
@@ -182,9 +193,9 @@ export const room_base_running = function(roomName: string){
     //         break
     // }
 
-    spawnName = 'Spawn1'
-    transfer_num = [4, 4]
-    harvester_num = [1, 1]
-    room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
-    out_room_energy_mine('W48S14', roomName, spawnName, harvester_num, transfer_num)
+    // spawnName = 'Spawn1'
+    // transfer_num = [4, 4]
+    // harvester_num = [1, 1]
+    // room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
+    // out_room_energy_mine('W48S14', roomName, spawnName, harvester_num, transfer_num)
 }

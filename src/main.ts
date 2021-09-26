@@ -2,8 +2,6 @@
 import { errorMapper } from './modules/errorMapper'
 import { room_base_running } from './room_base/room_base_running';
 
-var roomName: string = 'W47S14'
-
 export const loop = errorMapper(() => {
 
     // 清楚死亡的creep的内存，对于一些未完成的操作也可以在此时检查
@@ -14,7 +12,11 @@ export const loop = errorMapper(() => {
         }
     }
 
-    room_base_running(roomName)
+    room_base_running('W47S14')
+
+    // var transfer_num: number[] = [4, 1]
+    // var harvester_num: number[] = [1, 1]
+    // out_room_energy_mine('W48S14', 'W47S14', 'Spawn1', harvester_num, transfer_num)
     // room_energy_mine("W47S15", spawnName)
 
     // 控制creep的生成

@@ -1,6 +1,6 @@
 import * as $ from "../../modules/超级移动优化"
 
-export const soldier_work = function(creep: Creep, roomName: string){
+export const soldier_work = function(creep: Creep, homeName: string, destName: string){
     // let exit = creep.pos.findClosestByPath(creep.room.find(FIND_EXIT_LEFT));
     // creep.moveTo(new RoomPosition(6, 31, roomName), {visualizePathStyle: {stroke: '#ffffff'}})
     // creep.moveTo(exit)

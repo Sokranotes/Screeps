@@ -3386,11 +3386,11 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
     var dest_room = Game.rooms[dest_roomName];
     // room空值检查
     if (source_room == undefined) {
-        console.log(Game.time, " ", source_roomName, ' undefined');
+        console.log(Game.time, " ", source_roomName, ' undefined', 'room_energy_mine_routine source_room');
         return;
     }
     if (dest_room == undefined) {
-        console.log(Game.time, " ", dest_roomName, ' undefined');
+        console.log(Game.time, " ", dest_roomName, ' undefined', 'room_energy_mine_routine dest_room');
         return;
     }
     var source;
@@ -3428,8 +3428,7 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
             }
         }
         else {
-            var energy_harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'energy_harvester_link'
-                || creep.memory.role == 'energy_harvester_link')
+            var energy_harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'energy_harvester_link')
                 && creep.memory.source_idx == i
                 && creep.memory.source_roomName == source_roomName
                 && creep.ticksToLive > 100);
@@ -3565,7 +3564,7 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                                     }
                                 }
                             }
-                            else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_with_carry' + Game.time, { memory: { role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName } }) == OK) { // 测试OK
+                            else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_with_carry' + Game.time, { memory: { role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName } }) == OK) {
                                 source_room.memory.source_harvester_states[i] += 1;
                                 source_room.memory.source_costs[i] += 300;
                                 break;
@@ -3634,7 +3633,7 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                 else { // 含有link
                     link = Game.getObjectById(source_room.memory.source_link_ids[i]);
                     if (link_harvester_pos_xs[i] == undefined || link_harvester_pos_ys[i]) {
-                        console.log('link_harvester_pos_xs', 'undefined', 'or', 'link_harvester_pos_ys', 'undefined');
+                        console.log('link_harvester_pos_xs', 'undefined', 'or', 'link_harvester_pos_ys', 'undefined', 'room_energy_mine_routine link_harvester_pos_xs', i);
                     }
                     // 暂时不支持4000的source
                     if (source.energyCapacity == 3000) {
@@ -3697,7 +3696,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                     }
                     else if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'passive_transfer' + Game.time, { memory: { role: 'passive_transfer', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName } }) == OK) {
                         source_room.memory.source_transfer_states[i] += 1;
-                        console.log(source_room.memory.source_transfer_states[i]);
                         source_room.memory.source_costs[i] += 300;
                         break;
                     }
@@ -3732,11 +3730,11 @@ const room_energy_mine = function (source_roomName, dest_roomName, spawnName, ha
     var dest_room = Game.rooms[dest_roomName];
     // room空值检查
     if (source_room == undefined) {
-        console.log(Game.time, " ", source_roomName, ' undefined');
+        console.log(Game.time, " ", source_roomName, ' undefined', 'room_energy_mine source_room');
         return;
     }
     if (dest_room == undefined) {
-        console.log(Game.time, " ", dest_roomName, ' undefined');
+        console.log(Game.time, " ", dest_roomName, ' undefined', 'room_energy_mine dest_room');
         return;
     }
     room_energy_mine_init(source_room);
@@ -4629,6 +4627,16 @@ const room_base_running = function (roomName) {
         else if (creep.memory.role == 'cleaner') {
             cleaner_work(creep, roomName);
         }
+        // else if (creep.memory.role == 'out_energy_harvester_with_carry')
+        // {
+        //     out_energy_harvester_with_carry_work(creep)
+        // }
+        // else if (creep.memory.role == 'out_passive_transfer'){
+        //     out_passive_transfer_work(creep)
+        // }
+        // else if (creep.memory.role == 'out_sodiler'){
+        //     out_soldier_work(creep, roomName, 'W48S14')
+        // }
     }
     // switch (room.controller.level){
     //     // case 0:
@@ -4658,10 +4666,14 @@ const room_base_running = function (roomName) {
     //     case 6:
     //         break
     // }
+    // spawnName = 'Spawn1'
+    // transfer_num = [4, 4]
+    // harvester_num = [1, 1]
+    // room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
+    // out_room_energy_mine('W48S14', roomName, spawnName, harvester_num, transfer_num)
 };
 
 // 引入外部依赖
-var roomName = 'W47S14';
 const loop = errorMapper(() => {
     // 清楚死亡的creep的内存，对于一些未完成的操作也可以在此时检查
     for (var name in Memory.creeps) {
@@ -4670,7 +4682,10 @@ const loop = errorMapper(() => {
             // console.log('Clearing non-existing creep memory:', name);
         }
     }
-    room_base_running(roomName);
+    room_base_running('W47S14');
+    // var transfer_num: number[] = [4, 1]
+    // var harvester_num: number[] = [1, 1]
+    // out_room_energy_mine('W48S14', 'W47S14', 'Spawn1', harvester_num, transfer_num)
     // room_energy_mine("W47S15", spawnName)
     // 控制creep的生成
     // spawn_work(roomName)
