@@ -34,13 +34,13 @@ export const loop = errorMapper(() => {
     room_base_running('W47S14')
 
     var spawnName = 'Spawn1'
-    var transfer_num = [4, 3]
+    var transfer_num = [4, 2]
     var harvester_num = [1, 1]
     out_room_energy_mine('W48S14', 'W47S14', spawnName, harvester_num, transfer_num)
 
     var spawnName = 'Spawn1'
-    var transfer_num = [4, 7]
-    var harvester_num = [1, 2]
+    var transfer_num = [4, 5]
+    var harvester_num = [1, 1]
     out_room_energy_mine('W47S15', 'W47S14', spawnName, harvester_num, transfer_num)
 
 

@@ -38,7 +38,7 @@ export const room_base_running = function(roomName: string){
     var buildersNum: number = 2;
     var cleanerNum: number = 1;
 
-    var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 30);
+    var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 80);
     var cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
 
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');

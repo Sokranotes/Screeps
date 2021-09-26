@@ -416,7 +416,7 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                 }
                 else{ // 含有link
                     link = Game.getObjectById(source_room.memory.source_link_ids[i])
-                    if (link_harvester_pos_xs[i] == undefined || link_harvester_pos_ys[i]){
+                    if (link_harvester_pos_xs[i] == undefined || link_harvester_pos_ys[i] == undefined){
                         console.log('link_harvester_pos_xs', 'undefined', 'or', 'link_harvester_pos_ys', 'undefined', 'room_energy_mine_routine link_harvester_pos_xs', i)
                     }
                     // 暂时不支持4000的source

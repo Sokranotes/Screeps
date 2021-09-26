@@ -135,6 +135,8 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
     // 读取creep个数配置并更新creep个数状态
     for (var i: number = 0; i < sources_num; i++){
         source_room.memory.source_transfer_num[i] = transfer_num[i]
+        // console.log('================')
+        // console.log('num', transfer_num[i])
         source_room.memory.source_harvester_num[i] = harvester_num[i]
         var energy_harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'out_energy_harvester_no_carry' 
                                                                             || creep.memory.role == 'out_energy_harvester_with_carry')
@@ -142,13 +144,13 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                                                             && creep.memory.source_roomName == source_roomName
                                                                             && creep.ticksToLive > 100);
         source_room.memory.source_harvester_states[i] = energy_harvesters.length
-
         var transfers = _.filter(Game.creeps, (creep) => (creep.memory.role == 'out_active_transfer' && creep.memory.source_container_idx == i)
                                                         || (creep.memory.role == 'out_passive_transfer'  && creep.memory.source_idx == i)
                                                                 && creep.memory.source_roomName == source_roomName
                                                                 && creep.memory.dest_roomName == dest_roomName
                                                                 && creep.ticksToLive > 100);
         source_room.memory.source_transfer_states[i] = transfers.length
+        // console.log(transfers.length)
         if (source_room.memory.source_harvester_states[i] >=1 && source_room.memory.source_transfer_states[i] >= 1){
             source_room.memory.energy_mine_chain_ok = true
         }
@@ -393,9 +395,9 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
         return
     }
     var hostiles = source_room.find(FIND_HOSTILE_CREEPS);
-    var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.dest_roomName == source_roomName);
+    var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.source_roomName == source_roomName);
     if(hostiles.length > 0) {
-        if (source_room.memory.room_harvester_energy_total > 90000){
+        if (source_room.memory.room_harvester_energy_total >= 970000){
             source_room.memory.room_harvester_energy_total = 0
         }
         source_room.memory.war_flag = true
@@ -420,7 +422,7 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
         }
     }
     else{
-        if (source_room.memory.room_harvester_energy_total > 970000){
+        if (source_room.memory.room_harvester_energy_total >= 970000){
             if (Game.spawns[spawnName].spawning){
                 var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
                 Game.spawns[spawnName].room.visual.text(
@@ -455,13 +457,14 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
                     {align: 'left', opacity: 0.8});
             }
             else{
-                var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.ticksToLive > 80);
-                if (controller.reservation == undefined && reservers.length < 1){
-                    var newName = 'reserver' + Game.time;
-                    Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, {memory: {role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName}});
+                var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 80);
+                if (controller.reservation == undefined){
+                    if (reservers.length < 1){
+                        var newName = 'reserver' + Game.time;
+                        Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, {memory: {role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName}});
+                    }
                 }
                 else{
-                    
                     if (controller.reservation.ticksToEnd < 4000 && reservers.length < 1){
                         var newName = 'reserver' + Game.time;
                         Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, {memory: {role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName}});

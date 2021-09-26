@@ -3632,7 +3632,7 @@ const room_energy_mine_routine$1 = function (source_roomName, dest_roomName, spa
                 }
                 else { // 含有link
                     link = Game.getObjectById(source_room.memory.source_link_ids[i]);
-                    if (link_harvester_pos_xs[i] == undefined || link_harvester_pos_ys[i]) {
+                    if (link_harvester_pos_xs[i] == undefined || link_harvester_pos_ys[i] == undefined) {
                         console.log('link_harvester_pos_xs', 'undefined', 'or', 'link_harvester_pos_ys', 'undefined', 'room_energy_mine_routine link_harvester_pos_xs', i);
                     }
                     // 暂时不支持4000的source
@@ -3876,7 +3876,7 @@ const room_base_running = function (roomName) {
     var repairersNum = 0;
     var buildersNum = 2;
     var cleanerNum = 1;
-    var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 30);
+    var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 80);
     var cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
@@ -4757,6 +4757,8 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
     // 读取creep个数配置并更新creep个数状态
     for (var i = 0; i < sources_num; i++) {
         source_room.memory.source_transfer_num[i] = transfer_num[i];
+        // console.log('================')
+        // console.log('num', transfer_num[i])
         source_room.memory.source_harvester_num[i] = harvester_num[i];
         var energy_harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'out_energy_harvester_no_carry'
             || creep.memory.role == 'out_energy_harvester_with_carry')
@@ -4770,6 +4772,7 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                 && creep.memory.dest_roomName == dest_roomName
                 && creep.ticksToLive > 100);
         source_room.memory.source_transfer_states[i] = transfers.length;
+        // console.log(transfers.length)
         if (source_room.memory.source_harvester_states[i] >= 1 && source_room.memory.source_transfer_states[i] >= 1) {
             source_room.memory.energy_mine_chain_ok = true;
         }
@@ -4989,9 +4992,9 @@ const out_room_energy_mine = function (source_roomName, dest_roomName, spawnName
         return;
     }
     var hostiles = source_room.find(FIND_HOSTILE_CREEPS);
-    var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.dest_roomName == source_roomName);
+    var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.source_roomName == source_roomName);
     if (hostiles.length > 0) {
-        if (source_room.memory.room_harvester_energy_total > 90000) {
+        if (source_room.memory.room_harvester_energy_total >= 970000) {
             source_room.memory.room_harvester_energy_total = 0;
         }
         source_room.memory.war_flag = true;
@@ -5011,7 +5014,7 @@ const out_room_energy_mine = function (source_roomName, dest_roomName, spawnName
         }
     }
     else {
-        if (source_room.memory.room_harvester_energy_total > 970000) {
+        if (source_room.memory.room_harvester_energy_total >= 970000) {
             if (Game.spawns[spawnName].spawning) {
                 var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
                 Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
@@ -5037,10 +5040,12 @@ const out_room_energy_mine = function (source_roomName, dest_roomName, spawnName
                 Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
             }
             else {
-                var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.ticksToLive > 80);
-                if (controller.reservation == undefined && reservers.length < 1) {
-                    var newName = 'reserver' + Game.time;
-                    Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName } });
+                var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 80);
+                if (controller.reservation == undefined) {
+                    if (reservers.length < 1) {
+                        var newName = 'reserver' + Game.time;
+                        Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName } });
+                    }
                 }
                 else {
                     if (controller.reservation.ticksToEnd < 4000 && reservers.length < 1) {
@@ -5080,7 +5085,7 @@ const out_soldier_work = function (creep) {
                 creep.moveTo(new RoomPosition(26, 21, creep.memory.source_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
             }
             else {
-                creep.moveTo(new RoomPosition(25, 25, creep.memory.source_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+                creep.moveTo(new RoomPosition(25, 22, creep.memory.source_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
             }
         }
     }
@@ -5287,12 +5292,12 @@ const loop = errorMapper(() => {
     }
     room_base_running('W47S14');
     var spawnName = 'Spawn1';
-    var transfer_num = [4, 3];
+    var transfer_num = [4, 2];
     var harvester_num = [1, 1];
     out_room_energy_mine('W48S14', 'W47S14', spawnName, harvester_num, transfer_num);
     var spawnName = 'Spawn1';
-    var transfer_num = [4, 7];
-    var harvester_num = [1, 2];
+    var transfer_num = [4, 5];
+    var harvester_num = [1, 1];
     out_room_energy_mine('W47S15', 'W47S14', spawnName, harvester_num, transfer_num);
     // 不同role的creep工作
     for (var name in Game.creeps) {

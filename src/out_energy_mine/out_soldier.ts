@@ -25,7 +25,7 @@ export const out_soldier_work = function(creep: Creep){
                 creep.moveTo(new RoomPosition(26, 21, creep.memory.source_roomName), {visualizePathStyle: {stroke: '#ff0000'}})
             }
             else{
-                creep.moveTo(new RoomPosition(25, 25, creep.memory.source_roomName), {visualizePathStyle: {stroke: '#ff0000'}})
+                creep.moveTo(new RoomPosition(25, 22, creep.memory.source_roomName), {visualizePathStyle: {stroke: '#ff0000'}})
             }
         }
     }
