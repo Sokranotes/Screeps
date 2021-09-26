@@ -18,7 +18,7 @@ export const tower_work = function(roomName: string){
                 }
             }
         }
-        else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower.store.getCapacity(RESOURCE_ENERGY)){
+        else if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.7*tower.store.getCapacity(RESOURCE_ENERGY) || tower1.store.getUsedCapacity(RESOURCE_ENERGY) < 0.7*tower1.store.getCapacity(RESOURCE_ENERGY))){
             tower.room.memory.war_flag = false
             var ramparts = tower.room.find(FIND_STRUCTURES, {
                 filter: (structure) => structure.hits < 100000  && structure.structureType == STRUCTURE_RAMPART
@@ -58,6 +58,20 @@ export const tower_work = function(roomName: string){
                             if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY))
                             {
                                 tower1.repair(structures[0]);
+                            }
+                        }
+                    }
+                    if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.8*tower.store.getCapacity(RESOURCE_ENERGY) || tower1.store.getUsedCapacity(RESOURCE_ENERGY) < 0.8*tower1.store.getCapacity(RESOURCE_ENERGY))){
+                        var ramparts = tower.room.find(FIND_STRUCTURES, {
+                            filter: (structure) => structure.hits < structure.hitsMax  && structure.structureType == STRUCTURE_RAMPART
+                        });
+                        if(ramparts.length > 0) {
+                            tower.repair(ramparts[0]);
+                            if(tower1) {
+                                if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0.75*tower1.store.getCapacity(RESOURCE_ENERGY))
+                                {
+                                    tower1.repair(ramparts[0]);
+                                }
                             }
                         }
                     }

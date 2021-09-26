@@ -1,6 +1,6 @@
 import * as $ from "../modules/超级移动优化"
 
-export const builder_work = function(creep: Creep, roomName: string){
+export const builder_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
@@ -20,7 +20,7 @@ export const builder_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                creep.memory.role = 'repairer'
+                creep.memory.role = 'upgrader'
             }
     }
     else {

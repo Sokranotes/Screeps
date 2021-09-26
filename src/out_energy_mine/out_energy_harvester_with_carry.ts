@@ -1,9 +1,12 @@
 import * as $ from "../modules/超级移动优化"
 
-export const energy_harvester_with_carry_work = function(creep: Creep){
+export const out_energy_harvester_with_carry_work = function(creep: Creep){
     // creep.say('🔄 Here');
     var source_room: Room = Game.rooms[creep.memory.source_roomName]
-    if (source_room.memory.war_flag == true){
+    if (source_room == undefined){
+        return
+    }
+    if (Game.rooms[creep.memory.source_roomName].memory.war_flag == true){
         creep.memory.is_working = false
         creep.moveTo(new RoomPosition(8, 34, creep.memory.dest_roomName), {visualizePathStyle: {stroke: '#808080'}})
     }
@@ -12,11 +15,12 @@ export const energy_harvester_with_carry_work = function(creep: Creep){
         {
             var transfer_creep = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
                 filter: (cre) => {
-                    return (cre.memory.role == 'passive_transfer' &&
+                    return (cre.memory.role == 'out_passive_transfer' &&
                             cre.memory.source_idx == creep.memory.source_idx && 
                             cre.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
                 }
             });
+            source_room.memory.room_harvester_energy_total += creep.store.getUsedCapacity()
             creep.transfer(transfer_creep, RESOURCE_ENERGY)
         }
         var source_room: Room = Game.rooms[creep.memory.source_roomName]

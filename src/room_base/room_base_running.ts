@@ -1,19 +1,5 @@
-import { out_room_energy_mine } from "@/out_energy_mine/out_room_energy_mine";
-import { out_soldier_work } from "@/out_energy_mine/out_soldier";
-import { soldier_work } from "@/role/war/soldier";
 import { room_energy_mine } from "@/room_base/room_energy_mine"
-import { active_transfer_work } from "./atcive_transfer";
-import { base_transfer_work } from "./base_transfer";
-import { builder_work } from "./builder";
-import { carrier_work } from "./carrier";
-import { cleaner_work } from "./cleaner";
-import { energy_harvester_link_work } from "./energy_harvester_link";
-import { energy_harvester_no_carry_work } from "./energy_harvester_no_carry";
-import { energy_harvester_with_carry_work } from "./energy_harvester_with_carry";
-import { passive_transfer_work } from "./passive_transfer";
-import { repairer_work } from "./repairer";
 import { tower_work } from "./tower";
-import { upgrader_work } from "./upgrader";
 
 const body_list: BodyPartConstant[][]= [
     [WORK, WORK, CARRY, MOVE], // 300
@@ -45,14 +31,14 @@ export const room_base_running = function(roomName: string){
 
     var carriersNum: number = 1;
     
-    var base_transferNum: number = 1;
+    var base_transferNum: number = 3;
 
-    var upgradersNum: number = 1;
+    var upgradersNum: number = 2;
     var repairersNum: number = 0;
     var buildersNum: number = 2;
     var cleanerNum: number = 1;
 
-    var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier');
+    var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 30);
     var cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
 
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
@@ -63,6 +49,12 @@ export const room_base_running = function(roomName: string){
     if (constructions.length == 0)
     {
         buildersNum = 0
+    }
+
+    var tmp: number = (room.storage.store.getUsedCapacity() - 200000) / 100000
+    // tmp带小数点
+    if (tmp > upgradersNum){
+        upgradersNum = tmp
     }
 
     // spawn状态显示
@@ -76,7 +68,7 @@ export const room_base_running = function(roomName: string){
     }
     else if(carriers.length < carriersNum) {
         var newName = 'Carrier' + Game.time;
-        Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier'}});
+        Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier'}});
     }
     else if(cleaners_base_transfers.length < base_transferNum) {
         var newName = 'Base_transfer' + Game.time;
@@ -116,54 +108,6 @@ export const room_base_running = function(roomName: string){
     var source_link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
     source_link.transferEnergy(dest_link);
 
-    // 不同role的creep工作
-    for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
-        if (creep.memory.role == 'energy_harvester_with_carry'){
-            energy_harvester_with_carry_work(creep)
-        }
-        else if (creep.memory.role == 'passive_transfer'){
-            passive_transfer_work(creep)
-        }
-        else if (creep.memory.role == 'energy_harvester_no_carry'){
-            energy_harvester_no_carry_work(creep)
-        }
-        else if (creep.memory.role == 'active_transfer'){
-            active_transfer_work(creep)
-        }
-        else if (creep.memory.role == 'energy_harvester_link'){
-            energy_harvester_link_work(creep)
-        }
-        else if (creep.memory.role == 'carrier'){
-            carrier_work(creep, roomName)
-        }
-        else if (creep.memory.role == 'base_transfer'){
-            base_transfer_work(creep, roomName)
-        }
-        else if(creep.memory.role == 'upgrader') {
-            upgrader_work(creep, roomName);
-        }
-        else if(creep.memory.role == 'repairer') {
-            repairer_work(creep, roomName);
-        }
-        else if(creep.memory.role == 'builder') {
-            builder_work(creep, roomName);
-        }
-        else if (creep.memory.role == 'cleaner'){
-            cleaner_work(creep, roomName)
-        }
-
-        // else if (creep.memory.role == 'out_energy_harvester_with_carry')
-        // {
-        //     out_energy_harvester_with_carry_work(creep)
-        // }
-        // else if (creep.memory.role == 'out_passive_transfer'){
-        //     out_passive_transfer_work(creep)
-        // }
-        // else if (creep.memory.role == 'out_sodiler'){
-        //     out_soldier_work(creep, roomName, 'W48S14')
-        // }
-    }
     // switch (room.controller.level){
     //     // case 0:
     //     //     // claimController即可升级, road 5个container
@@ -192,10 +136,4 @@ export const room_base_running = function(roomName: string){
     //     case 6:
     //         break
     // }
-
-    // spawnName = 'Spawn1'
-    // transfer_num = [4, 4]
-    // harvester_num = [1, 1]
-    // room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
-    // out_room_energy_mine('W48S14', roomName, spawnName, harvester_num, transfer_num)
 }

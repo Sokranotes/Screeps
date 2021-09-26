@@ -7,10 +7,7 @@ export const energy_harvester_link_work = function(creep: Creep){
         console.log(Game.time, " source link id:", creep.room.memory.source_link_ids[creep.memory.source_idx], ' index:', creep.memory.source_idx, ' undefined')
         return
     }
-    if (creep.store.getCapacity() >= 50)
-    {
-        creep.transfer(link, RESOURCE_ENERGY)
-    }
+    creep.transfer(link, RESOURCE_ENERGY)
     var source_room: Room = Game.rooms[creep.memory.source_roomName]
     if (source_room == undefined){
         console.log(Game.time, " ", creep.memory.source_roomName, ' undefined')

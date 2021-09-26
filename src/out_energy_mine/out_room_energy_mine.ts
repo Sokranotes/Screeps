@@ -209,7 +209,15 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
     // 为每个source生成creep
     for (var i: number = 0; i < sources_num; i++){
         // spawn需要在空闲状态
-        if (!Game.spawns[spawnName].spawning){
+        if (Game.spawns[spawnName].spawning){
+            var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+            Game.spawns[spawnName].room.visual.text(
+                '🛠️' + spawningCreep.memory.role,
+                Game.spawns[spawnName].pos.x + 1, 
+                Game.spawns[spawnName].pos.y, 
+                {align: 'left', opacity: 0.8});
+        }
+        else{
             if (source_room.memory.source_harvester_states[i] < source_room.memory.source_harvester_num[i]){
                 source = Game.getObjectById(source_room.memory.sources_id[i])
                 if (source_room.memory.source_container_ids[i] == undefined){ // 没有container
@@ -311,18 +319,18 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
             if (source_room.memory.source_harvester_states[i] != 0 && (source_room.memory.source_transfer_states[i] < source_room.memory.source_transfer_num[i])){
                 if (source_room.memory.source_container_ids[i] == undefined){ // 没有container
                     if (source_room.memory.energy_mine_chain_ok){
-                        if (energyCapacity >= 1050){
-                            if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'out_passive_transfer' + Game.time, 
+                        if (energyCapacity >= 800){
+                            if (Game.spawns[spawnName].spawnCreep([CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE], 'out_passive_transfer' + Game.time, 
                                 {memory: {role: 'out_passive_transfer', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName}}) == OK){
                                     source_room.memory.source_transfer_states[i] += 1
-                                    source_room.memory.source_costs[i] += 600
+                                    source_room.memory.source_costs[i] += 800
                                     break
                                 }
                         }
                     }
-                    else if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'out_passive_transfer' + Game.time, {memory: {role: 'out_passive_transfer', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName}}) == OK){
+                    else if (Game.spawns[spawnName].spawnCreep([CARRY, MOVE, CARRY, MOVE, CARRY, MOVE], 'out_passive_transfer' + Game.time, {memory: {role: 'out_passive_transfer', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName}}) == OK){
                         source_room.memory.source_transfer_states[i] += 1
-                        console.log(source_room.memory.source_transfer_states[i])
+                        // console.log(source_room.memory.source_transfer_states[i])
                         source_room.memory.source_costs[i] += 300
                         break
                     }
@@ -352,6 +360,8 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
 
 export const out_room_energy_mine = function(source_roomName: string, dest_roomName: string, spawnName: string, harvester_num: number[], transfer_num: number[]){
     /*
+    source_roomName: source所在room
+    dest_roomName: 能量运输目的room
     外矿房间能量采集逻辑
     找到能量采集点，并存储在RoomMemory中，如果有Container配合，存储对应的pos
     根据相关配置生成Creep
@@ -360,17 +370,107 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
     var dest_room: Room = Game.rooms[dest_roomName]
     // room空值检查
     if (source_room == undefined){
-        console.log(Game.time, " ", source_roomName, ' undefined')
+        if (Game.spawns[spawnName].spawning){
+            var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+            Game.spawns[spawnName].room.visual.text(
+                '🛠️' + spawningCreep.memory.role,
+                Game.spawns[spawnName].pos.x + 1, 
+                Game.spawns[spawnName].pos.y, 
+                {align: 'left', opacity: 0.8});
+        }
+        else{
+            var scouts = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_scout' && creep.memory.dest_roomName == source_roomName);
+            if (scouts.length < 1){
+                var newName = 'out_Scout' + Game.time;
+                Game.spawns[spawnName].spawnCreep([MOVE], newName, {memory: {role: 'out_scout', source_roomName: dest_roomName, dest_roomName: source_roomName}});
+            }
+        }
+        // console.log(Game.time, " ", source_roomName, ' undefined', 'out_room_energy_mine')
         return
     }
     if (dest_room == undefined){
-        console.log(Game.time, " ", dest_roomName, ' undefined')
+        console.log(Game.time, " ", dest_roomName, ' undefined', 'out_room_energy_mine')
         return
     }
-    if (dest_room.memory.war_flag == true){
-        
+    var hostiles = source_room.find(FIND_HOSTILE_CREEPS);
+    var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.dest_roomName == source_roomName);
+    if(hostiles.length > 0) {
+        if (source_room.memory.room_harvester_energy_total > 90000){
+            source_room.memory.room_harvester_energy_total = 0
+        }
+        source_room.memory.war_flag = true
+        source_room.memory.enemy_num = hostiles.length
+        console.log(Game.time + source_roomName + ' 发现敌军 ', hostiles.length, ' owner:', hostiles[0].owner.username)
+        console.log('room_harvester_energy_total', Memory.rooms[source_roomName].room_harvester_energy_total)
+        if (Game.spawns[spawnName].spawning){
+            var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+            Game.spawns[spawnName].room.visual.text(
+                '🛠️' + spawningCreep.memory.role,
+                Game.spawns[spawnName].pos.x + 1, 
+                Game.spawns[spawnName].pos.y, 
+                {align: 'left', opacity: 0.8});
+        }
+        else{
+            if (soldiers.length < hostiles.length + 1){
+                var newName = 'out_Soldier' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, 
+                    {memory: {role: 'out_soldier', source_roomName: source_roomName, dest_roomName: dest_roomName}});
+                // console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
+            }
+        }
     }
     else{
+        if (source_room.memory.room_harvester_energy_total > 970000){
+            if (Game.spawns[spawnName].spawning){
+                var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+                Game.spawns[spawnName].room.visual.text(
+                    '🛠️' + spawningCreep.memory.role,
+                    Game.spawns[spawnName].pos.x + 1, 
+                    Game.spawns[spawnName].pos.y, 
+                    {align: 'left', opacity: 0.8});
+            }
+            else{
+                if (soldiers.length < 2){
+                    var newName = 'out_Soldier' + Game.time;
+                    Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, 
+                        {memory: {role: 'out_soldier', source_roomName: source_roomName, dest_roomName: dest_roomName}});
+                    // console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
+                }
+            }
+        }
+        source_room.memory.controller_id = source_room.controller.id
+        var controller: StructureController = Game.getObjectById(source_room.memory.controller_id)
+        // console.log('1', controller == null || controller == undefined)
+        if (controller == null || controller == undefined){
+            console.log(Game.time, dest_roomName, 'controller null or undefined', 'out_room_energy_mine')
+        }
+        else{
+            // console.log('2', controller.reservation == undefined)
+            if (Game.spawns[spawnName].spawning){
+                var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+                Game.spawns[spawnName].room.visual.text(
+                    '🛠️' + spawningCreep.memory.role,
+                    Game.spawns[spawnName].pos.x + 1, 
+                    Game.spawns[spawnName].pos.y, 
+                    {align: 'left', opacity: 0.8});
+            }
+            else{
+                var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.ticksToLive > 80);
+                if (controller.reservation == undefined && reservers.length < 1){
+                    var newName = 'reserver' + Game.time;
+                    Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, {memory: {role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName}});
+                }
+                else{
+                    
+                    if (controller.reservation.ticksToEnd < 4000 && reservers.length < 1){
+                        var newName = 'reserver' + Game.time;
+                        Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, {memory: {role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName}});
+                    }
+                }
+            }
+        }
+        source_room.memory.war_flag = false
+        source_room.memory.enemy_num = 0
         room_energy_mine_init(source_room)
         room_energy_mine_routine(source_roomName, dest_roomName, spawnName, harvester_num, transfer_num)
     }

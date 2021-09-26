@@ -59,5 +59,8 @@ interface RoomMemory {
     auto_energy_mine?: boolean
     energy_mine_chain_ok?: boolean
 
+    controller_id?: Id<StructureController>
+
     war_flag?: boolean
+    enemy_num?: number
 }

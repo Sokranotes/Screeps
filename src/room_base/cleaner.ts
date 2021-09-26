@@ -1,13 +1,14 @@
 import * as $ from "../modules/超级移动优化"
 
-export const cleaner_work = function(creep: Creep, roomName: string){
+export const cleaner_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if(creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
         // 如果在捡东西状态，装满了，那么退出工作状态
         creep.memory.is_working = false;
         creep.say('🔄 transfer');
     }
-    if(!creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+    if(!creep.memory.is_working && creep.store.getFreeCapacity() == creep.store.getCapacity()) {
+    // if(!creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         //如果在运东西状态，且没有能量了，退出运输状态
         creep.memory.is_working = true;
         creep.say('🚧 pickup');
@@ -42,8 +43,11 @@ export const cleaner_work = function(creep: Creep, roomName: string){
                     }
                 }
                 else{
-                    if (creep.pos.x != 25 && creep.pos.y != 23){
-                        creep.moveTo(new RoomPosition(25, 23, roomName))
+                    if (creep.store.getUsedCapacity() > 0){
+                        creep.memory.is_working = false
+                    }
+                    else if (creep.pos.x != 24 && creep.pos.y != 26){
+                        creep.moveTo(new RoomPosition(24, 26, creep.room.name))
                     }
                     else{
                         creep.memory.role = 'base_transfer'
@@ -53,22 +57,26 @@ export const cleaner_work = function(creep: Creep, roomName: string){
         }
     }
     else{
-        var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_EXTENSION ||
-                        structure.structureType == STRUCTURE_SPAWN) &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-            }
-        });
-        if(targets.length > 0) {
-            if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+        if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0 && creep.store.getUsedCapacity() != 0){
+            var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_STORAGE);
+                }
+            });
+            if(targets.length > 0) {
+                if(creep.transfer(targets[0], RESOURCE_GHODIUM_OXIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                }
+                else if(creep.transfer(targets[0], RESOURCE_ZYNTHIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                }
             }
         }
         else{
-            var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
+            var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_STORAGE) &&
+                    return (structure.structureType == STRUCTURE_EXTENSION ||
+                            structure.structureType == STRUCTURE_SPAWN) &&
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
             });
@@ -78,15 +86,28 @@ export const cleaner_work = function(creep: Creep, roomName: string){
                 }
             }
             else{
-                var targets = Game.rooms[roomName].find(FIND_STRUCTURES, {
+                var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_TOWER &&
-                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                        return (structure.structureType == STRUCTURE_STORAGE) &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                     }
                 });
                 if(targets.length > 0) {
                     if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                    }
+                }
+                else{
+                    var targets = creep.room.find(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_TOWER &&
+                                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                        }
+                    });
+                    if(targets.length > 0) {
+                        if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                        }
                     }
                 }
             }

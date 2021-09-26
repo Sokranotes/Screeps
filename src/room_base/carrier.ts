@@ -1,6 +1,6 @@
 import * as $ from "../modules/超级移动优化"
 
-export const carrier_work = function(creep: Creep, roomName: string){
+export const carrier_work = function(creep: Creep){
     // creep.say('🔄 Here');
     // console.log(creep.store.getCapacity())
     if (creep.pos.x != 22 || creep.pos.y != 27)

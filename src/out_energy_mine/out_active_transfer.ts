@@ -1,7 +1,7 @@
 import * as $ from "../modules/超级移动优化"
 
 var code:number
-export const active_transfer_work = function(creep: Creep){
+export const out_active_transfer_work = function(creep: Creep){
     // creep.say('👋 active transfer');
     var source_room: Room = Game.rooms[creep.memory.source_roomName]
     var dest_room: Room = Game.rooms[creep.memory.dest_roomName]

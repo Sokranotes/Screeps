@@ -1,6 +1,6 @@
 import * as $ from "../modules/超级移动优化"
 
-export const repairer_work = function(creep: Creep, roomName: string){
+export const repairer_work = function(creep: Creep){
     // creep.say('🔄 Here');
     // creep.memory.source_idx = 1 //近的这个，坐标13 29
     var dropEngry = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES)
@@ -46,7 +46,7 @@ export const repairer_work = function(creep: Creep, roomName: string){
                     }
                 }
                 else{
-                    creep.moveTo(new RoomPosition(21, 33, roomName));
+                    creep.moveTo(new RoomPosition(21, 33, creep.room.name));
                 }
             }
         }

@@ -2,6 +2,25 @@
 import { errorMapper } from './modules/errorMapper'
 import { room_base_running } from './room_base/room_base_running';
 
+import { active_transfer_work } from "./room_base/atcive_transfer";
+import { base_transfer_work } from "./room_base/base_transfer";
+import { builder_work } from "./room_base/builder";
+import { carrier_work } from "./room_base/carrier";
+import { cleaner_work } from "./room_base/cleaner";
+import { energy_harvester_link_work } from "./room_base/energy_harvester_link";
+import { energy_harvester_no_carry_work } from "./room_base/energy_harvester_no_carry";
+import { energy_harvester_with_carry_work } from "./room_base/energy_harvester_with_carry";
+import { passive_transfer_work } from "./room_base/passive_transfer";
+import { repairer_work } from "./room_base/repairer";
+import { upgrader_work } from "./room_base/upgrader";
+
+import { out_room_energy_mine } from "@/out_energy_mine/out_room_energy_mine";
+import { out_soldier_work } from "@/out_energy_mine/out_soldier";
+import { out_scout_work } from './out_energy_mine/out_scout';
+import { out_energy_harvester_with_carry_work } from './out_energy_mine/out_energy_harvester_with_carry';
+import { out_passive_transfer_work } from './out_energy_mine/out_passive_transfer';
+import { reserver_work } from './out_energy_mine/reserver';
+
 export const loop = errorMapper(() => {
 
     // 清楚死亡的creep的内存，对于一些未完成的操作也可以在此时检查
@@ -14,78 +33,70 @@ export const loop = errorMapper(() => {
 
     room_base_running('W47S14')
 
-    // var transfer_num: number[] = [4, 1]
-    // var harvester_num: number[] = [1, 1]
-    // out_room_energy_mine('W48S14', 'W47S14', 'Spawn1', harvester_num, transfer_num)
-    // room_energy_mine("W47S15", spawnName)
+    var spawnName = 'Spawn1'
+    var transfer_num = [4, 3]
+    var harvester_num = [1, 1]
+    out_room_energy_mine('W48S14', 'W47S14', spawnName, harvester_num, transfer_num)
 
-    // 控制creep的生成
-    // spawn_work(roomName)
+    var spawnName = 'Spawn1'
+    var transfer_num = [4, 7]
+    var harvester_num = [1, 2]
+    out_room_energy_mine('W47S15', 'W47S14', spawnName, harvester_num, transfer_num)
 
-    // for (var room_name in Game.rooms){
-    //     if (Game.rooms[room_name].controller.my){
-    //         room_base_running(roomName)
-    //     }
-    // }
-    // if (Game.rooms["W48S14"] != undefined){
-    //     var closestHostile1 = Game.rooms["W48S14"].find(FIND_HOSTILE_CREEPS);
-    //     if(closestHostile1.length > 0) {
-    //         for (var i: number = 0; i < closestHostile1.length; i++){
-    //             console.log(Game.time + ' 发现敌军 ' + closestHostile1[0].pos.x + " " + closestHostile1[0].pos.y + closestHostile1[0].owner)
-    //         }
-    //     }
-    // }
+
 
     // 不同role的creep工作
-    // for(var name in Game.creeps) {
-    //     var creep = Game.creeps[name];
-    //     if (creep.memory.role == 'soldier'){
-    //         soldier_work(creep, roomName);
-    //     }
-    //     if (creep.memory.role == 'carrier'){
-    //         carrier_work(creep, roomName)
-    //     }
-    //     if (creep.memory.role == 'reserver'){
-    //         reserver_work(creep, roomName)
-    //     }
-    //     if(creep.memory.role == 'harvester') {
-    //         harvester_work(creep, roomName);
-    //     }
-    //     if (creep.memory.role == 'outharvester'){
-    //         outharvester_work(creep, roomName);
-    //     }
-    //     if (creep.memory.role == 'transfer'){
-    //         transfer_work(creep, roomName);
-    //     }
-    //     if (creep.memory.role == 'outharvester1'){
-    //         outharvester1_work(creep, roomName);
-    //     }
-    //     if (creep.memory.role == 'transfer1'){
-    //         transfer1_work(creep, roomName);
-    //     }
-    //     if(creep.memory.role == 'upgrader') {
-    //         upgrader_work(creep, roomName);
-    //     }
-    //     if(creep.memory.role == 'builder') {
-    //         builder_work(creep, roomName);
-    //     }
-    //     if(creep.memory.role == 'repairer') {
-    //         repairer_work(creep, roomName);
-    //     }
-    //     if (creep.memory.role == 'cleaner'){
-    //         cleaner_work(creep, roomName)
-    //     }
-    //     if (creep.memory.role == 'base_transfer'){
-    //         base_transfer_work(creep, roomName)
-    //     }
-    //     // if (creep.memory.role == 'harder'){
-    //     //     harder_work(creep, roomName)
-    //     // }
-    //     // if (creep.memory.role == 'doctor'){
-    //     //     doctor_work(creep, roomName)
-    //     // }
-    //     // if (creep.memory.role == 'miner'){
-    //     //     miner_work(creep, roomName)
-    //     // }
-    // }
+    for(var name in Game.creeps) {
+        var creep = Game.creeps[name];
+        if (creep.memory.role == 'energy_harvester_with_carry'){
+            energy_harvester_with_carry_work(creep)
+        }
+        else if (creep.memory.role == 'passive_transfer'){
+            passive_transfer_work(creep)
+        }
+        else if (creep.memory.role == 'energy_harvester_no_carry'){
+            energy_harvester_no_carry_work(creep)
+        }
+        else if (creep.memory.role == 'active_transfer'){
+            active_transfer_work(creep)
+        }
+        else if (creep.memory.role == 'energy_harvester_link'){
+            energy_harvester_link_work(creep)
+        }
+        else if (creep.memory.role == 'carrier'){
+            carrier_work(creep)
+        }
+        else if (creep.memory.role == 'base_transfer'){
+            base_transfer_work(creep)
+        }
+        else if(creep.memory.role == 'upgrader') {
+            upgrader_work(creep);
+        }
+        else if(creep.memory.role == 'repairer') {
+            repairer_work(creep);
+        }
+        else if(creep.memory.role == 'builder') {
+            builder_work(creep);
+        }
+        else if (creep.memory.role == 'cleaner'){
+            cleaner_work(creep)
+        }
+
+        else if (creep.memory.role == 'out_scout'){
+            out_scout_work(creep)
+        }
+        else if (creep.memory.role == 'reserver'){
+            reserver_work(creep)
+        }
+        else if (creep.memory.role == 'out_energy_harvester_with_carry')
+        {
+            out_energy_harvester_with_carry_work(creep)
+        }
+        else if (creep.memory.role == 'out_passive_transfer'){
+            out_passive_transfer_work(creep)
+        }
+        else if (creep.memory.role == 'out_soldier'){
+            out_soldier_work(creep)
+        }
+    }
 })

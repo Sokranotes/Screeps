@@ -1,4 +1,4 @@
-export const upgrader_work = function(creep: Creep, roomName: string){
+export const upgrader_work = function(creep: Creep){
     // creep.say('🔄 Here');
     // 如果在升级且没能量了，那退出升级状态
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
