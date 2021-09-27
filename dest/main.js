@@ -5249,7 +5249,25 @@ const out_passive_transfer_work = function (creep) {
                 creep.moveTo(farm_creeps[0], { visualizePathStyle: { stroke: '#008cff' } });
             }
             else {
-                creep.moveTo(Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx]), { visualizePathStyle: { stroke: '#008cff' } });
+                var source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx]);
+                var place;
+                if (source.pos.x >= 25) {
+                    if (source.pos.y >= 25) {
+                        place = new RoomPosition(source.pos.x - 8, source.pos.y - 8, creep.memory.source_roomName);
+                    }
+                    else {
+                        place = new RoomPosition(source.pos.x - 8, source.pos.y + 8, creep.memory.source_roomName);
+                    }
+                }
+                else {
+                    if (source.pos.y >= 25) {
+                        place = new RoomPosition(source.pos.x + 8, source.pos.y - 8, creep.memory.source_roomName);
+                    }
+                    else {
+                        place = new RoomPosition(source.pos.x + 8, source.pos.y + 8, creep.memory.source_roomName);
+                    }
+                }
+                creep.moveTo(place, { visualizePathStyle: { stroke: '#008cff' } });
             }
             var res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
             creep.pickup(res);
