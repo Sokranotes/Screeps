@@ -4175,9 +4175,19 @@ const carrier_work = function (creep) {
     }
     else {
         var link = Game.getObjectById("6144f930e4eb6b750a8ca8c5");
-        creep.withdraw(link, RESOURCE_ENERGY);
-        var storage = Game.getObjectById("613f6f4b1dd6ef15e8dfa724");
-        creep.transfer(storage, RESOURCE_ENERGY);
+        var code = creep.withdraw(link, RESOURCE_ENERGY);
+        if (creep.room.memory.transfer_to_terminal <= 30000) {
+            var terminal = Game.getObjectById("614e5a7ab781a1b8bfc07334");
+            var tmp = creep.store.getUsedCapacity(RESOURCE_ENERGY);
+            code = creep.transfer(terminal, RESOURCE_ENERGY);
+            if (code == OK) {
+                creep.room.memory.transfer_to_terminal += tmp;
+            }
+        }
+        else {
+            var storage = Game.getObjectById("613f6f4b1dd6ef15e8dfa724");
+            creep.transfer(storage, RESOURCE_ENERGY);
+        }
     }
 };
 

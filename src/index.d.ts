@@ -63,4 +63,5 @@ interface RoomMemory {
 
     war_flag?: boolean
     enemy_num?: number
+    transfer_to_terminal?: number
 }
