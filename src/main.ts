@@ -20,6 +20,9 @@ import { out_scout_work } from './out_energy_mine/out_scout';
 import { out_energy_harvester_with_carry_work } from './out_energy_mine/out_energy_harvester_with_carry';
 import { out_passive_transfer_work } from './out_energy_mine/out_passive_transfer';
 import { reserver_work } from './out_energy_mine/reserver';
+import { range_work } from './war2 W48S16/range';
+import { dismate_work } from './war2 W48S16/dismate';
+import { attack_work } from './war2 W48S16/attack';
 
 export const loop = errorMapper(() => {
 
@@ -34,7 +37,7 @@ export const loop = errorMapper(() => {
     room_base_running('W47S14')
 
     var spawnName = 'Spawn1'
-    var transfer_num = [4, 2]
+    var transfer_num = [3, 2]
     var harvester_num = [1, 1]
     out_room_energy_mine('W48S14', 'W47S14', spawnName, harvester_num, transfer_num)
 
@@ -43,6 +46,38 @@ export const loop = errorMapper(() => {
     var harvester_num = [1, 1]
     out_room_energy_mine('W47S15', 'W47S14', spawnName, harvester_num, transfer_num)
 
+    var dismates = _.filter(Game.creeps, (creep) => creep.memory.role == 'dismate');
+    var ranges = _.filter(Game.creeps, (creep) => creep.memory.role == 'range');
+    var attacks = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack');
+
+
+    var doctors = _.filter(Game.creeps, (creep) => creep.memory.role == 'doctor');
+
+
+    if (Game.spawns[spawnName].spawning){
+        var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+        Game.spawns[spawnName].room.visual.text(
+            '🛠️' + spawningCreep.memory.role,
+            Game.spawns[spawnName].pos.x + 1, 
+            Game.spawns[spawnName].pos.y, 
+            {align: 'left', opacity: 0.8});
+    }
+    else if(dismates.length < 0) {
+        var newName = 'dismate' + Game.time;
+        Game.spawns[spawnName].spawnCreep([WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE], newName, {memory: {role: 'dismate'}});
+    }
+    else if(attacks.length < 0) {
+        var newName = 'attack' + Game.time;
+        Game.spawns[spawnName].spawnCreep([ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE], newName, {memory: {role: 'attack'}});
+    }
+    else if(ranges.length < 0) {
+        var newName = 'range' + Game.time;
+        Game.spawns[spawnName].spawnCreep([RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, {memory: {role: 'range'}});
+    }
+    else if(doctors.length < 0) {
+        var newName = 'Doctor' + Game.time;
+        Game.spawns['Spawn1'].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, {memory: {role: 'doctor'}});
+    }
 
 
     // 不同role的creep工作
@@ -97,6 +132,17 @@ export const loop = errorMapper(() => {
         }
         else if (creep.memory.role == 'out_soldier'){
             out_soldier_work(creep)
+        }
+        
+        // war 2 W48S16
+        else if (creep.memory.role == 'dismate'){
+            dismate_work(creep)
+        }
+        else if (creep.memory.role == 'attack'){
+            attack_work(creep)
+        }
+        else if (creep.memory.role == 'range'){
+            range_work(creep)
         }
     }
 })

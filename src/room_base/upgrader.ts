@@ -17,16 +17,20 @@ export const upgrader_work = function(creep: Creep){
         }
     }
     else {
-        var storages = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_STORAGE) && 
-                structure.store.getCapacity(RESOURCE_ENERGY) > 0;
-            }
-        });
-        if(storages.length > 0) {
-            if(creep.withdraw(storages[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(storages[0], {visualizePathStyle: {stroke: '#808080'}});
-            }
+        // var storages = creep.room.find(FIND_STRUCTURES, {
+        //     filter: (structure) => {
+        //         return (structure.structureType == STRUCTURE_STORAGE) && 
+        //         structure.store.getCapacity(RESOURCE_ENERGY) > 0;
+        //     }
+        // });
+        // if(storages.length > 0) {
+        //     if(creep.withdraw(storages[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        //         creep.moveTo(storages[0], {visualizePathStyle: {stroke: '#808080'}});
+        //     }
+        // }
+        let terminal: StructureTerminal = Game.getObjectById('614e5a7ab781a1b8bfc07334')
+        if(creep.withdraw(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(terminal, {visualizePathStyle: {stroke: '#808080'}});
         }
     }
 }

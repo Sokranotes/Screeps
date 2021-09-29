@@ -14,6 +14,8 @@ interface CreepMemory {
     container_pos_y?: number
     reservation_tick?: number
 
+    mine_idx?: number
+
     link_harvester_pos_x?: number
     link_harvester_pos_y?: number
 
@@ -49,7 +51,7 @@ interface RoomMemory {
     link_harvester_pos_ys: number[]
     check_links_state?: boolean
 
-    // mine_ids?: Id<Mineral>[]  //暂未启用
+    mines_id?: Id<Mineral>[]
 
     source_distance?: number[]
     source_gets?: number[]

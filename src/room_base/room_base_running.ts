@@ -68,7 +68,7 @@ export const room_base_running = function(roomName: string){
     }
     else if(carriers.length < carriersNum) {
         var newName = 'Carrier' + Game.time;
-        Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier'}});
+        Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier'}});
     }
     else if(cleaners_base_transfers.length < base_transferNum) {
         var newName = 'Base_transfer' + Game.time;
@@ -76,9 +76,9 @@ export const room_base_running = function(roomName: string){
     }
     else if(upgraders.length < upgradersNum) {
         var newName = 'Upgrader' + Game.time;
-        Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
-                                            CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
-                                            MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader'}});
+        Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
+                                            CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
+                                            MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader'}});
     }
     else if(repairers.length < repairersNum) {
         var newName = 'Repairer' + Game.time;
