@@ -20,9 +20,7 @@ import { out_scout_work } from './out_energy_mine/out_scout';
 import { out_energy_harvester_with_carry_work } from './out_energy_mine/out_energy_harvester_with_carry';
 import { out_passive_transfer_work } from './out_energy_mine/out_passive_transfer';
 import { reserver_work } from './out_energy_mine/reserver';
-import { range_work } from './war2 W48S16/range';
-import { dismate_work } from './war2 W48S16/dismate';
-import { attack_work } from './war2 W48S16/attack';
+import { attack_work } from './war3 W48S12/attack';
 
 export const loop = errorMapper(() => {
 
@@ -49,6 +47,7 @@ export const loop = errorMapper(() => {
     var dismates = _.filter(Game.creeps, (creep) => creep.memory.role == 'dismate');
     var ranges = _.filter(Game.creeps, (creep) => creep.memory.role == 'range');
     var attacks = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack');
+    var attack_controller = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_controller');
 
 
     var doctors = _.filter(Game.creeps, (creep) => creep.memory.role == 'doctor');
@@ -135,14 +134,14 @@ export const loop = errorMapper(() => {
         }
         
         // war 2 W48S16
-        else if (creep.memory.role == 'dismate'){
-            dismate_work(creep)
-        }
+        // else if (creep.memory.role == 'dismate'){
+        //     dismate_work(creep)
+        // }
         else if (creep.memory.role == 'attack'){
             attack_work(creep)
         }
-        else if (creep.memory.role == 'range'){
-            range_work(creep)
-        }
+        // else if (creep.memory.role == 'range'){
+        //     range_work(creep)
+        // }
     }
 })

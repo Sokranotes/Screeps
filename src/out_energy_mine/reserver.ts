@@ -14,11 +14,11 @@ export const reserver_work = function(creep: Creep){
         var code = creep.reserveController(controller)
         if (code == ERR_NOT_IN_RANGE){
             creep.moveTo(controller, {visualizePathStyle: {stroke: '#00ff0e'}})
-            creep.signController(controller, '喵呜')
-            if (controller != null && controller != undefined){
-                if (controller.reservation != null && controller.reservation != undefined){
-                    creep.memory.reservation_tick = controller.reservation.ticksToEnd
-                }
+        }
+        creep.signController(controller, '喵呜')
+        if (controller != null && controller != undefined){
+            if (controller.reservation != null && controller.reservation != undefined){
+                creep.memory.reservation_tick = controller.reservation.ticksToEnd
             }
         }
     }
