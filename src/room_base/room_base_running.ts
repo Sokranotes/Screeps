@@ -16,8 +16,23 @@ const body_list: BodyPartConstant[][]= [
 ];
 
 export const room_base_running = function(roomName: string){
-    // 房间能量采集工作
     var spawnName: string = 'Spawn1'
+    var cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
+    var base_transferNum: number = 3;
+    if (Game.spawns[spawnName].spawning){
+        var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+        Game.spawns[spawnName].room.visual.text(
+            '🛠️' + spawningCreep.memory.role,
+            Game.spawns[spawnName].pos.x + 1, 
+            Game.spawns[spawnName].pos.y, 
+            {align: 'left', opacity: 0.8});
+    }
+    else if(cleaners_base_transfers.length < base_transferNum) {
+        var newName = 'Base_transfer' + Game.time;
+        Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
+    }
+
+    // 房间能量采集工作
     var transfer_num: number[] = [0, 1]
     var harvester_num: number[] = [1, 1]
     var link_harvester_pos_xs: number[] = [5,]
@@ -30,8 +45,6 @@ export const room_base_running = function(roomName: string){
     var energyAvailable: number = room.energyAvailable;
 
     var carriersNum: number = 1;
-    
-    var base_transferNum: number = 3;
 
     var upgradersNum: number = 2;
     var repairersNum: number = 0;
@@ -39,7 +52,6 @@ export const room_base_running = function(roomName: string){
     var cleanerNum: number = 1;
 
     var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 80);
-    var cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
 
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
