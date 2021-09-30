@@ -23,11 +23,6 @@ export const out_energy_harvester_with_carry_work = function(creep: Creep){
             source_room.memory.room_harvester_energy_total += creep.store.getUsedCapacity()
             creep.transfer(transfer_creep, RESOURCE_ENERGY)
         }
-        var source_room: Room = Game.rooms[creep.memory.source_roomName]
-        if (source_room == undefined){
-            console.log(Game.time, " ", creep.memory.source_roomName, ' undefined')
-            return
-        }
         var source: Source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx])
         if(creep.memory.is_working == undefined) {
             creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#00ff0e'}})
@@ -44,7 +39,7 @@ export const out_energy_harvester_with_carry_work = function(creep: Creep){
                 code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
             }
             else if (code == ERR_NOT_OWNER){
-                console.log(creep.memory.source_roomName + " " + creep.pos.x + " " + creep.pos.y + " ERR_NOT_OWNER")
+                // console.log(creep.memory.source_roomName + " " + creep.pos.x + " " + creep.pos.y + " ERR_NOT_OWNER")
                 creep.say('⚠️ ' + creep.memory.source_roomName + " " + creep.pos.x + " " + creep.pos.y + " ERR_NOT_OWNER");
             }
             else if (code == ERR_INVALID_TARGET){

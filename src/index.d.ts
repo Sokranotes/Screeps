@@ -62,6 +62,7 @@ interface RoomMemory {
     energy_mine_chain_ok?: boolean
 
     controller_id?: Id<StructureController>
+    invader_core_id?: Id<StructureInvaderCore>
 
     war_flag?: boolean
     invader_died_tick?: number

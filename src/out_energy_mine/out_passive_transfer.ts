@@ -3,7 +3,13 @@ import * as $ from "../modules/超级移动优化"
 var code:number
 export const out_passive_transfer_work = function(creep: Creep){
     var source_room: Room = Game.rooms[creep.memory.source_roomName]
+    var dest_room: Room = Game.rooms[creep.memory.dest_roomName]
+    // room空值检查
     if (source_room == undefined){
+        return
+    }
+     if (dest_room == undefined){
+        console.log('dest_room ', creep.memory.dest_roomName, " undefined")
         return
     }
     else if (Game.rooms[creep.memory.source_roomName].memory.war_flag == true){
@@ -22,18 +28,6 @@ export const out_passive_transfer_work = function(creep: Creep){
             creep.say('🚧 transfer');
         }
         if (creep.memory.is_working == true){
-            var source_room: Room = Game.rooms[creep.memory.source_roomName]
-            var dest_room: Room = Game.rooms[creep.memory.dest_roomName]
-            // room空值检查
-            if (source_room == undefined){
-                console.log(Game.time, " ", creep.memory.source_roomName, ' undefined')
-                return
-            }
-            if (dest_room == undefined){
-                console.log('dest_room ', creep.memory.dest_roomName, " undefined")
-                return
-            }
-
             if (creep.memory.source_roomName == 'W47S15'){
                 var targets = dest_room.find(FIND_STRUCTURES, {
                     filter: (structure) => {

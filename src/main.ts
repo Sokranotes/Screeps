@@ -20,7 +20,7 @@ import { out_scout_work } from './out_energy_mine/out_scout';
 import { out_energy_harvester_with_carry_work } from './out_energy_mine/out_energy_harvester_with_carry';
 import { out_passive_transfer_work } from './out_energy_mine/out_passive_transfer';
 import { reserver_work } from './out_energy_mine/reserver';
-import { attack_work } from './war3 W48S12/attack';
+import { attack_invader_core_work } from './out_energy_mine/attack_invader_core';
 
 export const loop = errorMapper(() => {
 
@@ -140,11 +140,15 @@ export const loop = errorMapper(() => {
         // else if (creep.memory.role == 'dismate'){
         //     dismate_work(creep)
         // }
-        else if (creep.memory.role == 'attack'){
-            attack_work(creep)
-        }
+        // else if (creep.memory.role == 'attack'){
+        //     attack_work(creep)
+        // }
         // else if (creep.memory.role == 'range'){
         //     range_work(creep)
         // }
+
+        else if (creep.memory.role == 'attack_invader_core'){
+            attack_invader_core_work(creep)
+        }
     }
 })

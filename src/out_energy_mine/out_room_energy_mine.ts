@@ -396,6 +396,39 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
     }
     var hostiles = source_room.find(FIND_HOSTILE_CREEPS);
     var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.source_roomName == source_roomName);
+    var invader_cores: StructureInvaderCore[] = source_room.find(FIND_STRUCTURES, {filter:(structure)=>{return structure.structureType == STRUCTURE_INVADER_CORE}})
+    if (invader_cores.length > 0){
+        source_room.memory.invader_core_id = invader_cores[0].id
+        var controller: StructureController = Game.getObjectById(source_room.memory.controller_id)
+        if (Game.spawns[spawnName].spawning){
+            var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+            Game.spawns[spawnName].room.visual.text(
+                '🛠️' + spawningCreep.memory.role,
+                Game.spawns[spawnName].pos.x + 1, 
+                Game.spawns[spawnName].pos.y, 
+                {align: 'left', opacity: 0.8});
+        }
+        else{
+            var attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 80)
+            if (attack_invader_cores.length < 1){
+                var newName = 'attack_invader_core' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep([ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE], newName, {memory: {role: 'attack_invader_core', dest_roomName: dest_roomName, source_roomName: source_roomName}});
+            }
+            var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 80);
+            if (controller.reservation == undefined){
+                if (reservers.length < 1){
+                    var newName = 'reserver' + Game.time;
+                    Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, {memory: {role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName}});
+                }
+            }
+            else{
+                if (controller.reservation.ticksToEnd < 4000 && reservers.length < 1){
+                    var newName = 'reserver' + Game.time;
+                    Game.spawns['Spawn1'].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, {memory: {role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName}});
+                }
+            }
+        }
+    }
     if(hostiles.length > 1) {
         source_room.memory.enemy_num = hostiles.length
         if (source_room.memory.war_flag == false){
