@@ -396,33 +396,26 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
     }
     var hostiles = source_room.find(FIND_HOSTILE_CREEPS);
     var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.source_roomName == source_roomName);
-    if(hostiles.length > 0) {
-        if (source_room.memory.room_harvester_energy_total >= 970000){
+    if(hostiles.length > 1) {
+        source_room.memory.enemy_num = hostiles.length
+        if (source_room.memory.war_flag == false){
+            console.log(Game.time + source_roomName + ' 发现敌军: ', hostiles.length, ' owner:', hostiles[0].owner.username, 'room_harvester_energy_total', Memory.rooms[source_roomName].room_harvester_energy_total)
+            source_room.memory.war_flag = true
             source_room.memory.room_harvester_energy_total = 0
         }
-        source_room.memory.war_flag = true
-        source_room.memory.enemy_num = hostiles.length
-        console.log(Game.time + source_roomName + ' 发现敌军 ', hostiles.length, ' owner:', hostiles[0].owner.username)
-        console.log('room_harvester_energy_total', Memory.rooms[source_roomName].room_harvester_energy_total)
-        if (Game.spawns[spawnName].spawning){
-            var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
-            Game.spawns[spawnName].room.visual.text(
-                '🛠️' + spawningCreep.memory.role,
-                Game.spawns[spawnName].pos.x + 1, 
-                Game.spawns[spawnName].pos.y, 
-                {align: 'left', opacity: 0.8});
-        }
-        else{
-            if (soldiers.length < hostiles.length + 1){
-                var newName = 'out_Soldier' + Game.time;
-                Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, 
-                    {memory: {role: 'out_soldier', source_roomName: source_roomName, dest_roomName: dest_roomName}});
-                // console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
-            }
+        if (hostiles[0].owner.username == 'Invader'){
+            source_room.memory.invader_died_tick = Game.time + hostiles[0].ticksToLive
         }
     }
-    else{
-        if (source_room.memory.room_harvester_energy_total >= 970000){
+    else if(hostiles.length == 1) {
+        source_room.memory.enemy_num = hostiles.length
+        if (source_room.memory.war_flag == false){
+            console.log(Game.time + source_roomName + ' 发现敌军: ', hostiles.length, ' owner:', hostiles[0].owner.username, 'room_harvester_energy_total', Memory.rooms[source_roomName].room_harvester_energy_total)
+            source_room.memory.war_flag = true
+            source_room.memory.room_harvester_energy_total = 0
+        }
+        if (hostiles[0].owner.username == 'Invader'){
+            source_room.memory.invader_died_tick = Game.time + hostiles[0].ticksToLive
             if (Game.spawns[spawnName].spawning){
                 var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
                 Game.spawns[spawnName].room.visual.text(
@@ -432,14 +425,15 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
                     {align: 'left', opacity: 0.8});
             }
             else{
-                if (soldiers.length < 2){
+                if (soldiers.length < hostiles.length + 1){
                     var newName = 'out_Soldier' + Game.time;
                     Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, 
                         {memory: {role: 'out_soldier', source_roomName: source_roomName, dest_roomName: dest_roomName}});
-                    // console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
                 }
             }
         }
+    }
+    else{
         source_room.memory.controller_id = source_room.controller.id
         var controller: StructureController = Game.getObjectById(source_room.memory.controller_id)
         // console.log('1', controller == null || controller == undefined)

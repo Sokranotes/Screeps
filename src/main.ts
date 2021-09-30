@@ -28,7 +28,6 @@ export const loop = errorMapper(() => {
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
-            // console.log('Clearing non-existing creep memory:', name);
         }
     }
 
@@ -47,7 +46,7 @@ export const loop = errorMapper(() => {
     var dismates = _.filter(Game.creeps, (creep) => creep.memory.role == 'dismate');
     var ranges = _.filter(Game.creeps, (creep) => creep.memory.role == 'range');
     var attacks = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack');
-    var attack_controller = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_controller');
+    var attack_controllers = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_controller');
 
 
     var doctors = _.filter(Game.creeps, (creep) => creep.memory.role == 'doctor');
@@ -76,6 +75,10 @@ export const loop = errorMapper(() => {
     else if(doctors.length < 0) {
         var newName = 'Doctor' + Game.time;
         Game.spawns['Spawn1'].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, {memory: {role: 'doctor'}});
+    }
+    else if(attack_controllers.length < 0) {
+        var newName = 'attack_controller' + Game.time;
+        Game.spawns['Spawn1'].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, {memory: {role: 'attack_controllers'}});
     }
 
 

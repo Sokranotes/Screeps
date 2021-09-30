@@ -64,6 +64,7 @@ interface RoomMemory {
     controller_id?: Id<StructureController>
 
     war_flag?: boolean
+    invader_died_tick?: number
     enemy_num?: number
     transfer_to_terminal?: number
 }

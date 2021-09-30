@@ -5027,40 +5027,39 @@ const out_room_energy_mine = function (source_roomName, dest_roomName, spawnName
     }
     var hostiles = source_room.find(FIND_HOSTILE_CREEPS);
     var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.source_roomName == source_roomName);
-    if (hostiles.length > 0) {
-        if (source_room.memory.room_harvester_energy_total >= 970000) {
+    if (hostiles.length > 1) {
+        source_room.memory.enemy_num = hostiles.length;
+        if (source_room.memory.war_flag == false) {
+            console.log(Game.time + source_roomName + ' 发现敌军: ', hostiles.length, ' owner:', hostiles[0].owner.username, 'room_harvester_energy_total', Memory.rooms[source_roomName].room_harvester_energy_total);
+            source_room.memory.war_flag = true;
             source_room.memory.room_harvester_energy_total = 0;
         }
-        source_room.memory.war_flag = true;
-        source_room.memory.enemy_num = hostiles.length;
-        console.log(Game.time + source_roomName + ' 发现敌军 ', hostiles.length, ' owner:', hostiles[0].owner.username);
-        console.log('room_harvester_energy_total', Memory.rooms[source_roomName].room_harvester_energy_total);
-        if (Game.spawns[spawnName].spawning) {
-            var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
-            Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
-        }
-        else {
-            if (soldiers.length < hostiles.length + 1) {
-                var newName = 'out_Soldier' + Game.time;
-                Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, { memory: { role: 'out_soldier', source_roomName: source_roomName, dest_roomName: dest_roomName } });
-                // console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
-            }
+        if (hostiles[0].owner.username == 'Invader') {
+            source_room.memory.invader_died_tick = Game.time + hostiles[0].ticksToLive;
         }
     }
-    else {
-        if (source_room.memory.room_harvester_energy_total >= 970000) {
+    else if (hostiles.length == 1) {
+        source_room.memory.enemy_num = hostiles.length;
+        if (source_room.memory.war_flag == false) {
+            console.log(Game.time + source_roomName + ' 发现敌军: ', hostiles.length, ' owner:', hostiles[0].owner.username, 'room_harvester_energy_total', Memory.rooms[source_roomName].room_harvester_energy_total);
+            source_room.memory.war_flag = true;
+            source_room.memory.room_harvester_energy_total = 0;
+        }
+        if (hostiles[0].owner.username == 'Invader') {
+            source_room.memory.invader_died_tick = Game.time + hostiles[0].ticksToLive;
             if (Game.spawns[spawnName].spawning) {
                 var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
                 Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
             }
             else {
-                if (soldiers.length < 2) {
+                if (soldiers.length < hostiles.length + 1) {
                     var newName = 'out_Soldier' + Game.time;
                     Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, { memory: { role: 'out_soldier', source_roomName: source_roomName, dest_roomName: dest_roomName } });
-                    // console.log('Spawning new soldier: ' + newName  + " body: " + '[TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE]');
                 }
             }
         }
+    }
+    else {
         source_room.memory.controller_id = source_room.controller.id;
         var controller = Game.getObjectById(source_room.memory.controller_id);
         // console.log('1', controller == null || controller == undefined)
@@ -5157,22 +5156,43 @@ const out_soldier_work = function (creep) {
 };
 
 const out_scout_work = function (creep) {
-    if (creep.room.name != creep.memory.dest_roomName) {
-        creep.moveTo(new RoomPosition(25, 25, creep.memory.dest_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
-    }
-    else {
-        var hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
-        if (hostiles.length > 0) {
-            creep.room.memory.war_flag = true;
-            creep.room.memory.enemy_num = hostiles.length;
-            // console.log(Game.time + creep.memory.dest_roomName + ' 发现敌军 ', hostiles.length, ' owner:', hostiles[0].owner.username)
-            creep.moveTo(new RoomPosition(25, 25, creep.memory.source_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+    if (Memory.rooms[creep.memory.dest_roomName].invader_died_tick == undefined) {
+        if (creep.room.name != creep.memory.dest_roomName) {
+            creep.moveTo(new RoomPosition(25, 25, creep.memory.dest_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
         }
         else {
-            creep.room.memory.war_flag = false;
-            creep.room.memory.enemy_num = 0;
-            if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47) {
-                creep.moveTo(new RoomPosition(25, 25, creep.memory.dest_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+            var hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
+            if (hostiles.length > 0) {
+                creep.room.memory.war_flag = true;
+                creep.room.memory.enemy_num = hostiles.length;
+                creep.moveTo(new RoomPosition(25, 25, creep.memory.source_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+            }
+            else {
+                creep.room.memory.war_flag = false;
+                creep.room.memory.enemy_num = 0;
+                if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47) {
+                    creep.moveTo(new RoomPosition(25, 25, creep.memory.dest_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+                }
+            }
+        }
+    }
+    else if (Memory.rooms[creep.memory.dest_roomName].invader_died_tick <= Game.time) {
+        if (creep.room.name != creep.memory.dest_roomName) {
+            creep.moveTo(new RoomPosition(25, 25, creep.memory.dest_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+        }
+        else {
+            var hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
+            if (hostiles.length > 0) {
+                creep.room.memory.war_flag = true;
+                creep.room.memory.enemy_num = hostiles.length;
+                creep.moveTo(new RoomPosition(25, 25, creep.memory.source_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+            }
+            else {
+                creep.room.memory.war_flag = false;
+                creep.room.memory.enemy_num = 0;
+                if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47) {
+                    creep.moveTo(new RoomPosition(25, 25, creep.memory.dest_roomName), { visualizePathStyle: { stroke: '#ff0000' } });
+                }
             }
         }
     }
@@ -5420,7 +5440,6 @@ const loop = errorMapper(() => {
     for (var name in Memory.creeps) {
         if (!Game.creeps[name]) {
             delete Memory.creeps[name];
-            // console.log('Clearing non-existing creep memory:', name);
         }
     }
     room_base_running('W47S14');
@@ -5435,7 +5454,7 @@ const loop = errorMapper(() => {
     var dismates = _.filter(Game.creeps, (creep) => creep.memory.role == 'dismate');
     var ranges = _.filter(Game.creeps, (creep) => creep.memory.role == 'range');
     var attacks = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack');
-    var attack_controller = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_controller');
+    var attack_controllers = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_controller');
     var doctors = _.filter(Game.creeps, (creep) => creep.memory.role == 'doctor');
     if (Game.spawns[spawnName].spawning) {
         var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
@@ -5456,6 +5475,10 @@ const loop = errorMapper(() => {
     else if (doctors.length < 0) {
         var newName = 'Doctor' + Game.time;
         Game.spawns['Spawn1'].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, { memory: { role: 'doctor' } });
+    }
+    else if (attack_controllers.length < 0) {
+        var newName = 'attack_controller' + Game.time;
+        Game.spawns['Spawn1'].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, { memory: { role: 'attack_controllers' } });
     }
     // 不同role的creep工作
     for (var name in Game.creeps) {
