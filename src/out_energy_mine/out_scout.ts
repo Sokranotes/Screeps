@@ -1,7 +1,7 @@
 import * as $ from "../modules/超级移动优化"
 
 export const out_scout_work = function(creep: Creep){
-    if (Memory.rooms[creep.memory.dest_roomName].invader_died_tick == undefined){
+    if (Memory.rooms[creep.memory.source_roomName].invader_died_tick == undefined){
         if (creep.room.name != creep.memory.dest_roomName){
             creep.moveTo(new RoomPosition(25, 25, creep.memory.dest_roomName), {visualizePathStyle: {stroke: '#ff0000'}})
         }

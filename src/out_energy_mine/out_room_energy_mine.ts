@@ -410,9 +410,9 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
         }
         else{
             var attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 80)
-            if (attack_invader_cores.length < 1){
+            if (attack_invader_cores.length < 2){
                 var newName = 'attack_invader_core' + Game.time;
-                Game.spawns['Spawn1'].spawnCreep([ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE], newName, {memory: {role: 'attack_invader_core', dest_roomName: dest_roomName, source_roomName: source_roomName}});
+                Game.spawns['Spawn1'].spawnCreep([TOUGH,TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'attack_invader_core', dest_roomName: dest_roomName, source_roomName: source_roomName}});
             }
             var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 80);
             if (controller.reservation == undefined){
@@ -458,10 +458,15 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
                     {align: 'left', opacity: 0.8});
             }
             else{
-                if (soldiers.length < hostiles.length + 1){
-                    var newName = 'out_Soldier' + Game.time;
-                    Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, 
-                        {memory: {role: 'out_soldier', source_roomName: source_roomName, dest_roomName: dest_roomName}});
+                // if (soldiers.length < hostiles.length + 1){
+                //     var newName = 'out_Soldier' + Game.time;
+                //     Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, 
+                //         {memory: {role: 'out_soldier', source_roomName: source_roomName, dest_roomName: dest_roomName}});
+                // }
+                var attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 80)
+                if (attack_invader_cores.length < 2){
+                    var newName = 'attack_invader_core' + Game.time;
+                    Game.spawns['Spawn1'].spawnCreep([TOUGH,TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'attack_invader_core', dest_roomName: dest_roomName, source_roomName: source_roomName}});
                 }
             }
         }

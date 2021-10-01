@@ -52,6 +52,7 @@ export const loop = errorMapper(() => {
     var doctors = _.filter(Game.creeps, (creep) => creep.memory.role == 'doctor');
 
 
+    var attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == 'W47S15' && creep.ticksToLive > 80)
     if (Game.spawns[spawnName].spawning){
         var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
         Game.spawns[spawnName].room.visual.text(
@@ -79,6 +80,10 @@ export const loop = errorMapper(() => {
     else if(attack_controllers.length < 0) {
         var newName = 'attack_controller' + Game.time;
         Game.spawns['Spawn1'].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, {memory: {role: 'attack_controllers'}});
+    }
+    else if (attack_invader_cores.length < 0){
+        var newName = 'attack_invader_core' + Game.time;
+        Game.spawns['Spawn1'].spawnCreep([TOUGH,TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'attack_invader_core', dest_roomName: 'W47S14', source_roomName: 'W47S15'}});
     }
 
 
