@@ -4184,9 +4184,9 @@ const carrier_work = function (creep) {
     else {
         var terminal = Game.getObjectById("614e5a7ab781a1b8bfc07334");
         var link = Game.getObjectById("6144f930e4eb6b750a8ca8c5");
-        if (link.store.getUsedCapacity(RESOURCE_ENERGY) > creep.store.getCapacity()) {
+        if (link.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
             creep.withdraw(link, RESOURCE_ENERGY);
-            if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 100000) {
+            if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 150000) {
                 creep.store.getUsedCapacity(RESOURCE_ENERGY);
                 creep.transfer(terminal, RESOURCE_ENERGY);
             }
@@ -4196,7 +4196,7 @@ const carrier_work = function (creep) {
             }
         }
         else {
-            if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) >= 150000) {
+            if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) >= 200000) {
                 creep.withdraw(terminal, RESOURCE_ENERGY);
                 var storage = Game.getObjectById("613f6f4b1dd6ef15e8dfa724");
                 creep.transfer(storage, RESOURCE_ENERGY);
@@ -5381,15 +5381,12 @@ const out_passive_transfer_work = function (creep) {
 
 const reserver_work = function (creep) {
     // creep.say('🔄 Here');
-    var source_room = Game.rooms[creep.memory.source_roomName];
-    // source_room, source所在room
-    if (source_room.memory.war_flag == true) {
+    if (Memory.rooms[creep.memory.source_roomName].war_flag == true) {
         creep.memory.is_working = false;
         creep.moveTo(new RoomPosition(8, 34, creep.memory.dest_roomName), { visualizePathStyle: { stroke: '#808080' } });
     }
     else {
-        var controller = Game.getObjectById(source_room.memory.controller_id);
-        // console.log(creep.memory.source_roomName, source_room.memory.controller_id)
+        var controller = Game.getObjectById(Memory.rooms[creep.memory.source_roomName].controller_id);
         var code = creep.reserveController(controller);
         if (code == ERR_NOT_IN_RANGE) {
             creep.moveTo(controller, { visualizePathStyle: { stroke: '#00ff0e' } });
