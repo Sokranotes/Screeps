@@ -46,7 +46,10 @@ export const out_energy_harvester_with_carry_work = function(creep: Creep){
                 console.log(creep.memory.source_roomName + " " + creep.pos.x + " " + creep.pos.y + " ERR_INVALID_TARGET")
                 creep.say('⚠️ ' + creep.memory.source_roomName + " " + creep.pos.x + " " + creep.pos.y + " ERR_INVALID_TARGET");
             }
-            else if (code == ERR_NOT_FOUND || code == ERR_TIRED || code == ERR_NO_BODYPART){
+            else if (code == ERR_NO_BODYPART){
+                creep.suicide()
+            }
+            else if (code == ERR_NOT_FOUND || code == ERR_TIRED){
                 // code == ERR_BUSY: 忽略
                 console.log(creep.memory.source_roomName + " " + creep.pos.x + " " + creep.pos.y + " error code: "+ code)
                 creep.say('⚠️ ' + creep.memory.source_roomName + " " + creep.pos.x + " " + creep.pos.y + " error code: "+ code);

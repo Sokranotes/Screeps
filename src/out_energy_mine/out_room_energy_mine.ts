@@ -381,10 +381,10 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
                 {align: 'left', opacity: 0.8});
         }
         else{
-            var scouts = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_scout' && creep.memory.dest_roomName == source_roomName);
+            var scouts = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_scout' && creep.memory.source_roomName == source_roomName);
             if (scouts.length < 1){
                 var newName = 'out_Scout' + Game.time;
-                Game.spawns[spawnName].spawnCreep([MOVE], newName, {memory: {role: 'out_scout', source_roomName: dest_roomName, dest_roomName: source_roomName}});
+                Game.spawns[spawnName].spawnCreep([MOVE], newName, {memory: {role: 'out_scout', source_roomName: source_roomName, dest_roomName: dest_roomName}});
             }
         }
         // console.log(Game.time, " ", source_roomName, ' undefined', 'out_room_energy_mine')
