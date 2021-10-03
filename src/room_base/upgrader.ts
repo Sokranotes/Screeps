@@ -28,9 +28,22 @@ export const upgrader_work = function(creep: Creep){
         //         creep.moveTo(storages[0], {visualizePathStyle: {stroke: '#808080'}});
         //     }
         // }
-        let terminal: StructureTerminal = Game.getObjectById('614e5a7ab781a1b8bfc07334')
-        if(creep.withdraw(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(terminal, {visualizePathStyle: {stroke: '#808080'}});
+        if (creep.room.name == 'W48S12'){
+            let sources: Source[] = creep.room.find(FIND_SOURCES)
+            if (sources.length > 0){
+                let code = creep.harvest(sources[0])
+                if (code == ERR_NOT_IN_RANGE){
+                    let code1 = creep.moveTo(sources[0])
+                }
+            }
+        }
+        else{
+            let terminal: StructureTerminal = Game.getObjectById('614e5a7ab781a1b8bfc07334')
+            if (terminal){
+                if(creep.withdraw(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(terminal, {visualizePathStyle: {stroke: '#808080'}});
+                }
+            }
         }
     }
 }
