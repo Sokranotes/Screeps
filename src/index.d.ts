@@ -3,21 +3,21 @@ interface CreepMemory {
      * 该 creep 的角色
      */
     role: string
-    is_working?: boolean // 工作中，区别于需要去取能量的状态
+    is_working?: boolean // 工作状态，区别于非工作状态
 
-    source_roomName?: string
-    dest_roomName?: string
+    source_roomName?: string // 外矿所在的房间名
+    dest_roomName?: string // 采集资源的目的地
 
+    // 外矿相关
     source_idx?: number // harvester.ts 存采集的source对应id的下标
     source_container_idx?: number
     container_pos_x?: number // 固定点取能量的creep的固定点，即container位置
     container_pos_y?: number
+    link_harvester_pos_x?: number
+    link_harvester_pos_y?: number
     reservation_tick?: number
 
     mine_idx?: number
-
-    link_harvester_pos_x?: number
-    link_harvester_pos_y?: number
 
     // transfer_start?:
     // transfer_type?:
@@ -28,7 +28,7 @@ interface CreepMemory {
 }
 
 interface RoomMemory {
-    // 本房间内所有source的ID, 永远不会改变, 只需要判断undefined
+    // 本房间内所有source的ID, 一旦扫描永远不会改变, 只需要判断undefined
     sources_num?: number
     sources_id?: Id<Source>[]
 
@@ -39,17 +39,17 @@ interface RoomMemory {
     source_transfer_states?: number[] // 对应不同source的transfer的个数
     source_transfer_num?: number[] // 对应不同source, transfer的限制个数
 
-    source_container_ids?: Id<StructureContainer>[] // 对应下标的source的container的ID
-    containers_id?: Id<StructureContainer>[] // 同一房间内所有container的ID, 避免多次重复扫描查找
-    containers_num?: number
     check_containers_state?: boolean
+    containers_num?: number
+    containers_id?: Id<StructureContainer>[] // 同一房间内所有container的ID, 避免多次重复扫描查找
+    source_container_ids?: Id<StructureContainer>[] // 对应下标的source的container的ID
 
-    source_link_ids?: Id<StructureLink>[]
-    links_id?: Id<StructureLink>[]
+    check_links_state?: boolean
     links_num?: number
+    links_id?: Id<StructureLink>[]
+    source_link_ids?: Id<StructureLink>[]    
     link_harvester_pos_xs: number[]
     link_harvester_pos_ys: number[]
-    check_links_state?: boolean
 
     mines_id?: Id<Mineral>[]
 
@@ -68,4 +68,12 @@ interface RoomMemory {
     invader_died_tick?: number
     enemy_num?: number
     transfer_to_terminal?: number
+
+    test_flag?: boolean
+}
+
+interface StructureSpawn{
+    work: Function
+    addTask: Function
+    mainSpawn: Function
 }

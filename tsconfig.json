@@ -14,6 +14,5 @@
         "node_modules"
     ],
     "include": [
-        "src/**/*.ts"
-, "src/超级移动优化bypass (临时).js", "src/modules/超级移动优化.js"    ]
+        "src/**/*.ts", "src/modules/超级移动优化.js", "src/room_base/priorityqueue.js"    ]
 }

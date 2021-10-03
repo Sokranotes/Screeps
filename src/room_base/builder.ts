@@ -12,7 +12,11 @@ export const builder_work = function(creep: Creep){
     }
     // console.log(creep.memory.is_working)
     if(creep.memory.is_working) {
-        // var constructions = creep.room.find(FIND_CONSTRUCTION_SITES);
+        // var constructions = creep.room.find(FIND_CONSTRUCTION_SITES, {
+        //     filter: (structure) => {
+        //         return (structure.structureType == STRUCTURE_LINK)
+        //     }
+        // });
         // if (constructions){
         //     if(constructions.length > 0) {
         //         if(creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
@@ -23,10 +27,17 @@ export const builder_work = function(creep: Creep){
         //         creep.memory.role = 'upgrader'
         //     }
         // }
+        // else{
+            
+        // }
         var construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
         if (construction){
+            let code = creep.build(construction)
             if(creep.build(construction) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(construction, {visualizePathStyle: {stroke: '#008cff'}});
+            }
+            else if (code != OK){
+                // console.log(code)
             }
         }
         else{
@@ -61,6 +72,19 @@ export const builder_work = function(creep: Creep){
             if(targets.length > 0) {
                 if(creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            }
+            else{
+                var targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_STORAGE) &&
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                    }
+                });
+                if(targets.length > 0) {
+                    if(creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
                 }
             }
         }

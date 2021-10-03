@@ -1,10 +1,10 @@
 import math
 
-distance = 25
-price = 2
+distance = 26
+price = 0.75
 
 
-amount = 10000
+amount = 4000
 cost = math.ceil(amount * (1 - pow(math.e, (-1*(distance)/30))))
 
 print('#######卖')

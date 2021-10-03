@@ -1,9 +1,9 @@
 import * as $ from "../modules/超级移动优化"
 
 export const out_scout_work = function(creep: Creep){
-    // console.log(Memory.rooms[creep.memory.source_roomName].invader_died_tick == undefined)
-    console.log(Memory.rooms[creep.memory.source_roomName].invader_died_tick)
-    console.log('game time', Game.time)
+    // console.log(Memory.rooms[creep.memory.source_roomName].invader_died_tick)
+    // console.log(Game.time)
+    // console.log(Memory.rooms[creep.memory.source_roomName].invader_died_tick - Game.time)
     if (Memory.rooms[creep.memory.source_roomName].invader_died_tick == undefined){
         if (creep.room.name != creep.memory.source_roomName){
             creep.moveTo(new RoomPosition(25, 25, creep.memory.source_roomName), {visualizePathStyle: {stroke: '#ff0000'}})
@@ -24,8 +24,8 @@ export const out_scout_work = function(creep: Creep){
             }
         }
     }
-    // else if (Memory.rooms[creep.memory.source_roomName].invader_died_tick = Game.time){
-    else{
+    else if (Memory.rooms[creep.memory.source_roomName].invader_died_tick <= Game.time){
+    // else{
         if (creep.room.name != creep.memory.source_roomName){
             creep.moveTo(new RoomPosition(25, 25, creep.memory.source_roomName), {visualizePathStyle: {stroke: '#ff0000'}})
         }

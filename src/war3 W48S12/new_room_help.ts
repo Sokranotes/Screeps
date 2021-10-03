@@ -30,9 +30,9 @@ export const new_room_help_work = function(creep: Creep){
                 // }
                 var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_TOWER ||
-                            structure.structureType == STRUCTURE_EXTENSION ||
-                            structure.structureType == STRUCTURE_SPAWN) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        return ((structure.structureType == STRUCTURE_EXTENSION ||
+                            structure.structureType == STRUCTURE_SPAWN) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0) || 
+                            (structure.structureType == STRUCTURE_TOWER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2*structure.store.getCapacity(RESOURCE_ENERGY));
                     }
                 });
                 if(targets.length > 0) {
@@ -78,8 +78,16 @@ export const new_room_help_work = function(creep: Creep){
                                 creep.memory.source_idx = 0
                             }
                         }
+                        if (code == ERR_NOT_ENOUGH_RESOURCES){
+                            let container: StructureContainer = Game.getObjectById("615a2a4846d6c263b42bfee6")
+                            if (creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
+                                creep.moveTo(container)
+                            }
+                        }
                     }
                 }
+                var res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+                creep.pickup(res)
             }
         }
     }

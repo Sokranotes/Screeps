@@ -10,20 +10,27 @@ export const carrier_work = function(creep: Creep){
     else{
         // var terminal: StructureTerminal = Game.getObjectById("")
         var link: StructureLink = Game.getObjectById("6159d59ae59fcf2038ecf56c")
-        var storage: StructureStorage = Game.getObjectById("")
+        var upgrade_link: StructureLink = Game.getObjectById('615a13005237858c5056f75f')
+        var storage: StructureStorage = Game.getObjectById("6159fc1609f790175f45c6be")
         // console.log(link.store.getUsedCapacity(RESOURCE_ENERGY))
         // console.log(terminal.store.getUsedCapacity(RESOURCE_ENERGY))
         if (link.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
             var code = creep.withdraw(link, RESOURCE_ENERGY)
             creep.transfer(storage, RESOURCE_ENERGY)
-            // if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 290000){
-            //     var tmp = creep.store.getUsedCapacity(RESOURCE_ENERGY)
-            //     code = creep.transfer(terminal, RESOURCE_ENERGY)
-            // }
-            // else{
-            //     creep.transfer(storage, RESOURCE_ENERGY)
-            // }
         }
+        if (upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) == 0 && link.cooldown == 0){
+            var code = creep.withdraw(storage, RESOURCE_ENERGY)
+            creep.transfer(link, RESOURCE_ENERGY)
+            link.transferEnergy(upgrade_link)
+        }
+                // if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 290000){
+                //     var tmp = creep.store.getUsedCapacity(RESOURCE_ENERGY)
+                //     code = creep.transfer(terminal, RESOURCE_ENERGY)
+                // }
+                // else{
+                //     creep.transfer(storage, RESOURCE_ENERGY)
+                // }
+
         // else{
         //     if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 290000){
         //         var code = creep.withdraw(storage, RESOURCE_ENERGY)

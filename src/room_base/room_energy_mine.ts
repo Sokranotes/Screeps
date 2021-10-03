@@ -318,7 +318,8 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
         if (!Game.spawns[spawnName].spawning){
             if (source_room.memory.source_harvester_states[i] < source_room.memory.source_harvester_num[i]){
                 source = Game.getObjectById(source_room.memory.sources_id[i])
-                if (source_room.memory.source_link_ids[i] == undefined){ // 没有link
+                console.log(source_room.memory.source_link_ids[i])
+                if (source_room.memory.source_link_ids[i] == undefined || source_room.memory.source_link_ids[i] == null){ // 没有link
                     if (source_room.memory.source_container_ids[i] == undefined){ // 没有container
                         // 暂时不支持4000的source
                         if (source.energyCapacity == 3000){

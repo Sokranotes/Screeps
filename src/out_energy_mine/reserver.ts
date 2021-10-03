@@ -15,7 +15,7 @@ export const reserver_work = function(creep: Creep){
         else if (code == ERR_INVALID_TARGET){
             creep.attackController(controller)
         }
-        creep.signController(controller, '喵呜')
+        // creep.signController(controller, '喵呜')
         if (controller != null && controller != undefined){
             if (controller.reservation != null && controller.reservation != undefined){
                 creep.memory.reservation_tick = controller.reservation.ticksToEnd
