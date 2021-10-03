@@ -15,110 +15,117 @@ const body_list: BodyPartConstant[][]= [
     [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], // 800
 ];
 
+// 房间基础保障,
+// 能量保障 extensions、spawn、Tower能量供给, 能量采集, 能量传输
+// 控制器保障
+// 安全保障(主动防御)
+
+// 房间基本功能
+// 建筑维护
+// 建造建筑, 废品回收
+// 支援, 市场交易
+// 对外扩张
 export const room_base_running = function(roomName: string){
-    var spawnName: string = 'Spawn1'
-    var cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
-    var base_transferNum: number = 3;
-    if (Game.spawns[spawnName].spawning){
-        var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
-        Game.spawns[spawnName].room.visual.text(
-            '🛠️' + spawningCreep.memory.role,
-            Game.spawns[spawnName].pos.x + 1, 
-            Game.spawns[spawnName].pos.y, 
-            {align: 'left', opacity: 0.8});
-    }
-    else if(cleaners_base_transfers.length < base_transferNum) {
-        var newName = 'Base_transfer' + Game.time;
-        Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
-    }
+    let spawnName: string
+    if (roomName == 'W47S14'){
+        tower_work(roomName)
+        spawnName = 'Spawn3'
+        var cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
+        var base_transferNum: number = 4; //
 
-    // 房间能量采集工作
-    var transfer_num: number[] = [0, 1]
-    var harvester_num: number[] = [1, 1]
-    var link_harvester_pos_xs: number[] = [5,]
-    var link_harvester_pos_ys: number[] = [12,]
-    room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
+        // 房间能量采集工作
+        var transfer_num: number[] = [0, 1]
+        var harvester_num: number[] = [1, 1]
+        var link_harvester_pos_xs: number[] = [5,]
+        var link_harvester_pos_ys: number[] = [12,]
+        room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
 
-    tower_work(roomName)
+        var room: Room = Game.rooms[roomName]
+        var energyAvailable: number = room.energyAvailable;
 
-    var room: Room = Game.rooms[roomName]
-    var energyAvailable: number = room.energyAvailable;
+        var carriersNum: number = 1;
 
-    var carriersNum: number = 1;
+        var upgradersNum: number = 2;
+        var repairersNum: number = 0;
+        var buildersNum: number = 7; //
+        var cleanerNum: number = 1;
 
-    var upgradersNum: number = 2;
-    var repairersNum: number = 0;
-    var buildersNum: number = 2;
-    var cleanerNum: number = 1;
+        var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 80);
 
-    var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 80);
+        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+        var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
+        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
 
-    var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-    var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
-    var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-
-    var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
-    if (constructions.length == 0)
-    {
-        buildersNum = 0
-    }
-
-    var tmp: number = (room.storage.store.getUsedCapacity() - 200000) / 100000
-    // tmp带小数点
-    if (tmp > upgradersNum){
-        upgradersNum = tmp
-    }
-
-    // spawn状态显示
-    if (Game.spawns[spawnName].spawning){
-        var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
-        Game.spawns[spawnName].room.visual.text(
-            '🛠️' + spawningCreep.memory.role,
-            Game.spawns[spawnName].pos.x + 1, 
-            Game.spawns[spawnName].pos.y, 
-            {align: 'left', opacity: 0.8});
-    }
-    else if(carriers.length < carriersNum) {
-        var newName = 'Carrier' + Game.time;
-        Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier'}});
-    }
-    else if(cleaners_base_transfers.length < base_transferNum) {
-        var newName = 'Base_transfer' + Game.time;
-        Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
-    }
-    else if(upgraders.length < upgradersNum) {
-        var newName = 'Upgrader' + Game.time;
-        Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
-                                            CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
-                                            MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader'}});
-    }
-    else if(repairers.length < repairersNum) {
-        var newName = 'Repairer' + Game.time;
-        var idx = Math.floor((energyAvailable-300) / 50);
-        if (idx > 10){
-            idx = 10
+        var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
+        if (constructions.length == 0)
+        {
+            buildersNum = 0
         }
-        Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'repairer'}});
-    }
-    else if (builders.length < buildersNum)
-    {
-        var newName = 'Builder' + Game.time;
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
-    }
-    else if (cleaners_base_transfers.length < cleanerNum){
-        var newName = 'Cleaner' + Game.time;
-        Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, MOVE], newName, {memory: {role: 'cleaner'}})
-    }
 
-    var dest_link: StructureLink = Game.getObjectById('6144f930e4eb6b750a8ca8c5')
-    for (var i: number = 0; i < room.memory.sources_num; i++){
-        var source_link: StructureLink = Game.getObjectById(room.memory.source_link_ids[i])
-        if (source_link != undefined){
-            source_link.transferEnergy(dest_link);
+        var tmp: number = (room.storage.store.getUsedCapacity() - 200000) / 100000
+        // tmp带小数点
+        if (tmp > upgradersNum){
+            upgradersNum = tmp
         }
+
+        // spawn状态显示
+        if (Game.spawns[spawnName].spawning){
+            var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+            Game.spawns[spawnName].room.visual.text(
+                '🛠️' + spawningCreep.memory.role,
+                Game.spawns[spawnName].pos.x + 1, 
+                Game.spawns[spawnName].pos.y, 
+                {align: 'left', opacity: 0.8});
+        }
+        else if(carriers.length < carriersNum) {
+            var newName = 'Carrier' + Game.time;
+            Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier'}});
+        }
+        else if(cleaners_base_transfers.length < base_transferNum) {
+            var newName = 'Base_transfer' + Game.time;
+            Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
+        }
+        else if(upgraders.length < upgradersNum) {
+            var newName = 'Upgrader' + Game.time;
+            Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
+                                                CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
+                                                MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader'}});
+        }
+        else if(repairers.length < repairersNum) {
+            var newName = 'Repairer' + Game.time;
+            var idx = Math.floor((energyAvailable-300) / 50);
+            if (idx > 10){
+                idx = 10
+            }
+            Game.spawns['Spawn1'].spawnCreep(body_list[idx], newName, {memory: {role: 'repairer'}});
+        }
+        else if (builders.length < buildersNum)
+        {
+            var newName = 'Builder' + Game.time;
+            Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
+        }
+        else if (cleaners_base_transfers.length < cleanerNum){
+            var newName = 'Cleaner' + Game.time;
+            Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, MOVE], newName, {memory: {role: 'cleaner'}})
+        }
+        else if(cleaners_base_transfers.length < base_transferNum) {
+            var newName = 'Base_transfer' + Game.time;
+            Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
+        }
+
+        var dest_link: StructureLink = Game.getObjectById('6144f930e4eb6b750a8ca8c5')
+        for (var i: number = 0; i < room.memory.sources_num; i++){
+            var source_link: StructureLink = Game.getObjectById(room.memory.source_link_ids[i])
+            if (source_link != undefined){
+                source_link.transferEnergy(dest_link);
+            }
+        }
+        var source_link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
+        source_link.transferEnergy(dest_link);
     }
-    var source_link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
-    source_link.transferEnergy(dest_link);
+    if (roomName == 'W48S12'){
+        spawnName = 'Spawn2'
+    }
 
     // switch (room.controller.level){
     //     // case 0:

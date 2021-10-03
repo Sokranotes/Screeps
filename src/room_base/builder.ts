@@ -12,27 +12,56 @@ export const builder_work = function(creep: Creep){
     }
     // console.log(creep.memory.is_working)
     if(creep.memory.is_working) {
-        var constructions = creep.room.find(FIND_CONSTRUCTION_SITES);
-        if (constructions)
-            if(constructions.length > 0) {
-                if(creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(constructions[0], {visualizePathStyle: {stroke: '#008cff'}});
-                }
+        // var constructions = creep.room.find(FIND_CONSTRUCTION_SITES);
+        // if (constructions){
+        //     if(constructions.length > 0) {
+        //         if(creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
+        //             creep.moveTo(constructions[0], {visualizePathStyle: {stroke: '#008cff'}});
+        //         }
+        //     }
+        //     else{
+        //         creep.memory.role = 'upgrader'
+        //     }
+        // }
+        var construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+        if (construction){
+            if(creep.build(construction) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(construction, {visualizePathStyle: {stroke: '#008cff'}});
             }
-            else{
-                creep.memory.role = 'upgrader'
-            }
+        }
+        else{
+            creep.memory.role = 'upgrader'
+        }
     }
     else {
-        var containers = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_STORAGE) && 
-                structure.store.getCapacity(RESOURCE_ENERGY) > 0;
+        // var containers = creep.room.find(FIND_STRUCTURES, {
+        //     filter: (structure) => {
+        //         return (structure.structureType == STRUCTURE_TERMINAL) && 
+        //         structure.store.getCapacity(RESOURCE_ENERGY) > 0;
+        //     }
+        // });
+        // if(containers.length > 0) {
+        //     if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        //         creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#808080'}});
+        //     }
+        // }
+        let storage: StructureStorage = Game.getObjectById('613f6f4b1dd6ef15e8dfa724')
+        if (storage){
+            if(creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(storage, {visualizePathStyle: {stroke: '#808080'}});
             }
-        });
-        if(containers.length > 0) {
-            if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#808080'}});
+        }
+        else{
+            var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_TERMINAL) &&
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                }
+            });
+            if(targets.length > 0) {
+                if(creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                }
             }
         }
     }

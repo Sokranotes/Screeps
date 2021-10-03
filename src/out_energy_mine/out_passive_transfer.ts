@@ -31,7 +31,7 @@ export const out_passive_transfer_work = function(creep: Creep){
             if (creep.memory.source_roomName == 'W47S15'){
                 var targets = dest_room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE) &&
+                        return (structure.structureType == STRUCTURE_TERMINAL) &&
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                     }
                 });
@@ -39,6 +39,20 @@ export const out_passive_transfer_work = function(creep: Creep){
                     code = creep.transfer(targets[0], RESOURCE_ENERGY)
                     if(code == ERR_NOT_IN_RANGE) {
                         creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                    }
+                }
+                else{
+                    var targets = dest_room.find(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_STORAGE) &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        }
+                    });
+                    if(targets.length > 0) {
+                        code = creep.transfer(targets[0], RESOURCE_ENERGY)
+                        if(code == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                        }
                     }
                 }
             }
