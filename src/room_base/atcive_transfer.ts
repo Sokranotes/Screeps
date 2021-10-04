@@ -27,14 +27,15 @@ export const active_transfer_work = function(creep: Creep){
     // console.log(creep.memory.is_working)
     if (creep.memory.is_working){
         if (creep.store.getUsedCapacity() > 0){
-            var link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
-            code = creep.transfer(link, RESOURCE_ENERGY)
-            if(code == ERR_NOT_IN_RANGE) {
-                creep.moveTo(link, {visualizePathStyle: {stroke: '#ffff00'}});
-            }
-            else if(code == OK){
-                source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
-            }
+            // var link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
+            // code = creep.transfer(link, RESOURCE_ENERGY)
+            // if(code == ERR_NOT_IN_RANGE) {
+            //     creep.moveTo(link, {visualizePathStyle: {stroke: '#ffff00'}});
+            // }
+            // else if(code == OK){
+            //     source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
+            // }
+
             // var targets = dest_room.find(FIND_STRUCTURES, {
             //     filter: (structure) => {
             //         return (structure.structureType == STRUCTURE_EXTENSION ||
@@ -68,21 +69,21 @@ export const active_transfer_work = function(creep: Creep){
             //         }
             //     }
             //     else{
-            //         targets = source_room.find(FIND_STRUCTURES, {
-            //             filter: (structure) => {
-            //                 return (structure.structureType == STRUCTURE_STORAGE) &&
-            //                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-            //             }
-            //         });
-            //         if(targets.length > 0) {
-            //             code = creep.transfer(targets[0], RESOURCE_ENERGY)
-            //             if(code == ERR_NOT_IN_RANGE) {
-            //                 creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
-            //             }
-            //             else if(code == OK){
-            //                 source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
-            //             }
-            //         }
+                    var targets = source_room.find(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_TERMINAL) &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                        }
+                    });
+                    if(targets.length > 0) {
+                        code = creep.transfer(targets[0], RESOURCE_ENERGY)
+                        if(code == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                        }
+                        else if(code == OK){
+                            source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
+                        }
+                    }
             //     }
             // }
         }

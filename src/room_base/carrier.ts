@@ -2,7 +2,7 @@ import * as $ from "../modules/超级移动优化"
 
 export const carrier_work = function(creep: Creep){
     // creep.say('🔄 Here');
-    // console.log(creep.store.getCapacity())
+    creep.memory.dontPullMe = true;
     if (creep.pos.x != 8 || creep.pos.y != 19)
     {
         creep.moveTo(new RoomPosition(8, 19, 'W47S14'), {visualizePathStyle: {stroke: '#00ff0e'}})
@@ -12,8 +12,7 @@ export const carrier_work = function(creep: Creep){
         var link: StructureLink = Game.getObjectById("6159d59ae59fcf2038ecf56c")
         var upgrade_link: StructureLink = Game.getObjectById('615a13005237858c5056f75f')
         var storage: StructureStorage = Game.getObjectById("6159fc1609f790175f45c6be")
-        // console.log(link.store.getUsedCapacity(RESOURCE_ENERGY))
-        // console.log(terminal.store.getUsedCapacity(RESOURCE_ENERGY))
+        var terminal: StructureTerminal = Game.getObjectById('615ab4e746872376a3726f6f')
         if (link.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
             var code = creep.withdraw(link, RESOURCE_ENERGY)
             creep.transfer(storage, RESOURCE_ENERGY)
@@ -23,13 +22,13 @@ export const carrier_work = function(creep: Creep){
             creep.transfer(link, RESOURCE_ENERGY)
             link.transferEnergy(upgrade_link)
         }
-                // if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 290000){
-                //     var tmp = creep.store.getUsedCapacity(RESOURCE_ENERGY)
-                //     code = creep.transfer(terminal, RESOURCE_ENERGY)
-                // }
-                // else{
-                //     creep.transfer(storage, RESOURCE_ENERGY)
-                // }
+        if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 100000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY)){
+            var tmp = creep.store.getUsedCapacity(RESOURCE_ENERGY)
+            code = creep.transfer(terminal, RESOURCE_ENERGY)
+        }
+        else{
+            creep.transfer(storage, RESOURCE_ENERGY)
+        }
 
         // else{
         //     if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 290000){

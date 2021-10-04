@@ -150,11 +150,11 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
     var dest_room: Room = Game.rooms[dest_roomName]
     // room空值检查
     if (source_room == undefined){
-        console.log(Game.time, " ", source_roomName, ' undefined', 'room_energy_mine_routine source_room')
+        console.log(Game.time, "room_energy_mine_routine", ' source_room:', source_roomName, ' undefined')
         return
     }
     if (dest_room == undefined){
-        console.log(Game.time, " ", dest_roomName, ' undefined', 'room_energy_mine_routine dest_room')
+        console.log(Game.time, "room_energy_mine_routine", 'dest_room:', dest_roomName, 'undefined')
         return
     }
     var source: Source
@@ -318,7 +318,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
         if (!Game.spawns[spawnName].spawning){
             if (source_room.memory.source_harvester_states[i] < source_room.memory.source_harvester_num[i]){
                 source = Game.getObjectById(source_room.memory.sources_id[i])
-                console.log(source_room.memory.source_link_ids[i])
                 if (source_room.memory.source_link_ids[i] == undefined || source_room.memory.source_link_ids[i] == null){ // 没有link
                     if (source_room.memory.source_container_ids[i] == undefined){ // 没有container
                         // 暂时不支持4000的source
@@ -418,7 +417,7 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                 else{ // 含有link
                     link = Game.getObjectById(source_room.memory.source_link_ids[i])
                     if (link_harvester_pos_xs[i] == undefined || link_harvester_pos_ys[i] == undefined){
-                        console.log('link_harvester_pos_xs', 'undefined', 'or', 'link_harvester_pos_ys', 'undefined', 'room_energy_mine_routine link_harvester_pos_xs', i)
+                        console.log(Game.time, "room_energy_mine_routine link_harvester_pos_x/ys undefined room:", source_roomName, 'i:', i)
                     }
                     // 暂时不支持4000的source
                     if (source.energyCapacity == 3000){
@@ -525,11 +524,11 @@ export const room_energy_mine = function(source_roomName: string, dest_roomName:
     var dest_room: Room = Game.rooms[dest_roomName]
     // room空值检查
     if (source_room == undefined){
-        console.log(Game.time, " ", source_roomName, ' undefined', 'room_energy_mine source_room')
+        console.log(Game.time, 'room_energy_mine source_room', source_roomName, ' undefined')
         return
     }
     if (dest_room == undefined){
-        console.log(Game.time, " ", dest_roomName, ' undefined', 'room_energy_mine dest_room')
+        console.log(Game.time, "room_energy_mine dest_room", dest_roomName, ' undefined')
         return
     }
     room_energy_mine_init(source_room)

@@ -1,4 +1,3 @@
-import { head } from "lodash";
 import * as $ from "../modules/超级移动优化"
 
 export const out_soldier_work = function(creep: Creep){

@@ -18,6 +18,9 @@ interface CreepMemory {
     reservation_tick?: number
 
     mine_idx?: number
+    mine_type?
+
+    dontPullMe?: boolean
 
     // transfer_start?:
     // transfer_type?:

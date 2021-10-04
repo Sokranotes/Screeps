@@ -2,6 +2,12 @@ import * as $ from "../modules/超级移动优化"
 
 export const energy_harvester_with_carry_work = function(creep: Creep){
     // creep.say('🔄 Here');
+    if (creep.room.name == 'W48S12' && creep.memory.source_idx == 0){
+        if (creep.pos.x != 7 || creep.pos.y != 23){
+            creep.moveTo(new RoomPosition(7, 23, 'W48S12'))
+            return
+        }
+    }
     if (creep.store.getCapacity() >= 50)
     {
         var transfer_creep = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
@@ -12,6 +18,13 @@ export const energy_harvester_with_carry_work = function(creep: Creep){
             }
         });
         creep.transfer(transfer_creep, RESOURCE_ENERGY)
+    }
+    if (creep.memory.source_roomName == 'W48S12' && creep.memory.source_idx == 0){
+        // 为了通过类型检查
+        var res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+        creep.pickup(res)
+        let container: StructureStorage = Game.getObjectById('615a2a4846d6c263b42bfee6')
+        creep.transfer(container, RESOURCE_ENERGY)
     }
     var source_room: Room = Game.rooms[creep.memory.source_roomName]
     if (source_room == undefined){
