@@ -23,9 +23,9 @@ export const tower_work = function(roomName: string){
     }
     var closestHostiles
     closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
-    if (closestHostiles.length > 0){
-        console.log(Game.time, roomName, ' 发现敌军' + closestHostiles.length + closestHostiles[0].owner)
-    }
+    // if (closestHostiles.length > 0){
+    //     console.log(Game.time, roomName, ' 发现敌军' + closestHostiles.length + closestHostiles[0].owner)
+    // }
     for (let tower_id in tower_list){
         let tower: StructureTower = Game.getObjectById(tower_list[tower_id])
         if (tower){
@@ -35,10 +35,16 @@ export const tower_work = function(roomName: string){
             }
             if(tower) {
                 if(closestHostiles.length > 0) {
+                    if (tower.room.memory.war_flag == false){
+                        console.log(Game.time, roomName, ' 发现敌军' + closestHostiles.length + closestHostiles[0].owner.name)
+                    }
                     tower.room.memory.war_flag = true
                     tower.attack(closestHostiles[0]);
                 }
                 else if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.7*tower.store.getCapacity(RESOURCE_ENERGY))){
+                    if (tower.room.memory.war_flag){
+                        
+                    }
                     tower.room.memory.war_flag = false
                     var ramparts = tower.room.find(FIND_STRUCTURES, {
                         filter: (structure) => structure.hits < 100000  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)

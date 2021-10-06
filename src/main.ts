@@ -16,10 +16,9 @@ export const main = function(){
             delete Memory.creeps[name];
         }
     }
-    
+
     different_role_work()
 
-    
     room_W48S12_running('W48S12')
 
     let spawnName = 'Spawn1'
@@ -52,47 +51,45 @@ export const main = function(){
     //     if (_.filter(Game.creeps, (creep) => creep.memory.role == 'new_room_help').length < 8)
     //         Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'helper' + Game.time, {memory: {role: 'new_room_help'}});
     // }
-    else{
-        if (_.filter(Game.creeps, (creep) => creep.memory.role == 'new_room_help').length < 0)
-            Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'helper' + Game.time, {memory: {role: 'new_room_help'}});
-    }
+    // else{
+    //     if (_.filter(Game.creeps, (creep) => creep.memory.role == 'new_room_help').length < 0)
+    //         Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'helper' + Game.time, {memory: {role: 'new_room_help'}});
+    // }
 
 
-    let attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == 'W47S15' && creep.ticksToLive > 80)
-    if (Game.spawns[spawnName].spawning){
-        let spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
-        Game.spawns[spawnName].room.visual.text(
-            '🛠️' + spawningCreep.memory.role,
-            Game.spawns[spawnName].pos.x + 1, 
-            Game.spawns[spawnName].pos.y, 
-            {align: 'left', opacity: 0.8});
-    }
-    else if(dismates.length < 0) {
-        let newName = 'dismate' + Game.time;
-        Game.spawns[spawnName].spawnCreep([WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE], newName, {memory: {role: 'dismate'}});
-    }
-    else if(attacks.length < 0) {
-        let newName = 'attack' + Game.time;
-        Game.spawns[spawnName].spawnCreep([ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE], newName, {memory: {role: 'attack'}});
-    }
-    else if(ranges.length < 0) {
-        let newName = 'range' + Game.time;
-        Game.spawns[spawnName].spawnCreep([RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, {memory: {role: 'range'}});
-    }
-    else if(doctors.length < 0) {
-        let newName = 'Doctor' + Game.time;
-        Game.spawns[spawnName].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, {memory: {role: 'doctor'}});
-    }
-    else if(attack_controllers.length < 0) {
-        let newName = 'attack_controller' + Game.time;
-        Game.spawns[spawnName].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, {memory: {role: 'attack_controllers'}});
-    }
-    else if (attack_invader_cores.length < 0){
-        let newName = 'attack_invader_core' + Game.time;
-        Game.spawns[spawnName].spawnCreep([TOUGH,TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'attack_invader_core', dest_roomName: 'W47S14', source_roomName: 'W47S15'}});
-    }
-
-    let rooms = ['W47S14']
+    // let attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == 'W47S15' && creep.ticksToLive > 80)
+    // if (Game.spawns[spawnName].spawning){
+    //     let spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+    //     Game.spawns[spawnName].room.visual.text(
+    //         '🛠️' + spawningCreep.memory.role,
+    //         Game.spawns[spawnName].pos.x + 1, 
+    //         Game.spawns[spawnName].pos.y, 
+    //         {align: 'left', opacity: 0.8});
+    // }
+    // else if(dismates.length < 0) {
+    //     let newName = 'dismate' + Game.time;
+    //     Game.spawns[spawnName].spawnCreep([WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE], newName, {memory: {role: 'dismate'}});
+    // }
+    // else if(attacks.length < 0) {
+    //     let newName = 'attack' + Game.time;
+    //     Game.spawns[spawnName].spawnCreep([ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE], newName, {memory: {role: 'attack'}});
+    // }
+    // else if(ranges.length < 0) {
+    //     let newName = 'range' + Game.time;
+    //     Game.spawns[spawnName].spawnCreep([RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], newName, {memory: {role: 'range'}});
+    // }
+    // else if(doctors.length < 0) {
+    //     let newName = 'Doctor' + Game.time;
+    //     Game.spawns[spawnName].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, {memory: {role: 'doctor'}});
+    // }
+    // else if(attack_controllers.length < 0) {
+    //     let newName = 'attack_controller' + Game.time;
+    //     Game.spawns[spawnName].spawnCreep([HEAL, HEAL, HEAL, HEAL, MOVE, MOVE], newName, {memory: {role: 'attack_controllers'}});
+    // }
+    // else if (attack_invader_cores.length < 0){
+    //     let newName = 'attack_invader_core' + Game.time;
+    //     Game.spawns[spawnName].spawnCreep([TOUGH,TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'attack_invader_core', dest_roomName: 'W47S14', source_roomName: 'W47S15'}});
+    // }
 
     tower_work('W48S12')
 
@@ -114,6 +111,7 @@ export const main = function(){
     var link_harvester_pos_xs = [,]
     var link_harvester_pos_ys = [,]
     room_energy_mine('W48S12', 'W48S12', 'Spawn2', harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
+
     if (Game.spawns['Spawn2'].spawning){
         var spawningCreep = Game.creeps[Game.spawns['Spawn2'].spawning.name];
         Game.spawns['Spawn2'].room.visual.text(
@@ -131,6 +129,7 @@ export const main = function(){
         Game.spawns['Spawn2'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], newName, {memory: {role: 'builder', source_roomName: 'W48S12', dest_roomName: 'W48S12', source_idx: 0}});
     }
 
+    let rooms = ['W47S14']
     // 房间基本运营
     for (let idx in rooms){
         room_base_running(rooms[idx])

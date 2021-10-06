@@ -10,7 +10,6 @@ import { passive_transfer_work } from "./room_base/passive_transfer";
 import { repairer_work } from "./room_base/repairer";
 import { upgrader_link_work } from "./room_base/upgrader_link";
 
-
 import { out_soldier_work } from "@/out_energy_mine/out_soldier";
 import { out_scout_work } from './out_energy_mine/out_scout';
 import { out_energy_harvester_with_carry_work } from './out_energy_mine/out_energy_harvester_with_carry';
@@ -26,6 +25,8 @@ import { miner_work } from "./mineral/miner";
 import { mine_transfer_work } from "./mineral/mine_transfer";
 import { tower_transfer_work } from "./room_base/tower_transfer";
 import { upgrader_work } from "./room_base/low_level/upgrader";
+import { harvester_work } from "./room_base/low_level/harvester";
+import { test_work } from "./test";
 
 export const different_role_work = function(){
     // 不同role的creep工作
@@ -99,15 +100,15 @@ export const different_role_work = function(){
         // else if (creep.memory.role == 'dismate'){
         //     dismate_work(creep)
         // }
-        else if (creep.memory.role == 'attack'){
-            attack_work(creep)
-        }
+        // else if (creep.memory.role == 'attack'){
+        //     attack_work(creep)
+        // }
         // else if (creep.memory.role == 'range'){
         //     range_work(creep)
         // }
-        else if (creep.memory.role == 'claim_controller'){
-            claim_controller_work(creep)
-        }
+        // else if (creep.memory.role == 'claim_controller'){
+        //     claim_controller_work(creep)
+        // }
         else if (creep.memory.role == 'new_room_help'){
             new_room_help_work(creep)
         }
@@ -124,8 +125,16 @@ export const different_role_work = function(){
         //     carrier_help_work(creep)
         // }
 
+        // low level
         else if (creep.memory.role == 'upgrader'){
             upgrader_work(creep)
+        }
+        else if (creep.memory.role == 'harvester'){
+            harvester_work(creep)
+        }
+
+        else if (creep.memory.role == 'test'){
+            test_work(creep)
         }
     }
 }

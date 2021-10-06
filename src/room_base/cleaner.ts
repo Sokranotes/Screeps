@@ -1,5 +1,4 @@
 import * as $ from "../modules/超级移动优化"
-import { passive_transfer_work } from "./passive_transfer";
 
 export const cleaner_work = function(creep: Creep){
     // creep.say('🔄 Here');

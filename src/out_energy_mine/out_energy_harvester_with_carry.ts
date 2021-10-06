@@ -35,7 +35,7 @@ export const out_energy_harvester_with_carry_work = function(creep: Creep){
             if (code == ERR_NOT_IN_RANGE){
                 code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
             }
-            else if (code != ERR_BUSY && code != OK){
+            else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_RESOURCES){
                 console.log(Game.time, 'out_energy_harvester_with_carry_work', code)
             }
         }

@@ -47,7 +47,7 @@ export const room_base_running = function(roomName: string){
         var tower_transfersNum: number = 1;
 
         var upgradersNum: number = 3;
-        var repairersNum: number = 2;
+        var repairersNum: number = 0;
         var buildersNum: number = 1;
         var cleanerNum: number = 0;
 
