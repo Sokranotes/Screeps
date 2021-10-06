@@ -13,17 +13,25 @@ export const out_passive_transfer_work = function(creep: Creep){
     }
     else if (Game.rooms[creep.memory.source_roomName].memory.war_flag == true){
         creep.memory.is_working = false
-        creep.moveTo(new RoomPosition(8, 34, creep.memory.dest_roomName), {visualizePathStyle: {stroke: '#808080'}})
+        if(!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) {
+            creep.memory.path = creep.pos.findPathTo(new RoomPosition(8, 34, creep.memory.dest_roomName));
+        }
+        creep.moveByPath(creep.memory.path);
+        if (creep.pos.inRangeTo(new RoomPosition(8, 34, creep.memory.dest_roomName), 2)){
+            creep.memory.path = null
+        }
     }
     else{
         if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
             // 如果在transfer状态，且没有能量了，那么退出transfer状态
             creep.memory.is_working = false;
+            creep.memory.path = null
             creep.say('🔄 harvest');
         }
         if(!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
             //如果在采集状态，且采集不了了，装满了，退出采集状态
             creep.memory.is_working = true;
+            creep.memory.path = null
             creep.say('🚧 transfer');
         }
         if (creep.memory.is_working == true){
@@ -33,18 +41,37 @@ export const out_passive_transfer_work = function(creep: Creep){
                 if (link2.store.getUsedCapacity(RESOURCE_ENERGY) < 800){
                     let code = creep.transfer(link2, RESOURCE_ENERGY)
                     if(code == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(link2, {visualizePathStyle: {stroke: '#ffff00'}});
+                        if(!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) {
+                            creep.memory.path = creep.pos.findPathTo(link2);
+                        }
+                        creep.moveByPath(creep.memory.path);
+                    }
+                    else if (code == OK){
+                        creep.memory.path = null
                     }
                 }
                 else if (link1.store.getUsedCapacity(RESOURCE_ENERGY) < 800){
                     let code = creep.transfer(link1, RESOURCE_ENERGY)
                     if(code == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(link1, {visualizePathStyle: {stroke: '#ffff00'}});
+                        if(!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) {
+                            creep.memory.path = creep.pos.findPathTo(link2);
+                        }
+                        creep.moveByPath(creep.memory.path);
+                        creep.moveTo(link1, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 30});
+                    }
+                    else if (code == OK){
+                        creep.memory.path = null
                     }
                 }
             }
             else{
-                creep.moveTo(link2, {visualizePathStyle: {stroke: '#ffff00'}});
+                if(!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) {
+                    creep.memory.path = creep.pos.findPathTo(link2);
+                }
+                creep.moveByPath(creep.memory.path);
+                if (creep.pos.inRangeTo(link2, 2)){
+                    creep.memory.path = null
+                }
             }
         }
         else{
@@ -61,7 +88,13 @@ export const out_passive_transfer_work = function(creep: Creep){
                 }
             });
             if (farm_creeps.length > 0){
-                creep.moveTo(farm_creeps[0], {visualizePathStyle: {stroke: '#008cff'}})
+                if(!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) {
+                    creep.memory.path = creep.pos.findPathTo(farm_creeps[0]);
+                }
+                creep.moveByPath(creep.memory.path);
+                if (creep.pos.inRangeTo(farm_creeps[0], 2)){
+                    creep.memory.path = null
+                }
             }
             else{
                 let source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx])
@@ -82,7 +115,13 @@ export const out_passive_transfer_work = function(creep: Creep){
                         place = new RoomPosition(source.pos.x + 8, source.pos.y + 8, creep.memory.source_roomName)
                     }
                 }
-                creep.moveTo(place, {visualizePathStyle: {stroke: '#008cff'}})
+                if(!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) {
+                    creep.memory.path = creep.pos.findPathTo(place);
+                }
+                creep.moveByPath(creep.memory.path);
+                if (creep.pos.inRangeTo(place, 2)){
+                    creep.memory.path = null
+                }
             }
             let res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
             creep.pickup(res)

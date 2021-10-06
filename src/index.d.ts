@@ -19,6 +19,7 @@ interface CreepMemory {
 
     mine_idx?: number
     mine_type?
+    path?
 
     dontPullMe?: boolean
 

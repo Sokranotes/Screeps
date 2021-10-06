@@ -47,10 +47,22 @@ export const attack_invader_core_work = function(creep: Creep){
                 }
                 else{
                     if (creep.room.name == 'W47S15'){
-                        creep.moveTo(new RoomPosition(46, 24, 'W47S15'))
+                        if(!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) {
+                            creep.memory.path = creep.pos.findPathTo(new RoomPosition(46, 24, 'W47S15'));
+                        }
+                        creep.moveByPath(creep.memory.path);
+                        if (creep.pos.inRangeTo(new RoomPosition(46, 24, 'W47S15'), 2)){
+                            creep.memory.path = null
+                        }
                     }
                     else if (creep.room.name == 'W48S14'){
-                        creep.moveTo(new RoomPosition(8, 34, 'W48S14'))
+                        if(!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) {
+                            creep.memory.path = creep.pos.findPathTo(new RoomPosition(8, 34, 'W48S14'));
+                        }
+                        creep.moveByPath(creep.memory.path);
+                        if (creep.pos.inRangeTo(new RoomPosition(8, 34, 'W48S14'), 2)){
+                            creep.memory.path = null
+                        }
                     }
                 }
             }
