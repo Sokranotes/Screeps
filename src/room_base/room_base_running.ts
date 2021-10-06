@@ -44,9 +44,10 @@ export const room_base_running = function(roomName: string){
         var energyAvailable: number = room.energyAvailable;
 
         var carriersNum: number = 1;
+        var tower_transfersNum: number = 1;
 
-        var upgradersNum: number = 1;
-        var repairersNum: number = 0;
+        var upgradersNum: number = 3;
+        var repairersNum: number = 2;
         var buildersNum: number = 1;
         var cleanerNum: number = 0;
 
@@ -61,6 +62,7 @@ export const room_base_running = function(roomName: string){
 
         var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
         var miner_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'mine_transfer');
+        var tower_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'tower_transfer');
 
         var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
         if (constructions.length == 0)
@@ -100,9 +102,8 @@ export const room_base_running = function(roomName: string){
             }
             if(upgraders.length < upgradersNum) {
                 var newName = 'Upgrader' + Game.time;
-                Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
-                                                    CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
-                                                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader'}});
+                Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, 
+                                                    MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader'}});
             }
             else if(upgraders.length < upgradersNum) {
                 var newName = 'Upgrader' + Game.time;
@@ -135,6 +136,10 @@ export const room_base_running = function(roomName: string){
                 var newName = 'Base_transfer' + Game.time;
                 Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
             }   
+        }
+        if(tower_transfers.length < tower_transfersNum) {
+            var newName = 'Tower_transfer' + Game.time;
+            Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'tower_transfer'}});
         }
         if(cleaners_base_transfers.length < base_transferNum) {
             var newName = 'Base_transfer' + Game.time;

@@ -3,10 +3,6 @@ import * as $ from "../modules/超级移动优化"
 export const repairer_work = function(creep: Creep){
     // creep.say('🔄 Here');
     // creep.memory.source_idx = 1 //近的这个，坐标13 29
-    var dropEngry = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES)
-    if(creep.pickup(dropEngry) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(dropEngry, {visualizePathStyle: {stroke: '#ffffff'}})
-    }
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
         creep.say('🔄 harvest');
@@ -26,27 +22,13 @@ export const repairer_work = function(creep: Creep){
             }
         }
         else{
-            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (s) => s.hits < 0.5*s.hitsMax && s.structureType != STRUCTURE_WALL
-                // filter: (s) => s.hits < s.hitsMax
+            var ramparts = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => structure.hits < 100000  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
             });
-            if(target) {
-                if(creep.repair(target) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-                }
-            }
-            else{
-                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
-                    // filter: (s) => s.hits < s.hitsMax
-                });
-                if(target) {
-                    if(creep.repair(target) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-                    }
-                }
-                else{
-                    creep.moveTo(new RoomPosition(21, 33, creep.room.name));
+            if(ramparts.length > 0) {
+                let code = creep.repair(ramparts[0])
+                if(code == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(ramparts[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
         }

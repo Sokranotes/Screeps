@@ -18,9 +18,9 @@ export const carrier_work = function(creep: Creep){
             creep.transfer(storage, RESOURCE_ENERGY)
         }
         if (upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) == 0 && link.cooldown == 0){
-            var code = creep.withdraw(storage, RESOURCE_ENERGY)
-            creep.transfer(link, RESOURCE_ENERGY)
-            link.transferEnergy(upgrade_link)
+            let code = creep.withdraw(storage, RESOURCE_ENERGY)
+            code = creep.transfer(link, RESOURCE_ENERGY)
+            code = link.transferEnergy(upgrade_link)
         }
         if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 100000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY)){
             var tmp = creep.store.getUsedCapacity(RESOURCE_ENERGY)

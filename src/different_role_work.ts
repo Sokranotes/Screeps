@@ -24,14 +24,19 @@ import { attack_work } from './war3 W48S12/attack';
 import { carrier_help_work } from './room_base/carrier_help';
 import { miner_work } from "./mineral/miner";
 import { mine_transfer_work } from "./mineral/mine_transfer";
+import { tower_transfer_work } from "./room_base/tower_transfer";
 
 export const different_role_work = function(){
     // 不同role的creep工作
     for(let name in Game.creeps) {
         let creep = Game.creeps[name];
+
         // 基础运营
         if (creep.memory.role == 'base_transfer'){
             base_transfer_work(creep)
+        }
+        if (creep.memory.role == 'tower_transfer'){
+            tower_transfer_work(creep)
         }
         // 挖运分离三种能量采集方式
         else if (creep.memory.role == 'energy_harvester_with_carry'){
@@ -65,6 +70,7 @@ export const different_role_work = function(){
         else if (creep.memory.role == 'cleaner'){
             cleaner_work(creep) // 视情况调整
         }
+
 
         // 外矿
         else if (creep.memory.role == 'out_scout'){

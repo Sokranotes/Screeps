@@ -41,10 +41,10 @@ export const tower_work = function(roomName: string){
                 else if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.7*tower.store.getCapacity(RESOURCE_ENERGY))){
                     tower.room.memory.war_flag = false
                     var ramparts = tower.room.find(FIND_STRUCTURES, {
-                        filter: (structure) => structure.hits < 100000  && structure.structureType == STRUCTURE_RAMPART
+                        filter: (structure) => structure.hits < 10000  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
                     });
-                    // if(ramparts.length > 0) {
-                    if(false) {
+                    if(ramparts.length > 0) {
+                    // if(false) {
                         tower.repair(ramparts[0]);
                     }
                     else{

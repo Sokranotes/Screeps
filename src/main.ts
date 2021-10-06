@@ -29,7 +29,7 @@ export const main = function(){
     out_room_energy_mine('W47S15', 'W47S14', spawnName, harvester_num, transfer_num)
 
     spawnName = spawnName
-    transfer_num = [4, 3]
+    transfer_num = [3, 4]
     harvester_num = [1, 1]
     out_room_energy_mine('W48S15', 'W47S14', 'Spawn3', harvester_num, transfer_num)
 

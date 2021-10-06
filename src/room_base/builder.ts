@@ -31,7 +31,7 @@ export const builder_work = function(creep: Creep){
                     }
                 }
                 else{
-                    creep.memory.role = 'upgrader'
+                    creep.memory.role = 'repairer'
                 }
             }
         }
