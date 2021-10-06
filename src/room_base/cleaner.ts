@@ -16,14 +16,14 @@ export const cleaner_work = function(creep: Creep){
         creep.say('🚧 pickup');
     }
     if (creep.memory.is_working){
-        var res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+        let res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
         if (res != null){
             if (creep.pickup(res) == ERR_NOT_IN_RANGE){
                 creep.moveTo(res, {visualizePathStyle: {stroke: '#ffff00'}})
             }
         }
         else{
-            var tomb = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
+            let tomb = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
                 filter: (structure) => {
                     return (structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
                 }
@@ -34,7 +34,7 @@ export const cleaner_work = function(creep: Creep){
                 }
             }
             else{
-                var ruin = creep.pos.findClosestByRange(FIND_RUINS, {
+                let ruin = creep.pos.findClosestByRange(FIND_RUINS, {
                     filter: (structure) => {
                         return (structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
                     }
@@ -45,26 +45,14 @@ export const cleaner_work = function(creep: Creep){
                     }
                 }
                 else{
-                    if (creep.room.name == 'W48S12'){
-                        creep.memory.role = 'passive_transfer'
-                        creep.memory.source_idx = 1
-                    }
-                    if (creep.store.getUsedCapacity() > 0){
-                        creep.memory.is_working = false
-                    }
-                    else if (creep.pos.x != 10 && creep.pos.y != 15){
-                        creep.moveTo(new RoomPosition(10, 15, creep.room.name))
-                    }
-                    else{
-                        creep.memory.role = 'base_transfer'
-                    }
+                    creep.memory.role = 'base_transfer'
                 }
             }
         }
     }
     else{
         if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0 && creep.store.getUsedCapacity() != 0){
-            var targets = creep.room.find(FIND_STRUCTURES, {
+            let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_STORAGE);
                 }
@@ -87,7 +75,7 @@ export const cleaner_work = function(creep: Creep){
                 }
             }
             else{
-                var targets = creep.room.find(FIND_STRUCTURES, {
+                let targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_TERMINAL);
                     }
@@ -104,10 +92,13 @@ export const cleaner_work = function(creep: Creep){
                 if(creep.transfer(targets[0], RESOURCE_UTRIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
                 }
+                if(creep.transfer(targets[0], RESOURCE_HYDROGEN) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                }
             }
         }
         else{
-            var targets = creep.room.find(FIND_STRUCTURES, {
+            let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                             structure.structureType == STRUCTURE_SPAWN) &&
@@ -120,7 +111,7 @@ export const cleaner_work = function(creep: Creep){
                 }
             }
             else{
-                var targets = creep.room.find(FIND_STRUCTURES, {
+                let targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_STORAGE) &&
                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
@@ -132,7 +123,7 @@ export const cleaner_work = function(creep: Creep){
                     }
                 }
                 else{
-                    var targets = creep.room.find(FIND_STRUCTURES, {
+                    let targets = creep.room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
                             return (structure.structureType == STRUCTURE_TOWER &&
                                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);

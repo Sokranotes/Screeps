@@ -49,6 +49,9 @@ export const attack_invader_core_work = function(creep: Creep){
                     if (creep.room.name == 'W47S15'){
                         creep.moveTo(new RoomPosition(46, 24, 'W47S15'))
                     }
+                    else if (creep.room.name == 'W48S14'){
+                        creep.moveTo(new RoomPosition(8, 34, 'W48S14'))
+                    }
                 }
             }
         }

@@ -1,14 +1,14 @@
 import { active_transfer_work } from "./room_base/atcive_transfer";
 import { base_transfer_work } from "./room_base/base_transfer";
 import { builder_work } from "./room_base/builder";
-import { carrier_work } from "./room_base/carrier";
+import { carrier_W47S14_work} from "./room_base/carrier_W47S14";
 import { cleaner_work } from "./room_base/cleaner";
 import { energy_harvester_link_work } from "./room_base/energy_harvester_link";
 import { energy_harvester_no_carry_work } from "./room_base/energy_harvester_no_carry";
 import { energy_harvester_with_carry_work } from "./room_base/energy_harvester_with_carry";
 import { passive_transfer_work } from "./room_base/passive_transfer";
 import { repairer_work } from "./room_base/repairer";
-import { upgrader_work } from "./room_base/upgrader";
+import { upgrader_link_work } from "./room_base/upgrader_link";
 
 
 import { out_soldier_work } from "@/out_energy_mine/out_soldier";
@@ -25,6 +25,7 @@ import { carrier_help_work } from './room_base/carrier_help';
 import { miner_work } from "./mineral/miner";
 import { mine_transfer_work } from "./mineral/mine_transfer";
 import { tower_transfer_work } from "./room_base/tower_transfer";
+import { upgrader_work } from "./room_base/low_level/upgrader";
 
 export const different_role_work = function(){
     // 不同role的creep工作
@@ -54,12 +55,12 @@ export const different_role_work = function(){
         else if (creep.memory.role == 'energy_harvester_link'){
             energy_harvester_link_work(creep)
         }
-        else if (creep.memory.role == 'carrier'){
-            carrier_work(creep)
+        else if (creep.memory.role == 'carrier_W47S14'){
+            carrier_W47S14_work(creep)
         }
         // 房间基本功能
-        else if(creep.memory.role == 'upgrader') {
-            upgrader_work(creep);
+        else if(creep.memory.role == 'upgrader_link') {
+            upgrader_link_work(creep);
         }
         else if(creep.memory.role == 'repairer') {
             repairer_work(creep); // 后期由Tower接替
@@ -122,5 +123,9 @@ export const different_role_work = function(){
         // else if (creep.memory.role == 'carrier_help'){
         //     carrier_help_work(creep)
         // }
+
+        else if (creep.memory.role == 'upgrader'){
+            upgrader_work(creep)
+        }
     }
 }

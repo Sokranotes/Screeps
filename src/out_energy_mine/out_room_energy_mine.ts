@@ -505,7 +505,7 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
         room_energy_mine_init(source_room)
         room_energy_mine_routine(source_roomName, dest_roomName, spawnName, harvester_num, transfer_num)
     }
-    if (source_roomName == 'W47S15'){
+    if (source_roomName == 'W47S15' || source_roomName == 'W48S14'){
         Game.rooms['W47S15'].memory.war_flag == false
         if (Game.spawns[spawnName].spawning){
             var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];

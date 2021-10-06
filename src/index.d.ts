@@ -72,6 +72,9 @@ interface RoomMemory {
     enemy_num?: number
     transfer_to_terminal?: number
 
+    storage_id?: Id<StructureStorage>
+    terminal_id?: Id<StructureTerminal>
+
     test_flag?: boolean
 }
 

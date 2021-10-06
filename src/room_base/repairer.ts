@@ -2,7 +2,6 @@ import * as $ from "../modules/超级移动优化"
 
 export const repairer_work = function(creep: Creep){
     // creep.say('🔄 Here');
-    // creep.memory.source_idx = 1 //近的这个，坐标13 29
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
         creep.say('🔄 harvest');
@@ -11,10 +10,10 @@ export const repairer_work = function(creep: Creep){
         creep.memory.is_working = true;
         creep.say('🚧 repair');
     }
+    // console.log(creep.memory.is_working)
     if(creep.memory.is_working) {
-        var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: (s) => s.hits < 0.5*s.hitsMax && s.structureType == STRUCTURE_CONTAINER
-            // filter: (s) => s.hits < s.hitsMax
+        let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (s) => s.hits < 1000 && s.structureType != STRUCTURE_LAB
         });
         if(target) {
             if(creep.repair(target) == ERR_NOT_IN_RANGE) {
@@ -22,8 +21,8 @@ export const repairer_work = function(creep: Creep){
             }
         }
         else{
-            var ramparts = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < 100000  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
+            let ramparts = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => structure.hits < 0.2*structure.hitsMax  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
             });
             if(ramparts.length > 0) {
                 let code = creep.repair(ramparts[0])
@@ -34,7 +33,7 @@ export const repairer_work = function(creep: Creep){
         }
     }
     else {
-        var containers = creep.room.find(FIND_STRUCTURES, {
+        let containers = creep.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
             return (structure.structureType == STRUCTURE_STORAGE) && 
             structure.store.getCapacity(RESOURCE_ENERGY) > 0;

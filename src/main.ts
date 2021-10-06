@@ -6,6 +6,7 @@ import { tower_work } from './room_base/tower';
 import { room_energy_mine } from './room_base/room_energy_mine';
 import { out_room_energy_mine } from "@/out_energy_mine/out_room_energy_mine";
 import { different_role_work } from './different_role_work';
+import { room_W48S12_running } from './room_W48S12';
 
 
 export const main = function(){
@@ -17,6 +18,9 @@ export const main = function(){
     }
     
     different_role_work()
+
+    
+    room_W48S12_running('W48S12')
 
     let spawnName = 'Spawn1'
     let transfer_num = [3, 2]

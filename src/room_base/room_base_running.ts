@@ -54,9 +54,9 @@ export const room_base_running = function(roomName: string){
         var minersNum: number = 0;
         var miner_transfersNum: number = 0;
 
-        var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier' && creep.ticksToLive > 80);
+        var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier_W47S14' && creep.ticksToLive > 80);
 
-        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader_link');
         var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
         var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
 
@@ -77,9 +77,9 @@ export const room_base_running = function(roomName: string){
         }
         // var tmp = 0
         // tmp带小数点
-        if (tmp > upgradersNum){
-            upgradersNum = tmp
-        }
+        // if (tmp > upgradersNum){
+        //     upgradersNum = tmp
+        // }
 
         // spawn状态显示
         if (Game.spawns[spawnName].spawning){
@@ -101,15 +101,9 @@ export const room_base_running = function(roomName: string){
                 Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'miner', source_roomName: 'W47S14', dest_roomName: 'W47S14', mine_idx: 0}});
             }
             if(upgraders.length < upgradersNum) {
-                var newName = 'Upgrader' + Game.time;
+                var newName = 'Upgrader_link' + Game.time;
                 Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, 
-                                                    MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader'}});
-            }
-            else if(upgraders.length < upgradersNum) {
-                var newName = 'Upgrader' + Game.time;
-                Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
-                                                    CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
-                                                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader'}});
+                                                    MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader_link'}});
             }
             else if(repairers.length < repairersNum) {
                 var newName = 'Repairer' + Game.time;
@@ -130,7 +124,7 @@ export const room_base_running = function(roomName: string){
             }
             if(carriers.length < carriersNum) {
             var newName = 'Carrier' + Game.time;
-            Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier'}});
+            Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier_W47S14'}});
             }
             if(cleaners_base_transfers.length < base_transferNum) {
                 var newName = 'Base_transfer' + Game.time;
@@ -146,18 +140,16 @@ export const room_base_running = function(roomName: string){
             Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
         }
 
+        var source1_link: StructureLink = Game.getObjectById('615d6e761b8f40360c7387dd')
+        var source2_link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
         var dest_link: StructureLink = Game.getObjectById('6159d59ae59fcf2038ecf56c')
-        // for (var i: number = 0; i < room.memory.sources_num; i++){
-        //     var source_link: StructureLink = Game.getObjectById(room.memory.source_link_ids[i])
-        //     if (source_link != undefined){
-        //         source_link.transferEnergy(dest_link);
-        //     }
-        // }
-        var source_link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
-        var upgrade_link: StructureLink = Game.getObjectById('615a13005237858c5056f75f')
-        source_link.transferEnergy(dest_link);
-        if (upgrade_link.store.getFreeCapacity(RESOURCE_ENERGY) > 0){
-            dest_link.transferEnergy(upgrade_link);
+        let upgrade_link: StructureLink = Game.getObjectById('615a13005237858c5056f75f')
+        source1_link.transferEnergy(dest_link)
+        if (source2_link.store.getUsedCapacity(RESOURCE_ENERGY) > 600){
+            source2_link.transferEnergy(upgrade_link)
+        }
+        if (dest_link.store.getUsedCapacity(RESOURCE_ENERGY) > 600){
+            dest_link.transferEnergy(upgrade_link)
         }
     }
     if (roomName == 'W48S12'){

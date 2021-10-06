@@ -6,7 +6,7 @@ export const tower_work = function(roomName: string){
 
     // Tower防御及safe mode的激活
     if (roomName == 'W47S14'){
-        var tower_list = ['6159d77e4f3a51396dd2fcfe', '615a15ea8e77705c01ebc303']
+        var tower_list = ['6159d77e4f3a51396dd2fcfe', '615a15ea8e77705c01ebc303', '615bec8f3d8c500c57d69377']
         var spawn_list = ['Spawn1', 'Spawn3']
     }
     else if (roomName == 'W48S12'){
@@ -41,7 +41,7 @@ export const tower_work = function(roomName: string){
                 else if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.7*tower.store.getCapacity(RESOURCE_ENERGY))){
                     tower.room.memory.war_flag = false
                     var ramparts = tower.room.find(FIND_STRUCTURES, {
-                        filter: (structure) => structure.hits < 10000  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
+                        filter: (structure) => structure.hits < 100000  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
                     });
                     if(ramparts.length > 0) {
                     // if(false) {
