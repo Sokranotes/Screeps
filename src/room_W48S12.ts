@@ -4,7 +4,7 @@ export const room_W48S12_running = function(roomName: string){
     let upgradersNum: number = 4;
     
     let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-    let energyAvailable: number = home.energyAvailable;
+    let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     if (Game.spawns[spawn_name].spawning){
         let spawningCreep = Game.creeps[Game.spawns[spawn_name].spawning.name];
         Game.spawns[spawn_name].room.visual.text(
@@ -17,8 +17,8 @@ export const room_W48S12_running = function(roomName: string){
         let newName = 'Upgrader' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source_idx: 0}});
     }
-    else if (upgraders.length < upgradersNum){
+    else if (harvesters.length < upgradersNum){
         let newName = 'Harvester' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'harvester', source_idx: 0}});
+        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'harvester', source_idx: 0}});
     }
 }
