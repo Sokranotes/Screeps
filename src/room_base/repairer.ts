@@ -10,10 +10,9 @@ export const repairer_work = function(creep: Creep){
         creep.memory.is_working = true;
         creep.say('🚧 repair');
     }
-    // console.log(creep.memory.is_working)
     if(creep.memory.is_working) {
         let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: (s) => s.hits < 1000 && s.structureType != STRUCTURE_LAB
+            filter: (s) => (s.hits < 1000 && s.hits < s.hitsMax) && (s.structureType != STRUCTURE_LAB && s.structureType != STRUCTURE_EXTRACTOR)
         });
         if(target) {
             if(creep.repair(target) == ERR_NOT_IN_RANGE) {

@@ -16,17 +16,19 @@ import { out_energy_harvester_with_carry_work } from './out_energy_mine/out_ener
 import { out_passive_transfer_work } from './out_energy_mine/out_passive_transfer';
 import { reserver_work } from './out_energy_mine/reserver';
 import { attack_invader_core_work } from './out_energy_mine/attack_invader_core';
-import { claim_controller_work } from './war3 W48S12/claim_controller';
-import { new_room_help_work } from './war3 W48S12/new_room_help';
 
-import { attack_work } from './war3 W48S12/attack';
-import { carrier_help_work } from './room_base/carrier_help';
 import { miner_work } from "./mineral/miner";
 import { mine_transfer_work } from "./mineral/mine_transfer";
 import { tower_transfer_work } from "./room_base/tower_transfer";
 import { upgrader_work } from "./room_base/low_level/upgrader";
 import { harvester_work } from "./room_base/low_level/harvester";
+
 import { test_work } from "./test";
+
+import { new_room_help_work } from './war3 W48S12/new_room_help';
+import { claim_controller_work } from './war3 W48S12/claim_controller';
+import { attack_work } from './war3 W48S12/attack';
+import { carrier_help_work } from './room_base/carrier_help';
 
 export const different_role_work = function(){
     // 不同role的creep工作

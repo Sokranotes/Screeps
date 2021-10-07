@@ -106,11 +106,11 @@ export const main = function(){
         Game.spawns['Spawn2'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], newName, {memory: {role: 'upgrader'}});
     }
     // 房间能量采集工作
-    transfer_num = [0, 6]
-    harvester_num = [1, 1]
-    var link_harvester_pos_xs = [,]
-    var link_harvester_pos_ys = [,]
-    room_energy_mine('W48S12', 'W48S12', 'Spawn2', harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
+    // transfer_num = [0, 6]
+    // harvester_num = [1, 1]
+    // var link_harvester_pos_xs = [,]
+    // var link_harvester_pos_ys = [,]
+    // room_energy_mine('W48S12', 'W48S12', 'Spawn2', harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
 
     if (Game.spawns['Spawn2'].spawning){
         var spawningCreep = Game.creeps[Game.spawns['Spawn2'].spawning.name];
