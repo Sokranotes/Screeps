@@ -1,4 +1,10 @@
+import { tower_work } from "./room_base/tower";
+
 export const room_W48S12_running = function(roomName: string){
+
+    
+    tower_work('W48S12')
+
     let spawn_name = 'Spawn2'
     // let home: Room = Game.rooms[roomName]
     let upgradersNum: number = 4;
