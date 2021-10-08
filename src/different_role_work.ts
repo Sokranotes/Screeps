@@ -31,18 +31,17 @@ import { attack_work } from './war3 W48S12/attack';
 import { carrier_help_work } from './room_base/carrier_help';
 
 export const different_role_work = function(){
-    // 不同role的creep工作
     for(let name in Game.creeps) {
         let creep = Game.creeps[name];
 
-        // 基础运营
+        // base running
         if (creep.memory.role == 'base_transfer'){
             base_transfer_work(creep)
         }
         if (creep.memory.role == 'tower_transfer'){
             tower_transfer_work(creep)
         }
-        // 挖运分离三种能量采集方式
+        // 挖运分离
         else if (creep.memory.role == 'energy_harvester_with_carry'){
             energy_harvester_with_carry_work(creep)
         }
@@ -61,27 +60,27 @@ export const different_role_work = function(){
         else if (creep.memory.role == 'carrier_W47S14'){
             carrier_W47S14_work(creep)
         }
-        // 房间基本功能
+        // basic function
         else if(creep.memory.role == 'upgrader_link') {
             upgrader_link_work(creep);
         }
         else if(creep.memory.role == 'repairer') {
-            repairer_work(creep); // 后期由Tower接替
+            repairer_work(creep); // later use tower
         }
         else if(creep.memory.role == 'builder') {
             builder_work(creep);
         }
         else if (creep.memory.role == 'cleaner'){
-            cleaner_work(creep) // 视情况调整
+            cleaner_work(creep) // adjustment depend the conditon
         }
 
 
-        // 外矿
+        // out energy
         else if (creep.memory.role == 'out_scout'){
-            out_scout_work(creep) // 侦查
+            out_scout_work(creep)
         }
         else if (creep.memory.role == 'reserver'){
-            reserver_work(creep) // 预定
+            reserver_work(creep)
         }
         else if (creep.memory.role == 'out_energy_harvester_with_carry')
         {
@@ -90,7 +89,7 @@ export const different_role_work = function(){
         else if (creep.memory.role == 'out_passive_transfer'){
             out_passive_transfer_work(creep)
         }
-        // 外矿防守单位
+        // defense
         else if (creep.memory.role == 'attack_invader_core'){
             attack_invader_core_work(creep)
         }
@@ -115,6 +114,10 @@ export const different_role_work = function(){
         }
         else if (creep.memory.role == 'harvester'){
             harvester_work(creep)
+        }
+
+        else if (creep.memory.role == 'test'){
+            test_work(creep)
         }
     }
 }

@@ -15,69 +15,57 @@ const body_list: BodyPartConstant[][]= [
     [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], // 800
 ];
 
-// 房间基础保障,
-// 能量保障 extensions、spawn、Tower能量供给, 能量采集, 能量传输
-// 控制器保障
-// 安全保障(主动防御)
-
-// 房间基本功能
-// 建筑维护
-// 建造建筑, 废品回收
-// 支援, 市场交易
-// 对外扩张
 export const room_base_running = function(roomName: string){
     let spawnName: string
     if (roomName == 'W47S14'){
         tower_work(roomName)
         spawnName = 'Spawn3'
-        var cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
-        var base_transferNum: number = 2;
+        let cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
+        let base_transferNum: number = 2;
 
-        // 房间能量采集工作
-        var transfer_num: number[] = [1, 1]
-        var harvester_num: number[] = [1, 1]
-        var link_harvester_pos_xs: number[] = [,]
-        var link_harvester_pos_ys: number[] = [,]
+        let transfer_num: number[] = [1, 1]
+        let harvester_num: number[] = [1, 1]
+        let link_harvester_pos_xs: number[] = [,]
+        let link_harvester_pos_ys: number[] = [,]
         room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
 
-        var room: Room = Game.rooms[roomName]
-        var energyAvailable: number = room.energyAvailable;
+        let room: Room = Game.rooms[roomName]
+        let energyAvailable: number = room.energyAvailable;
 
-        var carriersNum: number = 1;
-        var tower_transfersNum: number = 1;
+        let carriersNum: number = 1;
+        let tower_transfersNum: number = 1;
 
-        var upgradersNum: number = 3;
-        var repairersNum: number = 0;
-        var buildersNum: number = 0;
-        // var cleanerNum: number = 0;
-        // var minersNum: number = 0;
-        // var miner_transfersNum: number = 0;
+        let upgradersNum: number = 3;
+        let repairersNum: number = 0;
+        let buildersNum: number = 0;
+        // let cleanerNum: number = 0;
+        // let minersNum: number = 0;
+        // let miner_transfersNum: number = 0;
 
-        var carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier_W47S14' && creep.ticksToLive > 80);
+        let carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier_W47S14' && creep.ticksToLive > 80);
 
-        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader_link');
-        var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
-        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+        let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader_link');
+        let repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
+        let builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
 
-        // var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
-        // var miner_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'mine_transfer');
-        var tower_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'tower_transfer');
+        // let miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
+        // let miner_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'mine_transfer');
+        let tower_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'tower_transfer');
 
-        var constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
+        let constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
         if (constructions.length == 0)
         {
             buildersNum = 0
         }
 
-        var tmp: number = (room.storage.store.getUsedCapacity() - 200000) / 100000
+        let tmp: number = (room.storage.store.getUsedCapacity() - 200000) / 100000
         if (room.storage.store.getUsedCapacity() < 50000){
             tmp = 0
             upgradersNum = 0
         }
 
-        // spawn状态显示
         if (Game.spawns[spawnName].spawning){
-            var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+            let spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
             Game.spawns[spawnName].room.visual.text(
                 '🛠️' + spawningCreep.memory.role,
                 Game.spawns[spawnName].pos.x + 1, 
@@ -87,21 +75,21 @@ export const room_base_running = function(roomName: string){
         else
         {
             // if(miner_transfers.length < miner_transfersNum) {
-            //     var newName = 'Miner_transfer' + Game.time;
+            //     let newName = 'Miner_transfer' + Game.time;
             //     Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'mine_transfer', source_roomName: 'W47S14', dest_roomName: 'W47S14', mine_type: RESOURCE_HYDROGEN}});
             // }
             // else if(miners.length < minersNum) {
-            //     var newName = 'Miner' + Game.time;
+            //     let newName = 'Miner' + Game.time;
             //     Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'miner', source_roomName: 'W47S14', dest_roomName: 'W47S14', mine_idx: 0}});
             // }
             if(upgraders.length < upgradersNum) {
-                var newName = 'Upgrader_link' + Game.time;
+                let newName = 'Upgrader_link' + Game.time;
                 Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, 
                                                     MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader_link'}});
             }
             else if(repairers.length < repairersNum) {
-                var newName = 'Repairer' + Game.time;
-                var idx = Math.floor((energyAvailable-300) / 50);
+                let newName = 'Repairer' + Game.time;
+                let idx = Math.floor((energyAvailable-300) / 50);
                 if (idx > 10){
                     idx = 10
                 }
@@ -109,30 +97,30 @@ export const room_base_running = function(roomName: string){
             }
             else if (builders.length < buildersNum)
             {
-                var newName = 'Builder' + Game.time;
+                let newName = 'Builder' + Game.time;
                 Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
             }
             // else if (cleaners_base_transfers.length < cleanerNum){
-            //     var newName = 'Cleaner' + Game.time;
+            //     let newName = 'Cleaner' + Game.time;
             //     Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE], newName, {memory: {role: 'cleaner'}})
             // }
             if(carriers.length < carriersNum) {
-            var newName = 'Carrier' + Game.time;
+            let newName = 'Carrier' + Game.time;
             Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier_W47S14'}});
             }
             if(tower_transfers.length < tower_transfersNum) {
-                var newName = 'Tower_transfer' + Game.time;
+                let newName = 'Tower_transfer' + Game.time;
                 Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'tower_transfer'}});
             }
             if(cleaners_base_transfers.length < base_transferNum) {
-                var newName = 'Base_transfer' + Game.time;
+                let newName = 'Base_transfer' + Game.time;
                 Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
             }
         }
 
-        var source1_link: StructureLink = Game.getObjectById('615d6e761b8f40360c7387dd')
-        var source2_link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
-        var dest_link: StructureLink = Game.getObjectById('6159d59ae59fcf2038ecf56c')
+        let source1_link: StructureLink = Game.getObjectById('615d6e761b8f40360c7387dd')
+        let source2_link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
+        let dest_link: StructureLink = Game.getObjectById('6159d59ae59fcf2038ecf56c')
         let upgrade_link: StructureLink = Game.getObjectById('615a13005237858c5056f75f')
         source1_link.transferEnergy(dest_link)
         if (source2_link.store.getUsedCapacity(RESOURCE_ENERGY) > 600){

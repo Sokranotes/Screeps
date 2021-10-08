@@ -21,7 +21,7 @@ export const repairer_work = function(creep: Creep){
         }
         else{
             let ramparts = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < 0.2*structure.hitsMax  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
+                filter: (structure) => (structure.hits < structure.hitsMax && structure.hits < 1000000)  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
             });
             if(ramparts.length > 0) {
                 let code = creep.repair(ramparts[0])
