@@ -98,19 +98,6 @@ export const different_role_work = function(){
             out_soldier_work(creep)
         }
         
-        // war 2 W48S16
-        // else if (creep.memory.role == 'dismate'){
-        //     dismate_work(creep)
-        // }
-        // else if (creep.memory.role == 'attack'){
-        //     attack_work(creep)
-        // }
-        // else if (creep.memory.role == 'range'){
-        //     range_work(creep)
-        // }
-        // else if (creep.memory.role == 'claim_controller'){
-        //     claim_controller_work(creep)
-        // }
         else if (creep.memory.role == 'new_room_help'){
             new_room_help_work(creep)
         }
@@ -122,21 +109,12 @@ export const different_role_work = function(){
             mine_transfer_work(creep)
         }
 
-        // move home
-        // else if (creep.memory.role == 'carrier_help'){
-        //     carrier_help_work(creep)
-        // }
-
         // low level
         else if (creep.memory.role == 'upgrader'){
             upgrader_work(creep)
         }
         else if (creep.memory.role == 'harvester'){
             harvester_work(creep)
-        }
-
-        else if (creep.memory.role == 'test'){
-            test_work(creep)
         }
     }
 }
