@@ -29,7 +29,7 @@ export const tower_work = function(roomName: string){
     let ramparts_walls: Structure[]
     if(closestHostiles.length == 0){
         ramparts = Game.rooms[roomName].find(FIND_STRUCTURES, {
-            filter: (structure) => structure.hits < 10000  && (structure.structureType == STRUCTURE_RAMPART)
+            filter: (structure) => structure.hits < 1000000  && (structure.structureType == STRUCTURE_RAMPART)
         });
         if(ramparts.length == 0) {
             structures = Game.rooms[roomName].find(FIND_STRUCTURES, {

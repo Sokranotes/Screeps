@@ -29,18 +29,10 @@ export const repairer_work = function(creep: Creep){
                     creep.moveTo(ramparts[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
-        }
-    }
-    else {
-        let containers = creep.room.find(FIND_STRUCTURES, {
-        filter: (structure) => {
-            return (structure.structureType == STRUCTURE_STORAGE) && 
-            structure.store.getCapacity(RESOURCE_ENERGY) > 0;
-            }
-        });
-        if(containers.length > 0) {
-            if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#808080'}});
+            else{
+                if (creep.room.name == 'W48S12'){
+                    creep.memory.role = 'builder'
+                }
             }
         }
     }

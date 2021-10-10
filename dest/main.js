@@ -3770,7 +3770,7 @@ const tower_work = function (roomName) {
     let ramparts_walls;
     if (closestHostiles.length == 0) {
         ramparts = Game.rooms[roomName].find(FIND_STRUCTURES, {
-            filter: (structure) => structure.hits < 10000 && (structure.structureType == STRUCTURE_RAMPART)
+            filter: (structure) => structure.hits < 1000000 && (structure.structureType == STRUCTURE_RAMPART)
         });
         if (ramparts.length == 0) {
             structures = Game.rooms[roomName].find(FIND_STRUCTURES, {
@@ -4709,65 +4709,85 @@ const builder_work = function (creep) {
     // creep.say('🔄 Here');
     if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
+        creep.memory.path = null;
         creep.say('🔄 harvest');
     }
     if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
         creep.memory.is_working = true;
+        creep.memory.path = null;
         creep.say('🚧 build');
     }
     if (creep.memory.is_working) {
-        let constructions = creep.room.find(FIND_CONSTRUCTION_SITES, {
+        let construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_LINK);
+                return (structure.structureType == STRUCTURE_ROAD);
             }
         });
-        if (constructions) {
+        if (construction) {
+            if (creep.build(construction) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(construction, { visualizePathStyle: { stroke: '#008cff' } });
+            }
+        }
+        else {
+            let constructions = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
             if (constructions.length > 0) {
                 if (creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(constructions[0], { visualizePathStyle: { stroke: '#008cff' } });
                 }
             }
             else {
-                let constructions = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
-                if (constructions.length > 0) {
-                    if (creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(constructions[0], { visualizePathStyle: { stroke: '#008cff' } });
-                    }
-                }
-                else {
-                    creep.memory.role = 'repairer';
-                }
+                creep.memory.role = 'repairer';
             }
         }
     }
     else {
-        let storage = Game.getObjectById('6159fc1609f790175f45c6be');
-        if (storage) {
-            if (creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(storage, { visualizePathStyle: { stroke: '#808080' } });
+        if (creep.room.name == 'W48S12') {
+            let source;
+            if (creep.room.memory.sources_id == undefined) {
+                let sources = creep.room.find(FIND_SOURCES);
+                Memory.rooms[creep.room.name].sources_id = new Array(sources.length);
+                for (let i = 0; i < sources.length; i++) {
+                    Memory.rooms[creep.room.name].sources_id[i] = sources[i].id;
+                }
+            }
+            source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+            let code = creep.harvest(source);
+            if (code == ERR_NOT_IN_RANGE) {
+                code = creep.moveTo(source.pos, { visualizePathStyle: { stroke: '#808080' } });
+            }
+            else if (code != ERR_BUSY && code != OK) {
+                console.log(Game.time, 'builder_work', code);
             }
         }
         else {
-            let targets = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_TERMINAL);
-                }
-            });
-            if (targets.length > 0) {
-                if (creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
+            let storage = Game.getObjectById('6159fc1609f790175f45c6be');
+            if (storage) {
+                if (creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(storage, { visualizePathStyle: { stroke: '#808080' } });
                 }
             }
             else {
                 let targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE) &&
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        return (structure.structureType == STRUCTURE_TERMINAL);
                     }
                 });
                 if (targets.length > 0) {
                     if (creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
+                    }
+                }
+                else {
+                    let targets = creep.room.find(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_STORAGE) &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        }
+                    });
+                    if (targets.length > 0) {
+                        if (creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
+                        }
                     }
                 }
             }
@@ -5224,18 +5244,10 @@ const repairer_work = function (creep) {
                     creep.moveTo(ramparts[0], { visualizePathStyle: { stroke: '#ffffff' } });
                 }
             }
-        }
-    }
-    else {
-        let containers = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_STORAGE) &&
-                    structure.store.getCapacity(RESOURCE_ENERGY) > 0;
-            }
-        });
-        if (containers.length > 0) {
-            if (creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(containers[0], { visualizePathStyle: { stroke: '#808080' } });
+            else {
+                if (creep.room.name == 'W48S12') {
+                    creep.memory.role = 'builder';
+                }
             }
         }
     }
@@ -5413,7 +5425,8 @@ const out_passive_transfer_work = function (creep) {
         creep.memory.is_working = false;
         let target = new RoomPosition(5, 34, creep.memory.dest_roomName);
         if ((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-            creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+            // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+            creep.memory.path = creep.pos.findPathTo(target);
         }
         let code = creep.moveByPath(creep.memory.path);
         if (code == ERR_NOT_FOUND) {
@@ -5421,7 +5434,8 @@ const out_passive_transfer_work = function (creep) {
                 creep.memory.path = null;
             }
             else {
-                creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                creep.memory.path = creep.pos.findPathTo(target);
             }
         }
         // creep.moveTo(new RoomPosition(8, 34, creep.memory.dest_roomName))
@@ -5446,7 +5460,8 @@ const out_passive_transfer_work = function (creep) {
                     if (code == ERR_NOT_IN_RANGE) {
                         let target = link2;
                         if ((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                            creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                            // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                            creep.memory.path = creep.pos.findPathTo(target);
                         }
                         let code = creep.moveByPath(creep.memory.path);
                         if (code == ERR_NOT_FOUND) {
@@ -5454,10 +5469,10 @@ const out_passive_transfer_work = function (creep) {
                                 creep.memory.path = null;
                             }
                             else {
-                                creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                                creep.memory.path = creep.pos.findPathTo(target);
                             }
                         }
-                        console.log(code);
                         // creep.moveTo(link2)
                     }
                     else if (code == OK) {
@@ -5469,7 +5484,8 @@ const out_passive_transfer_work = function (creep) {
                     if (code == ERR_NOT_IN_RANGE) {
                         let target = link1;
                         if ((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                            creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                            // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                            creep.memory.path = creep.pos.findPathTo(target);
                         }
                         let code = creep.moveByPath(creep.memory.path);
                         if (code == ERR_NOT_FOUND) {
@@ -5477,7 +5493,8 @@ const out_passive_transfer_work = function (creep) {
                                 creep.memory.path = null;
                             }
                             else {
-                                creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                                creep.memory.path = creep.pos.findPathTo(target);
                             }
                         }
                         // creep.moveTo(link1, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 30});
@@ -5490,7 +5507,8 @@ const out_passive_transfer_work = function (creep) {
             else {
                 let target = link2;
                 if ((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                    creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                    creep.memory.path = creep.pos.findPathTo(target);
                 }
                 let code = creep.moveByPath(creep.memory.path);
                 if (code == ERR_NOT_FOUND) {
@@ -5498,7 +5516,8 @@ const out_passive_transfer_work = function (creep) {
                         creep.memory.path = null;
                     }
                     else {
-                        creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                        // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                        creep.memory.path = creep.pos.findPathTo(target);
                     }
                 }
                 // creep.moveTo(link2)
@@ -5516,7 +5535,8 @@ const out_passive_transfer_work = function (creep) {
             if (farm_creeps.length > 0) {
                 let target = farm_creeps[0];
                 if ((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                    creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                    creep.memory.path = creep.pos.findPathTo(target);
                 }
                 let code = creep.moveByPath(creep.memory.path);
                 if (code == ERR_NOT_FOUND) {
@@ -5524,7 +5544,8 @@ const out_passive_transfer_work = function (creep) {
                         creep.memory.path = null;
                     }
                     else {
-                        creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                        // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                        creep.memory.path = creep.pos.findPathTo(target);
                     }
                 }
                 // creep.moveTo(farm_creeps[0])
@@ -5550,7 +5571,8 @@ const out_passive_transfer_work = function (creep) {
                 }
                 let target = place;
                 if ((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                    creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                    creep.memory.path = creep.pos.findPathTo(target);
                 }
                 let code = creep.moveByPath(creep.memory.path);
                 if (code == ERR_NOT_FOUND) {
@@ -5558,7 +5580,8 @@ const out_passive_transfer_work = function (creep) {
                         creep.memory.path = null;
                     }
                     else {
-                        creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                        // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                        creep.memory.path = creep.pos.findPathTo(target);
                     }
                 }
                 // creep.moveTo(place)
@@ -5951,7 +5974,7 @@ const upgrader_work = function (creep) {
             code = creep.moveTo(source.pos, { visualizePathStyle: { stroke: '#808080' } });
         }
         else if (code != ERR_BUSY && code != OK) {
-            console.log(Game.time, 'out_energy_harvester_with_carry_work', code);
+            console.log(Game.time, 'upgrader_work', code);
         }
     }
 };
@@ -5988,19 +6011,6 @@ const harvester_work = function (creep) {
             if (targets.length > 0) {
                 if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-            }
-            else {
-                targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_TOWER) &&
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                    }
-                });
-                if (targets.length > 0) {
-                    if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                    }
                 }
             }
         }
@@ -6229,7 +6239,9 @@ const room_W48S12_running = function (roomName) {
     let spawn_name = 'Spawn2';
     // let home: Room = Game.rooms[roomName]
     let upgradersNum = 4;
-    let buildersNum = 2;
+    let harvester0sNum = 2;
+    let harvester1sNum = 2;
+    let buildersNum = 4;
     if (Game.rooms['W48S12'].find(FIND_CONSTRUCTION_SITES).length == 0) {
         buildersNum = 0;
     }
@@ -6247,11 +6259,11 @@ const room_W48S12_running = function (roomName) {
         let newName = 'Upgrader' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, WORK, CARRY, MOVE], newName, { memory: { role: 'upgrader', source_idx: 0 } });
     }
-    else if (harvester0s.length < upgradersNum) {
+    else if (harvester0s.length < harvester0sNum) {
         let newName = 'Harvester' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'harvester', source_idx: 0 } });
     }
-    else if (harvester1s.length < upgradersNum) {
+    else if (harvester1s.length < harvester1sNum) {
         let newName = 'Harvester' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'harvester', source_idx: 1 } });
     }
@@ -6261,7 +6273,7 @@ const room_W48S12_running = function (roomName) {
     }
     else if (repairers.length < repairersNum) {
         let newName = 'Repairer' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'harvester', source_idx: 1 } });
+        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'repairer', source_idx: 1 } });
     }
 };
 

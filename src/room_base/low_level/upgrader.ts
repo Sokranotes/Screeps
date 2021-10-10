@@ -32,7 +32,7 @@ export const upgrader_work = function(creep: Creep){
             code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
         }
         else if (code != ERR_BUSY && code != OK){
-            console.log(Game.time, 'out_energy_harvester_with_carry_work', code)
+            console.log(Game.time, 'upgrader_work', code)
         }
     }
 }

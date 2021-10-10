@@ -8,7 +8,9 @@ export const room_W48S12_running = function(roomName: string){
     let spawn_name = 'Spawn2'
     // let home: Room = Game.rooms[roomName]
     let upgradersNum: number = 4;
-    let buildersNum: number = 2;
+    let harvester0sNum: number = 2
+    let harvester1sNum: number = 2
+    let buildersNum: number = 4;
     if (Game.rooms['W48S12'].find(FIND_CONSTRUCTION_SITES).length == 0){
         buildersNum = 0
     }
@@ -31,11 +33,11 @@ export const room_W48S12_running = function(roomName: string){
         let newName = 'Upgrader' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source_idx: 0}});
     }
-    else if (harvester0s.length < upgradersNum){
+    else if (harvester0s.length < harvester0sNum){
         let newName = 'Harvester' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'harvester', source_idx: 0}});
     }
-    else if (harvester1s.length < upgradersNum){
+    else if (harvester1s.length < harvester1sNum){
         let newName = 'Harvester' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'harvester', source_idx: 1}});
     }
@@ -45,6 +47,6 @@ export const room_W48S12_running = function(roomName: string){
     }
     else if (repairers.length < repairersNum){
         let newName = 'Repairer' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'harvester', source_idx: 1}});
+        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'repairer', source_idx: 1}});
     }
 }
