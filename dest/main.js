@@ -3765,27 +3765,33 @@ const tower_work = function (roomName) {
         }
     }
     let closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
-    let ramparts;
+    // let ramparts: StructureRampart[]
     let structures;
-    let ramparts_walls;
+    // let ramparts_walls: Structure[]
     if (closestHostiles.length == 0) {
-        ramparts = Game.rooms[roomName].find(FIND_STRUCTURES, {
-            filter: (structure) => structure.hits < 1000000 && (structure.structureType == STRUCTURE_RAMPART)
+        structures = Game.rooms[roomName].find(FIND_STRUCTURES, {
+            filter: (structure) => structure.hits < structure.hitsMax
+                && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
         });
-        if (ramparts.length == 0) {
-            structures = Game.rooms[roomName].find(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < structure.hitsMax
-                    && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
-            });
-            if (structures.length == 0) {
-                ramparts_walls = Game.rooms[roomName].find(FIND_STRUCTURES, {
-                    filter: (structure) => structure.hits < structure.hitsMax
-                        && structure.structureType != STRUCTURE_WALL
-                        && structure.structureType != STRUCTURE_RAMPART
-                });
-            }
-        }
     }
+    // if(closestHostiles.length == 0){
+    //     ramparts = Game.rooms[roomName].find(FIND_STRUCTURES, {
+    //         filter: (structure) => structure.hits < 1000000  && (structure.structureType == STRUCTURE_RAMPART)
+    //     });
+    //     if(ramparts.length == 0) {
+    //         structures = Game.rooms[roomName].find(FIND_STRUCTURES, {
+    //             filter: (structure) => structure.hits < structure.hitsMax  
+    //             && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
+    //         });
+    //         if (structures.length == 0){
+    //             ramparts_walls = Game.rooms[roomName].find(FIND_STRUCTURES, {
+    //                 filter: (structure) => structure.hits < structure.hitsMax  
+    //                 && structure.structureType != STRUCTURE_WALL
+    //                 && structure.structureType != STRUCTURE_RAMPART
+    //             });
+    //         }
+    //     }
+    // }
     for (let tower_id in tower_list) {
         let tower = Game.getObjectById(tower_list[tower_id]);
         if (tower) {
@@ -3802,19 +3808,22 @@ const tower_work = function (roomName) {
                 }
                 else if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.7 * tower.store.getCapacity(RESOURCE_ENERGY))) {
                     tower.room.memory.war_flag = false;
-                    if (ramparts.length > 0) {
-                        tower.repair(ramparts[0]);
+                    if (structures.length > 0) {
+                        tower.repair(structures[0]);
                     }
-                    else {
-                        if (structures.length > 0) {
-                            tower.repair(structures[0]);
-                        }
-                        else {
-                            if (ramparts_walls.length > 0) {
-                                tower.repair(ramparts_walls[0]);
-                            }
-                        }
-                    }
+                    // if(ramparts.length > 0) {
+                    //     tower.repair(ramparts[0]);
+                    // }
+                    // else{
+                    //     if(structures.length > 0) {
+                    //         tower.repair(structures[0]);
+                    //     }
+                    //     else{
+                    //         if(ramparts_walls.length > 0) {
+                    //             tower.repair(ramparts_walls[0]);
+                    //         }
+                    //     }
+                    // }
                 }
             }
         }
