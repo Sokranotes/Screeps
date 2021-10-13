@@ -100,7 +100,9 @@
    2. 检测当前状态
    3. 自动根据状态调整策略
 
-## 挖运分离 提高Creep利用效率
+# 挖运分离 提高Creep利用效率
+
+## 能量流图与抽象角色设计
 
 ### 组件分析
 
@@ -110,15 +112,30 @@ WORK,CARRY可用于upgrader，builder，repairer，以WORK和CARRY为主
 
 CARRY,MOVE可用于transfer，以携带和移动为主
 
-### 能量流图与抽象角色设计
 
-#### 组件相关信息
 
 不需要WORK的，transfer能量都只需要一下
 
 Builder/Repairer/Upgrader/Harvester需要Worker
 
-#### 能量流图
+### 采集能源
+
+#### 能量源头
+
+自己房间，外矿
+
+#### 传输目的地
+
+自己房间内的能源建筑
+
+### 三种采集方式
+
+1. Harvester without carry和container配合，由active transfer运输
+
+2. Harvester with carry和passive transfer配合完成
+3. Harvester和link配合完成
+
+### 能量流图
 
 ![single room energy flow diagram](single room energy flow diagram.png)
 
@@ -165,13 +182,13 @@ Builder/Repairer/Upgrader/Harvester需要Worker
 1. builder/repair/upgrader: WORK,CARRY,MOVE组件需要均衡
 2. cleaner
 
-#### 抽象角色分析设计
+### 抽象角色分析设计
 
 其中Harvester具有不同的工作地点，transfer可能具有不同的start和end，而Builder也是。
 
 在spawnCreep的时候就决定好，每一个具体的creep需要做的工作，而工作地点及源头相关的信息存储在Memory中
 
-#### 组件设计
+### 组件设计
 
 1. Harvester设计
    1. 含有5个WORK，5个MOVE，保证移动
@@ -181,7 +198,7 @@ Builder/Repairer/Upgrader/Harvester需要Worker
 
 3. Builder/Repairer/Upgrader平衡比较好，MOVE是其他组件的两倍
 
-#### role任务设计
+### role任务设计
 
 每一个具体的role完成一件非常具体的事情，如
 
@@ -190,21 +207,4 @@ Builder/Repairer/Upgrader/Harvester需要Worker
 3. active transfer 从某处取能量到某处
 4. passive transfer 到某处，被给予能量再运输到某处
 5. Builder/Repairer/Upgrader 从某处（近处？）取能量，到目的地点进行工作
-
-### 采集能源
-
-#### 能量源头
-
-自己房间，外矿
-
-#### 传输目的地
-
-自己房间内的能源建筑
-
-#### 三种采集方式
-
-1. Harvester without carry和container配合，由active transfer运输
-
-2. Harvester with carry和passive transfer配合完成
-3. Harvester和link配合完成
 
