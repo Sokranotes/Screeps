@@ -8,7 +8,22 @@ export const out_energy_harvester_with_carry_work = function(creep: Creep){
     }
     if (Game.rooms[creep.memory.source_roomName].memory.war_flag == true){
         creep.memory.is_working = false
-        creep.moveTo(new RoomPosition(8, 34, creep.memory.dest_roomName), {visualizePathStyle: {stroke: '#808080'}})
+        // creep.moveTo(new RoomPosition(8, 34, creep.memory.dest_roomName), {visualizePathStyle: {stroke: '#808080'}})
+        let target = new RoomPosition(8, 34, creep.memory.dest_roomName)
+        if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
+            // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+            creep.memory.path = creep.pos.findPathTo(target);
+        }
+        let code = creep.moveByPath(creep.memory.path)
+        if (code == ERR_NOT_FOUND){
+            if (creep.pos.isNearTo(target)){
+                creep.memory.path = null
+            }
+            else{
+                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                creep.memory.path = creep.pos.findPathTo(target);
+            }
+        }
     }
     else{
         if (creep.store.getCapacity() >= 50)
@@ -25,17 +40,35 @@ export const out_energy_harvester_with_carry_work = function(creep: Creep){
         }
         let source: Source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx])
         if(creep.memory.is_working == undefined) {
-            creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#00ff0e'}})
+            // creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#00ff0e'}})
+            let target = source.pos
+            if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
+                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                creep.memory.path = creep.pos.findPathTo(target);
+            }
+            let code = creep.moveByPath(creep.memory.path)
+            if (code == ERR_NOT_FOUND){
+                if (creep.pos.isNearTo(target)){
+                    creep.memory.path = null
+                }
+                else{
+                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                    creep.memory.path = creep.pos.findPathTo(target);
+                }
+            }
             if (creep.pos.isNearTo(source)){
                 creep.memory.is_working = true
             }
         }
         else {
             let code:number = creep.harvest(source)
-            if (code == ERR_NOT_IN_RANGE){
+            if (code == OK){
+
+            }
+            else if (code == ERR_NOT_IN_RANGE){
                 code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
             }
-            else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_RESOURCES && code != ERR_NOT_OWNER){
+            else if (code != ERR_BUSY && code != ERR_NOT_ENOUGH_RESOURCES && code != ERR_NOT_OWNER){
                 console.log(Game.time, 'out_energy_harvester_with_carry_work', code)
             }
         }

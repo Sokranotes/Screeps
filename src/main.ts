@@ -8,7 +8,7 @@ import { out_room_energy_mine } from "@/out_energy_mine/out_room_energy_mine";
 import { different_role_work } from './different_role_work';
 import { room_W48S12_running } from './room_W48S12';
 
-console.log('new push')
+console.log(Game.time, 'new push')
 
 export const main = function(){
     for(let name in Memory.creeps) {
@@ -22,17 +22,17 @@ export const main = function(){
     room_W48S12_running('W48S12')
 
     let spawnName = 'Spawn1'
-    let transfer_num = [3, 2]
+    let transfer_num = [1, 1]
     let harvester_num = [1, 1]
     out_room_energy_mine('W48S14', 'W47S14', spawnName, harvester_num, transfer_num)
 
-    spawnName = spawnName
-    transfer_num = [4, 5]
+    spawnName = 'Spawn1'
+    transfer_num = [1, 2]
     harvester_num = [1, 1]
     out_room_energy_mine('W47S15', 'W47S14', spawnName, harvester_num, transfer_num)
 
     spawnName = 'Spawn3'
-    transfer_num = [3, 4]
+    transfer_num = [1, 2]
     harvester_num = [1, 1]
     out_room_energy_mine('W48S15', 'W47S14', spawnName, harvester_num, transfer_num)
 
@@ -44,4 +44,5 @@ export const main = function(){
 
 export const loop = errorMapper(() => {
     main()
+    // Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], '简单一体机', {memory: {role: 'simple_one_machine'}})
 })

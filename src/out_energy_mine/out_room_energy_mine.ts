@@ -223,11 +223,11 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                     // 暂时不支持4000的source
                     if (source.energyCapacity == 3000){
                         if (source_room.memory.energy_mine_chain_ok){
-                            if (energyCapacity >= 950){
-                                if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'out_Harvester_with_carry' + Game.time, 
+                            if (energyCapacity >= 1250){
+                                if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'out_Harvester_with_carry' + Game.time, 
                                     {memory: {role: 'out_energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName}}) == OK){
                                         source_room.memory.source_harvester_states[i] += 1
-                                        source_room.memory.source_costs[i] += 950
+                                        source_room.memory.source_costs[i] += 1250
                                         break
                                     }
                             }
@@ -318,11 +318,12 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
             if (source_room.memory.source_harvester_states[i] != 0 && (source_room.memory.source_transfer_states[i] < source_room.memory.source_transfer_num[i])){
                 if (source_room.memory.source_container_ids[i] == undefined){ // 没有container
                     if (source_room.memory.energy_mine_chain_ok){
-                        if (energyCapacity >= 800){
-                            if (Game.spawns[spawnName].spawnCreep([CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE], 'out_passive_transfer' + Game.time, 
+                        if (energyCapacity >= 1600){
+                            if (Game.spawns[spawnName].spawnCreep([CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, 
+                                CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE], 'out_passive_transfer' + Game.time, 
                                 {memory: {role: 'out_passive_transfer', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName}}) == OK){
                                     source_room.memory.source_transfer_states[i] += 1
-                                    source_room.memory.source_costs[i] += 800
+                                    source_room.memory.source_costs[i] += 1600
                                     break
                                 }
                         }

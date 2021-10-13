@@ -35,7 +35,7 @@ export const room_base_running = function(roomName: string){
         let carriersNum: number = 1;
         let tower_transfersNum: number = 1;
 
-        let upgradersNum: number = 3;
+        let upgradersNum: number = 1;
         let repairersNum: number = 0;
         let buildersNum: number = 0;
         // let cleanerNum: number = 0;
@@ -84,8 +84,13 @@ export const room_base_running = function(roomName: string){
             // }
             if(upgraders.length < upgradersNum) {
                 let newName = 'Upgrader_link' + Game.time;
-                Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, 
-                                                    MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader_link'}});
+                if (room.controller.level == 8){
+                    Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader_link'}});
+                }
+                else{
+                    Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, 
+                        MOVE, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader_link'}});
+                }
             }
             else if(repairers.length < repairersNum) {
                 let newName = 'Repairer' + Game.time;
