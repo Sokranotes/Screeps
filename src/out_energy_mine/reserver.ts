@@ -6,7 +6,8 @@ export const reserver_work = function(creep: Creep){
         creep.memory.is_working = false
         let target = new RoomPosition(8, 34, creep.memory.dest_roomName)
         if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-            creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+            // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+            creep.memory.path = creep.pos.findPathTo(target);
         }
         let code = creep.moveByPath(creep.memory.path)
         if (code == ERR_NOT_FOUND){
@@ -14,7 +15,8 @@ export const reserver_work = function(creep: Creep){
                 creep.memory.path = null
             }
             else{
-                creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                creep.memory.path = creep.pos.findPathTo(target);
             }
         }
     }
@@ -24,7 +26,8 @@ export const reserver_work = function(creep: Creep){
         if (code == ERR_NOT_IN_RANGE){
             let target = controller
             if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                creep.memory.path = creep.pos.findPathTo(target);
             }
             let code = creep.moveByPath(creep.memory.path)
             if (code == ERR_NOT_FOUND){
@@ -32,7 +35,8 @@ export const reserver_work = function(creep: Creep){
                     creep.memory.path = null
                 }
                 else{
-                    creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+                    creep.memory.path = creep.pos.findPathTo(target);
                 }
             }
         }

@@ -1,9 +1,8 @@
 import * as $ from "../modules/超级移动优化"
 
 export const out_passive_transfer_work = function(creep: Creep){
-    if (Game.rooms[creep.memory.source_roomName].memory.war_flag == true){
+    if (Memory.rooms[creep.memory.source_roomName].war_flag == true){
         creep.memory.is_working = false
-
         let target = new RoomPosition(5, 34, creep.memory.dest_roomName)
         if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
             // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
@@ -131,6 +130,8 @@ export const out_passive_transfer_work = function(creep: Creep){
                     }
                 }
                 // creep.moveTo(farm_creeps[0])
+                let res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+                creep.pickup(res)
             }
             else{
                 let source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx])
