@@ -39,6 +39,20 @@ export const tower_transfer_work = function(creep: Creep){
                         creep.moveTo(target, {visualizePathStyle: {stroke: '#ffff00'}});
                     }
                 }
+                else{
+                    let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_LAB) &&
+                                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        }
+                    });
+                    if(target) {
+                        let code = creep.transfer(target, RESOURCE_ENERGY)
+                        if(code == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(target, {visualizePathStyle: {stroke: '#ffff00'}});
+                        }
+                    }
+                }
             }
         }
     }

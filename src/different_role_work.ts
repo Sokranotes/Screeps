@@ -25,10 +25,14 @@ import { harvester_work } from "./room_base/low_level/harvester";
 
 import { test_work } from "./test";
 
-import { new_room_help_work } from './war3 W48S12/new_room_help';
-import { claim_controller_work } from './war3 W48S12/claim_controller';
-import { attack_work } from './war3 W48S12/attack';
+// import { new_room_help_work } from './war3 W48S12/new_room_help';
+// import { claim_controller_work } from './war3 W48S12/claim_controller';
+// import { attack_work } from './war3 W48S12/attack';
 import { carrier_help_work } from './room_base/carrier_help';
+import { scout_test_work } from "./war4 W41S7/scout_test";
+import { simple_one_machine_work } from "./war4 W41S7/simple_one_machine";
+import { move_compounds_work } from "./room_base/move_compounds";
+import { simple_one_harder_work } from "./war4 W41S7/simple_one_harder";
 
 export const different_role_work = function(){
     for(let name in Game.creeps) {
@@ -97,9 +101,9 @@ export const different_role_work = function(){
             out_soldier_work(creep)
         }
         
-        else if (creep.memory.role == 'new_room_help'){
-            new_room_help_work(creep)
-        }
+        // else if (creep.memory.role == 'new_room_help'){
+        //     new_room_help_work(creep)
+        // }
 
         else if (creep.memory.role == 'miner'){
             miner_work(creep)
@@ -118,6 +122,20 @@ export const different_role_work = function(){
 
         else if (creep.memory.role == 'test'){
             test_work(creep)
+        }
+
+        // war 4 W41S7
+        else if (creep.memory.role == 'scout_test'){
+            scout_test_work(creep)
+        }
+        else if (creep.memory.role == 'simple_one_machine'){
+            simple_one_machine_work(creep)
+        }
+        else if (creep.memory.role == 'simple_one_harder'){
+            simple_one_harder_work(creep)
+        }
+        else if (creep.memory.role == 'move_compounds'){
+            move_compounds_work(creep)
         }
     }
 }

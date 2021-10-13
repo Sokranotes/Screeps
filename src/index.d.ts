@@ -29,6 +29,9 @@ interface CreepMemory {
 
     // mine_idx?: number // mine.ts 暂未启用
     // soldier_room_flag?: number // soldier.ts 用于检查soldier出入房间状态 暂未启用
+
+    energy_flag?: boolean
+    move_to_lab_flag?: boolean
 }
 
 interface RoomMemory {

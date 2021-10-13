@@ -1,7 +1,8 @@
 import math
 
-distance = 39
-price = 1.026
+distance = 56
+price = 4.750
+
 
 
 amount = 2000
