@@ -33,6 +33,7 @@ import { scout_test_work } from "./war4 W41S7/scout_test";
 import { simple_one_machine_work } from "./war4 W41S7/simple_one_machine";
 import { move_compounds_work } from "./room_base/move_compounds";
 import { simple_one_harder_work } from "./war4 W41S7/simple_one_harder";
+import { claim_controller_work } from "./war4 W41S7/claim_controller";
 
 export const different_role_work = function(){
     for(let name in Game.creeps) {
@@ -136,6 +137,9 @@ export const different_role_work = function(){
         }
         else if (creep.memory.role == 'move_compounds'){
             move_compounds_work(creep)
+        }
+        else if (creep.memory.role == 'claim_controller'){
+            claim_controller_work(creep)
         }
     }
 }
