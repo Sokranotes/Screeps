@@ -172,7 +172,12 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
     sources_num = source_room.memory.sources_num
     links_num = source_room.memory.links_num
 
-    source_room.memory.energy_mine_chain_ok = false
+    if (source_roomName == 'W48S12'){
+        source_room.memory.energy_mine_chain_ok = true
+    }
+    else{
+        source_room.memory.energy_mine_chain_ok = false
+    }
 
     // 读取creep个数配置并更新creep个数状态
     for (var i: number = 0; i < sources_num; i++){

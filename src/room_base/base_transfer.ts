@@ -90,13 +90,17 @@ export const base_transfer_work = function(creep: Creep){
                 creep.room.memory.terminal_id = targets[0].id
             }
             else{
-                console.log(Game.time, 'base_transfer_work', creep.room.name, 'terminal is null')
+                if (creep.room.memory.terminal_id != undefined){
+                    console.log(Game.time, 'base_transfer_work', creep.room.name, 'terminal is null')
+                }
                 creep.room.memory.terminal_id = undefined
             }
         }
-        if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
-            if(creep.withdraw(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ffffff'}});
+        if (terminal != null){
+            if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
+                if(creep.withdraw(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ffffff'}});
+                }
             }
         }
     }

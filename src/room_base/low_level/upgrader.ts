@@ -16,22 +16,22 @@ export const upgrader_work = function(creep: Creep){
     }
     if(creep.memory.is_working) {
         if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {//距离够则升级控制器
-            let target = creep.room.controller
-            if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                creep.memory.path = creep.pos.findPathTo(target);
-            }
-            let code = creep.moveByPath(creep.memory.path)
-            if (code == ERR_NOT_FOUND){
-                if (creep.pos.isNearTo(target)){
-                    creep.memory.path = null
-                }
-                else{
-                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                    creep.memory.path = creep.pos.findPathTo(target);
-                }
-            }
-            // creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#4fcf30'}});
+            // let target = creep.room.controller
+            // if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
+            //     // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+            //     creep.memory.path = creep.pos.findPathTo(target);
+            // }
+            // let code = creep.moveByPath(creep.memory.path)
+            // if (code == ERR_NOT_FOUND){
+            //     if (creep.pos.isNearTo(target)){
+            //         creep.memory.path = null
+            //     }
+            //     else{
+            //         // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+            //         creep.memory.path = creep.pos.findPathTo(target);
+            //     }
+            // }
+            creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#4fcf30'}});
         }
     }
     else {
@@ -46,22 +46,22 @@ export const upgrader_work = function(creep: Creep){
         source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
         let code:number = creep.harvest(source)
         if (code == ERR_NOT_IN_RANGE){
-            let target = source.pos
-            if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                creep.memory.path = creep.pos.findPathTo(target);
-            }
-            let code = creep.moveByPath(creep.memory.path)
-            if (code == ERR_NOT_FOUND){
-                if (creep.pos.isNearTo(target)){
-                    creep.memory.path = null
-                }
-                else{
-                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                    creep.memory.path = creep.pos.findPathTo(target);
-                }
-            }
-            // code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
+            // let target = source.pos
+            // if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
+            //     // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+            //     creep.memory.path = creep.pos.findPathTo(target);
+            // }
+            // let code = creep.moveByPath(creep.memory.path)
+            // if (code == ERR_NOT_FOUND){
+            //     if (creep.pos.isNearTo(target)){
+            //         creep.memory.path = null
+            //     }
+            //     else{
+            //         // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
+            //         creep.memory.path = creep.pos.findPathTo(target);
+            //     }
+            // }
+            code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
         }
         else if (code != ERR_BUSY && code != OK){
             console.log(Game.time, 'upgrader_work', code)

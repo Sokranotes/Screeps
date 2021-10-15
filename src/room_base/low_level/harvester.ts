@@ -15,27 +15,12 @@ export const harvester_work = function(creep: Creep){
         var targets = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_TOWER &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2*structure.store.getCapacity(RESOURCE_ENERGY));
             }
         });
         if(targets.length > 0) {
             if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                let target = targets[0]
-                if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                    creep.memory.path = creep.pos.findPathTo(target);
-                }
-                let code = creep.moveByPath(creep.memory.path)
-                if (code == ERR_NOT_FOUND){
-                    if (creep.pos.isNearTo(target)){
-                        creep.memory.path = null
-                    }
-                    else{
-                        // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                        creep.memory.path = creep.pos.findPathTo(target);
-                    }
-                }
-                // creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
+                creep.moveTo(targets[0])
             }
         }
         else{
@@ -48,22 +33,20 @@ export const harvester_work = function(creep: Creep){
             });
             if(targets.length > 0) {
                 if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    let target = targets[0]
-                    if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                        // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                        creep.memory.path = creep.pos.findPathTo(target);
+                    creep.moveTo(targets[0])
+                }
+            }
+            else{
+                let targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_STORAGE) &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                     }
-                    let code = creep.moveByPath(creep.memory.path)
-                    if (code == ERR_NOT_FOUND){
-                        if (creep.pos.isNearTo(target)){
-                            creep.memory.path = null
-                        }
-                        else{
-                            // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                            creep.memory.path = creep.pos.findPathTo(target);
-                        }
+                });
+                if(targets.length > 0) {
+                    if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(targets[0])
                     }
-                    // creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffff00'}});
                 }
             }
         }
@@ -80,22 +63,7 @@ export const harvester_work = function(creep: Creep){
         source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
         let code:number = creep.harvest(source)
         if (code == ERR_NOT_IN_RANGE){
-            let target = source.pos
-            if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                creep.memory.path = creep.pos.findPathTo(target);
-            }
-            let code = creep.moveByPath(creep.memory.path)
-            if (code == ERR_NOT_FOUND){
-                if (creep.pos.isNearTo(target)){
-                    creep.memory.path = null
-                }
-                else{
-                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                    creep.memory.path = creep.pos.findPathTo(target);
-                }
-            }
-            // code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
+            creep.moveTo(source)
         }
         else if (code != ERR_BUSY && code != OK){
             console.log(Game.time, 'harvester_work', code)

@@ -20,7 +20,7 @@ export const room_base_running = function(roomName: string){
     if (roomName == 'W47S14'){
         tower_work(roomName)
         spawnName = 'Spawn3'
-        let cleaners_base_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner');
+        let cleaners_base_transfers = _.filter(Game.creeps, (creep) => (creep.memory.role == 'base_transfer' && creep.room.name == 'W47S14') || creep.memory.role == 'cleaner');
         let base_transferNum: number = 2;
 
         let transfer_num: number[] = [1, 1]

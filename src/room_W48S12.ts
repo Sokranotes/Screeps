@@ -1,24 +1,33 @@
+import { room_energy_mine } from "./room_base/room_energy_mine";
 import { tower_work } from "./room_base/tower";
 
 export const room_W48S12_running = function(roomName: string){
 
-    
     tower_work('W48S12')
 
     let spawn_name = 'Spawn2'
+
+    let transfer_num: number[] = [0, 2]
+    let harvester_num: number[] = [0, 1]
+    let link_harvester_pos_xs: number[] = [,]
+    let link_harvester_pos_ys: number[] = [,]
+    room_energy_mine(roomName, roomName, spawn_name, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
+
     // let home: Room = Game.rooms[roomName]
-    let upgradersNum: number = 4;
-    let harvester0sNum: number = 2
-    let harvester1sNum: number = 2
+    let upgradersNum: number = 3;
+    let harvester0sNum: number = 0
+    let harvester1sNum: number = 0
     let buildersNum: number = 4;
-    if (Game.rooms['W48S12'].find(FIND_CONSTRUCTION_SITES).length == 0){
-        buildersNum = 0
-    }
-    let repairersNum: number = 1;
-    
+    let base_transferNum: number = 1;
+    // if (Game.rooms['W48S12'].find(FIND_CONSTRUCTION_SITES).length == 0){
+    //     buildersNum = 0
+    // }
+    let repairersNum: number = 0;
+ 
     let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-    let builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+    let builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.room.name == 'W48S12');
     let repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
+    let base_transfers = _.filter(Game.creeps, (creep) => (creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner') && creep.room.name == 'W48S12');
     let harvester0s = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.source_idx == 0);
     let harvester1s = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.source_idx == 1);
     if (Game.spawns[spawn_name].spawning){
@@ -31,7 +40,7 @@ export const room_W48S12_running = function(roomName: string){
     }
     else if (upgraders.length < upgradersNum){
         let newName = 'Upgrader' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source_idx: 0}});
+        Game.spawns[spawn_name].spawnCreep([WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source_idx: 0}});
     }
     else if (harvester0s.length < harvester0sNum){
         let newName = 'Harvester' + Game.time;
@@ -39,14 +48,19 @@ export const room_W48S12_running = function(roomName: string){
     }
     else if (harvester1s.length < harvester1sNum){
         let newName = 'Harvester' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'harvester', source_idx: 1}});
+        Game.spawns[spawn_name].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'harvester', source_idx: 1}});
     }
     else if (builders.length < buildersNum){
         let newName = 'Builder' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'builder', source_idx: 1}});
+        // Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'builder', source_idx: 1}});
+        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, WORK, CARRY, WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'builder', source_idx: 1}});
     }
     else if (repairers.length < repairersNum){
         let newName = 'Repairer' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'repairer', source_idx: 1}});
+    }
+    if(base_transfers.length < base_transferNum) {
+        let newName = 'Base_transfer' + Game.time;
+        Game.spawns[spawn_name].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
     }
 }

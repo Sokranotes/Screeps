@@ -89,21 +89,25 @@ export const passive_transfer_work = function(creep: Creep){
                 dest_room.memory.terminal_id = targets[0].id
             }
             else{
-                console.log(Game.time, 'passive_transfer_work', dest_room.name, 'terminal is null')
+                if (creep.room.memory.terminal_id != undefined){
+                    console.log(Game.time, 'passive_transfer_work', dest_room.name, 'terminal is null')
+                }
                 dest_room.memory.terminal_id = undefined
             }
         }
-        if (terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0){
-            let code = creep.transfer(terminal, RESOURCE_ENERGY)
-            if(code == ERR_NOT_IN_RANGE) {
-                creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ffffff'}});
-                return
-            }
-            else if (code == OK){
-                source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
-            }
-            else if (code != ERR_BUSY){
-                console.log(Game.time, 'passive_transfer_work', code, 'need new energy destination')
+        if (terminal != null){
+            if (terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0){
+                let code = creep.transfer(terminal, RESOURCE_ENERGY)
+                if(code == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ffffff'}});
+                    return
+                }
+                else if (code == OK){
+                    source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
+                }
+                else if (code != ERR_BUSY){
+                    console.log(Game.time, 'passive_transfer_work', code, 'need new energy destination')
+                }
             }
         }
     }
