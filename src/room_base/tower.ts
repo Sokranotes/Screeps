@@ -12,7 +12,7 @@ export const tower_work = function(roomName: string){
         spawn_list = ['Spawn1', 'Spawn3']
     }
     else if (roomName == 'W48S12'){
-        tower_list = ['6159ce743a785c3da4b22def']
+        tower_list = ['6159ce743a785c3da4b22def', '6165ed910183007348126fad']
         spawn_list = ['Spawn2']
     }
     for (let spawn_id in spawn_list){

@@ -142,8 +142,11 @@ export const room_base_running = function(roomName: string){
     //     //     // 预留，已经是自己的房间不会进入到这个逻辑
     //     //     break
     //     case 1:
-    //         // 200能量到2级, energy capacity max 300
     //         // 升级
+    //         // 1能量升1 controller
+    //         // 1能量升Downgrade 100, 多余不返还
+
+    //         // 200能量到2级, energy capacity max 300
     //         break
     //     case 2:
     //         // 45,000能量到3级 5个extension Rampart, Wall, energy capacity max 550
