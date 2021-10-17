@@ -4759,7 +4759,7 @@ const out_room_energy_mine = function (source_roomName, dest_roomName, spawnName
         return;
     }
     var hostiles = source_room.find(FIND_HOSTILE_CREEPS);
-    _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.source_roomName == source_roomName);
+    // var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.source_roomName == source_roomName);
     var invader_cores = source_room.find(FIND_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_INVADER_CORE; } });
     if (invader_cores.length > 0) {
         source_room.memory.invader_core_id = invader_cores[0].id;
@@ -4862,63 +4862,65 @@ const out_room_energy_mine = function (source_roomName, dest_roomName, spawnName
         room_energy_mine_init(source_room);
         room_energy_mine_routine(source_roomName, dest_roomName, spawnName, harvester_num, transfer_num);
     }
-    if (source_roomName == 'W47S15' || source_roomName == 'W48S14') {
-        if (source_roomName == 'W47S15') {
-            Game.rooms['W47S15'].memory.war_flag == false;
-        }
-        else if (source_roomName == 'W48S14') {
-            Game.rooms['W48S14'].memory.war_flag == false;
-        }
-        if (Game.spawns[spawnName].spawning) {
-            var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
-            Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
-        }
-        else {
-            if (hostiles.length <= 2) {
-                var attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 150);
-                if (attack_invader_cores.length < 2 + hostiles.length) {
-                    var newName = 'attack_invader_core' + Game.time;
-                    Game.spawns[spawnName].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'attack_invader_core', dest_roomName: dest_roomName, source_roomName: source_roomName } });
-                }
+    if (hostiles.length == 0) {
+        if (source_roomName == 'W47S15' || source_roomName == 'W48S14') {
+            if (source_roomName == 'W47S15') {
+                Game.rooms['W47S15'].memory.war_flag == false;
             }
-            else {
-                var attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 150);
-                if (attack_invader_cores.length < 2 + 2 * hostiles.length) {
-                    var newName = 'attack_invader_core' + Game.time;
-                    Game.spawns[spawnName].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'attack_invader_core', dest_roomName: dest_roomName, source_roomName: source_roomName } });
-                }
-            }
-        }
-        source_room.memory.controller_id = source_room.controller.id;
-        var controller = Game.getObjectById(source_room.memory.controller_id);
-        if (controller == null || controller == undefined) {
-            console.log(Game.time, 'out_room_energy_mine', dest_roomName, 'controller null or undefined');
-        }
-        else {
+            // else if (source_roomName == 'W48S14'){
+            //     Game.rooms['W48S14'].memory.war_flag == false
+            // }
             if (Game.spawns[spawnName].spawning) {
                 var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
                 Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
             }
             else {
-                var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 150);
-                if (controller.reservation == undefined) {
-                    if (reservers.length < 1) {
-                        var newName = 'reserver' + Game.time;
-                        Game.spawns[spawnName].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName } });
+                if (hostiles.length <= 2) {
+                    var attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 150);
+                    if (attack_invader_cores.length < 2 + hostiles.length) {
+                        var newName = 'attack_invader_core' + Game.time;
+                        Game.spawns[spawnName].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'attack_invader_core', dest_roomName: dest_roomName, source_roomName: source_roomName } });
                     }
                 }
                 else {
-                    if (controller.reservation.ticksToEnd < 4000 && reservers.length < 1) {
-                        var newName = 'reserver' + Game.time;
-                        Game.spawns[spawnName].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName } });
+                    var attack_invader_cores = _.filter(Game.creeps, (creep) => creep.memory.role == 'attack_invader_core' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 150);
+                    if (attack_invader_cores.length < 2 + 2 * hostiles.length) {
+                        var newName = 'attack_invader_core' + Game.time;
+                        Game.spawns[spawnName].spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'attack_invader_core', dest_roomName: dest_roomName, source_roomName: source_roomName } });
                     }
                 }
             }
+            source_room.memory.controller_id = source_room.controller.id;
+            var controller = Game.getObjectById(source_room.memory.controller_id);
+            if (controller == null || controller == undefined) {
+                console.log(Game.time, 'out_room_energy_mine', dest_roomName, 'controller null or undefined');
+            }
+            else {
+                if (Game.spawns[spawnName].spawning) {
+                    var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+                    Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
+                }
+                else {
+                    var reservers = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.source_roomName == source_roomName && creep.ticksToLive > 150);
+                    if (controller.reservation == undefined) {
+                        if (reservers.length < 1) {
+                            var newName = 'reserver' + Game.time;
+                            Game.spawns[spawnName].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName } });
+                        }
+                    }
+                    else {
+                        if (controller.reservation.ticksToEnd < 4000 && reservers.length < 1) {
+                            var newName = 'reserver' + Game.time;
+                            Game.spawns[spawnName].spawnCreep([CLAIM, CLAIM, MOVE, MOVE], newName, { memory: { role: 'reserver', dest_roomName: dest_roomName, source_roomName: source_roomName } });
+                        }
+                    }
+                }
+            }
+            source_room.memory.war_flag = false;
+            source_room.memory.enemy_num = 0;
+            room_energy_mine_init(source_room);
+            room_energy_mine_routine(source_roomName, dest_roomName, spawnName, harvester_num, transfer_num);
         }
-        source_room.memory.war_flag = false;
-        source_room.memory.enemy_num = 0;
-        room_energy_mine_init(source_room);
-        room_energy_mine_routine(source_roomName, dest_roomName, spawnName, harvester_num, transfer_num);
     }
 };
 
