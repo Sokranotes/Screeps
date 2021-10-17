@@ -7,22 +7,19 @@ export const room_W48S12_running = function(roomName: string){
 
     let spawn_name = 'Spawn2'
 
-    let transfer_num: number[] = [0, 2]
-    let harvester_num: number[] = [0, 1]
-    let link_harvester_pos_xs: number[] = [,]
-    let link_harvester_pos_ys: number[] = [,]
-    room_energy_mine(roomName, roomName, spawn_name, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
-
     // let home: Room = Game.rooms[roomName]
     let upgradersNum: number = 3;
-    let harvester0sNum: number = 0
+    let harvester0sNum: number = 1
     let harvester1sNum: number = 0
-    let buildersNum: number = 4;
-    let base_transferNum: number = 1;
+    let buildersNum: number = 0;
+    let base_transferNum: number = 2
+    let carriersNum: number = 1
     // if (Game.rooms['W48S12'].find(FIND_CONSTRUCTION_SITES).length == 0){
     //     buildersNum = 0
     // }
     let repairersNum: number = 0;
+
+    let carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier_W48S12' && creep.ticksToLive > 80);
  
     let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     let builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.room.name == 'W48S12');
@@ -59,8 +56,21 @@ export const room_W48S12_running = function(roomName: string){
         let newName = 'Repairer' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'repairer', source_idx: 1}});
     }
+    if(carriers.length < carriersNum) {
+        let newName = 'Carrier' + Game.time;
+        Game.spawns[spawn_name].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier_W48S12'}});
+    }
     if(base_transfers.length < base_transferNum) {
         let newName = 'Base_transfer' + Game.time;
         Game.spawns[spawn_name].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
     }
+    let source_link: StructureLink = Game.getObjectById('61696ef057b6d60ae7c5968c')
+    let dest_link: StructureLink = Game.getObjectById('61695f491a993a36b0f39715')
+    source_link.transferEnergy(dest_link)
+
+    let transfer_num: number[] = [0, 0]
+    let harvester_num: number[] = [0, 1]
+    let link_harvester_pos_xs: number[] = [,31]
+    let link_harvester_pos_ys: number[] = [,38]
+    room_energy_mine(roomName, roomName, spawn_name, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
 }

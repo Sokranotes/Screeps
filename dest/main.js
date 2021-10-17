@@ -3759,7 +3759,7 @@ const tower_work = function (roomName) {
         spawn_list = ['Spawn1', 'Spawn3'];
     }
     else if (roomName == 'W48S12') {
-        tower_list = ['6159ce743a785c3da4b22def'];
+        tower_list = ['6159ce743a785c3da4b22def', '6165ed910183007348126fad'];
         spawn_list = ['Spawn2'];
     }
     for (let spawn_id in spawn_list) {
@@ -3955,8 +3955,10 @@ const room_base_running = function (roomName) {
     //     //     // 预留，已经是自己的房间不会进入到这个逻辑
     //     //     break
     //     case 1:
-    //         // 200能量到2级, energy capacity max 300
     //         // 升级
+    //         // 1能量升1 controller
+    //         // 1能量升Downgrade 100, 多余不返还
+    //         // 200能量到2级, energy capacity max 300
     //         break
     //     case 2:
     //         // 45,000能量到3级 5个extension Rampart, Wall, energy capacity max 550
@@ -3977,6 +3979,427 @@ const room_base_running = function (roomName) {
     //     case 6:
     //         break
     // }
+};
+
+const room_W48S12_running = function (roomName) {
+    tower_work('W48S12');
+    let spawn_name = 'Spawn2';
+    // let home: Room = Game.rooms[roomName]
+    let upgradersNum = 3;
+    let harvester0sNum = 1;
+    let harvester1sNum = 0;
+    let buildersNum = 0;
+    let base_transferNum = 2;
+    let carriersNum = 1;
+    // if (Game.rooms['W48S12'].find(FIND_CONSTRUCTION_SITES).length == 0){
+    //     buildersNum = 0
+    // }
+    let repairersNum = 0;
+    let carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier_W48S12' && creep.ticksToLive > 80);
+    let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+    let builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.room.name == 'W48S12');
+    let repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
+    let base_transfers = _.filter(Game.creeps, (creep) => (creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner') && creep.room.name == 'W48S12');
+    let harvester0s = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.source_idx == 0);
+    let harvester1s = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.source_idx == 1);
+    if (Game.spawns[spawn_name].spawning) {
+        let spawningCreep = Game.creeps[Game.spawns[spawn_name].spawning.name];
+        Game.spawns[spawn_name].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawn_name].pos.x + 1, Game.spawns[spawn_name].pos.y, { align: 'left', opacity: 0.8 });
+    }
+    else if (upgraders.length < upgradersNum) {
+        let newName = 'Upgrader' + Game.time;
+        Game.spawns[spawn_name].spawnCreep([WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE], newName, { memory: { role: 'upgrader', source_idx: 0 } });
+    }
+    else if (harvester0s.length < harvester0sNum) {
+        let newName = 'Harvester' + Game.time;
+        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'harvester', source_idx: 0 } });
+    }
+    else if (harvester1s.length < harvester1sNum) {
+        let newName = 'Harvester' + Game.time;
+        Game.spawns[spawn_name].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'harvester', source_idx: 1 } });
+    }
+    else if (builders.length < buildersNum) {
+        let newName = 'Builder' + Game.time;
+        // Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'builder', source_idx: 1}});
+        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, WORK, CARRY, WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'builder', source_idx: 1 } });
+    }
+    else if (repairers.length < repairersNum) {
+        let newName = 'Repairer' + Game.time;
+        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'repairer', source_idx: 1 } });
+    }
+    if (carriers.length < carriersNum) {
+        let newName = 'Carrier' + Game.time;
+        Game.spawns[spawn_name].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, { memory: { role: 'carrier_W48S12' } });
+    }
+    if (base_transfers.length < base_transferNum) {
+        let newName = 'Base_transfer' + Game.time;
+        Game.spawns[spawn_name].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, { memory: { role: 'base_transfer' } });
+    }
+    let source_link = Game.getObjectById('61696ef057b6d60ae7c5968c');
+    let dest_link = Game.getObjectById('61695f491a993a36b0f39715');
+    source_link.transferEnergy(dest_link);
+    let transfer_num = [0, 0];
+    let harvester_num = [0, 1];
+    let link_harvester_pos_xs = [, 31];
+    let link_harvester_pos_ys = [, 38];
+    room_energy_mine(roomName, roomName, spawn_name, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys);
+};
+
+// spawnCreep reqiure:
+// creep.memory.source_idx
+// run require:
+// Memory.rooms[creep.room.name].sources_id
+// creep.room.controller
+const upgrader_work$1 = function (creep) {
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.memory.path = null;
+        creep.say('🔄 harvest');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        creep.memory.path = null;
+        creep.say('🚧 upgrade');
+    }
+    if (creep.memory.is_working) {
+        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+            let target = creep.room.controller;
+            if (creep.pos.inRangeTo(target, 4)) {
+                creep.moveTo(target, { visualizePathStyle: { stroke: '#808080' } });
+            }
+            else {
+                if ((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
+                    creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                    // creep.memory.path = creep.pos.findPathTo(target);
+                }
+                let code = creep.moveByPath(creep.memory.path);
+                if (code == ERR_NOT_FOUND) {
+                    creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                    // creep.memory.path = creep.pos.findPathTo(target);
+                }
+            }
+            // creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#4fcf30'}});
+        }
+    }
+    else {
+        let source;
+        source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+        let code = creep.harvest(source);
+        if (code == ERR_NOT_IN_RANGE) {
+            let target = source;
+            if (creep.pos.inRangeTo(target, 4)) {
+                creep.moveTo(target, { visualizePathStyle: { stroke: '#808080' } });
+            }
+            else {
+                if ((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
+                    creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                    // creep.memory.path = creep.pos.findPathTo(target);
+                }
+                let code = creep.moveByPath(creep.memory.path);
+                if (code == ERR_NOT_FOUND) {
+                    creep.memory.path = creep.pos.findPathTo(target, { ignoreCreeps: true });
+                    // creep.memory.path = creep.pos.findPathTo(target);
+                }
+            }
+        }
+        else if (code != ERR_BUSY && code != OK) {
+            console.log(Game.time, 'level1 harvester_work', code);
+        }
+    }
+};
+
+// room controller is my
+const level1_logic = function (roomName) {
+    let spawnName = 'Spawn1';
+    let upgradersNum = 3;
+    let source_idx = 1;
+    for (let name in Memory.creeps) {
+        let creep = Game.creeps[name];
+        if (!creep) {
+            delete Memory.creeps[name];
+        }
+        else {
+            if (creep.memory.role == 'upgrader') {
+                upgrader_work$1(creep);
+            }
+        }
+    }
+    let room = Game.rooms[roomName];
+    let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room.name == roomName);
+    if (room.memory.sources_id == undefined) {
+        let sources = room.find(FIND_SOURCES);
+        Memory.rooms[room.name].sources_id = new Array(sources.length);
+        for (let i = 0; i < sources.length; i++) {
+            Memory.rooms[room.name].sources_id[i] = sources[i].id;
+        }
+    }
+    if (Game.spawns[spawnName].spawning) {
+        let spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+        Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
+    }
+    else if (upgraders.length < upgradersNum) {
+        let newName = 'Upgrader' + Game.time;
+        if (room.energyAvailable >= 250) {
+            Game.spawns[spawnName].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'upgrader', source_idx: source_idx } });
+        }
+    }
+};
+
+const builder_work$1 = function (creep) {
+    // creep.say('🔄 Here');
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.say('🔄 harvest');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        creep.say('🚧 build');
+    }
+    let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+    if (creep.memory.is_working) {
+        let construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_ROAD);
+            }
+        });
+        if (construction) {
+            if (creep.build(construction) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(construction, { visualizePathStyle: { stroke: '#008cff' } });
+            }
+        }
+        else {
+            let constructions = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+            if (constructions.length > 0) {
+                if (creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(constructions[0], { visualizePathStyle: { stroke: '#008cff' } });
+                }
+            }
+            else {
+                creep.memory.role = 'repairer';
+            }
+        }
+    }
+    else {
+        let code = creep.harvest(source);
+        if (code == ERR_NOT_IN_RANGE) {
+            code = creep.moveTo(source.pos, { visualizePathStyle: { stroke: '#808080' } });
+        }
+        else if (code != ERR_BUSY && code != OK) {
+            console.log(Game.time, 'level2 builder_work', code);
+        }
+    }
+};
+
+const harvester_work$1 = function (creep) {
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.say('🔄 harvest');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        creep.say('🚧 transfer');
+    }
+    if (creep.memory.is_working) {
+        var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_EXTENSION ||
+                    structure.structureType == STRUCTURE_SPAWN) &&
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+        });
+        if (target) {
+            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
+        }
+    }
+    else {
+        let source;
+        source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+        let code = creep.harvest(source);
+        if (code == ERR_NOT_IN_RANGE) {
+            creep.moveTo(source);
+        }
+        else if (code != ERR_BUSY && code != OK) {
+            console.log(Game.time, 'level2 harvester_work', code);
+        }
+    }
+};
+
+const repairer_work$1 = function (creep) {
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.say('🔄 harvest');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        creep.say('🚧 repair');
+    }
+    let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+    if (creep.memory.is_working) {
+        let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (s) => (s.hits < s.hitsMax) && (s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART)
+        });
+        if (target) {
+            if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
+            }
+        }
+    }
+    else {
+        let code = creep.harvest(source);
+        if (code == ERR_NOT_IN_RANGE) {
+            code = creep.moveTo(source.pos, { visualizePathStyle: { stroke: '#808080' } });
+        }
+        else if (code != ERR_BUSY && code != OK) {
+            console.log(Game.time, 'level2 builder_work', code);
+        }
+    }
+};
+
+// room controller is my
+const level2_logic = function (roomName) {
+    let spawnName = 'Spawn1';
+    let harvestersNum = 3;
+    let upgradersNum = 5;
+    let buildersNum = 3;
+    let builder_source_idx = 0;
+    let harvester_source_idx = 0;
+    let upgrader_source_idx = 1;
+    // 指定spawnCreep的source_idx
+    for (let name in Memory.creeps) {
+        let creep = Game.creeps[name];
+        if (!creep) {
+            delete Memory.creeps[name];
+        }
+        else {
+            if (creep.memory.role == 'upgrader') {
+                upgrader_work$1(creep);
+            }
+            else if (creep.memory.role == 'builder') {
+                builder_work$1(creep);
+            }
+            else if (creep.memory.role == 'harvester') {
+                harvester_work$1(creep);
+            }
+            else if (creep.memory.role == 'repairer') {
+                repairer_work$1(creep);
+            }
+            // tmp
+            // else if (creep.memory.role == 'simple_soldier'){
+            //     simple_soldier_work(creep)
+            // }
+        }
+    }
+    let room = Game.rooms[roomName];
+    if (room.memory.sources_id == undefined) {
+        let sources = room.find(FIND_SOURCES);
+        Memory.rooms[room.name].sources_id = new Array(sources.length);
+        for (let i = 0; i < sources.length; i++) {
+            Memory.rooms[room.name].sources_id[i] = sources[i].id;
+        }
+    }
+    // safe mode
+    if (Game.spawns[spawnName].hits < 0.6 * Game.spawns[spawnName].hitsMax) {
+        Game.rooms[roomName].controller.activateSafeMode();
+    }
+    let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.room.name == roomName);
+    let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room.name == roomName);
+    let builders = _.filter(Game.creeps, (creep) => (creep.memory.role == 'builder' || creep.memory.role == 'repairer') && creep.room.name == roomName);
+    let constructions = room.find(FIND_CONSTRUCTION_SITES);
+    if (constructions.length == 0) {
+        buildersNum = 1;
+        harvestersNum = harvestersNum + 1;
+        upgradersNum = upgradersNum + 1;
+    }
+    if (Game.spawns[spawnName].spawning) {
+        let spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+        Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
+    }
+    else {
+        let newName;
+        let bodys = [WORK, CARRY, MOVE, MOVE];
+        let opts = {};
+        let flag = true;
+        if (harvesters.length < 1) {
+            newName = 'Harvester' + Game.time;
+            opts = { memory: { role: 'harvester', source_idx: harvester_source_idx } };
+        }
+        else if (builders.length < 1) {
+            newName = 'Builder' + Game.time;
+            opts = { memory: { role: 'builder', source_idx: builder_source_idx } };
+        }
+        else if (upgraders.length < 1) {
+            newName = 'Upgrader' + Game.time;
+            opts = { memory: { role: 'upgrader', source_idx: upgrader_source_idx } };
+        }
+        else {
+            if (harvesters.length < harvestersNum) {
+                newName = 'Harvester' + Game.time;
+                opts = { memory: { role: 'harvester', source_idx: harvester_source_idx } };
+            }
+            else if (builders.length < buildersNum) {
+                newName = 'Builder' + Game.time;
+                opts = { memory: { role: 'builder', source_idx: builder_source_idx } };
+            }
+            else if (upgraders.length < upgradersNum) {
+                newName = 'Upgrader' + Game.time;
+                opts = { memory: { role: 'upgrader', source_idx: upgrader_source_idx } };
+            }
+            else {
+                flag = false;
+            }
+            if (flag) {
+                switch (room.energyCapacityAvailable) {
+                    case 300:
+                    case 350:
+                        bodys = [WORK, CARRY, MOVE, MOVE];
+                        break;
+                    case 400:
+                    case 450:
+                        bodys = [WORK, WORK, CARRY, MOVE, MOVE, MOVE];
+                        break;
+                    case 500:
+                    case 550:
+                        bodys = [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
+                        break;
+                }
+            }
+        }
+        if (flag) {
+            Game.spawns[spawnName].spawnCreep(bodys, newName, opts);
+        }
+    }
+};
+
+const room_logic = function (roomName) {
+    if (Game.rooms[roomName]) {
+        if (Game.rooms[roomName].controller) {
+            if (Game.rooms[roomName].controller.my) {
+                switch (Game.rooms[roomName].controller.level) {
+                    case 1:
+                        level1_logic(roomName);
+                        break;
+                    case 2:
+                        level2_logic(roomName);
+                        break;
+                    default:
+                        console.log('controller is bigger than 2');
+                        level2_logic(roomName);
+                        break;
+                }
+            }
+            else {
+                console.log(Game.time, 'room_logic', roomName, 'controller is not my');
+            }
+        }
+        else {
+            console.log(Game.time, 'room_logic', roomName, 'without controller');
+        }
+    }
+    else {
+        console.log(Game.time, 'room_logic', roomName, 'undefined');
+    }
 };
 
 const room_energy_mine_init = function (source_room) {
@@ -6758,6 +7181,28 @@ const claim_controller_work = function (creep) {
     }
 };
 
+const carrier_W48S12_work = function (creep) {
+    // creep.say('🔄 Here');
+    if (creep.memory.dontPullMe == undefined) {
+        creep.memory.dontPullMe = true;
+    }
+    if (creep.pos.x != 14 || creep.pos.y != 6) {
+        creep.moveTo(new RoomPosition(14, 6, 'W48S12'), { visualizePathStyle: { stroke: '#00ff0e' } });
+    }
+    else {
+        let link = Game.getObjectById("61695f491a993a36b0f39715");
+        let storage = Game.getObjectById("616443f5fd720f7fa73ac3eb");
+        if (link.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
+            if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+                creep.withdraw(link, RESOURCE_ENERGY);
+            }
+            else {
+                creep.transfer(storage, RESOURCE_ENERGY);
+            }
+        }
+    }
+};
+
 const different_role_work = function () {
     for (let name in Game.creeps) {
         let creep = Game.creeps[name];
@@ -6786,6 +7231,9 @@ const different_role_work = function () {
         }
         else if (creep.memory.role == 'carrier_W47S14') {
             carrier_W47S14_work(creep);
+        }
+        else if (creep.memory.role == 'carrier_W48S12') {
+            carrier_W48S12_work(creep);
         }
         // basic function
         else if (creep.memory.role == 'upgrader_link') {
@@ -6858,64 +7306,14 @@ const different_role_work = function () {
     }
 };
 
-const room_W48S12_running = function (roomName) {
-    tower_work('W48S12');
-    let spawn_name = 'Spawn2';
-    let transfer_num = [0, 2];
-    let harvester_num = [0, 1];
-    let link_harvester_pos_xs = [,];
-    let link_harvester_pos_ys = [,];
-    room_energy_mine(roomName, roomName, spawn_name, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys);
-    // let home: Room = Game.rooms[roomName]
-    let upgradersNum = 3;
-    let harvester0sNum = 0;
-    let harvester1sNum = 0;
-    let buildersNum = 4;
-    let base_transferNum = 1;
-    // if (Game.rooms['W48S12'].find(FIND_CONSTRUCTION_SITES).length == 0){
-    //     buildersNum = 0
-    // }
-    let repairersNum = 0;
-    let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-    let builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.room.name == 'W48S12');
-    let repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
-    let base_transfers = _.filter(Game.creeps, (creep) => (creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner') && creep.room.name == 'W48S12');
-    let harvester0s = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.source_idx == 0);
-    let harvester1s = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.source_idx == 1);
-    if (Game.spawns[spawn_name].spawning) {
-        let spawningCreep = Game.creeps[Game.spawns[spawn_name].spawning.name];
-        Game.spawns[spawn_name].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawn_name].pos.x + 1, Game.spawns[spawn_name].pos.y, { align: 'left', opacity: 0.8 });
-    }
-    else if (upgraders.length < upgradersNum) {
-        let newName = 'Upgrader' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE], newName, { memory: { role: 'upgrader', source_idx: 0 } });
-    }
-    else if (harvester0s.length < harvester0sNum) {
-        let newName = 'Harvester' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'harvester', source_idx: 0 } });
-    }
-    else if (harvester1s.length < harvester1sNum) {
-        let newName = 'Harvester' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, { memory: { role: 'harvester', source_idx: 1 } });
-    }
-    else if (builders.length < buildersNum) {
-        let newName = 'Builder' + Game.time;
-        // Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'builder', source_idx: 1}});
-        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, WORK, CARRY, WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'builder', source_idx: 1 } });
-    }
-    else if (repairers.length < repairersNum) {
-        let newName = 'Repairer' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, { memory: { role: 'repairer', source_idx: 1 } });
-    }
-    if (base_transfers.length < base_transferNum) {
-        let newName = 'Base_transfer' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, { memory: { role: 'base_transfer' } });
-    }
-};
-
 // 引入外部依赖
-console.log(Game.time, 'new push');
-const main = function () {
+if (Game.flags.Appassionata) {
+    console.log(Game.time, 'Appassionata new push');
+}
+else {
+    console.log(Game.time, 'Sokranotes new push');
+}
+const mainSokranotes = function () {
     for (let name in Memory.creeps) {
         if (!Game.creeps[name]) {
             delete Memory.creeps[name];
@@ -6939,12 +7337,25 @@ const main = function () {
     for (let idx in rooms) {
         room_base_running(rooms[idx]);
     }
+    // Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], '简单一体机', {memory: {role: 'simple_one_machine'}})
+};
+const mainAppassionata = function () {
+    let rooms = ['W16N18'];
+    for (let idx in rooms) {
+        room_logic(rooms[idx]);
+    }
 };
 const loop = errorMapper(() => {
-    main();
-    // Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], '简单一体机', {memory: {role: 'simple_one_machine'}})
+    if (Game.flags.Appassionata) {
+        // console.log('Appassionata run')
+        mainAppassionata();
+    }
+    else {
+        mainSokranotes();
+    }
 });
 
 exports.loop = loop;
-exports.main = main;
+exports.mainAppassionata = mainAppassionata;
+exports.mainSokranotes = mainSokranotes;
 //# sourceMappingURL=main.js.map

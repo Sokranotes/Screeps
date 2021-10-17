@@ -1,16 +1,21 @@
 // 引入外部依赖
 import { errorMapper } from './modules/errorMapper'
-import { room_base_running } from './room_base/room_base_running';
 
-// import { tower_work } from './room_base/tower';
-// import { room_energy_mine } from './room_base/room_energy_mine';
+import { room_base_running } from './room_base/room_base_running';
+import { room_W48S12_running } from './room_W48S12';
+import { room_logic } from './room_logic';
+
 import { out_room_energy_mine } from "@/out_energy_mine/out_room_energy_mine";
 import { different_role_work } from './different_role_work';
-import { room_W48S12_running } from './room_W48S12';
 
-console.log(Game.time, 'new push')
+if (Game.flags.Appassionata){
+    console.log(Game.time, 'Appassionata new push')
+}
+else{
+    console.log(Game.time, 'Sokranotes new push')
+}
 
-export const main = function(){
+export const mainSokranotes = function(){
     for(let name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
@@ -40,9 +45,23 @@ export const main = function(){
     for (let idx in rooms){
         room_base_running(rooms[idx])
     }
+
+    // Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], '简单一体机', {memory: {role: 'simple_one_machine'}})
+}
+
+export const mainAppassionata = function(){
+    let rooms = ['W16N18']
+    for (let idx in rooms){
+        room_logic(rooms[idx])
+    }
 }
 
 export const loop = errorMapper(() => {
-    main()
-    // Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], '简单一体机', {memory: {role: 'simple_one_machine'}})
+    if (Game.flags.Appassionata){
+        // console.log('Appassionata run')
+        mainAppassionata()
+    }
+    else{
+        mainSokranotes()
+    }
 })
