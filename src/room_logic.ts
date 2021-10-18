@@ -1,5 +1,6 @@
 import { level1_logic } from "./room_base/level1/level1_logic"
 import { level2_logic } from "./room_base/level2/level2_logic"
+import { level3_logic } from "./room_base/level3/level3_logic"
 
 export const room_logic = function(roomName){
     if (Game.rooms[roomName]){
@@ -12,9 +13,11 @@ export const room_logic = function(roomName){
                     case 2:
                         level2_logic(roomName)
                         break
+                    case 3:
+                        level3_logic(roomName)
+                        break
                     default:
-                        console.log('controller is bigger than 2')
-                        level2_logic(roomName)
+                        level3_logic(roomName)
                         break
                 }
             }

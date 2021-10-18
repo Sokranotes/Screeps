@@ -39,6 +39,8 @@ interface RoomMemory {
     sources_num?: number
     sources_id?: Id<Source>[]
 
+    towers_id?: Id<StructureTower>[]
+
     // 对应不同source的harvester的个数，通常为1个
     // 对于3000能量的源, 只要有一个5WORK组件的creep在工作, 就能够保持最大效率
     source_harvester_states?: number[]

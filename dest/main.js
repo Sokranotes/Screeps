@@ -3746,7 +3746,7 @@ const room_energy_mine = function (source_roomName, dest_roomName, spawnName, ha
     room_energy_mine_routine$1(source_roomName, dest_roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys);
 };
 
-const tower_work = function (roomName) {
+const tower_work$1 = function (roomName) {
     if (Game.rooms[roomName] == undefined) {
         console.log('tower work 23 room seems undefined');
         return;
@@ -3851,7 +3851,7 @@ const body_list = [
 const room_base_running = function (roomName) {
     let spawnName;
     if (roomName == 'W47S14') {
-        tower_work(roomName);
+        tower_work$1(roomName);
         spawnName = 'Spawn3';
         let cleaners_base_transfers = _.filter(Game.creeps, (creep) => (creep.memory.role == 'base_transfer' && creep.room.name == 'W47S14') || creep.memory.role == 'cleaner');
         let base_transferNum = 2;
@@ -3982,7 +3982,7 @@ const room_base_running = function (roomName) {
 };
 
 const room_W48S12_running = function (roomName) {
-    tower_work('W48S12');
+    tower_work$1('W48S12');
     let spawn_name = 'Spawn2';
     // let home: Room = Game.rooms[roomName]
     let upgradersNum = 3;
@@ -4045,6 +4045,8 @@ const room_W48S12_running = function (roomName) {
     room_energy_mine(roomName, roomName, spawn_name, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys);
 };
 
+// function:
+// harvester, transfer, upgrader
 // spawnCreep reqiure:
 // creep.memory.source_idx
 // run require:
@@ -4145,6 +4147,14 @@ const level1_logic = function (roomName) {
     }
 };
 
+// function
+// harvester, transfer, builder
+// spawnCreep reqiure:
+// creep.memory.source_idx
+// run require:
+// Memory.rooms[creep.room.name].sources_id
+// other:
+// repairer_work
 const builder_work$1 = function (creep) {
     // creep.say('🔄 Here');
     if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
@@ -4184,13 +4194,19 @@ const builder_work$1 = function (creep) {
         if (code == ERR_NOT_IN_RANGE) {
             code = creep.moveTo(source.pos, { visualizePathStyle: { stroke: '#808080' } });
         }
-        else if (code != ERR_BUSY && code != OK) {
+        else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_ENERGY) {
             console.log(Game.time, 'level2 builder_work', code);
         }
     }
 };
 
-const harvester_work$1 = function (creep) {
+// function
+// harvester, transfer, fill extension and spawn
+// spawnCreep reqiure:
+// creep.memory.source_idx
+// run require:
+// Memory.rooms[creep.room.name].sources_id
+const harvester_work$2 = function (creep) {
     if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
         creep.say('🔄 harvest');
@@ -4200,7 +4216,7 @@ const harvester_work$1 = function (creep) {
         creep.say('🚧 transfer');
     }
     if (creep.memory.is_working) {
-        var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_EXTENSION ||
                     structure.structureType == STRUCTURE_SPAWN) &&
@@ -4220,12 +4236,18 @@ const harvester_work$1 = function (creep) {
         if (code == ERR_NOT_IN_RANGE) {
             creep.moveTo(source);
         }
-        else if (code != ERR_BUSY && code != OK) {
+        else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_ENERGY) {
             console.log(Game.time, 'level2 harvester_work', code);
         }
     }
 };
 
+// function
+// harvester, transfer, repairer
+// spawnCreep reqiure:
+// creep.memory.source_idx
+// run require:
+// Memory.rooms[creep.room.name].sources_id
 const repairer_work$1 = function (creep) {
     if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
@@ -4245,13 +4267,16 @@ const repairer_work$1 = function (creep) {
                 creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
             }
         }
+        else {
+            creep.memory.role = 'builder';
+        }
     }
     else {
         let code = creep.harvest(source);
         if (code == ERR_NOT_IN_RANGE) {
             code = creep.moveTo(source.pos, { visualizePathStyle: { stroke: '#808080' } });
         }
-        else if (code != ERR_BUSY && code != OK) {
+        else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_ENERGY) {
             console.log(Game.time, 'level2 builder_work', code);
         }
     }
@@ -4280,15 +4305,11 @@ const level2_logic = function (roomName) {
                 builder_work$1(creep);
             }
             else if (creep.memory.role == 'harvester') {
-                harvester_work$1(creep);
+                harvester_work$2(creep);
             }
             else if (creep.memory.role == 'repairer') {
                 repairer_work$1(creep);
             }
-            // tmp
-            // else if (creep.memory.role == 'simple_soldier'){
-            //     simple_soldier_work(creep)
-            // }
         }
     }
     let room = Game.rooms[roomName];
@@ -4300,7 +4321,7 @@ const level2_logic = function (roomName) {
         }
     }
     // safe mode
-    if (Game.spawns[spawnName].hits < 0.6 * Game.spawns[spawnName].hitsMax) {
+    if (Game.spawns[spawnName].notifyWhenAttacked(true) == OK && Game.spawns[spawnName].hits < 0.6 * Game.spawns[spawnName].hitsMax) {
         Game.rooms[roomName].controller.activateSafeMode();
     }
     let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.room.name == roomName);
@@ -4320,34 +4341,37 @@ const level2_logic = function (roomName) {
         let newName;
         let bodys = [WORK, CARRY, MOVE, MOVE];
         let opts = {};
-        let flag = true;
+        let flag = false;
         if (harvesters.length < 1) {
+            flag = true;
             newName = 'Harvester' + Game.time;
             opts = { memory: { role: 'harvester', source_idx: harvester_source_idx } };
         }
         else if (builders.length < 1) {
+            flag = true;
             newName = 'Builder' + Game.time;
             opts = { memory: { role: 'builder', source_idx: builder_source_idx } };
         }
         else if (upgraders.length < 1) {
+            flag = true;
             newName = 'Upgrader' + Game.time;
             opts = { memory: { role: 'upgrader', source_idx: upgrader_source_idx } };
         }
         else {
             if (harvesters.length < harvestersNum) {
+                flag = true;
                 newName = 'Harvester' + Game.time;
                 opts = { memory: { role: 'harvester', source_idx: harvester_source_idx } };
             }
             else if (builders.length < buildersNum) {
+                flag = true;
                 newName = 'Builder' + Game.time;
                 opts = { memory: { role: 'builder', source_idx: builder_source_idx } };
             }
             else if (upgraders.length < upgradersNum) {
+                flag = true;
                 newName = 'Upgrader' + Game.time;
                 opts = { memory: { role: 'upgrader', source_idx: upgrader_source_idx } };
-            }
-            else {
-                flag = false;
             }
             if (flag) {
                 switch (room.energyCapacityAvailable) {
@@ -4372,6 +4396,264 @@ const level2_logic = function (roomName) {
     }
 };
 
+// spawnCreep reqiure:
+// creep.memory.source_idx
+// run require:
+// Memory.rooms[creep.room.name].sources_id
+const harvester_work$1 = function (creep) {
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.say('🔄 harvest');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        creep.say('🚧 transfer');
+    }
+    if (creep.memory.is_working) {
+        // defense first
+        let targets = creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_TOWER) &&
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2 * structure.store.getCapacity(RESOURCE_ENERGY);
+            }
+        });
+        if (targets.length > 0) {
+            if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(targets[0]);
+            }
+        }
+        else {
+            let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_EXTENSION ||
+                        structure.structureType == STRUCTURE_SPAWN) &&
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                }
+            });
+            if (target) {
+                if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
+                }
+            }
+        }
+    }
+    else {
+        let source;
+        source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+        let code = creep.harvest(source);
+        if (code == ERR_NOT_IN_RANGE) {
+            creep.moveTo(source);
+        }
+        else if (code != ERR_BUSY && code != OK) {
+            console.log(Game.time, 'level3 harvester_work', code);
+        }
+    }
+};
+
+// reqiure:
+// room
+// room.memory.towers.id
+// set:
+// room.memory.war_flag
+// action:
+// notifyWhenAttacked tower
+// activateSafeMode
+const tower_work = function (roomName) {
+    let room = Game.rooms[roomName];
+    if (!room) {
+        console.log(Game.time, "tower_work", ' roomName:', roomName, ' undefined');
+        return;
+    }
+    let tower_list = room.memory.towers_id;
+    let closestHostiles = room.find(FIND_HOSTILE_CREEPS);
+    let structures;
+    if (closestHostiles.length == 0) {
+        structures = room.find(FIND_STRUCTURES, {
+            filter: (structure) => structure.hits < structure.hitsMax
+                && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
+        });
+    }
+    // Tower防御及safe mode的激活
+    for (let tower_id in tower_list) {
+        let tower = Game.getObjectById(tower_list[tower_id]);
+        if (tower) {
+            if (tower.notifyWhenAttacked(true) == OK && tower.hits <= 0.6 * tower.hitsMax) {
+                room.controller.activateSafeMode();
+            }
+            if (tower) {
+                if (closestHostiles.length > 0) {
+                    if (tower.room.memory.war_flag == false) {
+                        console.log(Game.time, roomName, '发现敌军' + closestHostiles.length + closestHostiles[0].owner.username);
+                    }
+                    tower.room.memory.war_flag = true;
+                    tower.attack(closestHostiles[0]);
+                }
+                else if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.7 * tower.store.getCapacity(RESOURCE_ENERGY))) {
+                    tower.room.memory.war_flag = false;
+                    if (structures.length > 0) {
+                        tower.repair(structures[0]);
+                    }
+                }
+            }
+        }
+    }
+};
+
+// room controller is my
+const level3_logic = function (roomName) {
+    let spawnName = 'Spawn1';
+    let harvestersNum = 3;
+    let upgradersNum = 5;
+    let buildersNum = 3;
+    let builder_source_idx = 0;
+    let harvester_source_idx = 0;
+    let upgrader_source_idx = 1;
+    // 指定spawnCreep的source_idx
+    for (let name in Memory.creeps) {
+        let creep = Game.creeps[name];
+        if (!creep) {
+            delete Memory.creeps[name];
+        }
+        else {
+            if (creep.memory.role == 'upgrader') {
+                upgrader_work$1(creep);
+            }
+            else if (creep.memory.role == 'builder') {
+                builder_work$1(creep);
+            }
+            else if (creep.memory.role == 'harvester') {
+                harvester_work$1(creep);
+            }
+            else if (creep.memory.role == 'repairer') {
+                repairer_work$1(creep);
+            }
+        }
+    }
+    let room = Game.rooms[roomName];
+    if (room.memory.sources_id == undefined) {
+        let sources = room.find(FIND_SOURCES);
+        Memory.rooms[room.name].sources_id = new Array(sources.length);
+        for (let i = 0; i < sources.length; i++) {
+            Memory.rooms[room.name].sources_id[i] = sources[i].id;
+        }
+    }
+    if (room.memory.towers_id == undefined) {
+        // if (Game.time % 100 == 0){
+        let towers = room.find(FIND_MY_STRUCTURES, {
+            filter: (structure) => {
+                return structure.structureType == STRUCTURE_TOWER;
+            }
+        });
+        Memory.rooms[room.name].towers_id = new Array(towers.length);
+        for (let i = 0; i < towers.length; i++) {
+            Memory.rooms[room.name].towers_id[i] = towers[i].id;
+        }
+        // }
+    }
+    else {
+        tower_work(roomName);
+    }
+    // safe mode
+    if (Game.spawns[spawnName].hits < 0.6 * Game.spawns[spawnName].hitsMax) {
+        Game.rooms[roomName].controller.activateSafeMode();
+    }
+    let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.room.name == roomName);
+    let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room.name == roomName);
+    let builders = _.filter(Game.creeps, (creep) => (creep.memory.role == 'builder' || creep.memory.role == 'repairer') && creep.room.name == roomName);
+    let constructions = room.find(FIND_CONSTRUCTION_SITES);
+    if (constructions.length == 0) {
+        buildersNum = 1;
+        harvestersNum = harvestersNum + 1;
+        upgradersNum = upgradersNum + 1;
+    }
+    if (Game.spawns[spawnName].spawning) {
+        let spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+        Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y, { align: 'left', opacity: 0.8 });
+    }
+    else {
+        let newName;
+        let bodys = [WORK, CARRY, MOVE, MOVE];
+        let opts = {};
+        let flag = false;
+        if (harvesters.length < 1) {
+            flag = true;
+            newName = 'Harvester' + Game.time;
+            opts = { memory: { role: 'harvester', source_idx: harvester_source_idx } };
+        }
+        else if (builders.length < 1) {
+            flag = true;
+            newName = 'Builder' + Game.time;
+            opts = { memory: { role: 'builder', source_idx: builder_source_idx } };
+        }
+        else if (upgraders.length < 1) {
+            flag = true;
+            newName = 'Upgrader' + Game.time;
+            opts = { memory: { role: 'upgrader', source_idx: upgrader_source_idx } };
+        }
+        else {
+            if (harvesters.length < harvestersNum) {
+                flag = true;
+                newName = 'Harvester' + Game.time;
+                opts = { memory: { role: 'harvester', source_idx: harvester_source_idx } };
+            }
+            else if (builders.length < buildersNum || upgraders.length < upgradersNum) {
+                // priority is diffenent, it depends on the extensions
+                if (room.energyCapacityAvailable == 800) {
+                    if (upgraders.length < upgradersNum) {
+                        flag = true;
+                        newName = 'Upgrader' + Game.time;
+                        opts = { memory: { role: 'upgrader', source_idx: upgrader_source_idx } };
+                    }
+                    else if (builders.length < buildersNum) {
+                        flag = true;
+                        newName = 'Builder' + Game.time;
+                        opts = { memory: { role: 'builder', source_idx: builder_source_idx } };
+                    }
+                }
+                else {
+                    if (builders.length < buildersNum) {
+                        flag = true;
+                        newName = 'Builder' + Game.time;
+                        opts = { memory: { role: 'builder', source_idx: builder_source_idx } };
+                    }
+                    else if (upgraders.length < upgradersNum) {
+                        flag = true;
+                        newName = 'Upgrader' + Game.time;
+                        opts = { memory: { role: 'upgrader', source_idx: upgrader_source_idx } };
+                    }
+                }
+            }
+            if (flag) {
+                switch (room.energyCapacityAvailable) {
+                    case 300:
+                    case 350:
+                        bodys = [WORK, CARRY, MOVE, MOVE];
+                        break;
+                    case 400:
+                    case 450:
+                        bodys = [WORK, WORK, CARRY, MOVE, MOVE, MOVE];
+                        break;
+                    case 500:
+                    case 550:
+                    case 600:
+                        bodys = [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
+                        break;
+                    case 650:
+                    case 700:
+                        bodys = [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE];
+                        break;
+                    case 750:
+                    case 800:
+                        bodys = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE];
+                }
+            }
+        }
+        if (flag) {
+            Game.spawns[spawnName].spawnCreep(bodys, newName, opts);
+        }
+    }
+};
+
 const room_logic = function (roomName) {
     if (Game.rooms[roomName]) {
         if (Game.rooms[roomName].controller) {
@@ -4383,9 +4665,11 @@ const room_logic = function (roomName) {
                     case 2:
                         level2_logic(roomName);
                         break;
+                    case 3:
+                        level3_logic(roomName);
+                        break;
                     default:
-                        console.log('controller is bigger than 2');
-                        level2_logic(roomName);
+                        level3_logic(roomName);
                         break;
                 }
             }
