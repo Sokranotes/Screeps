@@ -1,12 +1,10 @@
 // room controller is my
 // need spawn, extension site or road site
 
-import { simple_soldier_work } from "@/war5 W18N19/soldier";
 import { upgrader_work } from "../level1/upgrader";
 import { builder_work } from "./builder";
 import { harvester_work } from "./harvester";
 import { repairer_work } from "./repairer";
-
 
 export const level2_logic = function(roomName){
     let spawnName = 'Spawn1'
@@ -36,10 +34,6 @@ export const level2_logic = function(roomName){
             else if (creep.memory.role == 'repairer'){
                 repairer_work(creep)
             }
-            // tmp
-            // else if (creep.memory.role == 'simple_soldier'){
-            //     simple_soldier_work(creep)
-            // }
         }
     }
 
@@ -53,7 +47,7 @@ export const level2_logic = function(roomName){
     }
 
     // safe mode
-    if (Game.spawns[spawnName].hits < 0.6*Game.spawns[spawnName].hitsMax){
+    if (Game.spawns[spawnName].notifyWhenAttacked(true) == OK && Game.spawns[spawnName].hits < 0.6*Game.spawns[spawnName].hitsMax){
         Game.rooms[roomName].controller.activateSafeMode()
     }
 
@@ -78,34 +72,37 @@ export const level2_logic = function(roomName){
         let newName
         let bodys = [WORK, CARRY, MOVE, MOVE]
         let opts = {}
-        let flag = true
+        let flag = false
         if (harvesters.length < 1){
+            flag = true
             newName = 'Harvester' + Game.time
             opts = {memory: {role: 'harvester', source_idx: harvester_source_idx}}
         }
         else if (builders.length < 1){
+            flag = true
             newName = 'Builder' + Game.time;
             opts = {memory: {role: 'builder', source_idx: builder_source_idx}}
         }
         else if (upgraders.length < 1){
+            flag = true
             newName = 'Upgrader' + Game.time
             opts = {memory: {role: 'upgrader', source_idx: upgrader_source_idx}}
         }
         else{
             if (harvesters.length < harvestersNum){
+                flag = true
                 newName = 'Harvester' + Game.time
                 opts = {memory: {role: 'harvester', source_idx: harvester_source_idx}}
             }
             else if (builders.length < buildersNum){
+                flag = true
                 newName = 'Builder' + Game.time;
                 opts = {memory: {role: 'builder', source_idx: builder_source_idx}}
             }
             else if (upgraders.length < upgradersNum){
+                flag = true
                 newName = 'Upgrader' + Game.time
                 opts = {memory: {role: 'upgrader', source_idx: upgrader_source_idx}}
-            }
-            else{
-                flag = false
             }
             if (flag){
                 switch (room.energyCapacityAvailable){

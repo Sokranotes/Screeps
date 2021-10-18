@@ -1,5 +1,13 @@
 import * as $ from "../../modules/超级移动优化"
 
+// function
+// harvester, transfer, repairer
+
+// spawnCreep reqiure:
+// creep.memory.source_idx
+
+// run require:
+// Memory.rooms[creep.room.name].sources_id
 export const repairer_work = function(creep: Creep){
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;
@@ -19,13 +27,16 @@ export const repairer_work = function(creep: Creep){
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         }
+        else{
+            creep.memory.role = 'builder'
+        }
     }
     else{
         let code:number = creep.harvest(source)
         if (code == ERR_NOT_IN_RANGE){
             code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
         }
-        else if (code != ERR_BUSY && code != OK){
+        else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_ENERGY){
             console.log(Game.time, 'level2 builder_work', code)
         }
     }

@@ -1,5 +1,9 @@
 import * as $ from "../../modules/超级移动优化"
 
+
+// function:
+// harvester, transfer, upgrader
+
 // spawnCreep reqiure:
 // creep.memory.source_idx
 
