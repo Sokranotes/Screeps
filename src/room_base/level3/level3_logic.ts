@@ -1,6 +1,10 @@
 // room controller is my
 // need spawn, extension site or road site
 
+// todo:
+// harvester place is not enough
+// tower attack priority and judge
+
 import { upgrader_work } from "../level1/upgrader";
 import { builder_work } from "./../level2/builder";
 import { harvester_work } from "./../level3/harvester";
@@ -93,7 +97,7 @@ export const level3_logic = function(roomName){
         let opts = {}
         let flag = false
 
-        if (harvesters.length < 1){
+        if (harvesters.length < 2){
             flag = true
             newName = 'Harvester' + Game.time
             opts = {memory: {role: 'harvester', source_idx: harvester_source_idx}}
@@ -162,6 +166,9 @@ export const level3_logic = function(roomName){
                         break
                     case 750:
                     case 800:
+                        bodys = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
+                        break
+                    default:
                         bodys = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
                 }
             }

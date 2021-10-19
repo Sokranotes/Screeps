@@ -118,6 +118,8 @@ export const level2_logic = function(roomName){
                     case 550:
                         bodys = [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
                         break
+                    default:
+                        bodys = [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
                 }
             }
         }
