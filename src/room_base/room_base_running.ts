@@ -19,15 +19,17 @@ export const room_base_running = function(roomName: string){
     let spawnName: string
     if (roomName == 'W47S14'){
         tower_work(roomName)
-        spawnName = 'Spawn3'
-        let cleaners_base_transfers = _.filter(Game.creeps, (creep) => (creep.memory.role == 'base_transfer' && creep.room.name == 'W47S14') || creep.memory.role == 'cleaner');
-        let base_transferNum: number = 2;
 
-        let transfer_num: number[] = [1, 1]
-        let harvester_num: number[] = [1, 1]
-        let link_harvester_pos_xs: number[] = [,]
-        let link_harvester_pos_ys: number[] = [,]
-        room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
+        // let storage = Game.getObjectById(Memory.rooms[roomName].storage_id)
+        // if (storage){
+        //     if (storage.store.getFreeCapacity() < 50000 && Game.time%100 == 0){
+        //         Game.market.getAllOrders({type: ORDER_BUY, resourceType: RESOURCE_ENERGY})
+        //     }
+        // }
+
+        spawnName = 'Spawn3'
+        let cleaners_base_transfers = _.filter(Game.creeps, (creep) => (((creep.memory.role == 'base_transfer' && creep.room.name == 'W47S14') || creep.memory.role == 'cleaner'))  && creep.ticksToLive > 200);
+        let base_transferNum: number = 2;
 
         let room: Room = Game.rooms[roomName]
         let energyAvailable: number = room.energyAvailable;
@@ -35,9 +37,9 @@ export const room_base_running = function(roomName: string){
         let carriersNum: number = 1;
         let tower_transfersNum: number = 1;
 
-        let upgradersNum: number = 1;
+        let upgradersNum: number = 2;
         let repairersNum: number = 0;
-        let buildersNum: number = 0;
+        let buildersNum: number = 1;
         // let cleanerNum: number = 0;
         // let minersNum: number = 0;
         // let miner_transfersNum: number = 0;
@@ -103,12 +105,17 @@ export const room_base_running = function(roomName: string){
             else if (builders.length < buildersNum)
             {
                 let newName = 'Builder' + Game.time;
-                Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
+                // Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
+                Game.spawns[spawnName].spawnCreep([WORK, CARRY, MOVE], newName, {memory: {role: 'builder'}});
             }
             // else if (cleaners_base_transfers.length < cleanerNum){
             //     let newName = 'Cleaner' + Game.time;
             //     Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE], newName, {memory: {role: 'cleaner'}})
             // }
+            if(cleaners_base_transfers.length < base_transferNum) {
+                let newName = 'Base_transfer' + Game.time;
+                Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
+            }
             if(carriers.length < carriersNum) {
             let newName = 'Carrier' + Game.time;
             Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier_W47S14'}});
@@ -134,6 +141,12 @@ export const room_base_running = function(roomName: string){
         if (dest_link.store.getUsedCapacity(RESOURCE_ENERGY) > 600){
             dest_link.transferEnergy(upgrade_link)
         }
+
+        let transfer_num: number[] = [1, 1]
+        let harvester_num: number[] = [1, 1]
+        let link_harvester_pos_xs: number[] = [,]
+        let link_harvester_pos_ys: number[] = [,]
+        room_energy_mine(roomName, roomName, spawnName, harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
     }
 
     // switch (room.controller.level){

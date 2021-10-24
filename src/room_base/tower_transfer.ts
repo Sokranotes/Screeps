@@ -17,7 +17,7 @@ export const tower_transfer_work = function(creep: Creep){
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_TOWER &&
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) >= 0.2*structure.store.getCapacity(RESOURCE_ENERGY));
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) >= 0.3*structure.store.getCapacity(RESOURCE_ENERGY));
                 }
             });
             if(target) {

@@ -12,14 +12,25 @@ export const carrier_W48S12_work = function(creep: Creep){
     else{
         let link: StructureLink = Game.getObjectById("61695f491a993a36b0f39715")
         let storage: StructureStorage = Game.getObjectById("616443f5fd720f7fa73ac3eb")
-
-        if (link.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
+        let dest_link: StructureLink = Game.getObjectById('61739e3ab6a4e1f3750c4432')
+        // if (link.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
+        //     if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
+        //         creep.withdraw(link, RESOURCE_ENERGY)
+        //     }
+        //     else{
+        //         creep.transfer(storage, RESOURCE_ENERGY)
+        //     }
+        // }
+        if (link.store.getUsedCapacity(RESOURCE_ENERGY) < 600){
             if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
-                creep.withdraw(link, RESOURCE_ENERGY)
+                creep.withdraw(storage, RESOURCE_ENERGY)
             }
             else{
-                creep.transfer(storage, RESOURCE_ENERGY)
+                creep.transfer(link, RESOURCE_ENERGY)
             }
+        }
+        else{
+            link.transferEnergy(dest_link)
         }
     }
 }

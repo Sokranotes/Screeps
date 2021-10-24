@@ -41,6 +41,16 @@ export const mainSokranotes = function(){
     harvester_num = [1, 1]
     out_room_energy_mine('W48S15', 'W47S14', spawnName, harvester_num, transfer_num)
 
+    spawnName = 'Spawn3'
+    transfer_num = [2, 2]
+    harvester_num = [1, 1]
+    out_room_energy_mine('W47S13', 'W47S14', spawnName, harvester_num, transfer_num)
+
+    spawnName = 'Spawn1'
+    transfer_num = [2, 2]
+    harvester_num = [1, 1]
+    out_room_energy_mine('W46S13', 'W47S14', spawnName, harvester_num, transfer_num)
+
     let rooms = ['W47S14']
     for (let idx in rooms){
         room_base_running(rooms[idx])

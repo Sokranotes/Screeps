@@ -12,7 +12,7 @@ export const repairer_work = function(creep: Creep){
     }
     if(creep.memory.is_working) {
         let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: (s) => (s.hits < 1000 && s.hits < s.hitsMax) && (s.structureType != STRUCTURE_LAB && s.structureType != STRUCTURE_EXTRACTOR)
+            filter: (s) => (s.hits < 1000000 && s.hits < s.hitsMax) && (s.structureType != STRUCTURE_LAB && s.structureType != STRUCTURE_EXTRACTOR)
         });
         if(target) {
             if(creep.repair(target) == ERR_NOT_IN_RANGE) {
@@ -35,5 +35,8 @@ export const repairer_work = function(creep: Creep){
                 }
             }
         }
+    }
+    else if (creep.room.name == 'W48S12'){
+        creep.memory.role = 'builder'
     }
 }

@@ -31,20 +31,32 @@ export const carrier_W47S14_work = function(creep: Creep){
                 creep.transfer(storage, RESOURCE_ENERGY)
             }
         }
-        else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 100000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY)){
-            if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
-                creep.withdraw(storage, RESOURCE_ENERGY)
+        else{
+            if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 200000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY)){
+                if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
+                    creep.withdraw(storage, RESOURCE_ENERGY)
+                }
+                else{
+                    creep.transfer(terminal, RESOURCE_ENERGY)
+                }
             }
-            else{
-                creep.transfer(terminal, RESOURCE_ENERGY)
+            else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) < 180000){
+                if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
+                    creep.withdraw(terminal, RESOURCE_ENERGY)
+                }
+                else{
+                    creep.transfer(storage, RESOURCE_ENERGY)
+                }
             }
-        }
-        else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200000){
-            if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
-                creep.withdraw(terminal, RESOURCE_ENERGY)
-            }
-            else{
-                creep.transfer(storage, RESOURCE_ENERGY)
+            else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 270000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > 950000){
+                if (Game.time%2 == 0){
+                    Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')
+                    console.log(Game.time, 'send', 'W41S11', '20000')
+                }
+                else{
+                    Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W39S23', 'free')
+                    console.log(Game.time, 'send', 'W39S23', '20000')
+                }
             }
         }
     }

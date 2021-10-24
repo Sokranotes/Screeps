@@ -12,7 +12,7 @@ export const tower_work = function(roomName: string){
         spawn_list = ['Spawn1', 'Spawn3']
     }
     else if (roomName == 'W48S12'){
-        tower_list = ['6159ce743a785c3da4b22def', '6165ed910183007348126fad']
+        tower_list = ['6159ce743a785c3da4b22def', '617439daae86fb256a426b47']
         spawn_list = ['Spawn2']
     }
     for (let spawn_id in spawn_list){
@@ -24,14 +24,23 @@ export const tower_work = function(roomName: string){
         }
     }
     let closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
-    // let ramparts: StructureRampart[]
+    let ramparts: StructureRampart[]
     let structures: Structure[]
-    // let ramparts_walls: Structure[]
+    let ramparts_walls: Structure[]
     if(closestHostiles.length == 0){
-        structures = Game.rooms[roomName].find(FIND_STRUCTURES, {
-                        filter: (structure) => structure.hits < structure.hitsMax  
-                        && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
-                    });
+        if (roomName == 'W48S12'){
+            structures = Game.rooms[roomName].find(FIND_STRUCTURES, {
+                filter: (structure) => (structure.hits < 0.9*structure.hitsMax  
+                && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART) || 
+                (structure.hits < 10000 && structure.pos.x >= 9 && structure.pos.x <= 26 && structure.pos.y > 32 && (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART))
+            });
+        }
+        else{
+            structures = Game.rooms[roomName].find(FIND_STRUCTURES, {
+                filter: (structure) => structure.hits < 0.9*structure.hitsMax  
+                && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
+            });
+        }
     }
     // if(closestHostiles.length == 0){
     //     ramparts = Game.rooms[roomName].find(FIND_STRUCTURES, {
@@ -66,24 +75,48 @@ export const tower_work = function(roomName: string){
                     tower.room.memory.war_flag = true
                     tower.attack(closestHostiles[0]);
                 }
-                else if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.7*tower.store.getCapacity(RESOURCE_ENERGY))){
+                else if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.6*tower.store.getCapacity(RESOURCE_ENERGY))){
                     tower.room.memory.war_flag = false
                     if(structures.length > 0) {
                         tower.repair(structures[0]);
                     }
-                    // if(ramparts.length > 0) {
-                    //     tower.repair(ramparts[0]);
-                    // }
-                    // else{
-                    //     if(structures.length > 0) {
-                    //         tower.repair(structures[0]);
-                    //     }
-                    //     else{
-                    //         if(ramparts_walls.length > 0) {
-                    //             tower.repair(ramparts_walls[0]);
-                    //         }
-                    //     }
-                    // }
+                    else if (roomName == 'W47S14'){
+                        let storage: StructureStorage = Game.getObjectById("6159fc1609f790175f45c6be")
+                        let terminal: StructureTerminal = Game.getObjectById('615ab4e746872376a3726f6f')
+                        if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 190000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > 500000)
+                        {
+                            ramparts = Game.rooms[roomName].find(FIND_STRUCTURES, {
+                                filter: (structure) => structure.hits < 1000000  && (structure.structureType == STRUCTURE_RAMPART)
+                                && structure.id != '6144f713fac820efe7cd23bc'
+                            });
+                            if(ramparts.length == 0) {
+                                structures = Game.rooms[roomName].find(FIND_STRUCTURES, {
+                                    filter: (structure) => structure.hits < structure.hitsMax  
+                                    && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
+                                });
+                                if (structures.length == 0){
+                                    ramparts_walls = Game.rooms[roomName].find(FIND_STRUCTURES, {
+                                        filter: (structure) => structure.hits < structure.hitsMax  
+                                        && structure.structureType != STRUCTURE_WALL
+                                        && structure.structureType != STRUCTURE_RAMPART
+                                    });
+                                }
+                            }
+                            if(ramparts.length > 0) {
+                                tower.repair(ramparts[0]);
+                            }
+                            else{
+                                if(structures.length > 0) {
+                                    tower.repair(structures[0]);
+                                }
+                                else{
+                                    if(ramparts_walls.length > 0) {
+                                        tower.repair(ramparts_walls[0]);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
