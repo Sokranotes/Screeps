@@ -65,7 +65,7 @@ export const harvester_work = function(creep: Creep){
         if (code == ERR_NOT_IN_RANGE){
             creep.moveTo(source)
         }
-        else if (code != ERR_BUSY && code != OK){
+        else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_ENERGY){
             console.log(Game.time, 'harvester_work', code)
         }
     }
