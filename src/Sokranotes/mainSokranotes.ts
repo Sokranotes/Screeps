@@ -3,11 +3,9 @@ import { different_role_work } from '@/Sokranotes/different_role_work';
 import { room_base_running } from '@/Sokranotes/room_base/room_base_running';
 import { room_W48S12_running } from '@/Sokranotes/room_W48S12';
 
-
 if (Game.flags.Sokranotes){
     console.log(Game.time, 'Sokranotes new push')
 }
-
 
 export const mainSokranotes = function(){
     for(let name in Memory.creeps) {

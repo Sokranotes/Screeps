@@ -86,7 +86,7 @@ export const tower_work = function(roomName: string){
                         if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 190000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > 500000)
                         {
                             ramparts = Game.rooms[roomName].find(FIND_STRUCTURES, {
-                                filter: (structure) => structure.hits < 1000000  && (structure.structureType == STRUCTURE_RAMPART)
+                                filter: (structure) => structure.hits < 5000000  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
                                 && structure.id != '6144f713fac820efe7cd23bc'
                             });
                             if(ramparts.length == 0) {

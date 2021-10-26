@@ -28,7 +28,12 @@ export const carrier_W47S14_work = function(creep: Creep){
                 creep.withdraw(link, RESOURCE_ENERGY)
             }
             else{
-                creep.transfer(storage, RESOURCE_ENERGY)
+                if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > 270000){
+                    creep.transfer(terminal, RESOURCE_ENERGY)
+                }
+                else{
+                    creep.transfer(storage, RESOURCE_ENERGY)
+                }
             }
         }
         else{
@@ -57,6 +62,8 @@ export const carrier_W47S14_work = function(creep: Creep){
                     Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W39S23', 'free')
                     console.log(Game.time, 'send', 'W39S23', '20000')
                 }
+                // Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'E39S51', 'free')
+                // W44S2 mikumikumiku
             }
         }
     }
