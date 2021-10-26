@@ -1,9 +1,10 @@
 // room controller is my
 // need spawn
+
 import { upgrader_work } from "./upgrader";
 
 
-export const level1_logic = function(roomName){
+export const level1_logic = function(roomName: string){
     let spawnName = 'Spawn1'
     let upgradersNum: number = 3
     let source_idx = 1
@@ -19,8 +20,14 @@ export const level1_logic = function(roomName){
             }
         }
     }
-    
+
     let room: Room = Game.rooms[roomName]
+
+    // safe mode
+    if (Game.spawns[spawnName].notifyWhenAttacked(true) == OK && Game.spawns[spawnName].hits < 0.6*Game.spawns[spawnName].hitsMax){
+        room.controller.activateSafeMode()
+    }
+    
     let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room.name == roomName);
     if (room.memory.sources_id == undefined){
         let sources = room.find(FIND_SOURCES)

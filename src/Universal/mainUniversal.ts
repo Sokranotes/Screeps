@@ -5,7 +5,7 @@ if (Game.flags.Appassionata){
 }
 
 export const mainUniversal = function(){
-    let rooms = ['W16N18']
+    let rooms: string[] = ['W16N18']
     for (let idx in rooms){
         room_logic(rooms[idx])
     }

@@ -1,5 +1,9 @@
 import math
 
+# 挂单
+# Game.market.createOrder({type: ORDER_SELL, resourceType: RESOURCE_ENERGY, price: 100000, totalAmount: 1, roomName: "W1N1"});
+
+
 distance = 50
 price = 1
 

@@ -8,6 +8,9 @@ import * as $ from "../../../modules/超级移动优化"
 
 // run require:
 // Memory.rooms[creep.room.name].sources_id
+
+// other:
+// builder_work
 export const repairer_work = function(creep: Creep){
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false;

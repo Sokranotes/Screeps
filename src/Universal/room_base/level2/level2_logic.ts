@@ -6,15 +6,15 @@ import { builder_work } from "./builder";
 import { harvester_work } from "./harvester";
 import { repairer_work } from "./repairer";
 
-export const level2_logic = function(roomName){
+export const level2_logic = function(roomName: string){
     let spawnName = 'Spawn1'
     let harvestersNum: number = 3
     let upgradersNum: number = 5
     let buildersNum: number = 3
+    // 指定spawnCreep的source_idx
     let builder_source_idx = 0
     let harvester_source_idx = 0
     let upgrader_source_idx = 1
-    // 指定spawnCreep的source_idx
 
     for(let name in Memory.creeps) {
         let creep = Game.creeps[name]
@@ -48,7 +48,7 @@ export const level2_logic = function(roomName){
 
     // safe mode
     if (Game.spawns[spawnName].notifyWhenAttacked(true) == OK && Game.spawns[spawnName].hits < 0.6*Game.spawns[spawnName].hitsMax){
-        Game.rooms[roomName].controller.activateSafeMode()
+        room.controller.activateSafeMode()
     }
 
     let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.room.name == roomName);
@@ -69,7 +69,7 @@ export const level2_logic = function(roomName){
             {align: 'left', opacity: 0.8});
     }
     else{
-        let newName
+        let newName: string
         let bodys = [WORK, CARRY, MOVE, MOVE]
         let opts = {}
         let flag = false

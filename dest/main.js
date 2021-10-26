@@ -4804,6 +4804,9 @@ const out_energy_harvester_with_carry_work = function (creep) {
             else if (code == ERR_NOT_IN_RANGE) {
                 code = creep.moveTo(source.pos, { visualizePathStyle: { stroke: '#808080' } });
             }
+            else if (code == ERR_NO_BODYPART) {
+                creep.suicide();
+            }
             else if (code != ERR_BUSY && code != ERR_NOT_ENOUGH_RESOURCES && code != ERR_NOT_OWNER) {
                 console.log(Game.time, 'out_energy_harvester_with_carry_work', code);
             }
@@ -7279,6 +7282,10 @@ const level1_logic = function (roomName) {
         }
     }
     let room = Game.rooms[roomName];
+    // safe mode
+    if (Game.spawns[spawnName].notifyWhenAttacked(true) == OK && Game.spawns[spawnName].hits < 0.6 * Game.spawns[spawnName].hitsMax) {
+        room.controller.activateSafeMode();
+    }
     let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room.name == roomName);
     if (room.memory.sources_id == undefined) {
         let sources = room.find(FIND_SOURCES);
@@ -7440,10 +7447,10 @@ const level2_logic = function (roomName) {
     let harvestersNum = 3;
     let upgradersNum = 5;
     let buildersNum = 3;
+    // 指定spawnCreep的source_idx
     let builder_source_idx = 0;
     let harvester_source_idx = 0;
     let upgrader_source_idx = 1;
-    // 指定spawnCreep的source_idx
     for (let name in Memory.creeps) {
         let creep = Game.creeps[name];
         if (!creep) {
@@ -7474,7 +7481,7 @@ const level2_logic = function (roomName) {
     }
     // safe mode
     if (Game.spawns[spawnName].notifyWhenAttacked(true) == OK && Game.spawns[spawnName].hits < 0.6 * Game.spawns[spawnName].hitsMax) {
-        Game.rooms[roomName].controller.activateSafeMode();
+        room.controller.activateSafeMode();
     }
     let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.room.name == roomName);
     let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room.name == roomName);
