@@ -1,3 +1,5 @@
+import "../modules/超级移动优化"
+
 export const test_work = function(creep: Creep){
     // console.log('run out')
     let target = new RoomPosition(17, 40, 'W47S14')

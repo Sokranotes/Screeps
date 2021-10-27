@@ -1,4 +1,4 @@
-import * as $ from "../../modules/超级移动优化"
+import "../../modules/超级移动优化"
 
 var code:number
 export const out_active_transfer_work = function(creep: Creep){

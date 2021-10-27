@@ -1,5 +1,3 @@
-import * as $ from "../../../modules/超级移动优化"
-
 // function
 // harvester, transfer, builder
 
@@ -11,6 +9,9 @@ import * as $ from "../../../modules/超级移动优化"
 
 // other:
 // repairer_work
+
+import "../../../modules/超级移动优化"
+
 export const builder_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {

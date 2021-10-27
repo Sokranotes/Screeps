@@ -1,4 +1,4 @@
-import * as $ from "../../modules/超级移动优化"
+import "../../modules/超级移动优化"
 
 export const out_energy_harvester_no_carry_work = function(creep: Creep){
     // creep.say('👋 Here');

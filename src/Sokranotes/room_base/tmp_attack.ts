@@ -1,4 +1,4 @@
-import * as $ from "../../modules/超级移动优化"
+import "../../modules/超级移动优化"
 
 export const tmp_attack_work = function(creep: Creep){
     let li = ['616e6d0b97ea7d5db42ac364', '614081fb89c2b92bc5d8fb0c', '616e0a9f3efa916c4444a917', '60e851e11355bb3427f59129', '60e851acb70212468a3d8f82', 

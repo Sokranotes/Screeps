@@ -1,34 +1,17 @@
-import * as $ from "../../modules/超级移动优化"
+import "../../modules/超级移动优化"
 
 export const out_passive_transfer_work = function(creep: Creep){
     if (Memory.rooms[creep.memory.source_roomName].war_flag == true){
         creep.memory.is_working = false
-        let target = new RoomPosition(3, 36, creep.memory.dest_roomName)
-        if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-            // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-            creep.memory.path = creep.pos.findPathTo(target);
-        }
-        let code = creep.moveByPath(creep.memory.path)
-        if (code == ERR_NOT_FOUND){
-            if (creep.pos.isNearTo(target)){
-                creep.memory.path = null
-            }
-            else{
-                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                creep.memory.path = creep.pos.findPathTo(target);
-            }
-        }
-        // creep.moveTo(new RoomPosition(8, 34, creep.memory.dest_roomName))
+        creep.moveTo(new RoomPosition(3, 36, creep.memory.dest_roomName))
     }
     else{
         if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.is_working = false;
-            creep.memory.path = null
             creep.say('🔄 harvest');
         }
         if(!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
             creep.memory.is_working = true;
-            creep.memory.path = null
             creep.say('🚧 transfer');
         }
         if (creep.memory.is_working == true){
@@ -36,24 +19,7 @@ export const out_passive_transfer_work = function(creep: Creep){
                 let storage: StructureStorage = Game.getObjectById('6159fc1609f790175f45c6be')
                 let code = creep.transfer(storage, RESOURCE_ENERGY)
                 if(code == ERR_NOT_IN_RANGE) {
-                    if (creep.pos.inRangeTo(storage, 7)){
-                        let target = storage
-                        if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                            // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                            creep.memory.path = creep.pos.findPathTo(target);
-                        }
-                        let code = creep.moveByPath(creep.memory.path)
-                    }
-                    else{
-                        if (creep.pos.isNearTo(storage)){
-                            if (creep.transfer(storage, RESOURCE_ENERGY) == OK){
-                                creep.memory.path = null
-                            }
-                        }
-                        else{
-                            creep.moveTo(storage)
-                        }
-                    }
+                    creep.moveTo(storage)
                 }
             }
             else{
@@ -63,22 +29,7 @@ export const out_passive_transfer_work = function(creep: Creep){
                     if (link2.store.getUsedCapacity(RESOURCE_ENERGY) < 800){
                         let code = creep.transfer(link2, RESOURCE_ENERGY)
                         if(code == ERR_NOT_IN_RANGE) {
-                            let target = link2
-                            if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                                creep.memory.path = creep.pos.findPathTo(target);
-                            }
-                            let code = creep.moveByPath(creep.memory.path)
-                            if (code == ERR_NOT_FOUND){
-                                if (creep.pos.isNearTo(target)){
-                                    creep.memory.path = null
-                                }
-                                else{
-                                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                                    creep.memory.path = creep.pos.findPathTo(target);
-                                }
-                            }
-                            // creep.moveTo(link2)
+                            creep.moveTo(link2)
                         }
                         else if (code == OK){
                             creep.memory.path = null
@@ -87,22 +38,7 @@ export const out_passive_transfer_work = function(creep: Creep){
                     else if (link1.store.getUsedCapacity(RESOURCE_ENERGY) < 800){
                         let code = creep.transfer(link1, RESOURCE_ENERGY)
                         if(code == ERR_NOT_IN_RANGE) {
-                            let target = link1
-                            if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                                // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                                creep.memory.path = creep.pos.findPathTo(target);
-                            }
-                            let code = creep.moveByPath(creep.memory.path)
-                            if (code == ERR_NOT_FOUND){
-                                if (creep.pos.isNearTo(target)){
-                                    creep.memory.path = null
-                                }
-                                else{
-                                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                                    creep.memory.path = creep.pos.findPathTo(target);
-                                }
-                            }
-                            // creep.moveTo(link1, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 30});
+                            creep.moveTo(link1, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 30});
                         }
                         else if (code == OK){
                             creep.memory.path = null
@@ -110,22 +46,7 @@ export const out_passive_transfer_work = function(creep: Creep){
                     }
                 }
                 else{
-                    let target = link2
-                    if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                        // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                        creep.memory.path = creep.pos.findPathTo(target);
-                    }
-                    let code = creep.moveByPath(creep.memory.path)
-                    if (code == ERR_NOT_FOUND){
-                        if (creep.pos.isNearTo(target)){
-                            creep.memory.path = null
-                        }
-                        else{
-                            // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                            creep.memory.path = creep.pos.findPathTo(target);
-                        }
-                    }
-                    // creep.moveTo(link2)
+                    creep.moveTo(link2)
                 }
             }
         }
@@ -142,22 +63,7 @@ export const out_passive_transfer_work = function(creep: Creep){
                 }
             });
             if (farm_creeps.length > 0){
-                let target = farm_creeps[0]
-                if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                    creep.memory.path = creep.pos.findPathTo(target);
-                }
-                let code = creep.moveByPath(creep.memory.path)
-                if (code == ERR_NOT_FOUND){
-                    if (creep.pos.isNearTo(target)){
-                        creep.memory.path = null
-                    }
-                    else{
-                        // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                        creep.memory.path = creep.pos.findPathTo(target);
-                    }
-                }
-                // creep.moveTo(farm_creeps[0])
+                creep.moveTo(farm_creeps[0])
                 let res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
                 creep.pickup(res)
             }
@@ -180,22 +86,7 @@ export const out_passive_transfer_work = function(creep: Creep){
                         place = new RoomPosition(source.pos.x + 8, source.pos.y + 8, creep.memory.source_roomName)
                     }
                 }
-                let target = place
-                if((!creep.memory.path || creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49) && !creep.pos.isNearTo(target)) {
-                    // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                    creep.memory.path = creep.pos.findPathTo(target);
-                }
-                let code = creep.moveByPath(creep.memory.path)
-                if (code == ERR_NOT_FOUND){
-                    if (creep.pos.isNearTo(target)){
-                        creep.memory.path = null
-                    }
-                    else{
-                        // creep.memory.path = creep.pos.findPathTo(target, {ignoreCreeps: true});
-                        creep.memory.path = creep.pos.findPathTo(target);
-                    }
-                }
-                // creep.moveTo(place)
+                creep.moveTo(place)
             }
         }
     }

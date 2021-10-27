@@ -78,7 +78,7 @@ let config = {
     changeFindClostestByPath: true,     // 【未启用】轻度修改findClosestByPath，使得默认按照ignoreCreeps寻找最短
     autoVisual: false,  // 【未启用】
     enableFlee: false   // 【未启用】是否添加flee()函数，注意这会在Creep.prototype上添加官方未有键值，flee()用法见最底下module.exports处
-};
+}
 // 运行时参数 
 let pathClearDelay = 5000;  // 清理相应时间内都未被再次使用的路径，同时清理死亡creep的缓存，设为undefined表示不清除缓存
 let hostileCostMatrixClearDelay = 500; // 自动清理相应时间前创建的其他玩家房间的costMatrix
@@ -91,8 +91,8 @@ let avoidExits = {
     'fromRoom': 'toRoom'
 }   // 【未启用】单向屏蔽房间的一些出口，永不从fromRoom踏入toRoom
 /** @type {{id:string, roomName:string, taskQueue:{path:MyPath, idx:number, roomName:string}[]}[]} */
-// let observers = ['5e3646219c6dc78024fd7097', '5e55e9b8673548d9468a2d3d', '5e36372d00fab883d281d95e'];  // 如果想用ob寻路，把ob的id放这里
-let observers = ['5e3646219c6dc78024fd7097', '5e55e9b8673548d9468a2d3d', '5e36372d00fab883d281d95e'];
+let observers = ['5e3646219c6dc78024fd7097', '5e55e9b8673548d9468a2d3d', '5e36372d00fab883d281d95e'];  // 如果想用ob寻路，把ob的id放这里
+
 /***************************************
  *  局部缓存
  */
@@ -1445,13 +1445,13 @@ observers = observers.reduce((temp, id) => {
 Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveTo, 'moveTo');
 // RoomPosition.prototype.findClosestByPath = wrapFn(config.changeFindClostestByPath? betterFindClosestByPath : originFindClosestByPath, 'findClosestByPath');
 // Creep.prototype.flee()和RoomPosition.prototype.findClosestByPath()将在v0.9或v1.0版本加入
-
-    export const setChangeMove =  function (bool) {
+module.exports = {
+    setChangeMove: function (bool) {
         //Creep.prototype.move = wrapFn(bool? betterMove : originMove, 'move');
         analyzeCPU.move = { sum: 0, calls: 0 };
         return OK;
     },
-    export const setChangeMoveTo = function (bool) {
+    setChangeMoveTo: function (bool) {
         Creep.prototype.moveTo = wrapFn(bool ? betterMoveTo : originMoveTo, 'moveTo');
         analyzeCPU.moveTo = { sum: 0, calls: 0 };
         testCacheHits = 0;
@@ -1466,12 +1466,12 @@ Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveT
         cacheMissCost = 0;
         return OK;
     },
-    export const  setChangeFindClostestByPath = function (bool) {
+    setChangeFindClostestByPath: function (bool) {
         // RoomPosition.prototype.findClosestByPath = wrapFn(bool? betterFindClosestByPath : originFindClosestByPath, 'findClosestByPath');
         analyzeCPU.findClosestByPath = { sum: 0, calls: 0 };
         return OK;
     },
-    export const setPathClearDelay= function (number) {
+    setPathClearDelay: function (number) {
         if (typeof number == "number" && number > 0) {
             pathClearDelay = Math.ceil(number);
             return OK;
@@ -1480,7 +1480,7 @@ Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveT
         }
         return ERR_INVALID_ARGS;
     },
-    export const setHostileCostMatrixClearDelay= function (number) {
+    setHostileCostMatrixClearDelay: function (number) {
         if (typeof number == "number" && number > 0) {
             hostileCostMatrixClearDelay = Math.ceil(number);
             return OK;
@@ -1490,15 +1490,15 @@ Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveT
         }
         return ERR_INVALID_ARGS;
     },
-    export const deleteCostMatrix= function (roomName) {
+    deleteCostMatrix: function (roomName) {
         delete costMatrixCache[roomName];
         return OK;
     },
-    export const deltePath= function (fromPos, toPos, opts) {   // TODO
+    deltePath: function (fromPos, toPos, opts) {   // TODO
         //if(!(fromPos instanceof RoomPosition))
         return 'not implemented'
     },
-    export const addAvoidRooms= function (roomName) {
+    addAvoidRooms: function (roomName) {
         let splited = reg1.exec(roomName);
         if (splited && splited.length == 5) {
             avoidRooms[roomName] = 1;
@@ -1507,7 +1507,7 @@ Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveT
             return ERR_INVALID_ARGS;
         }
     },
-    export const deleteAvoidRooms= function (roomName) {
+    deleteAvoidRooms: function (roomName) {
         let splited = reg1.exec(roomName);
         if (splited && splited.length == 5) {
             delete avoidRooms[roomName];
@@ -1516,7 +1516,7 @@ Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveT
             return ERR_INVALID_ARGS;
         }
     },
-    export const deletePathInRoom= function (roomName) {
+    deletePathInRoom: function (roomName) {
         let splited = reg1.exec(roomName);
         if (splited && splited.length == 5) {
             this.deleteCostMatrix(roomName);
@@ -1544,7 +1544,7 @@ Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveT
             return ERR_INVALID_ARGS;
         }
     },
-    export const addAvoidExits= function (fromRoomName, toRoomName) {    // 【未启用】
+    addAvoidExits: function (fromRoomName, toRoomName) {    // 【未启用】
         let splited1 = reg1.exec(fromRoomName);
         let splited2 = reg1.exec(toRoomName);
         if (splited1 && splited1.length == 5 && splited2 && splited2.length == 5) {
@@ -1554,7 +1554,7 @@ Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveT
             return ERR_INVALID_ARGS;
         }
     },
-    export const deleteAvoidExits= function (fromRoomName, toRoomName) { // 【未启用】
+    deleteAvoidExits: function (fromRoomName, toRoomName) { // 【未启用】
         let splited1 = reg1.exec(fromRoomName);
         let splited2 = reg1.exec(toRoomName);
         if (splited1 && splited1.length == 5 && splited2 && splited2.length == 5) {
@@ -1566,7 +1566,7 @@ Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveT
             return ERR_INVALID_ARGS;
         }
     },
-    export const print= function () {
+    print: function () {
         let text = '\navarageTime\tcalls\tFunctionName';
         for (let fn in analyzeCPU) {
             text += `\n${(analyzeCPU[fn].sum / analyzeCPU[fn].calls).toFixed(5)}\t\t${analyzeCPU[fn].calls}\t\t${fn}`;
@@ -1580,5 +1580,6 @@ Creep.prototype.moveTo = wrapFn(config.changeMoveTo ? betterMoveTo : originMoveT
         text += `\ncache hit avg cost: ${(hitCost).toFixed(5)}, cache miss avg cost: ${(missCost).toFixed(5)}, total avg cost: ${(hitCost * (1 - missRate) + missCost * missRate).toFixed(5)}`;
         return text;
     },
-    export const clear= () => { }
+    clear: () => { }
     // clear: clearUnused
+}

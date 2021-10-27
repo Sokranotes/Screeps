@@ -1,4 +1,4 @@
-import * as $ from "../../modules/超级移动优化"
+import "../../modules/超级移动优化"
 
 export const upgrader_link_work = function(creep: Creep){
     creep.upgradeController(creep.room.controller)
