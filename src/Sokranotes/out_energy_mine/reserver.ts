@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const reserver_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if (Memory.rooms[creep.memory.source_roomName].war_flag == true){

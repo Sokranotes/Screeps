@@ -1,4 +1,4 @@
-import "../../modules/超级移动优化"
+import { go_to_harvest } from "../room_base/go_to_harvest"
 
 export const out_energy_harvester_with_carry_work = function(creep: Creep){
     // creep.say('🔄 Here');
@@ -24,23 +24,6 @@ export const out_energy_harvester_with_carry_work = function(creep: Creep){
             creep.transfer(transfer_creep, RESOURCE_ENERGY)
         }
         let source: Source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx])
-        if(creep.memory.is_working == undefined) {
-            creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#00ff0e'}})
-        }
-        else {
-            let code:number = creep.harvest(source)
-            if (code == OK){
-
-            }
-            else if (code == ERR_NOT_IN_RANGE){
-                code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
-            }
-            else if (code == ERR_NO_BODYPART){
-                creep.suicide()
-            }
-            else if (code != ERR_BUSY && code != ERR_NOT_ENOUGH_RESOURCES && code != ERR_NOT_OWNER){
-                console.log(Game.time, 'out_energy_harvester_with_carry_work', code)
-            }
-        }
+        go_to_harvest(creep, source)
     }
 }

@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const active_transfer_work = function(creep: Creep){
     // creep.say('👋 active transfer');
     let source_room: Room = Game.rooms[creep.memory.source_roomName]

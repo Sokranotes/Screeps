@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const carrier_help_work = function(creep: Creep){
     // creep.say('🔄 Here');
     // console.log(creep.store.getCapacity())

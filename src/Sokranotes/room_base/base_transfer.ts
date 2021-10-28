@@ -1,5 +1,3 @@
-import "./../../modules/超级移动优化"
-
 export const base_transfer_work = function(creep: Creep){
     // creep.say('👋 base transfer');
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {

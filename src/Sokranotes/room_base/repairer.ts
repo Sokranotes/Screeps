@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const repairer_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {

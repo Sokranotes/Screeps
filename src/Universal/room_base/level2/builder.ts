@@ -1,16 +1,18 @@
-// function
-// harvester, transfer, builder
+/*
+function
+harvester, transfer, builder
 
-// spawnCreep reqiure:
-// creep.memory.source_idx
+spawnCreep reqiure:
+creep.memory.source_idx
 
-// run require:
-// Memory.rooms[creep.room.name].sources_id
+run require:
+Memory.rooms[creep.room.name].sources_id
 
-// other:
-// repairer_work
+other:
+repairer_work
+*/
 
-import "../../../modules/超级移动优化"
+import { go_to_harvest } from "../universal_logic/go_to_harvest"
 
 export const builder_work = function(creep: Creep){
     // creep.say('🔄 Here');
@@ -20,9 +22,9 @@ export const builder_work = function(creep: Creep){
     }
     if(!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
         creep.memory.is_working = true
+        creep.memory.dontPullMe = false
         creep.say('🚧 build')
     }
-    let source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
     if(creep.memory.is_working) {
         let construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
             filter: (structure) => {
@@ -47,12 +49,7 @@ export const builder_work = function(creep: Creep){
         }
     }
     else {
-        let code:number = creep.harvest(source)
-        if (code == ERR_NOT_IN_RANGE){
-            code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
-        }
-        else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_ENERGY){
-            console.log(Game.time, 'level2 builder_work', code)
-        }
+        let source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
+        go_to_harvest(creep, source)
     }
 }

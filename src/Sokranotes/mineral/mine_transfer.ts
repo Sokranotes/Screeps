@@ -1,5 +1,3 @@
-import * as $ from "../../modules/超级移动优化"
-
 export const mine_transfer_work = function(creep: Creep){
     creep.memory.mine_type = RESOURCE_HYDROGEN
     // creep.say('👋 active transfer');

@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const out_soldier_work = function(creep: Creep){
     if (creep.hits < 2/3*creep.hitsMax){
         if (creep.room.name != creep.memory.dest_roomName){

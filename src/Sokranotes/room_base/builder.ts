@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const builder_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
@@ -46,13 +44,7 @@ export const builder_work = function(creep: Creep){
             //     }
             // }
             // source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
-            // let code:number = creep.harvest(source)
-            // if (code == ERR_NOT_IN_RANGE){
-            //     code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
-            // }
-            // else if (code != ERR_BUSY && code != OK){
-            //     console.log(Game.time, 'builder_work', code)
-            // }
+            // go_to_harvest(creep, source)
             let storage: StructureLink = Game.getObjectById('61739e3ab6a4e1f3750c4432')
             if (storage){
                 if(creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

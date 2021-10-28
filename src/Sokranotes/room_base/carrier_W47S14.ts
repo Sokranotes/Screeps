@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const carrier_W47S14_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if (creep.memory.dontPullMe == undefined){

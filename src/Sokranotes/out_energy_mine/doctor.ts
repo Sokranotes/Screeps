@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const doctor_work = function(creep: Creep, roomName: string){
 
     if (creep.room.name == roomName){

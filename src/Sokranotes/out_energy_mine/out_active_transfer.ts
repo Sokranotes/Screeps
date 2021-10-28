@@ -1,10 +1,8 @@
-import "../../modules/超级移动优化"
-
-var code:number
 export const out_active_transfer_work = function(creep: Creep){
+    let code:number
     // creep.say('👋 active transfer');
-    var source_room: Room = Game.rooms[creep.memory.source_roomName]
-    var dest_room: Room = Game.rooms[creep.memory.dest_roomName]
+    let source_room: Room = Game.rooms[creep.memory.source_roomName]
+    let dest_room: Room = Game.rooms[creep.memory.dest_roomName]
     // room空值检查
     if (source_room == undefined){
         console.log(Game.time, " ", creep.memory.source_roomName, ' undefined')
@@ -27,7 +25,7 @@ export const out_active_transfer_work = function(creep: Creep){
     // console.log(creep.memory.is_working)
     if (creep.memory.is_working){
         if (creep.store.getUsedCapacity() > 0){
-            var link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
+            let link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
             code = creep.transfer(link, RESOURCE_ENERGY)
             if(code == ERR_NOT_IN_RANGE) {
                 creep.moveTo(link, {visualizePathStyle: {stroke: '#ffff00'}});
@@ -35,7 +33,7 @@ export const out_active_transfer_work = function(creep: Creep){
             else if(code == OK){
                 source_room.memory.source_gets[creep.memory.source_idx] += creep.store.getCapacity(RESOURCE_ENERGY)
             }
-            // var targets = dest_room.find(FIND_STRUCTURES, {
+            // let targets = dest_room.find(FIND_STRUCTURES, {
             //     filter: (structure) => {
             //         return (structure.structureType == STRUCTURE_EXTENSION ||
             //                 structure.structureType == STRUCTURE_SPAWN) &&
@@ -52,7 +50,7 @@ export const out_active_transfer_work = function(creep: Creep){
             //     }
             // }
             // else{
-            //     var targets = source_room.find(FIND_STRUCTURES, {
+            //     let targets = source_room.find(FIND_STRUCTURES, {
             //         filter: (structure) => {
             //             return (structure.structureType == STRUCTURE_TOWER &&
             //                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2*structure.store.getCapacity(RESOURCE_ENERGY));
@@ -88,13 +86,13 @@ export const out_active_transfer_work = function(creep: Creep){
         }
     }
     else{
-        var container: StructureContainer = Game.getObjectById(source_room.memory.source_container_ids[creep.memory.source_container_idx])
+        let container: StructureContainer = Game.getObjectById(source_room.memory.source_container_ids[creep.memory.source_container_idx])
         code =  creep.withdraw(container, RESOURCE_ENERGY)
         if(code == ERR_NOT_IN_RANGE) {
             creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}});
         }
         else if (code !=  OK){
-            var res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+            let res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
             if (res != null){
                 if (creep.pickup(res) == ERR_NOT_IN_RANGE){
                     creep.moveTo(res, {visualizePathStyle: {stroke: '#ffff00'}})

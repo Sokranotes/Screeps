@@ -1,13 +1,15 @@
-// function
-// harvester, transfer, fill extension and spawn
+/* 
+function
+harvester, transfer, fill extension and spawn
 
-// spawnCreep reqiure:
-// creep.memory.source_idx
+spawnCreep reqiure:
+creep.memory.source_idx
 
-// run require:
-// Memory.rooms[creep.room.name].sources_id
+run require:
+Memory.rooms[creep.room.name].sources_id
+ */
 
-import "../../../modules/超级移动优化"
+import { go_to_harvest } from "../universal_logic/go_to_harvest";
 
 export const harvester_work = function(creep: Creep){
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
@@ -16,6 +18,7 @@ export const harvester_work = function(creep: Creep){
     }
     if(!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
         creep.memory.is_working = true
+        creep.memory.dontPullMe = false
         creep.say('🚧 transfer');
     }
     if(creep.memory.is_working) {
@@ -33,14 +36,7 @@ export const harvester_work = function(creep: Creep){
         }
     }
     else {
-        let source: Source
-        source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
-        let code:number = creep.harvest(source)
-        if (code == ERR_NOT_IN_RANGE){
-            creep.moveTo(source)
-        }
-        else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_ENERGY){
-            console.log(Game.time, 'level2 harvester_work', code)
-        }
+        let source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
+        go_to_harvest(creep, source)
     }
 }

@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const out_passive_transfer_work = function(creep: Creep){
     if (Memory.rooms[creep.memory.source_roomName].war_flag == true){
         creep.memory.is_working = false

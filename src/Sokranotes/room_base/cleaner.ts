@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const cleaner_work = function(creep: Creep){
     // creep.say('🔄 Here');
     creep.memory.dontPullMe = false

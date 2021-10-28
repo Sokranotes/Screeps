@@ -1,4 +1,4 @@
-import "../../modules/超级移动优化"
+import { go_to_harvest } from "../room_base/go_to_harvest";
 
 export const upgrader_work = function(creep: Creep){
     // creep.say('🔄 Here');
@@ -27,12 +27,6 @@ export const upgrader_work = function(creep: Creep){
             }
         }
         source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
-        let code:number = creep.harvest(source)
-        if (code == ERR_NOT_IN_RANGE){
-            code = creep.moveTo(source.pos, {visualizePathStyle: {stroke: '#808080'}});
-        }
-        else if (code != ERR_BUSY && code != OK && code != ERR_NOT_ENOUGH_ENERGY){
-            console.log(Game.time, 'upgrader_work', code)
-        }
+        go_to_harvest(creep, source)
     }
 }

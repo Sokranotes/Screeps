@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const attack_invader_core_work = function(creep: Creep){
     // creep.say('🔄 attack');
     if ((creep.room.name == 'W47S14' || (creep.room.name == 'W47S13' && creep.pos.x < 45)) && creep.memory.source_roomName == 'W46S13'){

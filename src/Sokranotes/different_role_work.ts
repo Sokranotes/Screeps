@@ -23,12 +23,10 @@ import { tower_transfer_work } from "./room_base/tower_transfer";
 import { upgrader_work } from "./low_level/upgrader";
 import { harvester_work } from "./low_level/harvester";
 
-import { test_work } from "./test";
-
 // import { new_room_help_work } from './war3 W48S12/new_room_help';
 // import { claim_controller_work } from './war3 W48S12/claim_controller';
 // import { attack_work } from './war3 W48S12/attack';
-import { carrier_help_work } from './room_base/carrier_help';
+// import { carrier_help_work } from './room_base/carrier_help';
 import { scout_test_work } from "../history war/war4 W41S7/scout_test";
 import { simple_one_machine_work } from "../history war/war4 W41S7/simple_one_machine";
 import { move_compounds_work } from "./room_base/move_compounds";
@@ -126,9 +124,9 @@ export const different_role_work = function(){
             harvester_work(creep)
         }
 
-        else if (creep.memory.role == 'test'){
-            test_work(creep)
-        }
+        // else if (creep.memory.role == 'test'){
+        //     test_work(creep)
+        // }
 
         // war 4 W41S7
         else if (creep.memory.role == 'scout_test'){

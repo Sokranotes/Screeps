@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const passive_transfer_work = function(creep: Creep){
     creep.memory.dontPullMe = false
     let source_room: Room = Game.rooms[creep.memory.source_roomName]

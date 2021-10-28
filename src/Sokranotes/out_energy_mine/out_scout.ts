@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const out_scout_work = function(creep: Creep){
     if (Memory.rooms[creep.memory.source_roomName] == undefined){
         if (creep.room.name != creep.memory.source_roomName){

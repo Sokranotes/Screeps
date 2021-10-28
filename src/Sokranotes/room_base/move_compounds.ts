@@ -1,5 +1,3 @@
-import "../../modules/超级移动优化"
-
 export const move_compounds_work = function(creep: Creep){
     // creep.say('👋 move_compounds');
     // let move_to_lab_flag = true

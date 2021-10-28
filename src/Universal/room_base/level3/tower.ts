@@ -1,13 +1,16 @@
-// reqiure:
-// room
-// room.memory.towers.id
+/* 
+reqiure:
+room
+room.memory.towers.id
 
-// set:
-// room.memory.war_flag
+set:
+room.memory.war_flag
 
-// action:
-// notifyWhenAttacked tower
-// activateSafeMode
+action:
+notifyWhenAttacked tower
+activateSafeMode
+*/
+
 export const tower_work = function(roomName: string){
     let room = Game.rooms[roomName]
     if (!room){
