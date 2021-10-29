@@ -1,5 +1,3 @@
-import * as $ from "../modules/超级移动优化"
-
 export const dismate_work = function(creep: Creep){
     // creep.say('🔄 dismate');
     if (creep.room.name != 'W48S16'){

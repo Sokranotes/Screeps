@@ -1,5 +1,3 @@
-import * as $ from "../../modules/超级移动优化"
-
 export const harder_work = function(creep: Creep, roomName: string){
     if (creep.hits < creep.hitsMax)
         console.log(creep.name  + " pos:" + creep.pos.x + " " + creep.pos.y + " hits:" + creep.hits + " max:" + creep.hitsMax)

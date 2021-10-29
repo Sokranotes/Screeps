@@ -1,4 +1,3 @@
-import * as $ from "../../modules/超级移动优化"
 
 // Game.spawns['Spawn2'].spawnCreep([MOVE, CLAIM], 'claim_controller', {memory: {role: 'claim_controller'}})
 

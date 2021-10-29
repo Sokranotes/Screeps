@@ -1,5 +1,3 @@
-// import * as $ from "./../../超级移动优化"
-
 export const outharvester_work = function(creep: Creep, roomName: string){
     // creep.say('🔄 Here');
     var source: Source

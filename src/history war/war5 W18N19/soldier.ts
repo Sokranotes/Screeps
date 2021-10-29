@@ -1,5 +1,3 @@
-import * as $ from "../../modules/超级移动优化"
-
 // Game.spawns['Spawn3'].spawnCreep([MOVE,ATTACK], 'zzzzzzzzzzz', {memory: {role: 'simple_soldier'}})
 
 export const simple_soldier_work = function(creep: Creep){

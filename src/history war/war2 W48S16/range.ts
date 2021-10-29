@@ -1,5 +1,3 @@
-import * as $ from "../modules/超级移动优化"
-
 export const range_work = function(creep: Creep){
     // creep.say('🔄 range');
     // if (creep.room.name != 'W48S16'){

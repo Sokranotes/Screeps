@@ -1,5 +1,3 @@
-import * as $ from "../modules/超级移动优化"
-
 export const new_room_help_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if (creep.room.name != "W48S12"){
