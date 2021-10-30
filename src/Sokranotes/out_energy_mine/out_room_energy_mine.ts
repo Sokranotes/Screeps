@@ -471,6 +471,11 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
         }
     }
     else{
+        if (source_room.memory.war_flag == false){
+            console.log(Game.time + source_roomName + ' 发现敌军: ', hostiles.length, ' owner:', hostiles[0].owner.username, 'room_harvester_energy_total', Memory.rooms[source_roomName].room_harvester_energy_total)
+            source_room.memory.war_flag = true
+            source_room.memory.room_harvester_energy_total = 0
+        }
         source_room.memory.controller_id = source_room.controller.id
         var controller: StructureController = Game.getObjectById(source_room.memory.controller_id)
         if (controller == null || controller == undefined){
@@ -501,7 +506,7 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
                 }
             }
         }
-        source_room.memory.war_flag = false
+        // source_room.memory.war_flag = false
         source_room.memory.enemy_num = 0
         room_energy_mine_init(source_room)
         room_energy_mine_routine(source_roomName, dest_roomName, spawnName, harvester_num, transfer_num)

@@ -13,7 +13,7 @@ export const carrier_W47S14_work = function(creep: Creep){
         let storage: StructureStorage = Game.getObjectById("6159fc1609f790175f45c6be")
         let terminal: StructureTerminal = Game.getObjectById('615ab4e746872376a3726f6f')
 
-        if (upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) < 300 && link.cooldown < 3){
+        if (upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) <= 30 && link.cooldown < 3){
             if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
                 creep.withdraw(storage, RESOURCE_ENERGY)
             }
@@ -26,7 +26,7 @@ export const carrier_W47S14_work = function(creep: Creep){
                 creep.withdraw(link, RESOURCE_ENERGY)
             }
             else{
-                if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > 270000){
+                if (storage.store.getFreeCapacity() > 1000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY)){
                     creep.transfer(terminal, RESOURCE_ENERGY)
                 }
                 else{
@@ -51,7 +51,7 @@ export const carrier_W47S14_work = function(creep: Creep){
                     creep.transfer(storage, RESOURCE_ENERGY)
                 }
             }
-            else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 270000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > 950000){
+            else if (terminal.store.getFreeCapacity() < 5000 && storage.store.getFreeCapacity() > 5000){
                 if (Game.time%2 == 0){
                     Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')
                     console.log(Game.time, 'send', 'W41S11', '20000')

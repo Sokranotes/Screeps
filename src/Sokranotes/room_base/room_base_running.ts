@@ -27,8 +27,8 @@ export const room_base_running = function(roomName: string){
         //     }
         // }
 
-        spawnName = 'Spawn3'
-        let cleaners_base_transfers = _.filter(Game.creeps, (creep) => (((creep.memory.role == 'base_transfer' && creep.room.name == 'W47S14') || creep.memory.role == 'cleaner'))  && creep.ticksToLive > 200);
+        spawnName = 'Spawn1'
+        let cleaners_base_transfers = _.filter(Game.creeps, (creep) => ((creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner')  && creep.room.name == 'W47S14')  && creep.ticksToLive > 200);
         let base_transferNum: number = 2;
 
         let room: Room = Game.rooms[roomName]
@@ -55,6 +55,9 @@ export const room_base_running = function(roomName: string){
         let tower_transfers = _.filter(Game.creeps, (creep) => creep.memory.role == 'tower_transfer');
 
         let constructions = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
+        if (room.controller.level == 8){
+            upgradersNum = 1
+        }
         if (constructions.length == 0)
         {
             buildersNum = 0
@@ -76,18 +79,12 @@ export const room_base_running = function(roomName: string){
         }
         else
         {
-            // if(miner_transfers.length < miner_transfersNum) {
-            //     let newName = 'Miner_transfer' + Game.time;
-            //     Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'mine_transfer', source_roomName: 'W47S14', dest_roomName: 'W47S14', mine_type: RESOURCE_HYDROGEN}});
-            // }
-            // else if(miners.length < minersNum) {
-            //     let newName = 'Miner' + Game.time;
-            //     Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'miner', source_roomName: 'W47S14', dest_roomName: 'W47S14', mine_idx: 0}});
-            // }
             if(upgraders.length < upgradersNum) {
                 let newName = 'Upgrader_link' + Game.time;
                 if (room.controller.level == 8){
-                    Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'upgrader_link'}});
+                    Game.spawns[spawnName].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                        WORK,WORK,WORK,WORK,CARRY], newName, {memory: {role: 'upgrader_link'}});
                 }
                 else{
                     Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, 
@@ -105,28 +102,19 @@ export const room_base_running = function(roomName: string){
             else if (builders.length < buildersNum)
             {
                 let newName = 'Builder' + Game.time;
-                // Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
-                Game.spawns[spawnName].spawnCreep([WORK, CARRY, MOVE], newName, {memory: {role: 'builder'}});
+                Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'builder'}});
             }
-            // else if (cleaners_base_transfers.length < cleanerNum){
-            //     let newName = 'Cleaner' + Game.time;
-            //     Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE], newName, {memory: {role: 'cleaner'}})
-            // }
             if(cleaners_base_transfers.length < base_transferNum) {
                 let newName = 'Base_transfer' + Game.time;
                 Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
             }
-            if(carriers.length < carriersNum) {
-            let newName = 'Carrier' + Game.time;
-            Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier_W47S14'}});
+            else if(carriers.length < carriersNum) {
+                let newName = 'Carrier' + Game.time;
+                Game.spawns[spawnName].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier_W47S14'}});
             }
-            if(tower_transfers.length < tower_transfersNum) {
+            else if(tower_transfers.length < tower_transfersNum) {
                 let newName = 'Tower_transfer' + Game.time;
                 Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'tower_transfer'}});
-            }
-            if(cleaners_base_transfers.length < base_transferNum) {
-                let newName = 'Base_transfer' + Game.time;
-                Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
             }
         }
 

@@ -8,17 +8,19 @@ export const room_W48S12_running = function(roomName: string){
     let spawn_name = 'Spawn2'
 
     // let home: Room = Game.rooms[roomName]
-    let upgradersNum: number = 3;
-    let harvester0sNum: number = 1
+    let upgradersNum: number = 2
+    let harvester0sNum: number = 0
     let harvester1sNum: number = 0
-    let buildersNum: number = 2;
-    let base_transferNum: number = 2
+    let buildersNum: number = 1;
+    let base_transferNum: number = 1
+    let carrier1sNum: number = 1
     let carriersNum: number = 1
     // if (Game.rooms['W48S12'].find(FIND_CONSTRUCTION_SITES).length == 0){
     //     buildersNum = 0
     // }
     let repairersNum: number = 0;
 
+    let carrier1s = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier1_W48S12' && creep.ticksToLive > 80);
     let carriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'carrier_W48S12' && creep.ticksToLive > 80);
  
     let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
@@ -37,7 +39,7 @@ export const room_W48S12_running = function(roomName: string){
     }
     else if (upgraders.length < upgradersNum){
         let newName = 'Upgrader' + Game.time;
-        Game.spawns[spawn_name].spawnCreep([WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE], newName, {memory: {role: 'upgrader', source_idx: 0}});
+        Game.spawns[spawn_name].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], newName, {memory: {role: 'upgrader', source_idx: 0}});
     }
     else if (harvester0s.length < harvester0sNum){
         let newName = 'Harvester' + Game.time;
@@ -57,11 +59,15 @@ export const room_W48S12_running = function(roomName: string){
         let newName = 'Repairer' + Game.time;
         Game.spawns[spawn_name].spawnCreep([WORK, CARRY, MOVE, MOVE], newName, {memory: {role: 'repairer', source_idx: 1}});
     }
-    if(carriers.length < carriersNum) {
+    else if(carriers.length < carriersNum) {
         let newName = 'Carrier' + Game.time;
         Game.spawns[spawn_name].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier_W48S12'}});
     }
-    if(base_transfers.length < base_transferNum) {
+    else if(carrier1s.length < carrier1sNum) {
+        let newName = 'Carrier1' + Game.time;
+        Game.spawns[spawn_name].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, {memory: {role: 'carrier1_W48S12'}});
+    }
+    else if(base_transfers.length < base_transferNum) {
         let newName = 'Base_transfer' + Game.time;
         Game.spawns[spawn_name].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], newName, {memory: {role: 'base_transfer'}});
     }
