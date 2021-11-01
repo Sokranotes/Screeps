@@ -1,8 +1,9 @@
 /* 
 function:
-harvester, transfer, upgrader
+harvest, transfer, upgrade
 
-spawnCreep reqiure:
+spawnCreep reqiure:bodys, name
+creep.memory.role:'hu'
 creep.memory.source_idx
 
 run require:
@@ -12,15 +13,28 @@ creep.room.controller
 
 import { go_to_harvest } from "../universal_logic/go_to_harvest";
 
-export const upgrader_work = function(creep: Creep){
+export const harvest_upgrade_work = function(creep: Creep){
+    let priority: number = 10
+    let minTicksToLive = 150
+    if (creep.ticksToLive <= minTicksToLive){
+        const data = {
+            role: creep.memory.role, 
+            memory: {
+                role: creep.memory.role,
+                source_idx: creep.memory.source_idx
+            }
+        }
+        creep.room.addSpawnTask(priority, data)
+    }
+    
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
         creep.memory.is_working = false
-        creep.say('🔄 harvest');
+        creep.say('🔄 采');
     }
     if(!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
         creep.memory.is_working = true
         creep.memory.dontPullMe = false
-        creep.say('🚧 upgrade');
+        creep.say('🚧 升');
     }
     if(creep.memory.is_working) {
         if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
