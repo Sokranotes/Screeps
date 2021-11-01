@@ -14,5 +14,5 @@
         "node_modules"
     ],
     "include": [
-        "src/**/*.ts", "src/modules/超级移动优化.js", "src/Universal/room_base/priorityqueue.jsorityqueue.js"    ]
+        "src/**/*.ts", "src/modules/超级移动优化.js", "src/Universal/room_base/priorityqueue.jsorityqueue.js"]
 }

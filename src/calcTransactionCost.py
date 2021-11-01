@@ -4,10 +4,10 @@ import math
 # Game.market.createOrder({type: ORDER_SELL, resourceType: RESOURCE_ENERGY, price: 100000, totalAmount: 1, roomName: "W1N1"});
 
 
-distance = 50
-price = 1
+distance = 26
+price = 0.8
 
-amount = 1000
+amount = 40000
 cost = math.ceil(amount * (1 - pow(math.e, (-1*(distance)/30))))
 
 print('#######卖')

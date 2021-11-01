@@ -13,10 +13,6 @@ activateSafeMode
 
 export const tower_work = function(roomName: string){
     let room = Game.rooms[roomName]
-    if (!room){
-        console.log(Game.time, "tower_work", ' roomName:', roomName, ' undefined')
-        return
-    }
     let tower_list = room.memory.towers_id
     let closestHostiles = room.find(FIND_HOSTILE_CREEPS);
     let structures: Structure[]

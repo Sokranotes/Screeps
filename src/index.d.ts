@@ -34,12 +34,30 @@ interface CreepMemory {
     move_to_lab_flag?: boolean
 }
 
+interface spawnQueue{
+    push?: Function
+    pop?: Function
+    peek?: Function
+    getLength?: Function
+    clear?: Function
+
+    data?: any
+    priority?: any
+    length?: any
+}
+
 interface RoomMemory {
     // 本房间内所有source的ID, 一旦扫描永远不会改变, 只需要判断undefined
     sources_num?: number
     sources_id?: Id<Source>[]
+    sources_free_spaces?: RoomPosition[][]
 
     towers_id?: Id<StructureTower>[]
+    storage_id?: Id<StructureStorage>
+    terminal_id?: Id<StructureTerminal>
+
+    spawnQueue?: spawnQueue
+    check_spawn_queue_flag?: boolean
 
     // 对应不同source的harvester的个数，通常为1个
     // 对于3000能量的源, 只要有一个5WORK组件的creep在工作, 就能够保持最大效率
@@ -78,14 +96,31 @@ interface RoomMemory {
     enemy_num?: number
     transfer_to_terminal?: number
 
-    storage_id?: Id<StructureStorage>
-    terminal_id?: Id<StructureTerminal>
-
     test_flag?: boolean
+}
+
+interface Memory{
+    showCost?: boolean
+}
+
+interface spawnData{
+    role?: string
+    bodyParts?: BodyPartConstant[]
+    name?: string
+    memory?: CreepMemory
 }
 
 interface StructureSpawn{
     work: Function
     addTask: Function
     mainSpawn: Function
+}
+
+interface Room{
+    spawnQueue?: spawnQueue;
+    addSpawnTask?: Function
+}
+
+interface Memory{
+    showCost?: boolean
 }
