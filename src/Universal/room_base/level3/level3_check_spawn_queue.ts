@@ -14,12 +14,18 @@ export const level3_check_spawn_queue = function(roomName: string){
 
     let room: Room = Game.rooms[roomName]
 
+    // clear the queue
+    Memory.rooms[roomName].spawnQueue = {}
     let spawnQueue = new FlatQueue(Memory.rooms[room.name].spawnQueue);
-    if (Memory.rooms[roomName].spawnQueue){
-        spawnQueue.clear()
-    }
 
     let harvest_fill_workers = _.filter(Game.creeps, (creep) => creep.memory.role == 'hf' && creep.room.name == roomName && creep.ticksToLive >= 200);
+    if (harvest_fill_workers.length == 0){
+        global.restart_flag = true
+    }
+    else{
+        global.restart_flag = false
+    }
+
     let harvest_upgrade_workers = _.filter(Game.creeps, (creep) => creep.memory.role == 'hu' && creep.room.name == roomName && creep.ticksToLive >= 150);
 
     let constructions = room.find(FIND_MY_CONSTRUCTION_SITES)

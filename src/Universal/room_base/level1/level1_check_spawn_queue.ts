@@ -1,11 +1,12 @@
+import FlatQueue from './../universal_logic/FlatQueue'
+
 export const level1_check_spawn_queue = function(roomName: string){
     let huNum: number = 3
     let hu_source_idx = 1
 
     // clear the queue
-    if (Memory.rooms[roomName].spawnQueue){
-        Memory.rooms[roomName].spawnQueue.clear()
-    }
+    Memory.rooms[roomName].spawnQueue = {}
+    new FlatQueue(Game.rooms[roomName].memory.spawnQueue)
 
     let harvest_upgrade_workers = _.filter(
         Game.creeps, (creep) => creep.memory.role == 'hu' && creep.room.name == roomName && creep.ticksToLive >= 150);

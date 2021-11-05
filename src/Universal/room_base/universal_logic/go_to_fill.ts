@@ -37,4 +37,7 @@ export const go_to_fill = function(creep: Creep, tower_first: boolean = false){
             creep.moveTo(target)
         }
     }
+    else{
+        return false
+    }
 }

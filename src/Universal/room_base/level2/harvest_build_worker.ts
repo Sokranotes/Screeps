@@ -45,6 +45,11 @@ export const harvest_build_work = function(creep: Creep){
     }
     else {
         let source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
-        go_to_harvest(creep, source)
+        if (go_to_harvest(creep, source) == ERR_NOT_ENOUGH_ENERGY){
+            if (creep.memory.source_idx == 1)
+                creep.memory.source_idx = 0
+            else
+                creep.memory.source_idx = 1
+        }
     }
 }

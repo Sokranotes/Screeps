@@ -37,13 +37,27 @@ export const harvest_repair_work = function(creep: Creep){
     }
     if(!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
         creep.memory.is_working = true;
+        creep.memory.dontPullMe = false
         creep.say('🚧 修');
     }
     if(creep.memory.is_working) {
-        go_to_repair(creep)
+        if (creep.room.name == 'W41S6'){
+            go_to_repair(creep, 1000000, {
+                filter: (s) => (s.hits < 100000 && s.hits < 0.9*s.hitsMax) && (s.structureType == STRUCTURE_RAMPART || (s.structureType == STRUCTURE_WALL  && 
+                    (s.pos.x >= 24 && s.pos.y >= 24)))
+            })
+        }
+        else{
+            go_to_repair(creep, 1000000)
+        }
     }
     else{
         let source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
-        go_to_harvest(creep, source)
+        if (go_to_harvest(creep, source) == ERR_NOT_ENOUGH_ENERGY){
+            if (creep.memory.source_idx == 1)
+                creep.memory.source_idx = 0
+            else
+                creep.memory.source_idx = 1
+        }
     }
 }

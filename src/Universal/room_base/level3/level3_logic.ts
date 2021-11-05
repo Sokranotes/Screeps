@@ -64,7 +64,7 @@ export const level3_logic = function(roomName){
         }
     }
     
-    if (room.memory.check_spawn_queue_flag){
+    if (room.memory.check_spawn_queue_flag || Game.time%100){
         level3_check_spawn_queue(roomName)
         delete room.memory.check_spawn_queue_flag
     }

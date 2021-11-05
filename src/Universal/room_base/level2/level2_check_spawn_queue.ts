@@ -1,18 +1,20 @@
+import FlatQueue from './../universal_logic/FlatQueue'
+
 export const level2_check_spawn_queue = function(roomName: string){
-    let hfNum: number = 3
+    let hfNum: number = 2
     let hf_source_idx = 0
 
     let huNum: number = 5
     let hu_source_idx = 1
 
-    let hbNum: number = 3
+    let hbNum: number = 2
     let hb_source_idx = 0
     let hrNum: number = 1
     let hr_source_idx = 0
     
-    if (Memory.rooms[roomName].spawnQueue){
-        Memory.rooms[roomName].spawnQueue.clear()
-    }
+    // clear the queue
+    Memory.rooms[roomName].spawnQueue = {}
+    new FlatQueue(Game.rooms[roomName].memory.spawnQueue)
 
     let room = Game.rooms[roomName]
 
