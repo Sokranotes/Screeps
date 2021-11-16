@@ -56,8 +56,12 @@ Spawn.prototype.mainSpawn = function(data: spawnData): ScreepsReturnCode{
             }
         }
     }
-    data.name = '' + data.memory.role + Game.time + data.name
+    let raw_name = data.name
+    data.name = '' + data.name + Game.time 
     const code = this.spawnCreep(bodys, data.name, {memory: data.memory});
+    if (code != OK){
+        data.name = raw_name
+    }
     return code
 }
 

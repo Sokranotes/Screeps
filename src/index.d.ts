@@ -75,15 +75,15 @@ interface RoomMemory {
     links_num?: number
     links_id?: Id<StructureLink>[]
     source_link_ids?: Id<StructureLink>[]    
-    link_harvester_pos_xs: number[]
-    link_harvester_pos_ys: number[]
+    link_harvester_pos_xs?: number[]
+    link_harvester_pos_ys?: number[]
 
     mines_id?: Id<Mineral>[]
 
     source_distance?: number[]
     source_gets?: number[]
     source_costs?: number[]
-    room_harvester_energy_total: number
+    room_harvester_energy_total?: number
 
     auto_energy_mine?: boolean
     energy_mine_chain_ok?: boolean
