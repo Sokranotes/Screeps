@@ -1499,7 +1499,7 @@ let pro={
 
 global.ManagerPlanner = pro;
 
-module.exports.loop = function () {
+module.exports.loop = function (){
     let roomStructsData = undefined //放全局变量
 
     let p = Game.flags.p; // 触发器

@@ -8,7 +8,8 @@ export const tower_work = function(roomName: string){
     let tower_list: string[]
     let spawn_list: string[]
     if (roomName == 'W47S14'){
-        tower_list = ['6159d77e4f3a51396dd2fcfe', '615a15ea8e77705c01ebc303', '615bec8f3d8c500c57d69377']
+        tower_list = ['6159d77e4f3a51396dd2fcfe', '615a15ea8e77705c01ebc303', '615bec8f3d8c500c57d69377', 
+        '617804aef64f5ec49c53815c', '6177f52de45f2bc4bc185170', '61779f21b96f375a682351c3']
         spawn_list = ['Spawn1', 'Spawn3']
     }
     else if (roomName == 'W48S12'){
@@ -83,10 +84,10 @@ export const tower_work = function(roomName: string){
                     else if (roomName == 'W47S14'){
                         let storage: StructureStorage = Game.getObjectById("6159fc1609f790175f45c6be")
                         let terminal: StructureTerminal = Game.getObjectById('615ab4e746872376a3726f6f')
-                        if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 190000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > 500000)
+                        if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 140000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > 500000)
                         {
                             ramparts = Game.rooms[roomName].find(FIND_STRUCTURES, {
-                                filter: (structure) => structure.hits < 5000000  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
+                                filter: (structure) => structure.hits < 1000000  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
                                 && structure.id != '6144f713fac820efe7cd23bc'
                             });
                             if(ramparts.length == 0) {

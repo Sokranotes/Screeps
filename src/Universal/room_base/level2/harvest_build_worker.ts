@@ -20,9 +20,9 @@ export const harvest_build_work = function(creep: Creep){
     let priority: number = 20
     let minTicksToLive = 150
 
-    if (creep.ticksToLive <= minTicksToLive){
+    if (creep.ticksToLive == minTicksToLive){
         const data = {
-            role: creep.memory.role, 
+            name: creep.memory.role, 
             memory: {
                 role: creep.memory.role,
                 source_idx: creep.memory.source_idx
@@ -37,7 +37,7 @@ export const harvest_build_work = function(creep: Creep){
     }
     if(!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
         creep.memory.is_working = true
-        creep.memory.dontPullMe = false
+        delete creep.memory.dontPullMe
         creep.say('🚧 建')
     }
     if(creep.memory.is_working) {
@@ -45,11 +45,6 @@ export const harvest_build_work = function(creep: Creep){
     }
     else {
         let source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
-        if (go_to_harvest(creep, source) == ERR_NOT_ENOUGH_ENERGY){
-            if (creep.memory.source_idx == 1)
-                creep.memory.source_idx = 0
-            else
-                creep.memory.source_idx = 1
-        }
+        go_to_harvest(creep, source)
     }
 }

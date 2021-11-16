@@ -1,4 +1,4 @@
-import { go_to_harvest } from "./go_to_harvest";
+import { go_to_harvest } from "@/Universal/room_base/universal_logic/go_to_harvest";
 
 export const energy_harvester_with_carry_work = function(creep: Creep){
     // creep.say('🔄 Here');

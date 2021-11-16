@@ -16,6 +16,8 @@ import { harvest_repair_work } from "../level2/harvest_repair_worker";
 import { harvest_fill_work } from "../level2/harvest_fill_worker";
 import { tower_work } from "./../level3/tower";
 import { level3_check_spawn_queue } from "./../level3/level3_check_spawn_queue";
+import { base_transfer_work } from "@/Sokranotes/room_base/base_transfer";
+import { attack_invader_core_work } from "../W16N18tmp/attack_invader_core";
 
 const check_towers_id = function(room: Room){
     let towers: StructureTower[] = room.find(FIND_MY_STRUCTURES, {
@@ -62,11 +64,22 @@ export const level4_logic = function(roomName){
             else if (creep.memory.role == 'hr'){
                 harvest_repair_work(creep)
             }
+            else if (creep.memory.role == 'base_transfer'){
+                base_transfer_work(creep)
+            }
+            else if (creep.memory.role == 'attack_invader_core'){
+                attack_invader_core_work(creep)
+            }
         }
     }
     
-    if (room.memory.check_spawn_queue_flag || Game.time%100){
+    if (room.memory.check_spawn_queue_flag || Game.time%100 == 0 ||
+        (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName)){
         level3_check_spawn_queue(roomName)
-        delete room.memory.check_spawn_queue_flag
+        if (room.memory.check_spawn_queue_flag)
+            delete room.memory.check_spawn_queue_flag
+        if (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName){
+            Game.flags.check_spawn_queue_flag.remove()
+        }
     }
 }

@@ -20,21 +20,23 @@ import { attack_invader_core_work } from './out_energy_mine/attack_invader_core'
 import { miner_work } from "./mineral/miner";
 import { mine_transfer_work } from "./mineral/mine_transfer";
 import { tower_transfer_work } from "./room_base/tower_transfer";
-import { upgrader_work } from "./low_level/upgrader";
-import { harvester_work } from "./low_level/harvester";
 
 // import { new_room_help_work } from './war3 W48S12/new_room_help';
 // import { claim_controller_work } from './war3 W48S12/claim_controller';
 // import { attack_work } from './war3 W48S12/attack';
 // import { carrier_help_work } from './room_base/carrier_help';
 import { scout_test_work } from "../history war/war4 W41S7/scout_test";
-import { simple_one_machine_work } from "../history war/war4 W41S7/simple_one_machine";
 import { move_compounds_work } from "./room_base/move_compounds";
-import { simple_one_harder_work } from "../history war/war4 W41S7/simple_one_harder";
 import { claim_controller_work } from "../history war/war4 W41S7/claim_controller";
-import { carrier1_W48S12_work } from "./room_base/carrier1_W48S12";
+// import { carrier1_W48S12_work } from "./room_base/carrier1_W48S12";
 import { tmp_attack_work } from "./room_base/tmp_attack";
 import { carrier_W48S12_work } from "./room_base/carrier_W48S12";
+import { harvest_upgrade_work } from "./low_level/harvest_upgrade_worker";
+import { harvest_fill_work } from "./low_level/harvest_fill_worker";
+import { help_work } from "./room_base/help_worker";
+import { harvest_repair_work } from "./low_level/harvest_repair_worker";
+import { simple_one_machine_work } from "@/history war/war4 W41S7/simple_one_machine";
+import { simple_one_harder_work } from "@/history war/war4 W41S7/simple_one_harder";
 
 export const different_role_work = function(){
     for(let name in Game.creeps) {
@@ -66,9 +68,9 @@ export const different_role_work = function(){
         else if (creep.memory.role == 'carrier_W47S14'){
             carrier_W47S14_work(creep)
         }
-        else if (creep.memory.role == 'carrier1_W48S12'){
-            carrier1_W48S12_work(creep)
-        }
+        // else if (creep.memory.role == 'carrier1_W48S12'){
+        //     carrier1_W48S12_work(creep)
+        // }
         else if (creep.memory.role == 'carrier_W48S12'){
             carrier_W48S12_work(creep)
         }
@@ -108,6 +110,12 @@ export const different_role_work = function(){
         else if (creep.memory.role == 'out_soldier'){
             out_soldier_work(creep)
         }
+        // else if (creep.memory.role == 'sign'){
+        //     sign_work(creep)
+        // }
+        else if (creep.memory.role == 'help'){
+            help_work(creep)
+        }
         
         // else if (creep.memory.role == 'new_room_help'){
         //     new_room_help_work(creep)
@@ -121,11 +129,14 @@ export const different_role_work = function(){
         }
 
         // low level
-        else if (creep.memory.role == 'upgrader'){
-            upgrader_work(creep)
+        else if (creep.memory.role == 'hu'){
+            harvest_upgrade_work(creep)
         }
-        else if (creep.memory.role == 'harvester'){
-            harvester_work(creep)
+        else if (creep.memory.role == 'hf'){
+            harvest_fill_work(creep)
+        }
+        else if (creep.memory.role == 'hr'){
+            harvest_repair_work(creep)
         }
 
         // else if (creep.memory.role == 'test'){

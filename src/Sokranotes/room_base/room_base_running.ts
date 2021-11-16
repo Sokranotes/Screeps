@@ -19,6 +19,7 @@ export const room_base_running = function(roomName: string){
     let spawnName: string
     if (roomName == 'W47S14'){
         tower_work(roomName)
+        spawnName = 'Spawn1'
 
         // let storage = Game.getObjectById(Memory.rooms[roomName].storage_id)
         // if (storage){
@@ -26,19 +27,18 @@ export const room_base_running = function(roomName: string){
         //         Game.market.getAllOrders({type: ORDER_BUY, resourceType: RESOURCE_ENERGY})
         //     }
         // }
-
-        spawnName = 'Spawn1'
+        
         let cleaners_base_transfers = _.filter(Game.creeps, (creep) => ((creep.memory.role == 'base_transfer' || creep.memory.role == 'cleaner')  && creep.room.name == 'W47S14')  && creep.ticksToLive > 200);
         let base_transferNum: number = 2;
 
         let room: Room = Game.rooms[roomName]
-        let energyAvailable: number = room.energyAvailable;
+        // let energyAvailable: number = room.energyAvailable;
 
         let carriersNum: number = 1;
         let tower_transfersNum: number = 1;
 
-        let upgradersNum: number = 2;
-        let repairersNum: number = 0;
+        let upgradersNum: number = 1;
+        let repairersNum: number = 1;
         let buildersNum: number = 1;
         // let cleanerNum: number = 0;
         // let minersNum: number = 0;
@@ -93,11 +93,7 @@ export const room_base_running = function(roomName: string){
             }
             else if(repairers.length < repairersNum) {
                 let newName = 'Repairer' + Game.time;
-                let idx = Math.floor((energyAvailable-300) / 50);
-                if (idx > 10){
-                    idx = 10
-                }
-                Game.spawns[spawnName].spawnCreep(body_list[idx], newName, {memory: {role: 'repairer'}});
+                Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], newName, {memory: {role: 'repairer'}});
             }
             else if (builders.length < buildersNum)
             {

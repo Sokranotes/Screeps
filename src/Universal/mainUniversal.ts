@@ -1,11 +1,6 @@
 import { room_logic } from './room_logic';
 
-if (Game.flags.Appassionata){
-    console.log(Game.time, 'Appassionata new push')
-}
-
-export const mainUniversal = function(){
-    let rooms: string[] = ['W16N18']
+export const mainUniversal = function(rooms: string[]){
     for (let idx in rooms){
         room_logic(rooms[idx])
     }

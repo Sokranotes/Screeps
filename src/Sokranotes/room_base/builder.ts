@@ -1,3 +1,5 @@
+import { go_to_harvest } from "@/Universal/room_base/universal_logic/go_to_harvest"
+
 export const builder_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
@@ -13,7 +15,7 @@ export const builder_work = function(creep: Creep){
     if(creep.memory.is_working) {
         let construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_TOWER)
+                return (structure.structureType == STRUCTURE_SPAWN)
             }
         })
         if (construction){
@@ -46,14 +48,19 @@ export const builder_work = function(creep: Creep){
             // source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
             // go_to_harvest(creep, source)
             let storage: StructureLink = Game.getObjectById('61739e3ab6a4e1f3750c4432')
-            if (storage){
+            if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > creep.store.getCapacity(RESOURCE_ENERGY)){
                 if(creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(storage, {visualizePathStyle: {stroke: '#808080'}});
                 }
+                return
+            }
+            let terminal: StructureTerminal = Game.getObjectById('6173c887dc242927f66874d1')
+            if(creep.withdraw(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(terminal, {visualizePathStyle: {stroke: '#808080'}});
             }
         }
-        else{
-            let storage: StructureStorage = Game.getObjectById('6159fc1609f790175f45c6be')
+        else if(creep.room.name == "W47S14"){
+            let storage: StructureStorage = Game.getObjectById('6159fc1609f790175f45c6be');
             if (storage){
                 if(creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(storage, {visualizePathStyle: {stroke: '#808080'}});
@@ -84,6 +91,10 @@ export const builder_work = function(creep: Creep){
                     }
                 }
             }
+        }
+        else{
+            let source: Source = Game.getObjectById(creep.room.memory.sources_id[creep.memory.source_idx])
+            go_to_harvest(creep, source)
         }
     }
 }
