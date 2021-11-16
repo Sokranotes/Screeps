@@ -13,26 +13,15 @@ export const builder_work = function(creep: Creep){
         creep.say('🚧 build')
     }
     if(creep.memory.is_working) {
-        let construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_SPAWN)
+        let constructions = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+        if(constructions.length > 0) {
+            if(creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(constructions[0], {visualizePathStyle: {stroke: '#008cff'}});
             }
-        })
-        if (construction){
-            if(creep.build(construction) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(construction, {visualizePathStyle: {stroke: '#008cff'}})
-            }
+            return
         }
         else{
-            let construction = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
-            if(construction) {
-                if(creep.build(construction) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(construction, {visualizePathStyle: {stroke: '#008cff'}});
-                }
-            }
-            else{
-                creep.memory.role = 'repairer'
-            }
+            creep.memory.role = 'repairer'
         }
     }
     else {

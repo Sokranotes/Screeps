@@ -1,3 +1,5 @@
+import { go_to_harvest } from "@/Universal/room_base/universal_logic/go_to_harvest"
+
 export const repairer_work = function(creep: Creep){
     // creep.say('🔄 Here');
     if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
@@ -10,7 +12,7 @@ export const repairer_work = function(creep: Creep){
     }
     if(creep.memory.is_working) {
         let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: (s) => (s.hits < 0.9*s.hitsMax) && (s.structureType != STRUCTURE_LAB && s.structureType != STRUCTURE_EXTRACTOR)
+            filter: (s) => (s.hits < 10000) && (s.structureType == STRUCTURE_RAMPART)
         });
         if(target) {
             if(creep.repair(target) == ERR_NOT_IN_RANGE) {
@@ -18,23 +20,44 @@ export const repairer_work = function(creep: Creep){
             }
             return
         }
-        let ramparts = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => (structure.hits < structure.hitsMax && structure.hits < 1000000)  && (structure.structureType == STRUCTURE_RAMPART || structure.structureType == STRUCTURE_WALL)
+        target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (s) => (s.hits < 10000) && (s.structureType == STRUCTURE_WALL)
         });
-        if(ramparts.length > 0) {
-            let code = creep.repair(ramparts[0])
-            if(code == ERR_NOT_IN_RANGE) {
-                creep.moveTo(ramparts[0], {visualizePathStyle: {stroke: '#ffffff'}});
+        if(target) {
+            if(creep.repair(target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
             }
             return
         }
-        else{
-            if (creep.room.name == 'W48S12'){
-                creep.memory.role = 'builder'
+    
+        target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (s) => (s.hits < 0.9*s.hitsMax) && (s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART)
+        });
+        if(target) {
+            if(creep.repair(target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+            }
+            return
+        }
+    
+        let wall_rampart_hits_ladder = [100000, 1000000, 50000000, 100000000]
+        for (let i = 0; i < wall_rampart_hits_ladder.length; i++){
+            target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: (s) => (s.hits < 0.9*s.hitsMax && s.hits < wall_rampart_hits_ladder[i]) && (s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL)
+            });
+            if(target) {
+                if(creep.repair(target) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+                return
             }
         }
+        if (creep.room.name == 'W48S12'){
+            creep.memory.role = 'builder'
+        }
     }
-    else if (creep.room.name == 'W48S12'){
-        creep.memory.role = 'builder'
+    else {
+        let source: Source = Game.getObjectById(creep.room.memory.sources_id[creep.memory.source_idx])
+        go_to_harvest(creep, source)
     }
 }

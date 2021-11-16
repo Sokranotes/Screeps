@@ -21,7 +21,7 @@ export const level2_check_spawn_queue = function(roomName: string){
     let hrNum: number = 1
     let hr_source_idx: number = 0
     let hr_ticksToLive: number = 150
-    if (room_config[roomName] != undefined){
+    if (room_config[roomName] != undefined ? room_config[roomName]['level2'] != undefined : false){
         let config = room_config[roomName]['level2']
         
         hf_priority = config['hf_priority']

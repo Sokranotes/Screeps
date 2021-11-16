@@ -26,6 +26,27 @@ export const room_config = {
             'hrNum': 1,
             'hr_source_idx': 0,
             'hr_ticksToLive': 150,
+        },
+        'level3': {
+            'hf_priority': 0,
+            'hfNum': 3,
+            'hf_source_idx': 0,
+            'hf_ticksToLive': 200,
+
+            'hu_priority': 10,
+            'huNum': 5,
+            'hu_source_idx': 1,
+            'hu_ticksToLive': 150,
+
+            'hb_priority': 20,
+            'hbNum': 3,
+            'hb_source_idx': 0,
+            'hb_ticksToLive': 150,
+            
+            'hr_priority': 15,
+            'hrNum': 1,
+            'hr_source_idx': 0,
+            'hr_ticksToLive': 150,
         }
     },
     'W9N11': {
@@ -53,9 +74,36 @@ export const room_config = {
             'hrNum': 1,
             'hr_source_idx': 0,
             'hr_ticksToLive': 150,
-        }
+        },
+        'level3': {
+            'hf_priority': 0,
+            'hfNum': 6,
+            'hf_source_idx': 0,
+            'hf_ticksToLive': 200,
+
+            'hu_priority': 10,
+            'huNum': 8,
+            'hu_source_idx': 1,
+            'hu_ticksToLive': 150,
+
+            'hb_priority': 20,
+            'hbNum': 2,
+            'hb_source_idx': 0,
+            'hb_ticksToLive': 150,
+            
+            'hr_priority': 15,
+            'hrNum': 1,
+            'hr_source_idx': 0,
+            'hr_ticksToLive': 150,
+        },
     },
     'W41S6': {
+        'level1': {
+            'hu_priority': 10,
+            'huNum': 5,
+            'hu_source_idx': 1,
+            'hu_ticksToLive': 150
+        },
         'level2': {
             'hf_priority': 0,
             'hfNum': 3,
@@ -76,6 +124,27 @@ export const room_config = {
             'hrNum': 1,
             'hr_source_idx': 0,
             'hr_ticksToLive': 150,
-        }
+        },
+        'level3': {
+            'hf_priority': 0,
+            'hfNum': 2,
+            'hf_source_idx': 0,
+            'hf_ticksToLive': 200,
+
+            'hu_priority': 10,
+            'huNum': 6,
+            'hu_source_idx': 1,
+            'hu_ticksToLive': 150,
+
+            'hb_priority': 20,
+            'hbNum': 1,
+            'hb_source_idx': 0,
+            'hb_ticksToLive': 150,
+            
+            'hr_priority': 15,
+            'hrNum': 1,
+            'hr_source_idx': 0,
+            'hr_ticksToLive': 150,
+        },
     }
 }

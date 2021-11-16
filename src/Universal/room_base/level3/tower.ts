@@ -38,7 +38,7 @@ export const tower_work = function(roomName: string){
                     tower.room.memory.war_flag = true
                     tower.attack(closestHostiles[0]);
                 }
-                else if (!(tower.store.getUsedCapacity(RESOURCE_ENERGY) < 0.7*tower.store.getCapacity(RESOURCE_ENERGY))){
+                else if (tower.store.getUsedCapacity(RESOURCE_ENERGY) > 0.7*tower.store.getCapacity(RESOURCE_ENERGY)){
                     tower.room.memory.war_flag = false
                     if(structures.length > 0) {
                         tower.repair(structures[0]);

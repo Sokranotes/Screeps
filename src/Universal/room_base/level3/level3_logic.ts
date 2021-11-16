@@ -22,9 +22,11 @@ const check_towers_id = function(room: Room){
             return structure.structureType == STRUCTURE_TOWER
         }
     })
-    Memory.rooms[room.name].towers_id = new Array(towers.length)
-    for (let i: number = 0; i < towers.length; i++){
-        Memory.rooms[room.name].towers_id[i] = towers[i].id;
+    if (towers.length > 0){
+        Memory.rooms[room.name].towers_id = new Array(towers.length)
+        for (let i: number = 0; i < towers.length; i++){
+            Memory.rooms[room.name].towers_id[i] = towers[i].id;
+        }
     }
 }
 
@@ -64,7 +66,7 @@ export const level3_logic = function(roomName){
         }
     }
     
-    if (room.memory.check_spawn_queue_flag || Game.time%100 == 0 ||
+    if (room.memory.check_spawn_queue_flag || Game.time % 100 == 0 ||
         (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName)){
         level3_check_spawn_queue(roomName)
         if (room.memory.check_spawn_queue_flag)

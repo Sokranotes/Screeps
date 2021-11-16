@@ -10,7 +10,6 @@ if (Game.flags.Appassionata){
     }
 }
 
-
 export const loop = errorMapper(() => {
     if (Game.shard.name == 'shard2'){
         if(Game.cpu.bucket == 10000) {
