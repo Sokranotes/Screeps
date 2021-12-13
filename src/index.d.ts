@@ -32,6 +32,8 @@ interface CreepMemory {
 
     energy_flag?: boolean
     move_to_lab_flag?: boolean
+    help?: boolean // help flag, control if switch source automatic when source is empty.
+    nuker_flag?: boolean
 }
 
 interface spawnQueue{
@@ -55,6 +57,7 @@ interface RoomMemory {
     towers_id?: Id<StructureTower>[]
     storage_id?: Id<StructureStorage>
     terminal_id?: Id<StructureTerminal>
+    nuker_id?: Id<StructureNuker>
 
     spawnQueue?: spawnQueue
     check_spawn_queue_flag?: boolean
@@ -97,10 +100,21 @@ interface RoomMemory {
     transfer_to_terminal?: number
 
     test_flag?: boolean
+    restart_flag?: boolean
+}
+
+interface statsMemory{
+    gcl?: number
+    gclLevel?: number
+    gpl?: number
+    gplLevel?: number
+    cpu?: number
+    bucket?: number
 }
 
 interface Memory{
     showCost?: boolean
+    stats?: statsMemory
 }
 
 interface spawnData{
@@ -108,6 +122,17 @@ interface spawnData{
     bodyParts?: BodyPartConstant[]
     name?: string
     memory?: CreepMemory
+}
+
+interface orderData{
+    id?: string
+    created?: number
+    type?: string
+    resourceType?: string
+    roomName?: string
+    amount?: number
+    remainingAmount?: number
+    price?: number
 }
 
 interface StructureSpawn{

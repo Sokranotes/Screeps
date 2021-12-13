@@ -9,11 +9,8 @@ export const attack_invader_core_work = function(creep: Creep){
     }
     else{
         var invade_targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS, {
-            filter: (creep) => {
-                return (creep.getActiveBodyparts(HEAL) > 1);
-            }
+            filter: (creep) => (!global.white_list.has(creep.owner.username)) && (creep.getActiveBodyparts(HEAL) > 1)
         });
-        creep.room.find(FIND_HOSTILE_CREEPS, {filter: (creep) => {return (creep.getActiveBodyparts(HEAL) > 1);}})
         if (invade_targets.length > 0)
         {
             creep.room.memory.war_flag = true
@@ -24,7 +21,9 @@ export const attack_invader_core_work = function(creep: Creep){
             }
         }
         else{
-            var invade_targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS);
+            var invade_targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS, {
+                filter: (creep) => (!global.white_list.has(creep.owner.username))
+            });
             if (invade_targets.length > 0)
             {
                 creep.room.memory.war_flag = true
@@ -42,17 +41,8 @@ export const attack_invader_core_work = function(creep: Creep){
                     }
                 }
                 else{
-                    if (creep.room.name == 'W47S15'){
-                        creep.moveTo(new RoomPosition(46, 24, 'W47S15'))
-                    }
-                    else if (creep.room.name == 'W48S14'){
-                        creep.moveTo(new RoomPosition(8, 34, 'W48S14'))
-                    }
-                    else if (creep.room.name == 'W46S13'){
-                        creep.moveTo(new RoomPosition(25, 34, 'W46S13'))
-                    }
-                    else if (creep.room.name == 'W47S13'){
-                        creep.moveTo(new RoomPosition(3, 36, 'W47S13'))
+                    if (creep.pos.x > 45 || creep.pos.x < 5 || creep.pos.y > 45 || creep.pos.y < 5){
+                        creep.moveTo(new RoomPosition(25, 25, creep.room.name))
                     }
                 }
             }

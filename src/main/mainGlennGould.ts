@@ -1,6 +1,7 @@
 import { mainUniversal } from './Universal/mainUniversal';
 import { errorMapper } from './modules/errorMapper'
 import "./modules/超级移动优化"
+// import "./modules/strategy_marketPrice"
 
 if (Game.flags.GlennGould){
     console.log(Game.time, 'GlennGould new push')

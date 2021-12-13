@@ -1,151 +1,78 @@
-const room_energy_mine_init = function(source_room: Room){
+const source_energy_mine_init = function(roomName: string, source_idx: number){
     /* 
-    需要建好storage
-    
     如果没开启自动挖矿, 则进行初始化操作
     初始化的值有:
     是否初始化, 初始化之后只能手动变化
-    room.memory.auto_energy_mine
+    room.memory.auto_energy_mine 
     初始化之后永不变化
-    room.memory.sources_id
-    room.memory.sources_num
+    room.memory.sources_id*/
+    
+    let containers: StructureContainer[]
+    let link: StructureLink
+    let links: StructureLink[]
 
-    需要从配置中读取
-    room.memory.source_harvester_num
-    room.memory.source_transfer_num
-    常规流程中每一次都需要更新
-    room.memory.source_harvester_states
-    room.memory.source_transfer_states
-    container相关状态量, 需要检查是否有变更并及时修改
-    room.memory.container_ids
-    room.memory.source_container_ids
 
-    其他状态量
-    room.memory.source_distance
-    room.memory.source_gets
-    room.memory.source_costs*/
-    var sources_num: number
-    var containers_num: number
-    var links_num: number
-    if (source_room.memory.auto_energy_mine != true){
-        var source: Source
-        var sources: Source[]
-        var container: StructureContainer
-        var containers: StructureContainer[]
-        var link: StructureLink
-        var links: StructureLink[]
+    let room = Game.rooms[roomName]
+    let source: Source = Game.getObjectById(room.memory.sources_id[source_idx])
 
-        // 如果没有存source_ids, 找到该房间所有能量source并存id
-        if (source_room.memory.sources_id == undefined){
-            sources = source_room.find(FIND_SOURCES)
-            sources_num = sources.length
-            source_room.memory.sources_id = new Array(sources_num)
-            for (var i: number = 0; i < sources_num; i++){
-                source_room.memory.sources_id[i] = sources[i].id
-            }
+    // 初始化, 找到该房间所有container
+    containers = room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_CONTAINER);
         }
-        else{
-            sources_num = source_room.memory.sources_id.length
+    });
+
+    if (room.memory.source_container_ids == undefined){
+        room.memory.source_container_ids = new Array(2)
+    }
+    for (let container of containers){
+        if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 && 
+        (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1){
+            room.memory.source_container_ids[source_idx] = container.id
+            break
         }
+    }
 
-        // 数量设置状态量
-        source_room.memory.source_harvester_num = new Array(sources_num)
-        source_room.memory.source_transfer_num = new Array(sources_num)
-        // harvester和transfer的数量记录
-        source_room.memory.source_harvester_states = new Array(sources_num)
-        source_room.memory.source_transfer_states = new Array(sources_num)
-
-        // 初始化harvester和transfer的数量记录以及gets和costs状态量
-        for (var i: number = 0; i < sources_num; i++){
-            source_room.memory.source_harvester_states[i] = 0
-            source_room.memory.source_transfer_states[i] = 0
+    // source对应的link id
+    if (room.memory.source_link_ids == undefined){
+        room.memory.source_link_ids = new Array(2)
+    }
+    // 初始化, 找到该房间所有link并存id
+    links = source_room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_LINK);
         }
+    });
+    links_num = links.length
+    source_room.memory.links_num = links_num
+    source_room.memory.links_id = new Array(links_num)
+    for (let i: number = 0; i < links_num; i++){
+        source_room.memory.links_id[i] = links[i].id;
+    }
 
-        // 其他状态量
-        if (source_room.memory.source_distance == undefined){
-            source_room.memory.source_distance = new Array(sources_num)
-            source_room.memory.source_gets = new Array(sources_num)
-            source_room.memory.source_costs = new Array(sources_num)
-            for (var i: number = 0; i < sources_num; i++){
-                source_room.memory.source_gets[i] = 0
-                source_room.memory.source_costs[i] = 0
-            }
-        }
-
-        // source对应的container id
-        source_room.memory.source_container_ids = new Array(sources_num)
-
-        // 初始化, 找到该房间所有container并存id
-        containers = source_room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_CONTAINER);
-            }
-        });
-        containers_num = containers.length
-        source_room.memory.containers_num = containers_num
-        source_room.memory.containers_id = new Array(containers_num)
-        for (var i: number = 0; i < containers_num; i++){
-            source_room.memory.containers_id[i] = containers[i].id;
-        }
-
-        // 遍历所有source 找到source旁边的container, 初始化source_container_ids
-        for (var i: number = 0; i < sources_num; i++){
-            source = Game.getObjectById(source_room.memory.sources_id[i])
-            // 遍历所有container
-            for (var j: number = 0; j < containers_num; j++){
-                container = Game.getObjectById(source_room.memory.containers_id[j])
-                if (container){
-                    // judge source是否有container, 只考虑source周围8个格子中最先扫描到的那一个
-                    if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 && 
-                    (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1){
-                        source_room.memory.source_container_ids[i] = container.id
-                        source_room.memory.source_costs[i] += 5000
-                        break
-                    }
+    // 遍历所有source 找到source旁边的link, 初始化source_link_ids
+    for (let i: number = 0; i < sources_num; i++){
+        source = Game.getObjectById(source_room.memory.sources_id[i])
+        // 遍历所有link
+        for (let j: number = 0; j < links_num; j++){
+            link = Game.getObjectById(source_room.memory.links_id[j])
+            if (link){
+                // judge source是否有link, 只考虑source周围2距离的格子中最先扫描到的那一个
+                if ((link.pos.x - source.pos.x) >= -2 && (link.pos.x - source.pos.x) <= 2 && 
+                (link.pos.y - source.pos.y) >= -2 && (link.pos.y - source.pos.y) <= 2){
+                    source_room.memory.source_link_ids[i] = link.id
+                    source_room.memory.source_costs[i] += 5000
+                    break
                 }
             }
         }
-
-        // source对应的link id
-        source_room.memory.source_link_ids = new Array(sources_num)
-
-        // 初始化, 找到该房间所有link并存id
-        links = source_room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_LINK);
-            }
-        });
-        links_num = links.length
-        source_room.memory.links_num = links_num
-        source_room.memory.links_id = new Array(links_num)
-        for (var i: number = 0; i < links_num; i++){
-            source_room.memory.links_id[i] = links[i].id;
-        }
-
-        // 遍历所有source 找到source旁边的link, 初始化source_link_ids
-        for (var i: number = 0; i < sources_num; i++){
-            source = Game.getObjectById(source_room.memory.sources_id[i])
-            // 遍历所有link
-            for (var j: number = 0; j < links_num; j++){
-                link = Game.getObjectById(source_room.memory.links_id[j])
-                if (link){
-                    // judge source是否有link, 只考虑source周围2距离的格子中最先扫描到的那一个
-                    if ((link.pos.x - source.pos.x) >= -2 && (link.pos.x - source.pos.x) <= 2 && 
-                    (link.pos.y - source.pos.y) >= -2 && (link.pos.y - source.pos.y) <= 2){
-                        source_room.memory.source_link_ids[i] = link.id
-                        break
-                    }
-                }
-            }
-        }
-        source_room.memory.auto_energy_mine = true
     }
 } // 初始化结束
 
 const room_energy_mine_routine = function(source_roomName: string, dest_roomName: string, spawnName: string, 
     harvester_num: number[], transfer_num: number[], link_harvester_pos_xs: number[], link_harvester_pos_ys: number[]){
-    var source_room: Room = Game.rooms[source_roomName]
-    var dest_room: Room = Game.rooms[dest_roomName]
+    let source_room: Room = Game.rooms[source_roomName]
+    let dest_room: Room = Game.rooms[dest_roomName]
     // room空值检查
     if (source_room == undefined){
         console.log(Game.time, "room_energy_mine_routine", ' source_room:', source_roomName, ' undefined')
@@ -155,22 +82,22 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
         console.log(Game.time, "room_energy_mine_routine", 'dest_room:', dest_roomName, 'undefined')
         return
     }
-    var source: Source
-    var sources_num: number
-    var container: StructureContainer
-    var containers: StructureContainer[]
-    var containers_num: number
-    var link: StructureLink
-    var links: StructureLink[]
-    var links_num: number
+    let source: Source
+    let sources_num: number
+    let container: StructureContainer
+    let containers: StructureContainer[]
+    let containers_num: number
+    let link: StructureLink
+    let links: StructureLink[]
+    let links_num: number
 
-    var energyCapacity: number = dest_room.energyCapacityAvailable
+    let energyCapacity: number = dest_room.energyCapacityAvailable
 
     containers_num = source_room.memory.containers_num
-    sources_num = source_room.memory.sources_id.length
+    sources_num = source_room.memory.sources_num
     links_num = source_room.memory.links_num
 
-    if (source_roomName == 'W48S12' || source_roomName == 'W41S6'){
+    if (source_roomName == 'W48S12'){
         source_room.memory.energy_mine_chain_ok = true
     }
     else{
@@ -178,18 +105,18 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
     }
 
     // 读取creep个数配置并更新creep个数状态
-    for (var i: number = 0; i < sources_num; i++){
+    for (let i: number = 0; i < sources_num; i++){
         source_room.memory.source_transfer_num[i] = transfer_num[i]
         source_room.memory.source_harvester_num[i] = harvester_num[i]
         if (source_room.memory.source_link_ids[i] == undefined){
-            var energy_harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'energy_harvester_no_carry' 
+            let energy_harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'energy_harvester_no_carry' 
                                                                                 || creep.memory.role == 'energy_harvester_with_carry')
                                                                                 && creep.memory.source_idx == i 
                                                                                 && creep.memory.source_roomName == source_roomName
                                                                                 && creep.ticksToLive > 100);
             source_room.memory.source_harvester_states[i] = energy_harvesters.length
 
-            var transfers = _.filter(Game.creeps, (creep) => (creep.memory.role == 'active_transfer' && creep.memory.source_container_idx == i)
+            let transfers = _.filter(Game.creeps, (creep) => (creep.memory.role == 'active_transfer' && creep.memory.source_container_idx == i)
                                                             || (creep.memory.role == 'passive_transfer'  && creep.memory.source_idx == i)
                                                                     && creep.memory.source_roomName == source_roomName
                                                                     && creep.memory.dest_roomName == dest_roomName
@@ -200,7 +127,7 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
             }
         }
         else{
-            var energy_harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'energy_harvester_link')
+            let energy_harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'energy_harvester_link')
                                                                                 && creep.memory.source_idx == i 
                                                                                 && creep.memory.source_roomName == source_roomName
                                                                                 && creep.ticksToLive > 100);
@@ -222,18 +149,18 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
         containers_num = containers.length
         source_room.memory.containers_num = containers_num
         source_room.memory.containers_id = new Array(containers_num)
-        for (var i: number = 0; i < containers_num; i++){
+        for (let i: number = 0; i < containers_num; i++){
             source_room.memory.containers_id[i] = containers[i].id;
         }
         source_room.memory.check_containers_state = false
     }
 
     // 是否新增container或原有的对应source的container有变化
-    for (var i: number = 0; i < sources_num; i++){
+    for (let i: number = 0; i < sources_num; i++){
         source = Game.getObjectById(source_room.memory.sources_id[i])
         // source旁原来没有container现在是否新建了
         if (source_room.memory.source_container_ids[i] == undefined){
-            for (var j: number = 0; j < containers_num; j++){
+            for (let j: number = 0; j < containers_num; j++){
                 container = Game.getObjectById(source_room.memory.containers_id[j])
                 if (container){
                     // judge source是否有container, 只考虑source周围8个格子中最先扫描到的那一个
@@ -249,7 +176,7 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
         // source原有的container是否有变化
         else if (Game.getObjectById(source_room.memory.source_container_ids[i]) == undefined){
             source_room.memory.source_container_ids[i] = undefined
-            for (var j: number = 0; j < containers_num; j++){
+            for (let j: number = 0; j < containers_num; j++){
                 container = Game.getObjectById(source_room.memory.containers_id[j])
                 if (container){
                     if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 && 
@@ -274,18 +201,18 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
         links_num = links.length
         source_room.memory.links_num = links_num
         source_room.memory.links_id = new Array(links_num)
-        for (var i: number = 0; i < links_num; i++){
+        for (let i: number = 0; i < links_num; i++){
             source_room.memory.links_id[i] = links[i].id;
         }
         source_room.memory.check_links_state = false
     }
 
     // 是否新增link或原有的对应source的link有变化
-    for (var i: number = 0; i < sources_num; i++){
+    for (let i: number = 0; i < sources_num; i++){
         source = Game.getObjectById(source_room.memory.sources_id[i])
         // source旁原来没有link现在是否新建了
         if (source_room.memory.source_link_ids[i] == undefined){
-            for (var j: number = 0; j < links_num; j++){
+            for (let j: number = 0; j < links_num; j++){
                 link = Game.getObjectById(source_room.memory.links_id[j])
                 if (link){
                     // judge source是否有link, 只考虑source周围2距离的格子中最先扫描到的那一个
@@ -301,7 +228,7 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
         // source原有的link是否有变化
         else if (Game.getObjectById(source_room.memory.source_link_ids[i]) == undefined){
             source_room.memory.source_link_ids[i] = undefined
-            for (var j: number = 0; j < links_num; j++){
+            for (let j: number = 0; j < links_num; j++){
                 link = Game.getObjectById(source_room.memory.links_id[j])
                 if (link){
                     if ((link.pos.x - source.pos.x) >= -1 && (link.pos.x - source.pos.x) <= 1 && 
@@ -316,7 +243,7 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
     }
 
     // 为每个source生成creep
-    for (var i: number = 0; i < sources_num; i++){
+    for (let i: number = 0; i < sources_num; i++){
         // spawn需要在空闲状态
         if (!Game.spawns[spawnName].spawning){
             if (source_room.memory.source_harvester_states[i] < source_room.memory.source_harvester_num[i]){
@@ -523,8 +450,8 @@ export const room_energy_mine = function(source_roomName: string, dest_roomName:
     找到能量采集点，并存储在RoomMemory中，如果有Container配合，存储对应的pos
     根据相关配置生成Creep
     */
-    var source_room: Room = Game.rooms[source_roomName]
-    var dest_room: Room = Game.rooms[dest_roomName]
+    let source_room: Room = Game.rooms[source_roomName]
+    let dest_room: Room = Game.rooms[dest_roomName]
     // room空值检查
     if (source_room == undefined){
         console.log(Game.time, 'room_energy_mine source_room', source_roomName, ' undefined')

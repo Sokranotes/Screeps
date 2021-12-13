@@ -6,6 +6,7 @@ export const out_passive_transfer_work = function(creep: Creep){
     else{
         if(creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.is_working = false;
+            if (creep.ticksToLive < 100) creep.suicide()
             creep.say('🔄 harvest');
         }
         if(!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
@@ -53,38 +54,20 @@ export const out_passive_transfer_work = function(creep: Creep){
             if (source_room == undefined){
                 return
             }
-            let farm_creeps = source_room.find(FIND_MY_CREEPS, {
-                filter: (cre) => {
-                    return (cre.memory.role == 'out_energy_harvester_with_carry' &&
-                            cre.memory.source_idx == creep.memory.source_idx &&
-                        cre.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
-                }
-            });
-            if (farm_creeps.length > 0){
-                creep.moveTo(farm_creeps[0])
-                let res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-                creep.pickup(res)
-            }
+            let source: Source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx])
+            if (!creep.pos.inRangeTo(source, 2))
+                creep.moveTo(source)
             else{
-                let source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx])
-                let place: RoomPosition
-                if (source.pos.x >= 25){
-                    if (source.pos.y >= 25){
-                        place = new RoomPosition(source.pos.x - 8, source.pos.y - 8, creep.memory.source_roomName)
+                let farm_creeps = source_room.find(FIND_MY_CREEPS, {
+                    filter: (cre) => {
+                        return (cre.memory.role == 'out_energy_harvester_with_carry' &&
+                                cre.memory.source_idx == creep.memory.source_idx &&
+                            cre.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
                     }
-                    else{
-                        place = new RoomPosition(source.pos.x - 8, source.pos.y + 8, creep.memory.source_roomName)
-                    }
+                });
+                if (farm_creeps.length > 0){
+                    creep.moveTo(farm_creeps[0])
                 }
-                else{
-                    if (source.pos.y >= 25){
-                        place = new RoomPosition(source.pos.x + 8, source.pos.y - 8, creep.memory.source_roomName)
-                    }
-                    else{
-                        place = new RoomPosition(source.pos.x + 8, source.pos.y + 8, creep.memory.source_roomName)
-                    }
-                }
-                creep.moveTo(place)
             }
         }
     }

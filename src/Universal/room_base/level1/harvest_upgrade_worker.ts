@@ -15,7 +15,7 @@ import { go_to_harvest } from "../universal_logic/go_to_harvest";
 
 export const harvest_upgrade_work = function(creep: Creep){
     let priority: number = 10
-    let minTicksToLive = 150
+    let minTicksToLive = 100
     if (creep.ticksToLive == minTicksToLive){
         const data = {
             name: creep.memory.role, 
@@ -42,7 +42,20 @@ export const harvest_upgrade_work = function(creep: Creep){
         }
     }
     else {
+        if (creep.memory.source_idx == undefined)
+        creep.memory.source_idx  = 0
         let source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
+        if (creep.memory.help){
+            if (source.energy == 0){
+                if (Memory.rooms[creep.room.name].sources_id[1-creep.memory.source_idx] != undefined){
+                    let tmp_source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[1-creep.memory.source_idx])
+                    if (tmp_source.energy != 0){
+                        source = tmp_source
+                        creep.memory.source_idx = 1-creep.memory.source_idx
+                    }
+                }
+            }
+        }
         go_to_harvest(creep, source)
     }
 }

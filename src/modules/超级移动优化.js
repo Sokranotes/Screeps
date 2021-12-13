@@ -1,4 +1,6 @@
 /*
+ts版本
+
 creep对穿+跨房间寻路+寻路缓存 
 跑的比香港记者还快从你做起
 应用此模块会导致creep.moveTo可选参数中这些项失效：reusePath、serializeMemory、noPathFinding、ignore、avoid、serialize
@@ -29,14 +31,8 @@ date: 2020/3/30
 version: 0.9.4(beta test)
 
 Usage:
-module :main
+import "./超级移动优化"
 
-require('超级移动优化');
-module.exports.loop=function() {
-
-    //your codes go here
-
-}
 
 changelog:
 0.1.0:  maybe not runnable
@@ -55,6 +51,7 @@ changelog:
         提供deletePathInRoom接口（使用方式见下方ps），print()中增加平均每次查找缓存时检查的路径数量统计，
         findRoute遇到过道新手墙时bugfix，偏移路径bugfix
 0.9.5： TODO：ignoreSwamp避开路，提供deletePathFromRoom、deletePathToRoom接口，增加自动visual，betterMove
+0.9.6 :Sokranotes： 修改为ts版本
 
 
 ps:
@@ -86,7 +83,7 @@ let coreLayoutRange = 3; // 核心布局半径，在离storage这个范围内频
 // let avoidRooms = ['E18S8', 'E19S9', 'E21S9', 'E24S8', 'E35N6', 'E25S9',
 //     'E19N2', 'E18N3', 'E29N5', 'E29N3', 'E28N8', 'E33N9', 'E34N8',
 //     'E37N6', 'E41N8', 'E39N11', 'E39N12', 'E39N13', 'E17S9']      // 永不踏入这些房间
-let avoidRooms = ['W46S14', 'W45S13', 'W46S11', 'W47S9', 'W46S9', 'W45S9', 'W44S9']      // 永不踏入这些房间
+let avoidRooms = ['W46S14', 'W46S11', 'W47S9', 'W46S9', 'W45S9', 'W44S9']      // 永不踏入这些房间
 let avoidExits = {
     // 'E35N7': 'E35N6',
     'W47S14': 'W46S14',

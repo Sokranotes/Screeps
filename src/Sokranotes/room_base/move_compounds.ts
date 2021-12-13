@@ -1,46 +1,9 @@
+// Game.spawns['Spawn4'].spawnCreep([MOVE,MOVE,CARRY,CARRY,CARRY,CARRY], 'mc' + Game.time, {memory: {role: 'move_compounds'}})
+
 export const move_compounds_work = function(creep: Creep){
     // creep.say('👋 move_compounds');
-    // let move_to_lab_flag = true
-    // let energy_flag = false
-    let target: StructureLab
-    let type: MineralBoostConstant| RESOURCE_ENERGY
-    if (creep.memory.energy_flag == undefined || creep.memory.energy_flag){
-        type = RESOURCE_ENERGY
-        target = Game.getObjectById('615b67b909f7903134462c0d')
-        if (target.store.getUsedCapacity(type) >= 2000){
-            target = Game.getObjectById('615b2fe7b781a147a5c49b07')
-            if (target.store.getUsedCapacity(type) >= 2000){
-                target = Game.getObjectById('615bb25d94d216562f056f23')
-                if (target.store.getUsedCapacity(type) >= 2000){
-                    target = Game.getObjectById('615b90d0f305b6193d5bb36b')
-                    if (target.store.getUsedCapacity(type) >= 2000){
-                        creep.memory.energy_flag = false
-                        type = RESOURCE_KEANIUM_ALKALIDE
-                    }
-                }
-            }
-        }
-    }
-    else{
-        target = Game.getObjectById('615b67b909f7903134462c0d')
-        type = RESOURCE_LEMERGIUM_ALKALIDE
-        if (target.store.getUsedCapacity(type) >= 1000){
-            target = Game.getObjectById('615b2fe7b781a147a5c49b07')
-            type = RESOURCE_GHODIUM_ALKALIDE
-            if (target.store.getUsedCapacity(type) >= 1000){
-                target = Game.getObjectById('615bb25d94d216562f056f23')
-                type = RESOURCE_ZYNTHIUM_ALKALIDE
-                if (target.store.getUsedCapacity(type) >= 1000){
-                    type = RESOURCE_KEANIUM_ALKALIDE
-                    target = Game.getObjectById('615b90d0f305b6193d5bb36b')
-                    if (target.store.getUsedCapacity(type) >= 1000){
-                        creep.memory.energy_flag = true
-                        type = RESOURCE_ENERGY
-                    }
-                }
-            }
-        }
-    }
+    let target: StructureNuker = Game.getObjectById('617aaa764e2090a11364025d')
+    let type: CommodityConstant | MineralConstant | RESOURCE_ENERGY | RESOURCE_GHODIUM = RESOURCE_GHODIUM
     
     if(creep.memory.is_working && creep.store[type] == 0) {
         // 如果在transfer状态，且没有能量了，那么退出transfer状态
@@ -52,7 +15,7 @@ export const move_compounds_work = function(creep: Creep){
         creep.memory.is_working = true;
         creep.say('🔄 transfer');
     }
-    if (creep.memory.move_to_lab_flag == undefined || creep.memory.move_to_lab_flag){
+    if (target.store.getFreeCapacity(type) > 0)
         if (creep.memory.is_working){
             if (creep.store.getUsedCapacity() > 0){
                 if(target) {
@@ -64,59 +27,26 @@ export const move_compounds_work = function(creep: Creep){
             }
         }
         else{
-            let terminal = Game.getObjectById(creep.room.memory.terminal_id)
-            if (terminal == null){
-                let targets: StructureTerminal[] = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_TERMINAL)
-                    }
-                });
-                if (targets.length > 0){
-                    creep.room.memory.terminal_id = targets[0].id
-                }
-                else{
-                    console.log(Game.time, 'move_compounds_work', creep.room.name, 'terminal is null')
-                    creep.room.memory.terminal_id = undefined
-                }
-            }
+            let terminal = creep.room.terminal
             if (terminal.store.getUsedCapacity(type) > 0){
                 if(creep.withdraw(terminal, type) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
+            if (creep.store.getFreeCapacity(type) != 0){
+                let storage = creep.room.storage
+                if (storage.store.getUsedCapacity(type) > 0){
+                    if(creep.withdraw(storage, type) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+                }
+            }
         }
-    }
     else{
-        if (creep.memory.is_working){
-            let terminal = Game.getObjectById(creep.room.memory.terminal_id)
-            if (terminal == null){
-                let targets: StructureTerminal[] = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_TERMINAL)
-                    }
-                });
-                if (targets.length > 0){
-                    creep.room.memory.terminal_id = targets[0].id
-                }
-                else{
-                    console.log(Game.time, 'move_compounds_work', creep.room.name, 'terminal is null')
-                    creep.room.memory.terminal_id = undefined
-                }
-            }
-            if (terminal.store.getUsedCapacity(type) > 0){
-                if(creep.transfer(terminal, type) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ffffff'}});
-                }
-            }
-        }
-        else{
-            if (creep.store.getUsedCapacity() > 0){
-                if(target) {
-                    let code = creep.withdraw(target, type)
-                    if(code == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(target, {visualizePathStyle: {stroke: '#ffff00'}});
-                    }
-                }
+        if (creep.store.getUsedCapacity(type) != 0){
+            let code = creep.transfer(creep.room.terminal, type)
+            if(code == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.terminal, {visualizePathStyle: {stroke: '#ffff00'}});
             }
         }
     }

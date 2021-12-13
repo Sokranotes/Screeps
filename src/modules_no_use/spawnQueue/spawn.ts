@@ -120,19 +120,19 @@ Spawn.prototype.work = function() {
  * 
  * @param hashMap 游戏对象的 hash map。如 Game.creeps、Game.spawns 等
  */
- export function doing(...hashMaps: object[]): void {
-    hashMaps.forEach((obj, index) => {
-        let startCost = Game.cpu.getUsed()
+//  export function doing(...hashMaps: object[]): void {
+//     hashMaps.forEach((obj, index) => {
+//         let startCost = Game.cpu.getUsed()
 
-        // 遍历执行 work
-        Object.values(obj).forEach(item => {
-            if (item.work) item.work()
-        })
+//         // 遍历执行 work
+//         Object.values(obj).forEach(item => {
+//             if (item.work) item.work()
+//         })
 
-        // 如果有需求的话就显示 cpu 消耗
-        if (Game.flags.showCost) console.log(`消耗 ${Game.cpu.getUsed() - startCost}`, [ `[${index}]` ])
-    })
-}
+//         // 如果有需求的话就显示 cpu 消耗
+//         if (Game.flags.showCost) console.log(`消耗 ${Game.cpu.getUsed() - startCost}`, [ `[${index}]` ])
+//     })
+// }
 
 // const data = {
 //     bodyParts: staticHarvesterParts,
@@ -149,12 +149,12 @@ Spawn.prototype.work = function() {
 //     {memory: spawnData.memory});
 
 // 将生成任务推入队列
-Room.prototype.addSpawnTask = function(priority: number, data: spawnData) {
-    if (Memory.rooms[this.name].spawnQueue == undefined){
-        Memory.rooms[this.name].spawnQueue = {}
-    }
-    // 任务加入队列
-    let spawnQueue: FlatQueue = new FlatQueue(Memory.rooms[this.name].spawnQueue);
-    spawnQueue.push(priority, data)
-    return spawnQueue.length
-}
+// Room.prototype.addSpawnTask = function(priority: number, data: spawnData) {
+//     if (Memory.rooms[this.name].spawnQueue == undefined){
+//         Memory.rooms[this.name].spawnQueue = {}
+//     }
+//     // 任务加入队列
+//     let spawnQueue: FlatQueue = new FlatQueue(Memory.rooms[this.name].spawnQueue);
+//     spawnQueue.push(priority, data)
+//     return spawnQueue.length
+// }

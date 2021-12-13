@@ -23,10 +23,8 @@ export const out_soldier_work = function(creep: Creep){
             if (creep.pos.x > 47 || creep.pos.x < 2 || creep.pos.y < 2 || creep.pos.y > 47){
                 creep.moveTo(new RoomPosition(25, 25, creep.memory.source_roomName), {visualizePathStyle: {stroke: '#ff0000'}})
             }
-            var invade_targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS, {
-                filter: (creep) => {
-                    return (creep.getActiveBodyparts(HEAL) > 1);
-                }
+            let invade_targets = Game.rooms[creep.room.name].find(FIND_HOSTILE_CREEPS, {
+                filter: (creep) => (!global.white_list.has(creep.owner.username)) && (creep.getActiveBodyparts(HEAL) > 1)
             });
             if (invade_targets.length > 0)
             {
@@ -38,7 +36,9 @@ export const out_soldier_work = function(creep: Creep){
                 }
             }
             else{
-                var invade_targets: Creep[] = creep.room.find(FIND_HOSTILE_CREEPS);
+                invade_targets = creep.room.find(FIND_HOSTILE_CREEPS, {
+                    filter: (creep) => (!global.white_list.has(creep.owner.username))
+                });
                 if (invade_targets.length > 0)
                 {
                     creep.room.memory.war_flag = true

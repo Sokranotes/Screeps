@@ -11,14 +11,41 @@ notifyWhenAttacked tower
 activateSafeMode
 */
 
+export const check_towers_id = function(room: Room){
+    let towers: StructureTower[] = room.find(FIND_MY_STRUCTURES, {
+        filter: (structure) => {
+            return structure.structureType == STRUCTURE_TOWER
+        }
+    })
+    if (towers.length > 0){
+        Memory.rooms[room.name].towers_id = new Array(towers.length)
+        for (let i: number = 0; i < towers.length; i++){
+            Memory.rooms[room.name].towers_id[i] = towers[i].id;
+        }
+    }
+}
+
 export const tower_work = function(roomName: string){
+    let flag: Boolean = false
+    if (Game.flags.check_towers_id_flag && Game.flags.check_towers_id_flag.room.name == roomName){
+        flag = true
+        Game.flags.check_towers_id_flag.remove()
+    }
+    if (Game.rooms[roomName].memory.war_flag != true && Game.time % 5 != 0 && !flag) return
+    check_towers_id(Game.rooms[roomName])
+    
     let room = Game.rooms[roomName]
     let tower_list = room.memory.towers_id
-    let closestHostiles = room.find(FIND_HOSTILE_CREEPS);
+    if (global.white_list == undefined){
+        global.white_list  = new Set([]);
+    }
+    let closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS, {
+        filter: (creep) => (!global.white_list.has(creep.owner.username))
+    });
     let structures: Structure[]
     if(closestHostiles.length == 0){
         structures = room.find(FIND_STRUCTURES, {
-                        filter: (structure) => structure.hits < structure.hitsMax  
+                        filter: (structure) => structure.hits < 0.8*structure.hitsMax  
                         && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
                     });
     }

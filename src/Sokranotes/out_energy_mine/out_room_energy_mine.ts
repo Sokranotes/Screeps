@@ -390,7 +390,9 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
         console.log(Game.time, 'out_room_energy_mine', dest_roomName, ' undefined')
         return
     }
-    var hostiles = source_room.find(FIND_HOSTILE_CREEPS);
+    var hostiles = source_room.find(FIND_HOSTILE_CREEPS, {
+        filter: (creep) => (!global.white_list.has(creep.owner.username)) && (creep.getActiveBodyparts(HEAL) > 1)
+    });
     // var soldiers = _.filter(Game.creeps, (creep) => creep.memory.role == 'out_soldier' && creep.memory.source_roomName == source_roomName);
     var invader_cores: StructureInvaderCore[] = source_room.find(FIND_STRUCTURES, {filter:(structure)=>{return structure.structureType == STRUCTURE_INVADER_CORE}})
     if (invader_cores.length > 0){
@@ -471,7 +473,7 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
         }
     }
     else if (hostiles.length == 0){
-        if (source_roomName == 'W47S15' || source_roomName == 'W48S14' || source_roomName == 'W47S13'){
+        // if (source_roomName == 'W47S15' || source_roomName == 'W48S14' || source_roomName == 'W47S13'){
             if (Game.spawns[spawnName].spawning){
                 var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
                 Game.spawns[spawnName].room.visual.text(
@@ -530,6 +532,6 @@ export const out_room_energy_mine = function(source_roomName: string, dest_roomN
             source_room.memory.enemy_num = 0
             room_energy_mine_init(source_room)
             room_energy_mine_routine(source_roomName, dest_roomName, spawnName, harvester_num, transfer_num)
-        }
+        // }
     }
 }

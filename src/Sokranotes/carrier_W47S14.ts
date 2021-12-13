@@ -10,8 +10,8 @@ export const carrier_W47S14_work = function(creep: Creep){
         }
         let link: StructureLink = Game.getObjectById("6159d59ae59fcf2038ecf56c")
         let upgrade_link: StructureLink = Game.getObjectById('615a13005237858c5056f75f')
-        let storage: StructureStorage = Game.getObjectById("6159fc1609f790175f45c6be")
-        let terminal: StructureTerminal = Game.getObjectById('615ab4e746872376a3726f6f')
+        let storage: StructureStorage = creep.room.storage
+        let terminal: StructureTerminal = creep.room.terminal
 
         if (upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) <= 30 && link.cooldown < 3){
             if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
@@ -20,13 +20,14 @@ export const carrier_W47S14_work = function(creep: Creep){
             else{
                 creep.transfer(link, RESOURCE_ENERGY)
             }
+            return
         }
-        else if (link.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
+        if (link.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
             if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
                 creep.withdraw(link, RESOURCE_ENERGY)
             }
             else{
-                if (storage.store.getFreeCapacity() > 1000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY)){
+                if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY) && terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0){
                     creep.transfer(terminal, RESOURCE_ENERGY)
                 }
                 else{
@@ -44,7 +45,7 @@ export const carrier_W47S14_work = function(creep: Creep){
                     creep.transfer(terminal, RESOURCE_ENERGY)
                 }
             }
-            else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 150000 && storage.store.getFreeCapacity(RESOURCE_ENERGY) > 5000){
+            else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 155000 && storage.store.getFreeCapacity(RESOURCE_ENERGY) > 5000){
                 if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
                     creep.withdraw(terminal, RESOURCE_ENERGY)
                 }
@@ -52,17 +53,26 @@ export const carrier_W47S14_work = function(creep: Creep){
                     creep.transfer(storage, RESOURCE_ENERGY)
                 }
             }
-            else if (terminal.store.getFreeCapacity() < 5000){
-                if (Game.time%2 == 0){
-                    Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')
-                    console.log(Game.time, 'send', 'W41S11', '20000')
-                }
-                else{
-                    Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W39S23', 'free')
-                    console.log(Game.time, 'send', 'W39S23', '20000')
-                }
-                // Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'E39S51', 'free')
-                // W44S2 mikumikumiku
+            // else if (terminal.store.getFreeCapacity() < 5000 && storage.store.getFreeCapacity() < 5000){
+            //     Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 50000, 'W48S12', 'free')
+            //     if (Game.time%2 == 0){
+            //         Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')
+            //         console.log(Game.time, 'send', 'W41S11', '20000')
+            //     }
+            //     else{
+            //         Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W39S23', 'free')
+            //         console.log(Game.time, 'send', 'W39S23', '20000')
+            //     }
+            //     // Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'E39S51', 'free')
+            //     // W44S2 mikumikumiku
+            // }
+        }
+        if (creep.store.getUsedCapacity(RESOURCE_ENERGY) != 0){
+            if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY) && terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0){
+                creep.transfer(terminal, RESOURCE_ENERGY)
+            }
+            else{
+                creep.transfer(storage, RESOURCE_ENERGY)
             }
         }
     }

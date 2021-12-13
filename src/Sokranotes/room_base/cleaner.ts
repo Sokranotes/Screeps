@@ -1,6 +1,7 @@
 export const cleaner_work = function(creep: Creep){
     // creep.say('🔄 Here');
     creep.memory.dontPullMe = false
+    if (creep.room.energyAvailable < 0.2*creep.room.energyCapacityAvailable) creep.memory.role = 'base_transfer'
     if(creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
         // 如果在捡东西状态，装满了，那么退出工作状态
         creep.memory.is_working = false;

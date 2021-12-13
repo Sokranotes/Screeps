@@ -45,7 +45,20 @@ export const harvest_fill_work = function(creep: Creep){
         }
     }
     else {
+        if (creep.memory.source_idx == undefined)
+        creep.memory.source_idx  = 0
         let source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx])
+        if (creep.memory.help){
+            if (source.energy == 0){
+                if (Memory.rooms[creep.room.name].sources_id[1-creep.memory.source_idx] != undefined){
+                    let tmp_source: Source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[1-creep.memory.source_idx])
+                    if (tmp_source.energy != 0){
+                        source = tmp_source
+                        creep.memory.source_idx = 1-creep.memory.source_idx
+                    }
+                }
+            }
+        }
         go_to_harvest(creep, source)
     }
 }

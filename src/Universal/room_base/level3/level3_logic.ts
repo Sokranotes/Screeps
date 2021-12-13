@@ -13,22 +13,8 @@ import { harvest_upgrade_work } from "../level1/harvest_upgrade_worker";
 import { harvest_build_work } from "../level2/harvest_build_worker";
 import { harvest_repair_work } from "../level2/harvest_repair_worker";
 import { harvest_fill_work } from "../level2/harvest_fill_worker";
-import { tower_work } from "./tower";
+import { check_towers_id, tower_work } from "./tower";
 import { level3_check_spawn_queue } from "./level3_check_spawn_queue";
-
-const check_towers_id = function(room: Room){
-    let towers: StructureTower[] = room.find(FIND_MY_STRUCTURES, {
-        filter: (structure) => {
-            return structure.structureType == STRUCTURE_TOWER
-        }
-    })
-    if (towers.length > 0){
-        Memory.rooms[room.name].towers_id = new Array(towers.length)
-        for (let i: number = 0; i < towers.length; i++){
-            Memory.rooms[room.name].towers_id[i] = towers[i].id;
-        }
-    }
-}
 
 export const level3_logic = function(roomName){
     let room = Game.rooms[roomName]

@@ -24,7 +24,9 @@ export const tower_work = function(roomName: string){
             }
         }
     }
-    let closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
+    let closestHostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS, {
+        filter: (creep) => (!global.white_list.has(creep.owner.username))
+    });
     let ramparts: StructureRampart[]
     let structures: Structure[]
     let ramparts_walls: Structure[]
