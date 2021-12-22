@@ -70,13 +70,9 @@ interface RoomMemory {
     source_transfer_num?: number[] // 对应不同source, transfer的限制个数
 
     check_containers_state?: boolean
-    containers_num?: number
-    containers_id?: Id<StructureContainer>[] // 同一房间内所有container的ID, 避免多次重复扫描查找
     source_container_ids?: Id<StructureContainer>[] // 对应下标的source的container的ID
 
     check_links_state?: boolean
-    links_num?: number
-    links_id?: Id<StructureLink>[]
     source_link_ids?: Id<StructureLink>[]    
     link_harvester_pos_xs?: number[]
     link_harvester_pos_ys?: number[]
@@ -101,6 +97,9 @@ interface RoomMemory {
 
     test_flag?: boolean
     restart_flag?: boolean
+    
+    claiming?: boolean
+    check_energy_mine?: boolean
 }
 
 interface statsMemory{

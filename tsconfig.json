@@ -14,5 +14,5 @@
         "node_modules", "src/history war", "src/modules/modules_no_use"
     ],
     "include": [
-        "src/**/*.ts", "src/modules/超级移动优化.js", "src/Universal/room_base/priorityqueue.jsorityqueue.js"]
+        "src/**/*.ts", "src/modules/*/*.js", "src/modules/*.js"]
 }

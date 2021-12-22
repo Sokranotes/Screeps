@@ -46,7 +46,7 @@ export const tower_work = function(roomName: string){
     if(closestHostiles.length == 0){
         structures = room.find(FIND_STRUCTURES, {
                         filter: (structure) => structure.hits < 0.8*structure.hitsMax  
-                        && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
+                        && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART && structure.structureType != STRUCTURE_ROAD
                     });
     }
     // Tower防御及safe mode的激活

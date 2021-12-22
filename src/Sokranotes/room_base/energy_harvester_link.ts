@@ -1,7 +1,6 @@
 import { go_to_harvest } from "@/Universal/room_base/universal_logic/go_to_harvest"
 
 export const energy_harvester_link_work = function(creep: Creep){
-    // creep.say('🔄 Here');
     let link: StructureLink = Game.getObjectById(creep.room.memory.source_link_ids[creep.memory.source_idx])
     if (link == undefined){
         console.log(Game.time, "energy_harvester_link_work source link id:", creep.room.memory.source_link_ids[creep.memory.source_idx], 'index:', creep.memory.source_idx, 'undefined')
@@ -14,6 +13,8 @@ export const energy_harvester_link_work = function(creep: Creep){
         return
     }
     let source: Source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx])
-    let pos: RoomPosition = new RoomPosition(creep.memory.link_harvester_pos_x, creep.memory.link_harvester_pos_y, creep.memory.source_roomName)
-    go_to_harvest(creep, source, pos)
+    if (link.store.getFreeCapacity(RESOURCE_ENERGY) != 0){
+        let pos: RoomPosition = new RoomPosition(creep.memory.link_harvester_pos_x, creep.memory.link_harvester_pos_y, creep.memory.source_roomName)
+        go_to_harvest(creep, source, pos)
+    }
 }

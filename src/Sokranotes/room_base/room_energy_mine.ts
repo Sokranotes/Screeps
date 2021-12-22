@@ -1,29 +1,22 @@
 const room_energy_mine_init = function(source_room: Room){
-    /* 
-    需要建好storage
-    
+    /*   
     如果没开启自动挖矿, 则进行初始化操作
     初始化的值有:
-    是否初始化, 初始化之后只能手动变化
-    room.memory.auto_energy_mine
     初始化之后永不变化
     room.memory.sources_id
-    room.memory.sources_num
+    初始化之后只能手动变化
+    room.memory.auto_energy_mine
 
     需要从配置中读取
     room.memory.source_harvester_num
-    room.memory.source_transfer_num
-    常规流程中每一次都需要更新
+    room.memory.source_transfer_num若link_harvester_pos_ys
+    常规流程中每一次都需要更新（若干t更新一次）
     room.memory.source_harvester_states
     room.memory.source_transfer_states
     container相关状态量, 需要检查是否有变更并及时修改
     room.memory.container_ids
     room.memory.source_container_ids
-
-    其他状态量
-    room.memory.source_distance
-    room.memory.source_gets
-    room.memory.source_costs*/
+    */
     var sources_num: number
     var containers_num: number
     var links_num: number
@@ -55,21 +48,10 @@ const room_energy_mine_init = function(source_room: Room){
         source_room.memory.source_harvester_states = new Array(sources_num)
         source_room.memory.source_transfer_states = new Array(sources_num)
 
-        // 初始化harvester和transfer的数量记录以及gets和costs状态量
+        // 初始化harvester和transfer的数量记录
         for (var i: number = 0; i < sources_num; i++){
             source_room.memory.source_harvester_states[i] = 0
             source_room.memory.source_transfer_states[i] = 0
-        }
-
-        // 其他状态量
-        if (source_room.memory.source_distance == undefined){
-            source_room.memory.source_distance = new Array(sources_num)
-            source_room.memory.source_gets = new Array(sources_num)
-            source_room.memory.source_costs = new Array(sources_num)
-            for (var i: number = 0; i < sources_num; i++){
-                source_room.memory.source_gets[i] = 0
-                source_room.memory.source_costs[i] = 0
-            }
         }
 
         // source对应的container id
@@ -99,7 +81,6 @@ const room_energy_mine_init = function(source_room: Room){
                     if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 && 
                     (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1){
                         source_room.memory.source_container_ids[i] = container.id
-                        source_room.memory.source_costs[i] += 5000
                         break
                     }
                 }
@@ -170,7 +151,7 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
     sources_num = source_room.memory.sources_id.length
     links_num = source_room.memory.links_num
 
-    if (source_roomName == 'W48S12' || source_roomName == 'W41S6'){
+    if (Game.rooms[dest_roomName].energyAvailable > 1000){
         source_room.memory.energy_mine_chain_ok = true
     }
     else{
@@ -240,7 +221,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                     if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 && 
                     (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1){
                         source_room.memory.source_container_ids[i] = container.id
-                        source_room.memory.source_costs[i] += 5000
                         break
                     }
                 }
@@ -255,7 +235,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                     if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 && 
                     (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1){
                         source_room.memory.source_container_ids[i] = container.id
-                        source_room.memory.source_costs[i] += 5000
                         break
                     }
                 }
@@ -292,7 +271,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                     if ((link.pos.x - source.pos.x) >= -2 && (link.pos.x - source.pos.x) <= 2 && 
                     (link.pos.y - source.pos.y) >= -2 && (link.pos.y - source.pos.y) <= 2){
                         source_room.memory.source_link_ids[i] = link.id
-                        source_room.memory.source_costs[i] += 5000
                         break
                     }
                 }
@@ -307,7 +285,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                     if ((link.pos.x - source.pos.x) >= -1 && (link.pos.x - source.pos.x) <= 1 && 
                     (link.pos.y - source.pos.y) >= -1 && (link.pos.y - source.pos.y) <= 1){
                         source_room.memory.source_link_ids[i] = link.id
-                        source_room.memory.source_costs[i] += 5000
                         break
                     }
                 }
@@ -330,7 +307,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Harvester_with_carry' + Game.time, 
                                         {memory: {role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName}}) == OK){
                                             source_room.memory.source_harvester_states[i] += 1
-                                            source_room.memory.source_costs[i] += 950
                                             break
                                         }
                                 }
@@ -338,7 +314,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester_with_carry' + Game.time, 
                                         {memory: {role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName}}) == OK){
                                             source_room.memory.source_harvester_states[i] += 1
-                                            source_room.memory.source_costs[i] += 500
                                             break
                                         }
                                 }
@@ -346,7 +321,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                             else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_with_carry' + Game.time, 
                                 {memory: {role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName}}) == OK){
                                     source_room.memory.source_harvester_states[i] += 1
-                                    source_room.memory.source_costs[i] += 300
                                     break
                                 }
                         }
@@ -356,7 +330,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester_with_carry' + Game.time, 
                                         {memory: {role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName}}) == OK){
                                             source_room.memory.source_harvester_states[i] += 1
-                                            source_room.memory.source_costs[i] += 500
                                             break
                                         }
                                 }
@@ -364,7 +337,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                             else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_with_carry' + Game.time, 
                                 {memory: {role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName}}) == OK){
                                     source_room.memory.source_harvester_states[i] += 1
-                                    source_room.memory.source_costs[i] += 300
                                     break
                                 }
                         }
@@ -377,7 +349,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], 'Harvester_no_carry' + Game.time, 
                                     {memory: {role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y}}) == OK){
                                         source_room.memory.source_harvester_states[i] += 1
-                                        source_room.memory.source_costs[i] += 650
                                         break
                                     }
                                 }
@@ -385,7 +356,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, MOVE, MOVE], 'Harvester_no_carry' + Game.time, 
                                         {memory: {role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y}}) == OK){
                                             source_room.memory.source_harvester_states[i] += 1
-                                            source_room.memory.source_costs[i] += 400
                                             break
                                         }
                                 }
@@ -393,7 +363,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                             else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, MOVE], 'Harvester_no_carry' + Game.time, 
                                 {memory: {role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y}}) == OK){
                                     source_room.memory.source_harvester_states[i] += 1
-                                    source_room.memory.source_costs[i] += 250
                                     break
                                 }
                         }
@@ -403,7 +372,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, MOVE, MOVE, MOVE], 'Harvester_no_carry' + Game.time, 
                                         {memory: {role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y}}) == OK){
                                             source_room.memory.source_harvester_states[i] += 1
-                                            source_room.memory.source_costs[i] += 450
                                             break
                                         }
                                 }
@@ -411,7 +379,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                             else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_no_carry' + Game.time, 
                                 {memory: {role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y}}) == OK){
                                     source_room.memory.source_harvester_states[i] += 1
-                                    source_room.memory.source_costs[i] += 300
                                     break
                                 }
                         }
@@ -430,7 +397,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                     {memory: {role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName, 
                                     link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i]}}) == OK){
                                         source_room.memory.source_harvester_states[i] += 1
-                                        source_room.memory.source_costs[i] += 950
                                         break
                                     }
                             }
@@ -439,7 +405,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                     {memory: {role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName, 
                                     link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i]}}) == OK){
                                         source_room.memory.source_harvester_states[i] += 1
-                                        source_room.memory.source_costs[i] += 500
                                         break
                                     }
                             }
@@ -448,7 +413,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                             {memory: {role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName, 
                             link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i]}}) == OK){
                                 source_room.memory.source_harvester_states[i] += 1
-                                source_room.memory.source_costs[i] += 300
                                 break
                             }
                     }
@@ -459,7 +423,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                                     {memory: {role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName, 
                                     link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i]}}) == OK){
                                         source_room.memory.source_harvester_states[i] += 1
-                                        source_room.memory.source_costs[i] += 500
                                         break
                                     }
                             }
@@ -468,7 +431,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                             {memory: {role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName, 
                             link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i]}}) == OK){
                                 source_room.memory.source_harvester_states[i] += 1
-                                source_room.memory.source_costs[i] += 300
                                 break
                             }
                     }
@@ -482,14 +444,12 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                             if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'passive_transfer' + Game.time, 
                                 {memory: {role: 'passive_transfer', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName}}) == OK){
                                     source_room.memory.source_transfer_states[i] += 1
-                                    source_room.memory.source_costs[i] += 600
                                     break
                                 }
                         }
                     }
                     else if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'passive_transfer' + Game.time, {memory: {role: 'passive_transfer', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName}}) == OK){
                         source_room.memory.source_transfer_states[i] += 1
-                        source_room.memory.source_costs[i] += 300
                         break
                     }
                 }
@@ -499,7 +459,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                             if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'active_transfer' + Game.time, 
                                 {memory: {role: 'active_transfer', source_container_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName}}) == OK){
                                     source_room.memory.source_transfer_states[i] += 1
-                                    source_room.memory.source_costs[i] += 600
                                     break
                                 }
                         }
@@ -507,7 +466,6 @@ const room_energy_mine_routine = function(source_roomName: string, dest_roomName
                     else if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'active_transfer' + Game.time, 
                         {memory: {role: 'active_transfer', source_container_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName}}) == OK){
                             source_room.memory.source_transfer_states[i] += 1
-                            source_room.memory.source_costs[i] += 300
                             break
                         }
                 }

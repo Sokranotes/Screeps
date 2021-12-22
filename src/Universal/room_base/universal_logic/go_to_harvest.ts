@@ -6,18 +6,23 @@ export const go_to_harvest = function(creep: Creep, source: Source, pos?: RoomPo
             creep.memory.dontPullMe = true
         }
         let code: CreepActionReturnCode | ERR_NOT_FOUND | ERR_NOT_ENOUGH_RESOURCES = creep.harvest(source)
-        if (code == ERR_NO_BODYPART){
-            creep.suicide()
-        }
-        else if (code == ERR_NOT_ENOUGH_ENERGY){
-            return code
-        }
-        else if (code != OK && code != ERR_BUSY && code != ERR_NOT_OWNER){
-            // ERR_BUSY: spawning
-            // ERR_NOT_ENOUGH_ENERGY
-            // ERR_NOT_OWNER: controller is reserved by other player of Invader
-            console.log(Game.time, global.harvest_err_code.get(code))
-            print_err_info()
+        if (code != OK){
+            if (code == ERR_NO_BODYPART){
+                console.log(Game.time, global.harvest_err_code.get(code))
+                creep.suicide()
+                return
+            }
+            else if (code == ERR_NOT_ENOUGH_ENERGY){
+                console.log(Game.time, global.harvest_err_code.get(code))
+                return code
+            }
+            else if (code != ERR_BUSY && code != ERR_NOT_OWNER){
+                // ERR_BUSY: spawning
+                // ERR_NOT_ENOUGH_ENERGY
+                // ERR_NOT_OWNER: controller is reserved by other player of Invader
+                console.log(Game.time, global.harvest_err_code.get(code))
+                return code
+            }
         }
     }
     else{

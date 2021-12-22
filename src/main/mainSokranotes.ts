@@ -1,8 +1,11 @@
 import { errorMapper } from './modules/errorMapper'
 import { Sokranotes } from './Sokranotes/Sokranotes';
 import "./modules/超级移动优化"
-// import "./modules/strategy_marketPrice"
+import { HelperCpuUsed } from "./modules/插件cpu监控内置/helper_cpuUsed"
+import { HelperRoomResource } from "./modules/全局资源显示插件v1.0/helper_roomResource"
 
+global.HelperCpuUsed = HelperCpuUsed;
+global.HelperRoomResource = HelperRoomResource;
 global.white_list = new Set(['scp002']);
 let rooms: string[] = ['W48S12']
 for (let idx in rooms){
@@ -72,4 +75,14 @@ export const loop = errorMapper(() => {
         console.log(s)
         Game.flags.test.remove()
     }
+
+    if (Game.flags.remove_construction_sites){
+        let sites: ConstructionSite[] = Game.flags.remove_construction_sites.room.find(FIND_CONSTRUCTION_SITES)
+        for (let site of sites){
+            site.remove()
+        }
+        Game.flags.remove_construction_sites.remove()
+    }
+    global.HelperCpuUsed.exec()
+    // global.HelperCpuUsed.show()
 })

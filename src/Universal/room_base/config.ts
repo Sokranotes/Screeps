@@ -3,8 +3,9 @@ export const room_config = {
         'hf': 0,
         'base_transfer': 0,
         'tower_transfer': 0,
-        'carrier_W47S14': 5,
-        'carrier_W48S12': 5,
+        'carrier_W47S14': 1,
+        'carrier_W48S12': 1,
+        'hl': 2,
         'hu': 10,
         'upgrader_link': 10,
         'hr': 15,
@@ -315,7 +316,7 @@ export const room_config = {
         }
     },
     'W44S12':{
-        'level3': {
+        'level4': {
             'hf': {
                 'num': 1,
                 'source_idx': 0,

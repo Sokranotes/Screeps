@@ -2,6 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
 var sourceMapGenerator = {};
 
 var base64Vlq = {};
@@ -3872,40 +3874,29 @@ const base_transfer_work = function (creep) {
     }
 };
 
-global.harvest_err_code = new Map([
-    [0, 'OK'],
-    [-1, 'ERR_NOT_OWNER'],
-    [-4, 'ERR_BUSY'],
-    [-5, 'ERR_NOT_FOUND'],
-    [-6, 'ERR_NOT_ENOUGH_RESOURCES'],
-    [-7, 'ERR_INVALID_TARGET'],
-    [-9, 'ERR_NOT_IN_RANGE'],
-    [-11, 'ERR_TIRED'],
-    [-12, 'ERR_NO_BODYPART']
-]);
-const print_err_info = errorMapper(() => {
-    let e = new Error();
-    throw e;
-});
-
 const go_to_harvest = function (creep, source, pos) {
     if (creep.pos.isNearTo(source)) {
         if (!creep.memory.dontPullMe) {
             creep.memory.dontPullMe = true;
         }
         let code = creep.harvest(source);
-        if (code == ERR_NO_BODYPART) {
-            creep.suicide();
-        }
-        else if (code == ERR_NOT_ENOUGH_ENERGY) {
-            return code;
-        }
-        else if (code != OK && code != ERR_BUSY && code != ERR_NOT_OWNER) {
-            // ERR_BUSY: spawning
-            // ERR_NOT_ENOUGH_ENERGY
-            // ERR_NOT_OWNER: controller is reserved by other player of Invader
-            console.log(Game.time, global.harvest_err_code.get(code));
-            print_err_info();
+        if (code != OK) {
+            if (code == ERR_NO_BODYPART) {
+                console.log(Game.time, global.harvest_err_code.get(code));
+                creep.suicide();
+                return;
+            }
+            else if (code == ERR_NOT_ENOUGH_ENERGY) {
+                console.log(Game.time, global.harvest_err_code.get(code));
+                return code;
+            }
+            else if (code != ERR_BUSY && code != ERR_NOT_OWNER) {
+                // ERR_BUSY: spawning
+                // ERR_NOT_ENOUGH_ENERGY
+                // ERR_NOT_OWNER: controller is reserved by other player of Invader
+                console.log(Game.time, global.harvest_err_code.get(code));
+                return code;
+            }
         }
     }
     else {
@@ -4181,7 +4172,6 @@ const cleaner_work = function (creep) {
 };
 
 const energy_harvester_link_work = function (creep) {
-    // creep.say('🔄 Here');
     let link = Game.getObjectById(creep.room.memory.source_link_ids[creep.memory.source_idx]);
     if (link == undefined) {
         console.log(Game.time, "energy_harvester_link_work source link id:", creep.room.memory.source_link_ids[creep.memory.source_idx], 'index:', creep.memory.source_idx, 'undefined');
@@ -4194,8 +4184,10 @@ const energy_harvester_link_work = function (creep) {
         return;
     }
     let source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx]);
-    let pos = new RoomPosition(creep.memory.link_harvester_pos_x, creep.memory.link_harvester_pos_y, creep.memory.source_roomName);
-    go_to_harvest(creep, source, pos);
+    if (link.store.getFreeCapacity(RESOURCE_ENERGY) != 0) {
+        let pos = new RoomPosition(creep.memory.link_harvester_pos_x, creep.memory.link_harvester_pos_y, creep.memory.source_roomName);
+        go_to_harvest(creep, source, pos);
+    }
 };
 
 const energy_harvester_with_carry_work = function (creep) {
@@ -5424,7 +5416,7 @@ const room_config = {
         }
     },
     'W44S12': {
-        'level3': {
+        'level4': {
             'hf': {
                 'num': 1,
                 'source_idx': 0,
@@ -6053,30 +6045,23 @@ const different_role_work = function () {
 
 const room_energy_mine_init = function (source_room) {
     /*
-    需要建好storage
-    
     如果没开启自动挖矿, 则进行初始化操作
     初始化的值有:
-    是否初始化, 初始化之后只能手动变化
-    room.memory.auto_energy_mine
     初始化之后永不变化
     room.memory.sources_id
-    room.memory.sources_num
+    初始化之后只能手动变化
+    room.memory.auto_energy_mine
 
     需要从配置中读取
     room.memory.source_harvester_num
-    room.memory.source_transfer_num
-    常规流程中每一次都需要更新
+    room.memory.source_transfer_num若link_harvester_pos_ys
+    常规流程中每一次都需要更新（若干t更新一次）
     room.memory.source_harvester_states
     room.memory.source_transfer_states
     container相关状态量, 需要检查是否有变更并及时修改
     room.memory.container_ids
     room.memory.source_container_ids
-
-    其他状态量
-    room.memory.source_distance
-    room.memory.source_gets
-    room.memory.source_costs*/
+    */
     var sources_num;
     var containers_num;
     var links_num;
@@ -6105,20 +6090,10 @@ const room_energy_mine_init = function (source_room) {
         // harvester和transfer的数量记录
         source_room.memory.source_harvester_states = new Array(sources_num);
         source_room.memory.source_transfer_states = new Array(sources_num);
-        // 初始化harvester和transfer的数量记录以及gets和costs状态量
+        // 初始化harvester和transfer的数量记录
         for (var i = 0; i < sources_num; i++) {
             source_room.memory.source_harvester_states[i] = 0;
             source_room.memory.source_transfer_states[i] = 0;
-        }
-        // 其他状态量
-        if (source_room.memory.source_distance == undefined) {
-            source_room.memory.source_distance = new Array(sources_num);
-            source_room.memory.source_gets = new Array(sources_num);
-            source_room.memory.source_costs = new Array(sources_num);
-            for (var i = 0; i < sources_num; i++) {
-                source_room.memory.source_gets[i] = 0;
-                source_room.memory.source_costs[i] = 0;
-            }
         }
         // source对应的container id
         source_room.memory.source_container_ids = new Array(sources_num);
@@ -6145,7 +6120,6 @@ const room_energy_mine_init = function (source_room) {
                     if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 &&
                         (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1) {
                         source_room.memory.source_container_ids[i] = container.id;
-                        source_room.memory.source_costs[i] += 5000;
                         break;
                     }
                 }
@@ -6208,7 +6182,7 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
     containers_num = source_room.memory.containers_num;
     sources_num = source_room.memory.sources_id.length;
     links_num = source_room.memory.links_num;
-    if (source_roomName == 'W48S12' || source_roomName == 'W41S6') {
+    if (Game.rooms[dest_roomName].energyAvailable > 1000) {
         source_room.memory.energy_mine_chain_ok = true;
     }
     else {
@@ -6274,7 +6248,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                     if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 &&
                         (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1) {
                         source_room.memory.source_container_ids[i] = container.id;
-                        source_room.memory.source_costs[i] += 5000;
                         break;
                     }
                 }
@@ -6289,7 +6262,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                     if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 &&
                         (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1) {
                         source_room.memory.source_container_ids[i] = container.id;
-                        source_room.memory.source_costs[i] += 5000;
                         break;
                     }
                 }
@@ -6324,7 +6296,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                     if ((link.pos.x - source.pos.x) >= -2 && (link.pos.x - source.pos.x) <= 2 &&
                         (link.pos.y - source.pos.y) >= -2 && (link.pos.y - source.pos.y) <= 2) {
                         source_room.memory.source_link_ids[i] = link.id;
-                        source_room.memory.source_costs[i] += 5000;
                         break;
                     }
                 }
@@ -6339,7 +6310,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                     if ((link.pos.x - source.pos.x) >= -1 && (link.pos.x - source.pos.x) <= 1 &&
                         (link.pos.y - source.pos.y) >= -1 && (link.pos.y - source.pos.y) <= 1) {
                         source_room.memory.source_link_ids[i] = link.id;
-                        source_room.memory.source_costs[i] += 5000;
                         break;
                     }
                 }
@@ -6360,21 +6330,18 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                                 if (energyCapacity >= 950) {
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Harvester_with_carry' + Game.time, { memory: { role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName } }) == OK) {
                                         source_room.memory.source_harvester_states[i] += 1;
-                                        source_room.memory.source_costs[i] += 950;
                                         break;
                                     }
                                 }
                                 else if (energyCapacity >= 500) {
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester_with_carry' + Game.time, { memory: { role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName } }) == OK) {
                                         source_room.memory.source_harvester_states[i] += 1;
-                                        source_room.memory.source_costs[i] += 500;
                                         break;
                                     }
                                 }
                             }
                             else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_with_carry' + Game.time, { memory: { role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName } }) == OK) {
                                 source_room.memory.source_harvester_states[i] += 1;
-                                source_room.memory.source_costs[i] += 300;
                                 break;
                             }
                         }
@@ -6383,14 +6350,12 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                                 if (energyCapacity >= 500) {
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester_with_carry' + Game.time, { memory: { role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName } }) == OK) {
                                         source_room.memory.source_harvester_states[i] += 1;
-                                        source_room.memory.source_costs[i] += 500;
                                         break;
                                     }
                                 }
                             }
                             else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_with_carry' + Game.time, { memory: { role: 'energy_harvester_with_carry', source_idx: i, source_roomName: source_roomName } }) == OK) {
                                 source_room.memory.source_harvester_states[i] += 1;
-                                source_room.memory.source_costs[i] += 300;
                                 break;
                             }
                         }
@@ -6402,21 +6367,18 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                                 if (energyCapacity >= 650) {
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                                         source_room.memory.source_harvester_states[i] += 1;
-                                        source_room.memory.source_costs[i] += 650;
                                         break;
                                     }
                                 }
                                 else if (energyCapacity >= 400) {
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, MOVE, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                                         source_room.memory.source_harvester_states[i] += 1;
-                                        source_room.memory.source_costs[i] += 400;
                                         break;
                                     }
                                 }
                             }
                             else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                                 source_room.memory.source_harvester_states[i] += 1;
-                                source_room.memory.source_costs[i] += 250;
                                 break;
                             }
                         }
@@ -6425,14 +6387,12 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                                 if (energyCapacity >= 450) {
                                     if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, MOVE, MOVE, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                                         source_room.memory.source_harvester_states[i] += 1;
-                                        source_room.memory.source_costs[i] += 450;
                                         break;
                                     }
                                 }
                             }
                             else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_no_carry' + Game.time, { memory: { role: 'energy_harvester_no_carry', source_idx: i, source_roomName: source_roomName, container_pos_x: container.pos.x, container_pos_y: container.pos.y } }) == OK) {
                                 source_room.memory.source_harvester_states[i] += 1;
-                                source_room.memory.source_costs[i] += 300;
                                 break;
                             }
                         }
@@ -6450,7 +6410,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                                 if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Harvester_link' + Game.time, { memory: { role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName,
                                         link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i] } }) == OK) {
                                     source_room.memory.source_harvester_states[i] += 1;
-                                    source_room.memory.source_costs[i] += 950;
                                     break;
                                 }
                             }
@@ -6458,7 +6417,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                                 if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester_link' + Game.time, { memory: { role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName,
                                         link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i] } }) == OK) {
                                     source_room.memory.source_harvester_states[i] += 1;
-                                    source_room.memory.source_costs[i] += 500;
                                     break;
                                 }
                             }
@@ -6466,7 +6424,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                         else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_link' + Game.time, { memory: { role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName,
                                 link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i] } }) == OK) {
                             source_room.memory.source_harvester_states[i] += 1;
-                            source_room.memory.source_costs[i] += 300;
                             break;
                         }
                     }
@@ -6476,7 +6433,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                                 if (Game.spawns[spawnName].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester_link' + Game.time, { memory: { role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName,
                                         link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i] } }) == OK) {
                                     source_room.memory.source_harvester_states[i] += 1;
-                                    source_room.memory.source_costs[i] += 500;
                                     break;
                                 }
                             }
@@ -6484,7 +6440,6 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                         else if (Game.spawns[spawnName].spawnCreep([WORK, WORK, CARRY, MOVE], 'Harvester_link' + Game.time, { memory: { role: 'energy_harvester_link', source_idx: i, source_roomName: source_roomName,
                                 link_harvester_pos_x: link_harvester_pos_xs[i], link_harvester_pos_y: link_harvester_pos_ys[i] } }) == OK) {
                             source_room.memory.source_harvester_states[i] += 1;
-                            source_room.memory.source_costs[i] += 300;
                             break;
                         }
                     }
@@ -6497,14 +6452,12 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                         if (energyCapacity >= 1050) {
                             if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'passive_transfer' + Game.time, { memory: { role: 'passive_transfer', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName } }) == OK) {
                                 source_room.memory.source_transfer_states[i] += 1;
-                                source_room.memory.source_costs[i] += 600;
                                 break;
                             }
                         }
                     }
                     else if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'passive_transfer' + Game.time, { memory: { role: 'passive_transfer', source_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName } }) == OK) {
                         source_room.memory.source_transfer_states[i] += 1;
-                        source_room.memory.source_costs[i] += 300;
                         break;
                     }
                 }
@@ -6513,14 +6466,12 @@ const room_energy_mine_routine = function (source_roomName, dest_roomName, spawn
                         if (energyCapacity >= 600) {
                             if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'active_transfer' + Game.time, { memory: { role: 'active_transfer', source_container_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName } }) == OK) {
                                 source_room.memory.source_transfer_states[i] += 1;
-                                source_room.memory.source_costs[i] += 600;
                                 break;
                             }
                         }
                     }
                     else if (Game.spawns[spawnName].spawnCreep([CARRY, CARRY, MOVE, CARRY, CARRY, MOVE], 'active_transfer' + Game.time, { memory: { role: 'active_transfer', source_container_idx: i, source_roomName: source_roomName, dest_roomName: dest_roomName } }) == OK) {
                         source_room.memory.source_transfer_states[i] += 1;
-                        source_room.memory.source_costs[i] += 300;
                         break;
                     }
                 }
@@ -6595,7 +6546,7 @@ const tower_work = function (roomName) {
     if (closestHostiles.length == 0) {
         structures = room.find(FIND_STRUCTURES, {
             filter: (structure) => structure.hits < 0.8 * structure.hitsMax
-                && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
+                && structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART && structure.structureType != STRUCTURE_ROAD
         });
     }
     // Tower防御及safe mode的激活
@@ -8775,7 +8726,274 @@ observers = observers.reduce((temp, id) => {
 // Creep.prototype.move = wrapFn(config.changeMove? betterMove : originMove, 'move');
 Creep.prototype.moveTo = wrapFn(betterMoveTo , 'moveTo');
 
-// import "./modules/strategy_marketPrice"
+/**
+ *
+ * 使用方法再 main 最后面输入
+ * HelperCpuUsed.exec()
+ * 一键呼出图标
+ * HelperCpuUsed.show()
+ *
+ *
+ */
+
+commonjsGlobal.cpuEcharts=(divName,data,data2)=>{
+return `
+<div id="${divName}" style="height: 400px;width:1200px;color:#000"/>
+<script>
+eval($.ajax({url:"https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js",async:false}).responseText);
+function showCpuUsed(divName,data,data2){
+var chartDom = document.getElementById(divName);
+var myChart = echarts.init(chartDom, 'dark');
+
+data = data.map(e=>e>0?e:0);
+if(data[0]>data[data.length-1]*1.3){
+    data = data.slice(1);
+    data2 = data2.slice(1);
+}
+
+var option = {
+  xAxis: {
+    type: 'category'
+  },
+  yAxis: {
+    type: 'value'
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      animation: false
+    }
+  },
+  yAxis: [
+    {
+      name: 'cpuUsed',
+      type: 'value'
+    },
+    {
+      name: 'bucket',
+      max: 10000,
+      min:0,
+      type: 'value'
+    }
+  ],
+  dataZoom: [
+    {
+      show: true
+    }
+  ],
+  animation:false,
+  series: [
+    {
+      data: data,
+      type: 'line'
+    },
+    {
+      data: data2,
+      yAxisIndex: 1,
+      type: 'line'
+    }
+  ]
+};
+
+option.backgroundColor= '#2b2b2b';
+myChart.setOption(option);
+};
+var data = ${JSON.stringify(data)};
+var data2 = ${JSON.stringify(data2)};
+showCpuUsed('${divName}',data,data2)
+</script>
+`.replace(/[\r\n]/g, "")
+// .replace("script>","c>")
+};
+    // smooth: true,
+// step: 'middle',
+
+let pro$1={
+    show(){
+        console.log(cpuEcharts(Game.time,pro$1.cpu.slice(-10000),pro$1.bucket.slice(-10000)));
+    },
+    cpu:[],
+    bucket:[],
+    exec (){
+        if(pro$1.cpu.length>20000)pro$1.cpu = pro$1.cpu.slice(-10000);
+        if(pro$1.bucket.length>20000)pro$1.cpu = pro$1.bucket.slice(-10000);
+        pro$1.cpu.push(Game.cpu.getUsed());
+        pro$1.bucket.push(Game.cpu.bucket);
+    }
+};
+
+let HelperCpuUsed = pro$1;
+
+var helper_cpuUsed = {
+  HelperCpuUsed
+};
+
+/**
+
+特别感谢： @[E29N27|重构咕] CXuesong  提供技术支持
+
+使用方法：
+require 后，控制台输入：
+
+1. HelperRoomResource.showAllRes()
+
+2. 显示后 鼠标放在资源上面会显示全部自己房间的资源
+
+3. 点击房间 可以跳转到房间
+
+ */
+
+function tips(text,tipStrArray,id,left){
+    left = left-1;
+    left*=100;
+    let showCore = tipStrArray.map(e=>`<t onclick="goto('${e}')"> ${e} </t>`.replace(/[\\"]/g,'%')).join("<br>");
+    let time = Game.time;
+return `<t class="a${id}-a${time}">${text}</t><script>
+function goto(e){
+    let roomName = e.split(":")[0].replace(/\\s+/g, "");
+    window.location.href = window.location.href.substring(0,window.location.href.lastIndexOf("/")+1)+roomName;
+};
+(() => {
+    const button = document.querySelector(".a${id}-a${time}");
+    let tip;
+    button.addEventListener("pointerenter", () => {
+        tip = document.createElement("div");
+        tip.style.backgroundColor = "rgba(43,43,43,1)"; 
+        tip.style.border = "1px solid";
+        tip.style.borderColor = "#ccc";
+        tip.style.borderRadius = "5px";
+        tip.style.position = "absolute";
+        tip.style.zIndex=10;
+        tip.style.color = "#ccc";
+        tip.style.marginLeft = "${left}px";
+        tip.width = "230px";
+        tip.innerHTML = "${showCore}".replace(/[\\%]/g,'"'); button.append(tip);
+    });
+    button.addEventListener("pointerleave", () => {tip && (tip.remove(), tip = undefined);});
+    })()
+</script>
+`.replace(/[\r\n]/g, "");
+}
+//alert(window.location.href.substr(0,window.location.href.lastIndexOf("/")+1)+roomName);
+let pro = {
+
+    getStorageTerminalRes:function (room){
+        let store = {};
+        if(room.storage)pro.addStore(store,room.storage.store);
+        if(room.terminal)pro.addStore(store,room.terminal.store);
+        // if(room.factory)pro.addStore(store,room.factory.store)
+        return store
+    },
+    addStore:(store,b)=> {for(let v in b) if(b[v]>0)store[v]=(store[v]||0)+b[v];return store},
+    showAllRes(){
+
+        let rooms = _.values(Game.rooms).filter(e=>e.controller&&e.controller.my&&(e.storage||e.terminal));
+        let roomResAll = rooms.map(e=>[e.name,pro.getStorageTerminalRes(e)]).reduce((map,entry)=>{map[entry[0]] = entry[1];return map},{});
+
+
+        let all = rooms.reduce((all, room)=> pro.addStore(all,roomResAll[room.name]),{});
+
+
+        // StrategyMarket.showAllRes()
+        let time = Game.cpu.getUsed();
+        let base = [RESOURCE_ENERGY,"U","L","K","Z","X","O","H",RESOURCE_POWER,RESOURCE_OPS];
+        // 压缩列表
+        let bars = [RESOURCE_BATTERY,RESOURCE_UTRIUM_BAR,RESOURCE_LEMERGIUM_BAR,RESOURCE_KEANIUM_BAR,RESOURCE_ZYNTHIUM_BAR,RESOURCE_PURIFIER,RESOURCE_OXIDANT,RESOURCE_REDUCTANT,RESOURCE_GHODIUM_MELT];
+        // 商品
+        let c_grey =[RESOURCE_COMPOSITE,RESOURCE_CRYSTAL,RESOURCE_LIQUID];
+        let c_blue = [RESOURCE_DEVICE,RESOURCE_CIRCUIT,RESOURCE_MICROCHIP,RESOURCE_TRANSISTOR,RESOURCE_SWITCH,RESOURCE_WIRE,RESOURCE_SILICON].reverse();
+        let c_yellow=[RESOURCE_MACHINE,RESOURCE_HYDRAULICS,RESOURCE_FRAME,RESOURCE_FIXTURES,RESOURCE_TUBE,RESOURCE_ALLOY,RESOURCE_METAL].reverse();
+        let c_pink = [RESOURCE_ESSENCE,RESOURCE_EMANATION,RESOURCE_SPIRIT,RESOURCE_EXTRACT,RESOURCE_CONCENTRATE,RESOURCE_CONDENSATE,RESOURCE_MIST].reverse();
+        let c_green =[RESOURCE_ORGANISM,RESOURCE_ORGANOID,RESOURCE_MUSCLE,RESOURCE_TISSUE,RESOURCE_PHLEGM,RESOURCE_CELL,RESOURCE_BIOMASS].reverse();
+        // boost
+        let b_grey =["OH","ZK","UL","G"];
+        let gent =  (r)=> [r+"H",r+"H2O","X"+r+"H2O",r+"O",r+"HO2","X"+r+"HO2"];
+        let b_blue = gent("U");
+        let b_yellow=gent("Z");
+        let b_pink = gent("K");
+        let b_green =gent("L");
+        let b_withe =gent("G");
+
+
+        let formatNumber=function (n) {
+            var b = parseInt(n).toString();
+            var len = b.length;
+            if (len <= 3) { return b; }
+            var r = len % 3;
+            return r > 0 ? b.slice(0, r) + "," + b.slice(r, len).match(/\d{3}/g).join(",") : b.slice(r, len).match(/\d{3}/g).join(",");
+        };
+        let str = "";
+        let colorMap = {
+            [RESOURCE_ENERGY]:"rgb(255,242,0)",
+            "Z":"rgb(247, 212, 146)",
+            "L":"rgb(108, 240, 169)",
+            "U":"rgb(76, 167, 229)",
+            "K":"rgb(218, 107, 245)",
+            "X":"rgb(255, 192, 203)",
+            "G":"rgb(255,255,255)",
+            [RESOURCE_BATTERY]:"rgb(255,242,0)",
+            [RESOURCE_ZYNTHIUM_BAR]:"rgb(247, 212, 146)",
+            [RESOURCE_LEMERGIUM_BAR]:"rgb(108, 240, 169)",
+            [RESOURCE_UTRIUM_BAR]:"rgb(76, 167, 229)",
+            [RESOURCE_KEANIUM_BAR]:"rgb(218, 107, 245)",
+            [RESOURCE_PURIFIER]:"rgb(255, 192, 203)",
+            [RESOURCE_GHODIUM_MELT]:"rgb(255,255,255)",
+            [RESOURCE_POWER]:"rgb(224,90,90)",
+            [RESOURCE_OPS]:"rgb(224,90,90)",
+        };
+        let id = 0;
+        let addList = function (list,color){
+            let uniqueColor = function (str,resType){
+                if(colorMap[resType])str="<font style='color: "+colorMap[resType]+";'>"+str+"</font>";
+                return str
+            };
+            if(color)str+="<div style='color: "+color+";'>";
+            let left = 0;
+            let getAllRoom = function (text,resType){
+                let arr = [];
+                for(let roomName in roomResAll){
+                    arr.push(_.padLeft(roomName,6)+":"+_.padLeft(formatNumber(roomResAll[roomName][resType]||0),9));
+                }
+                id+=1;
+                left+=1;
+                return tips(text,arr,id,left)
+            };
+            list.forEach(e=>str+=getAllRoom(uniqueColor(_.padLeft(e,15),e),e));str+="<br>";
+            list.forEach(e=>str+=uniqueColor(_.padLeft(formatNumber(all[e]||0),15),e));str+="<br>";
+            if(color)str+="</div>";
+        };
+        str+="<br>基础资源:<br>";
+        addList(base);
+        str+="<br>压缩资源:<br>";
+        addList(bars);
+        str+="<br>商品资源:<br>";
+        addList(c_grey);
+        addList(c_blue,"rgb(76, 167, 229)");
+        addList(c_yellow,"rgb(247, 212, 146)");
+        addList(c_pink,"rgb(218, 107, 245)");
+        addList(c_green,"rgb(108, 240, 169)");
+        str+="<br>LAB资源:<br>";
+        addList(b_grey);
+        addList(b_blue,"rgb(76, 167, 229)");
+        addList(b_yellow,"rgb(247, 212, 146)");
+        addList(b_pink,"rgb(218, 107, 245)");
+        addList(b_green,"rgb(108, 240, 169)");
+        addList(b_withe,"rgb(255,255,255)");
+        console.log(str);
+
+        return "Game.cpu.used:"+(Game.cpu.getUsed() - time)
+    },
+};
+
+let HelperRoomResource=pro;
+
+var helper_roomResource = {
+    HelperRoomResource
+};
+
+global.HelperCpuUsed = helper_cpuUsed.HelperCpuUsed;
+global.HelperRoomResource = helper_roomResource.HelperRoomResource;
 global.white_list = new Set(['scp002']);
 let rooms = ['W48S12'];
 for (let idx in rooms) {
@@ -8847,6 +9065,8 @@ const loop = errorMapper(() => {
         }
         Game.flags.remove_construction_sites.remove();
     }
+    global.HelperCpuUsed.exec();
+    // global.HelperCpuUsed.show()
 });
 
 exports.loop = loop;
