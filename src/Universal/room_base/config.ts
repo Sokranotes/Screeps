@@ -14,35 +14,6 @@ export const room_config = {
         'builder': 20,
     },
     'W14N12': {
-        'level1': {
-            'hu':{
-                'num': 5,
-                'source_idx': 1,
-                'ticksToLive': 150
-            }
-        },
-        'level2': {
-            'hf': {
-                'num': 3,
-                'source_idx': 0,
-                'ticksToLive': 200
-            },
-            'hu':{
-                'num': 7,
-                'source_idx': 1,
-                'ticksToLive': 150,
-            },
-            'hr': {
-                'num': 1,
-                'source_idx': 0,
-                'ticksToLive': 150,
-            },
-            'hb': {
-                'num': 2,
-                'source_idx': 0,
-                'ticksToLive': 150
-            }
-        },
         'level3': {
             'hf': {
                 'num': 3,
@@ -64,39 +35,9 @@ export const room_config = {
                 'source_idx': 0,
                 'ticksToLive': 150
             }
-            
         }
     },
     'W9N11': {
-        'level1': {
-            'hu':{
-                'num': 5,
-                'source_idx': 1,
-                'ticksToLive': 150
-            }
-        },
-        'level2': {
-            'hf': {
-                'num': 4,
-                'source_idx': 0,
-                'ticksToLive': 200
-            },
-            'hu':{
-                'num': 10,
-                'source_idx': 1,
-                'ticksToLive': 150,
-            },
-            'hr': {
-                'num': 1,
-                'source_idx': 0,
-                'ticksToLive': 150,
-            },
-            'hb': {
-                'num': 2,
-                'source_idx': 0,
-                'ticksToLive': 150
-            }
-        },
         'level3': {
             'hf': {
                 'num': 6,
@@ -121,57 +62,6 @@ export const room_config = {
         },
     },
     'W41S6': {
-        'level1': {
-            'hu':{
-                'num': 5,
-                'source_idx': 1,
-                'ticksToLive': 150
-            }
-        },
-        'level2': {
-            'hf': {
-                'num': 3,
-                'source_idx': 0,
-                'ticksToLive': 200
-            },
-            'hu':{
-                'num': 7,
-                'source_idx': 1,
-                'ticksToLive': 150,
-            },
-            'hr': {
-                'num': 1,
-                'source_idx': 0,
-                'ticksToLive': 150,
-            },
-            'hb': {
-                'num': 2,
-                'source_idx': 0,
-                'ticksToLive': 150
-            }
-        },
-        'level3': {
-            'hf': {
-                'num': 2,
-                'source_idx': 0,
-                'ticksToLive': 200
-            },
-            'hu':{
-                'num': 6,
-                'source_idx': 1,
-                'ticksToLive': 150,
-            },
-            'hr': {
-                'num': 1,
-                'source_idx': 0,
-                'ticksToLive': 150,
-            },
-            'hb': {
-                'num': 1,
-                'source_idx': 0,
-                'ticksToLive': 150
-            }
-        },
         'level7': {
             'upgrader_link': {
                 'num': 1,

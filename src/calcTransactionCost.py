@@ -3,7 +3,7 @@ import math
 # 挂单
 # Game.market.createOrder({type: ORDER_SELL, resourceType: RESOURCE_ENERGY, price: 100000, totalAmount: 1, roomName: "W1N1"});
 # Game.market.createOrder({type: ORDER_BUY, resourceType: PIXEL, price: 0.001, totalAmount: 500});
-# Game.market.deal('61b7459f6e4705f663cc9366', 1900);
+# Game.market.deal('61cdb24c4215334c4fd2a1e5', 2000);
 
 def main():
     distance = 6
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 # first order
 
 
-# Game.market.deal('619e599afed6578c0788eb8e', 30056, 'W47S14');
+# Game.market.deal('61cd485b4215337cf7ad2d3f', 30056, 'W47S14');
 # Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')
 
 # 卖的实际价格

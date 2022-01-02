@@ -36,7 +36,7 @@ export const carrier_W47S14_work = function(creep: Creep){
             }
         }
         else{
-            if ((terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 150000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY)) ||
+            if ((terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 80000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY)) ||
             (storage.store.getFreeCapacity(RESOURCE_ENERGY) < 10000)){
                 if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
                     creep.withdraw(storage, RESOURCE_ENERGY)
@@ -45,7 +45,7 @@ export const carrier_W47S14_work = function(creep: Creep){
                     creep.transfer(terminal, RESOURCE_ENERGY)
                 }
             }
-            else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 155000 && storage.store.getFreeCapacity(RESOURCE_ENERGY) > 5000){
+            else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 85000 && storage.store.getFreeCapacity(RESOURCE_ENERGY) > 5000){
                 if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
                     creep.withdraw(terminal, RESOURCE_ENERGY)
                 }

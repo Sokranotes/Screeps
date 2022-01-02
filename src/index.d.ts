@@ -54,6 +54,11 @@ interface RoomMemory {
     sources_id?: Id<Source>[]
     sources_free_spaces?: RoomPosition[][]
 
+    containers_num?: number
+    containers_id?: Id<StructureContainer>[]
+    links_num?: number
+    links_id?: Id<StructureLink>[]
+
     towers_id?: Id<StructureTower>[]
     storage_id?: Id<StructureStorage>
     terminal_id?: Id<StructureTerminal>

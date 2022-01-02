@@ -1,73 +1,52 @@
-const source_energy_mine_init = function(roomName: string, source_idx: number){
-    /* 
-    如果没开启自动挖矿, 则进行初始化操作
-    初始化的值有:
-    是否初始化, 初始化之后只能手动变化
-    room.memory.auto_energy_mine 
-    初始化之后永不变化
-    room.memory.sources_id*/
-    
-    let containers: StructureContainer[]
-    let link: StructureLink
-    let links: StructureLink[]
-
-
-    let room = Game.rooms[roomName]
-    let source: Source = Game.getObjectById(room.memory.sources_id[source_idx])
-
-    // 初始化, 找到该房间所有container
-    containers = room.find(FIND_STRUCTURES, {
-        filter: (structure) => {
-            return (structure.structureType == STRUCTURE_CONTAINER);
-        }
-    });
-
-    if (room.memory.source_container_ids == undefined){
-        room.memory.source_container_ids = new Array(2)
+const judge_source_depend_structure = function(roomName: string, source_idx: number){
+    let source: Source = Game.getObjectById(Game.rooms[roomName].memory.sources_id[source_idx])
+    if (source == undefined){
+        console.log(Game.time, roomName, 'source ', source_idx, 'undefined')
     }
-    for (let container of containers){
-        if ((container.pos.x - source.pos.x) >= -1 && (container.pos.x - source.pos.x) <= 1 && 
-        (container.pos.y - source.pos.y) >= -1 && (container.pos.y - source.pos.y) <= 1){
-            room.memory.source_container_ids[source_idx] = container.id
-            break
-        }
-    }
-
-    // source对应的link id
-    if (room.memory.source_link_ids == undefined){
-        room.memory.source_link_ids = new Array(2)
-    }
-    // 初始化, 找到该房间所有link并存id
-    links = source_room.find(FIND_STRUCTURES, {
-        filter: (structure) => {
-            return (structure.structureType == STRUCTURE_LINK);
-        }
-    });
-    links_num = links.length
-    source_room.memory.links_num = links_num
-    source_room.memory.links_id = new Array(links_num)
-    for (let i: number = 0; i < links_num; i++){
-        source_room.memory.links_id[i] = links[i].id;
-    }
-
-    // 遍历所有source 找到source旁边的link, 初始化source_link_ids
-    for (let i: number = 0; i < sources_num; i++){
-        source = Game.getObjectById(source_room.memory.sources_id[i])
-        // 遍历所有link
-        for (let j: number = 0; j < links_num; j++){
-            link = Game.getObjectById(source_room.memory.links_id[j])
-            if (link){
-                // judge source是否有link, 只考虑source周围2距离的格子中最先扫描到的那一个
-                if ((link.pos.x - source.pos.x) >= -2 && (link.pos.x - source.pos.x) <= 2 && 
-                (link.pos.y - source.pos.y) >= -2 && (link.pos.y - source.pos.y) <= 2){
-                    source_room.memory.source_link_ids[i] = link.id
-                    source_room.memory.source_costs[i] += 5000
-                    break
+    let pos: RoomPosition = source.pos
+    let terrain = new Room.Terrain(roomName)
+    let end_flag = false
+    for (let x = pos.x-2; x <= pos.x+2; x++){
+        for (let y = pos.y-2; y <= pos.y+2; y++){
+            if (x == y) continue
+            if (terrain.get(x, y) != TERRAIN_MASK_WALL){
+                for (let s of source.room.lookForAt(LOOK_STRUCTURES, x, y).values()){
+                    if (s.structureType == STRUCTURE_LINK){
+                        source.room.memory.source_link_ids[source_idx] = s.id as Id<StructureLink>
+                        end_flag = true
+                        break
+                    }
+                }
+                if (end_flag) break
+                if (source.pos.inRangeTo(x, y, 1)){
+                    for (let s of source.room.lookForAt(LOOK_STRUCTURES, x, y).values()){
+                        if (s.structureType == STRUCTURE_CONTAINER){
+                            source.room.memory.source_container_ids[source_idx] = s.id as Id<StructureContainer>
+                            end_flag = true
+                            break
+                        }
+                    }
+                    if (end_flag) break
                 }
             }
         }
+        if (end_flag) break
     }
-} // 初始化结束
+    return end_flag
+}
+
+const source_energy_mine = function(roomName: string){
+    /* 
+    初始化之后永不变化
+    room.memory.sources_id*/
+    let room = Game.rooms[roomName]
+    if (room == undefined){
+        console.log(Game.time, roomName, 'undefined')
+    }
+    let source: Source = Game.getObjectById(room.memory.sources_id[source_idx])
+
+    
+}
 
 const room_energy_mine_routine = function(source_roomName: string, dest_roomName: string, spawnName: string, 
     harvester_num: number[], transfer_num: number[], link_harvester_pos_xs: number[], link_harvester_pos_ys: number[]){

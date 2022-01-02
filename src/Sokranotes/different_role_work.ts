@@ -29,7 +29,7 @@ import { tower_transfer_work } from "./room_base/tower_transfer";
 // import { move_compounds_work } from "./room_base/move_compounds";
 // import { claim_controller_work } from "../history war/war4 W41S7/claim_controller";
 // import { carrier1_W48S12_work } from "./room_base/carrier1_W48S12";
-// import { tmp_attack_work } from "./room_base/tmp_attack";
+import { tmp_attack_work } from "./room_base/tmp_attack";
 import { carrier_W48S12_work } from "./carrier_W48S12";
 import { occupy_work } from "./occupy/occupy";
 import { help_work } from "./room_base/help_worker";
@@ -184,8 +184,8 @@ export const different_role_work = function(){
         // }
 
         // tmp
-        // else if (creep.memory.role == 'tmp_attack'){
-        //     tmp_attack_work(creep)
-        // }
+        else if (creep.memory.role == 'tmp_attack'){
+            tmp_attack_work(creep)
+        }
     }
 }
