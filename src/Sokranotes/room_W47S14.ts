@@ -1,6 +1,7 @@
 import { room_energy_mine } from "@/Sokranotes/room_base/room_energy_mine"
 import { tower_work } from "@/Universal/room_base/level3/tower";
 import { check_one_role, clear_spawn_queue } from "@/Universal/room_base/universal_logic/check_spawn_queue";
+import { source_energy_mine } from "@/Universal/room_base/universal_logic/source_energy_mine";
 
 // const body_list: BodyPartConstant[][]= [
 //     [WORK, WORK, CARRY, MOVE], // 300
@@ -178,12 +179,13 @@ export const room_W47S14_running = function(roomName: string){
         source_link1.transferEnergy(upgrade_link)
     }
 
-    let transfer_num: number[] = [0, 0]
-    let harvester_num: number[] = [1, 1]
-    let link_harvester_pos_xs: number[] = [6, 12]
-    let link_harvester_pos_ys: number[] = [12, 28]
-    if (Game.time % 100 == 2)
-    room_energy_mine(roomName, roomName, 'Spawn1', harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
+    if (Game.time % 100 == 2) source_energy_mine(roomName)
+    
+    // let transfer_num: number[] = [0, 0]
+    // let harvester_num: number[] = [1, 1]
+    // let link_harvester_pos_xs: number[] = [6, 12]
+    // let link_harvester_pos_ys: number[] = [12, 28]
+    // room_energy_mine(roomName, roomName, 'Spawn1', harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
 
     // switch (room.controller.level){
     //     // case 0:

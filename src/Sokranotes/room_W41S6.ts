@@ -1,5 +1,6 @@
 import { check_towers_id, tower_work } from "@/Universal/room_base/level3/tower";
 import { check_one_role, clear_spawn_queue } from "@/Universal/room_base/universal_logic/check_spawn_queue";
+import { source_energy_mine } from "@/Universal/room_base/universal_logic/source_energy_mine";
 import { room_energy_mine } from "./room_base/room_energy_mine";
 
 export const room_W41S6_running = function(roomName: string){
@@ -39,19 +40,13 @@ export const room_W41S6_running = function(roomName: string){
     let source1_link: StructureLink = Game.getObjectById("61994a2fba77ee0dfa1d29bc")
     if (ulink.store.getUsedCapacity(RESOURCE_ENERGY) < 200){
         dest_link.transferEnergy(ulink)
-        if (ulink.store.getUsedCapacity(RESOURCE_ENERGY) < 100)
-            if (source1_link.store.getUsedCapacity(RESOURCE_ENERGY) > 0.8*source1_link.store.getCapacity(RESOURCE_ENERGY))
-                source1_link.transferEnergy(ulink)
+        if (source1_link.store.getUsedCapacity(RESOURCE_ENERGY) > 0.8*source1_link.store.getCapacity(RESOURCE_ENERGY))
+            source1_link.transferEnergy(ulink)
     }
     else{
         if (source1_link.store.getUsedCapacity(RESOURCE_ENERGY) > 0.6*source1_link.store.getCapacity(RESOURCE_ENERGY))
         source1_link.transferEnergy(dest_link)
     }
 
-    let transfer_num: number[] = [0, 0]
-    let harvester_num: number[] = [1, 1]
-    let link_harvester_pos_xs: number[] = [44,7]
-    let link_harvester_pos_ys: number[] = [23,26]
-    if (Game.time % 100 == 0)
-    room_energy_mine(roomName, roomName, 'Spawn5', harvester_num, transfer_num, link_harvester_pos_xs, link_harvester_pos_ys)
+    if (Game.time % 100 == 2) source_energy_mine(roomName)
 }

@@ -155,6 +155,9 @@ export const different_role_work = function(){
         else if (creep.memory.role == 'hb'){
             harvest_build_work(creep)
         }
+        else if (creep.memory.role == 'hl'){
+            energy_harvester_link_work(creep)
+        }
         // else if (creep.memory.role == 'hf'){
         //     harvest_fill_work(creep)
         // }
