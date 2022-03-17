@@ -95,7 +95,10 @@ Spawn.prototype.work = function() {
         new FlatQueue(Memory.rooms[this.room.name].spawnQueue);
         return
     }
-    if (this.spawning) return 
+    if (this.spawning) {
+        this.room.memory.spawning = true
+        return
+    }
     // 进行生成
     let data = spawnQueue.pop()
     if  (data == undefined) return

@@ -105,6 +105,7 @@ interface RoomMemory {
     
     claiming?: boolean
     check_energy_mine?: boolean
+    spawning?: boolean
 }
 
 interface statsMemory{

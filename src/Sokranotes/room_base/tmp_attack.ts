@@ -67,29 +67,41 @@ export const tmp_attack_work = function(creep: Creep){
     //         }
     //     }
     // }
-    if (creep.room.name != 'W41S7') creep.moveTo(new RoomPosition(25, 25, 'W41S7'))
+
+    // if (creep.room.name != 'W41S7') creep.moveTo(new RoomPosition(25, 25, 'W41S7'))
+    // else{
+    //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //     creep.moveTo(new RoomPosition(25, 25, 'W41S7'))
+    //     let obj: StructureSpawn = Game.getObjectById('61cbd70b3f190b3f79cf6b68')
+    //     if (obj != undefined){
+    //         if (creep.attack(obj) != OK){
+    //             creep.moveTo(obj)
+    //         }
+    //     }
+    //     else{
+    //         let invade_targets = creep.room.find(FIND_HOSTILE_CREEPS, {
+    //             filter: (creep) => (!global.white_list.has(creep.owner.username))
+    //         });
+    //         if (invade_targets.length > 0)
+    //         {
+    //             creep.room.memory.war_flag = true
+    //             creep.room.memory.enemy_num = invade_targets.length
+    //             if (creep.attack(invade_targets[0]) != OK)
+    //             {
+    //                 creep.moveTo(invade_targets[0])
+    //             }
+    //         }
+    //     }
+    // }
+
+    if (creep.room.name != 'W44S12'){
+        creep.moveTo(new RoomPosition(25, 25, "W44S12"))
+    }
     else{
         if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
-        creep.moveTo(new RoomPosition(25, 25, 'W41S7'))
-        let obj: StructureSpawn = Game.getObjectById('61cbd70b3f190b3f79cf6b68')
-        if (obj != undefined){
-            if (creep.attack(obj) != OK){
-                creep.moveTo(obj)
-            }
-        }
-        else{
-            let invade_targets = creep.room.find(FIND_HOSTILE_CREEPS, {
-                filter: (creep) => (!global.white_list.has(creep.owner.username))
-            });
-            if (invade_targets.length > 0)
-            {
-                creep.room.memory.war_flag = true
-                creep.room.memory.enemy_num = invade_targets.length
-                if (creep.attack(invade_targets[0]) != OK)
-                {
-                    creep.moveTo(invade_targets[0])
-                }
-            }
+            creep.moveTo(new RoomPosition(25, 25, "W44S12"))
+        if (creep.claimController(creep.room.controller) != OK){
+            creep.moveTo(creep.room.controller)
         }
     }
 }
