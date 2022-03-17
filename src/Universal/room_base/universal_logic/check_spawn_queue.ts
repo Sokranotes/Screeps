@@ -59,7 +59,7 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
             delete Memory.rooms[room.name].restart_flag
         }
     }
-    if (role == 'upgrader_link'){
+    else if (role == 'upgrader_link'){
         if (room.controller.level == 8){
             roleNum = 1
         }
@@ -67,11 +67,11 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
             roleNum = 0
         }
     }
-    if (role == 'repairer'){
+    else if (role == 'repairer'){
         if (room.controller.level == 8){
             roleNum = 1
         }
-        if (room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 50000){
+        if (room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 && room.terminal ? room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) < 20000: false){
             roleNum = 0
         }
     }
