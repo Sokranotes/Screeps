@@ -10,16 +10,8 @@ restart harvester bodys auto adjustment
 harvester and transfer separate
  */
 
-import { harvest_upgrade_work } from "../level1/harvest_upgrade_worker";
-import { harvest_build_work } from "../level2/harvest_build_worker";
-import { harvest_repair_work } from "../level2/harvest_repair_worker";
-import { harvest_fill_work } from "../level2/harvest_fill_worker";
 import { tower_work } from "./../level3/tower";
 import { level3_check_spawn_queue } from "./../level3/level3_check_spawn_queue";
-import { base_transfer_work } from "@/Sokranotes/room_base/base_transfer";
-import { builder_work } from "@/Sokranotes/room_base/builder";
-import { repairer_work } from "@/Sokranotes/room_base/repairer";
-import { cleaner_work } from "@/Sokranotes/room_base/cleaner";
 
 const check_towers_id = function(room: Room){
     let towers: StructureTower[] = room.find(FIND_MY_STRUCTURES, {
@@ -46,39 +38,6 @@ export const level4_logic = function(roomName){
             Game.flags.check_towers_id_flag.remove()
         }
         tower_work(roomName)
-    }
-
-    for(let name in Memory.creeps) {
-        let creep = Game.creeps[name]
-        if(!creep) {
-            delete Memory.creeps[name];
-        }
-        else{
-            if(creep.memory.role == 'hu') {
-                harvest_upgrade_work(creep);
-            }
-            else if (creep.memory.role == 'hb'){
-                harvest_build_work(creep)
-            }
-            else if (creep.memory.role == 'hf'){
-                harvest_fill_work(creep)
-            }
-            else if (creep.memory.role == 'hr'){
-                harvest_repair_work(creep)
-            }
-            else if (creep.memory.role == 'base_transfer'){
-                base_transfer_work(creep)
-            }
-            else if(creep.memory.role == 'builder') {
-                builder_work(creep);
-            }
-            else if(creep.memory.role == 'repairer') {
-                repairer_work(creep);
-            }
-            else if (creep.memory.role == 'cleaner'){
-                cleaner_work(creep)
-            }
-        }
     }
     
     if (room.memory.check_spawn_queue_flag || Game.time % 100 == 0 ||

@@ -211,7 +211,7 @@ const room_config = {
         'carrier_W47S14': 1,
         'carrier_W48S12': 1,
         'hl': 2,
-        'hu': 10,
+        'hu': 0,
         'upgrader_link': 10,
         'hr': 15,
         'repairer': 15,
@@ -242,6 +242,21 @@ const room_config = {
             }
         },
         'level7': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
             'hf': {
                 'num': 2,
                 'source_idx': 0,
@@ -251,12 +266,20 @@ const room_config = {
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
             },
             'hu': {
-                'num': 1,
+                'num': 0,
                 'source_idx': 1,
                 'ticksToLive': 150,
-                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
-                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
-                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE]
+            },
+            'hus': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
             },
             'hr': {
                 'num': 0,
@@ -289,6 +312,21 @@ const room_config = {
             },
         },
         'default': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
             'hf': {
                 'num': 2,
                 'source_idx': 0,
@@ -298,12 +336,20 @@ const room_config = {
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
             },
             'hu': {
+                'num': 0,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE]
+            },
+            'hus': {
                 'num': 1,
                 'source_idx': 1,
                 'ticksToLive': 150,
-                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
-                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
-                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
             },
             'hr': {
                 'num': 0,
@@ -336,40 +382,668 @@ const room_config = {
             },
         },
     },
-    'W9N11': {
-        'level3': {
+    'W11N19': {
+        'level1': {
             'hf': {
-                'num': 6,
+                'num': 2,
                 'source_idx': 0,
-                'ticksToLive': 200
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
             },
             'hu': {
-                'num': 8,
+                'num': 3,
                 'source_idx': 1,
                 'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
             },
             'hr': {
                 'num': 1,
-                'source_idx': 0,
+                'source_idx': 1,
                 'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
             },
             'hb': {
                 'num': 2,
                 'source_idx': 0,
-                'ticksToLive': 150
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            }
+        },
+        'level2': {
+            'hf': {
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hu': {
+                'num': 3,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            }
+        },
+        'level3': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hf': {
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hu': {
+                'num': 3,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hus': {
+                'num': 0,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 0,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
             },
         },
-        'level7': {
+        'default': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
             'hf': {
-                'num': 4,
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hu': {
+                'num': 3,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hus': {
+                'num': 0,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 0,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+    },
+    'W12N13': {
+        'level1': {
+            'hf': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hu': {
+                'num': 3,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hb': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            }
+        },
+        'level2': {
+            'hf': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hu': {
+                'num': 3,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            }
+        },
+        'level3': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hf': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hu': {
+                'num': 3,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hus': {
+                'num': 0,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 0,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+        'default': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hf': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hu': {
+                'num': 3,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hus': {
+                'num': 0,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 0,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+    },
+    'W12N15': {
+        'level1': {
+            'hf': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hu': {
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hus': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hb': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            }
+        },
+        'level2': {
+            'hf': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hu': {
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hus': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            }
+        },
+        'level3': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hf': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hu': {
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hus': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 0,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+        'default': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hf': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hu': {
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, MOVE]
+            },
+            'hus': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 0,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+    },
+    'W9N11': {
+        // 'level3': {
+        //     'hf': {
+        //         'num': 6,
+        //         'source_idx': 0,
+        //         'ticksToLive': 200
+        //     },
+        //     'hu':{
+        //         'num': 8,
+        //         'source_idx': 1,
+        //         'ticksToLive': 150,
+        //     },
+        //     'hr': {
+        //         'num': 1,
+        //         'source_idx': 0,
+        //         'ticksToLive': 150,
+        //     },
+        //     'hb': {
+        //         'num': 2,
+        //         'source_idx': 0,
+        //         'ticksToLive': 150
+        //     },
+        // },
+        // 'level7': {
+        //     'upgrader_link': {
+        //         'num': 1,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+        //             WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+        //             WORK,WORK,WORK,WORK,CARRY]
+        //     },
+        //     'hl': {
+        //         'num': 1,
+        //         'source_idx': 0,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+        //             WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+        //             WORK,WORK,WORK,WORK,CARRY]
+        //     },
+        //     'hf': {
+        //         'num': 0,
+        //         'source_idx': 0,
+        //         'ticksToLive': 200,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'hus':{
+        //         'num': 0,
+        //         'source_idx': 1,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'hu':{
+        //         'num': 0,
+        //         'source_idx': 1,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'hr': {
+        //         'num': 0,
+        //         'source_idx': 0,
+        //         'ticksToLive': 150,
+        //     },
+        //     'hb': {
+        //         'num': 0,
+        //         'source_idx': 0,
+        //         'ticksToLive': 150
+        //     },
+        //     'builder': {
+        //         'num': 3,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'repairer': {
+        //         'num': 1,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'base_transfer': {
+        //         'num': 2,
+        //         'ticksToLive': 200,
+        //         'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+        //     },
+        // },
+        'level8': {
+            'carrier_W9N11': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE]
+            },
+            'upgrader_link': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hf': {
+                'num': 0,
                 'source_idx': 0,
                 'ticksToLive': 200,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
             },
+            'hus': {
+                'num': 0,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
             'hu': {
-                'num': 4,
+                'num': 0,
                 'source_idx': 1,
                 'ticksToLive': 150,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
@@ -407,16 +1081,39 @@ const room_config = {
             },
         },
         'default': {
+            'upgrader_link': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
             'hf': {
-                'num': 6,
+                'num': 0,
                 'source_idx': 0,
                 'ticksToLive': 200,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
             },
+            'hus': {
+                'num': 0,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
             'hu': {
-                'num': 8,
+                'num': 0,
                 'source_idx': 1,
                 'ticksToLive': 150,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
@@ -434,7 +1131,7 @@ const room_config = {
                 'ticksToLive': 150
             },
             'builder': {
-                'num': 1,
+                'num': 3,
                 'ticksToLive': 100,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
@@ -448,7 +1145,7 @@ const room_config = {
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
             },
             'base_transfer': {
-                'num': 1,
+                'num': 2,
                 'ticksToLive': 200,
                 'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
             },
@@ -456,6 +1153,47 @@ const room_config = {
     },
     'W41S6': {
         'level7': {
+            'upgrader_link': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
+            'builder': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'carrier_W41S6': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE]
+            },
+            'base_transfer': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+        'level8': {
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
             'upgrader_link': {
                 'num': 1,
                 'ticksToLive': 100,
@@ -525,6 +1263,14 @@ const room_config = {
     },
     'W47S14': {
         'level8': {
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
             'upgrader_link': {
                 'num': 1,
                 'ticksToLive': 100,
@@ -565,6 +1311,14 @@ const room_config = {
     },
     'W48S12': {
         'level8': {
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
+            },
             'upgrader_link': {
                 'num': 1,
                 'ticksToLive': 100,
@@ -650,21 +1404,37 @@ const clear_spawn_queue = function (roomName) {
     Memory.rooms[roomName].spawnQueue = {};
     new FlatQueue_1(Game.rooms[roomName].memory.spawnQueue);
 };
-const get_role_workers = function (role, roomName, min_ticksToLive, role_1) {
+const get_role_workers = function (role, roomName, min_ticksToLive, role_1, source_idx) {
     if (role == 'base_transfer' || role == 'tower_transfer') {
         role_1 = 'cleaner';
     }
-    if (role_1 == undefined) {
-        if (min_ticksToLive == undefined)
-            return _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.room.name == roomName);
-        else
-            return _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.room.name == roomName && creep.ticksToLive >= min_ticksToLive);
+    if (source_idx == undefined) {
+        if (role_1 == undefined || role_1 == '') {
+            if (min_ticksToLive == undefined)
+                return _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.room.name == roomName);
+            else
+                return _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.room.name == roomName && creep.ticksToLive >= min_ticksToLive);
+        }
+        else {
+            if (min_ticksToLive == undefined)
+                return _.filter(Game.creeps, (creep) => (creep.memory.role == role || creep.memory.role == role_1) && creep.room.name == roomName);
+            else
+                return _.filter(Game.creeps, (creep) => (creep.memory.role == role || creep.memory.role == role_1) && creep.room.name == roomName && creep.ticksToLive >= min_ticksToLive);
+        }
     }
     else {
-        if (min_ticksToLive == undefined)
-            return _.filter(Game.creeps, (creep) => (creep.memory.role == role || creep.memory.role == role_1) && creep.room.name == roomName);
-        else
-            return _.filter(Game.creeps, (creep) => (creep.memory.role == role || creep.memory.role == role_1) && creep.room.name == roomName && creep.ticksToLive >= min_ticksToLive);
+        if (role_1 == undefined) {
+            if (min_ticksToLive == undefined)
+                return _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.room.name == roomName && creep.memory.source_idx == source_idx);
+            else
+                return _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.room.name == roomName && creep.memory.source_idx == source_idx && creep.ticksToLive >= min_ticksToLive);
+        }
+        else {
+            if (min_ticksToLive == undefined)
+                return _.filter(Game.creeps, (creep) => (creep.memory.role == role || creep.memory.role == role_1) && creep.room.name == roomName && creep.memory.source_idx == source_idx);
+            else
+                return _.filter(Game.creeps, (creep) => (creep.memory.role == role || creep.memory.role == role_1) && creep.room.name == roomName && creep.memory.source_idx == source_idx && creep.ticksToLive >= min_ticksToLive);
+        }
     }
 };
 const check_one_role = function (room, role, priority, roleNum, bodyParts, source_idx) {
@@ -693,7 +1463,25 @@ const check_one_role = function (room, role, priority, roleNum, bodyParts, sourc
             return;
         }
     }
-    let role_workers_length = get_role_workers(role, room.name, room_config[room.name][config_level][role]['ticksToLive']).length;
+    if (role == 'upgrader_link') {
+        if (room.controller.level == 8) {
+            roleNum = 1;
+        }
+        if (room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 || room.controller.ticksToDowngrade > 150000) {
+            roleNum = 0;
+            return;
+        }
+    }
+    if (role == 'repairer') {
+        if (room.controller.level == 8) {
+            roleNum = 1;
+        }
+        if (room.storage ? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 50000 : false) {
+            roleNum = 0;
+            return;
+        }
+    }
+    let role_workers_length;
     if (role == 'hf') {
         if (role_workers_length == 0) {
             Memory.rooms[room.name].restart_flag = true;
@@ -702,24 +1490,9 @@ const check_one_role = function (room, role, priority, roleNum, bodyParts, sourc
             delete Memory.rooms[room.name].restart_flag;
         }
     }
-    else if (role == 'upgrader_link') {
-        if (room.controller.level == 8) {
-            roleNum = 1;
-        }
-        if (room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 50000) {
-            roleNum = 0;
-        }
-    }
-    else if (role == 'repairer') {
-        if (room.controller.level == 8) {
-            roleNum = 1;
-        }
-        if (room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 && room.terminal ? room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false) {
-            roleNum = 0;
-        }
-    }
     roleNum = roleNum == undefined ? room_config[room.name][config_level][role]['num'] : roleNum;
     if (source_idx == undefined && room_config[room.name][config_level][role]['source_idx'] == undefined) {
+        role_workers_length = get_role_workers(role, room.name, room_config[room.name][config_level][role]['ticksToLive']).length;
         for (let i = roleNum - role_workers_length; i > 0; i--) {
             let data = {
                 name: (i == 1 ? role : role + i),
@@ -733,6 +1506,7 @@ const check_one_role = function (room, role, priority, roleNum, bodyParts, sourc
     }
     else {
         source_idx = source_idx == undefined ? room_config[room.name][config_level][role]['source_idx'] : source_idx;
+        role_workers_length = get_role_workers(role, room.name, room_config[room.name][config_level][role]['ticksToLive'], '', source_idx = source_idx).length;
         for (let i = roleNum - role_workers_length; i > 0; i--) {
             let data = {
                 name: (i == 1 ? role : role + i),
@@ -752,122 +1526,7 @@ const level1_check_spawn_queue = function (roomName) {
     check_one_role(Game.rooms[roomName], 'hu');
 };
 
-global.harvest_err_code = new Map([
-    [0, 'OK'],
-    [-1, 'ERR_NOT_OWNER'],
-    [-4, 'ERR_BUSY'],
-    [-5, 'ERR_NOT_FOUND'],
-    [-6, 'ERR_NOT_ENOUGH_RESOURCES'],
-    [-7, 'ERR_INVALID_TARGET'],
-    [-9, 'ERR_NOT_IN_RANGE'],
-    [-11, 'ERR_TIRED'],
-    [-12, 'ERR_NO_BODYPART']
-]);
-const go_to_harvest = function (creep, source, pos) {
-    if (creep.pos.isNearTo(source)) {
-        if (!creep.memory.dontPullMe) {
-            creep.memory.dontPullMe = true;
-        }
-        let code = creep.harvest(source);
-        if (code != OK) {
-            if (code == ERR_NO_BODYPART) {
-                console.log(Game.time, global.harvest_err_code.get(code));
-                creep.suicide();
-                return;
-            }
-            else if (code == ERR_NOT_ENOUGH_ENERGY) {
-                // console.log(Game.time, global.harvest_err_code.get(code))
-                return code;
-            }
-            else if (code != ERR_BUSY && code != ERR_NOT_OWNER) {
-                // ERR_BUSY: spawning
-                // ERR_NOT_ENOUGH_ENERGY
-                // ERR_NOT_OWNER: controller is reserved by other player of Invader
-                console.log(Game.time, global.harvest_err_code.get(code));
-                return code;
-            }
-        }
-    }
-    else {
-        if (!pos) {
-            creep.moveTo(source);
-        }
-        else {
-            creep.moveTo(pos);
-        }
-    }
-};
-
-/*
-function:
-harvest, transfer, upgrade
-
-spawnCreep reqiure:bodys, name
-creep.memory.role:'hu'
-creep.memory.source_idx
-
-run require:
-Memory.rooms[creep.room.name].sources_id
-creep.room.controller
- */
-const harvest_upgrade_work = function (creep) {
-    let priority = 10;
-    let minTicksToLive = 100;
-    if (creep.ticksToLive == minTicksToLive) {
-        const data = {
-            name: creep.memory.role,
-            memory: {
-                role: creep.memory.role,
-                source_idx: creep.memory.source_idx
-            }
-        };
-        creep.room.addSpawnTask(priority, data);
-    }
-    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
-        creep.memory.is_working = false;
-        creep.say('🔄 采');
-    }
-    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
-        creep.memory.is_working = true;
-        delete creep.memory.dontPullMe;
-        creep.say('🚧 升');
-    }
-    if (creep.memory.is_working) {
-        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#4fcf30' } });
-        }
-    }
-    else {
-        if (creep.memory.source_idx == undefined)
-            creep.memory.source_idx = 0;
-        let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
-        if (creep.memory.help) {
-            if (source.energy == 0) {
-                if (Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx] != undefined) {
-                    let tmp_source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx]);
-                    if (tmp_source.energy != 0) {
-                        source = tmp_source;
-                        creep.memory.source_idx = 1 - creep.memory.source_idx;
-                    }
-                }
-            }
-        }
-        go_to_harvest(creep, source);
-    }
-};
-
 const level1_logic = function (roomName) {
-    for (let name in Memory.creeps) {
-        let creep = Game.creeps[name];
-        if (!creep) {
-            delete Memory.creeps[name];
-        }
-        else {
-            if (creep.memory.role == 'hu') {
-                harvest_upgrade_work(creep);
-            }
-        }
-    }
     let room = Game.rooms[roomName];
     if (room.memory.check_spawn_queue_flag ||
         (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName)) {
@@ -889,407 +1548,7 @@ const level2_check_spawn_queue = function (roomName) {
     check_one_role(room, 'hr');
 };
 
-const go_to_build = function (creep, type) {
-    if (type != undefined) {
-        let construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
-            filter: (structure) => {
-                return (structure.structureType == type);
-            }
-        });
-        if (construction) {
-            if (creep.build(construction) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(construction, { visualizePathStyle: { stroke: '#008cff' } });
-            }
-            return;
-        }
-    }
-    let constructions = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
-    if (constructions.length > 0) {
-        if (creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(constructions[0], { visualizePathStyle: { stroke: '#008cff' } });
-        }
-        return;
-    }
-    creep.memory.role = 'hr';
-};
-
-/*
-function:
-harvest, transfer, build
-
-spawnCreep reqiure:bodys, name
-creep.memory.role:'hb'
-creep.memory.source_idx
-
-run require:
-Memory.rooms[creep.room.name].sources_id
-
-other:
-harvest_repair_worker
-*/
-const harvest_build_work = function (creep) {
-    let priority = 20;
-    let minTicksToLive = 150;
-    if (creep.ticksToLive == minTicksToLive) {
-        const data = {
-            name: creep.memory.role,
-            memory: {
-                role: creep.memory.role,
-                source_idx: creep.memory.source_idx
-            }
-        };
-        creep.room.addSpawnTask(priority, data);
-    }
-    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
-        creep.memory.is_working = false;
-        creep.say('🔄 采');
-    }
-    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
-        creep.memory.is_working = true;
-        delete creep.memory.dontPullMe;
-        creep.say('🚧 建');
-    }
-    if (creep.memory.is_working) {
-        go_to_build(creep);
-    }
-    else {
-        if (creep.memory.source_idx == undefined)
-            creep.memory.source_idx = 0;
-        let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
-        if (creep.memory.help) {
-            if (source.energy == 0) {
-                if (Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx] != undefined) {
-                    let tmp_source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx]);
-                    if (tmp_source.energy != 0) {
-                        source = tmp_source;
-                        creep.memory.source_idx = 1 - creep.memory.source_idx;
-                    }
-                }
-            }
-        }
-        go_to_harvest(creep, source);
-    }
-};
-
-const go_to_fill = function (creep, tower_first = false) {
-    let target;
-    // if (creep.room.memory.towers_id ? creep.room.memory.towers_id.length == 1 : false && Game.time%100 == 1){
-    //     target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-    //         filter: (structure) => {
-    //             return (structure.structureType == STRUCTURE_TOWER) &&
-    //                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.4*structure.store.getCapacity(RESOURCE_ENERGY);
-    //         }
-    //     });
-    //     if(target) {
-    //         if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-    //             creep.moveTo(target)
-    //         }
-    //         return
-    //     }
-    // }
-    if (tower_first && creep.room.memory.towers_id) {
-        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_TOWER) &&
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2 * structure.store.getCapacity(RESOURCE_ENERGY);
-            }
-        });
-        if (target) {
-            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-            }
-            return;
-        }
-    }
-    if (creep.room.energyAvailable < creep.room.energyCapacityAvailable) {
-        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_EXTENSION ||
-                    structure.structureType == STRUCTURE_SPAWN) &&
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-            }
-        });
-        if (target) {
-            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-            }
-            return;
-        }
-    }
-    if (!tower_first && creep.room.memory.towers_id) {
-        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_TOWER) &&
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2 * structure.store.getCapacity(RESOURCE_ENERGY);
-            }
-        });
-        if (target) {
-            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-            }
-            return;
-        }
-    }
-    if (creep.room.storage && creep.room.storage.store.getFreeCapacity() >= creep.store.getUsedCapacity()) {
-        if (creep.transfer(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.storage);
-        }
-        return;
-    }
-    if (creep.room.controller.my ? creep.room.controller.level >= 6 : false) {
-        if (creep.room.terminal && creep.room.terminal.store.getFreeCapacity() >= creep.store.getUsedCapacity()) {
-            if (creep.transfer(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.terminal);
-            }
-            return;
-        }
-        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_LAB) &&
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-            }
-        });
-        if (target) {
-            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-            }
-            return;
-        }
-    }
-    if (creep.room.controller.my ? creep.room.controller.level == 8 : false) {
-        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_POWER_SPAWN) &&
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-            }
-        });
-        if (target) {
-            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-            }
-            return;
-        }
-        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_NUKER) &&
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-            }
-        });
-        if (target) {
-            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-            }
-            return;
-        }
-        else {
-            return false;
-        }
-    }
-    else {
-        return false;
-    }
-};
-
-/*
-function:
-harvest, transfer, fill extension, spawn, tower
-
-spawnCreep reqiure:bodys, name
-creep.memory.role:'hf'
-creep.memory.source_idx
-
-run require:
-Memory.rooms[creep.room.name].sources_id
- */
-const harvest_fill_work = function (creep) {
-    let priority = 0;
-    let minTicksToLive = 200;
-    if (creep.ticksToLive == minTicksToLive) {
-        const data = {
-            name: creep.memory.role,
-            memory: {
-                role: creep.memory.role,
-                source_idx: creep.memory.source_idx
-            }
-        };
-        creep.room.addSpawnTask(priority, data);
-    }
-    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
-        creep.memory.is_working = false;
-        creep.say('🔄 采');
-    }
-    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
-        creep.memory.is_working = true;
-        delete creep.memory.dontPullMe;
-        creep.say('🚧 填');
-    }
-    if (creep.memory.is_working) {
-        if (creep.room.energyCapacityAvailable == creep.room.energyAvailable || creep.room.memory.war_flag) {
-            go_to_fill(creep, true);
-        }
-        else {
-            go_to_fill(creep);
-        }
-    }
-    else {
-        if (creep.memory.source_idx == undefined)
-            creep.memory.source_idx = 0;
-        let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
-        if (creep.memory.help) {
-            if (source.energy == 0) {
-                if (Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx] != undefined) {
-                    let tmp_source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx]);
-                    if (tmp_source.energy != 0) {
-                        source = tmp_source;
-                        creep.memory.source_idx = 1 - creep.memory.source_idx;
-                    }
-                }
-            }
-        }
-        go_to_harvest(creep, source);
-    }
-};
-
-const go_to_repair = function (creep, wall_rampart_hits, filter) {
-    let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-        filter: (s) => (s.hits < 10000) && (s.structureType == STRUCTURE_RAMPART)
-    });
-    if (target) {
-        if (creep.repair(target) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
-        }
-        return;
-    }
-    target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-        filter: (s) => (s.hits < 10000) && (s.structureType == STRUCTURE_WALL)
-    });
-    if (target) {
-        if (creep.repair(target) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
-        }
-        return;
-    }
-    target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-        filter: (s) => (s.hits < 0.7 * s.hitsMax && s.structureType == STRUCTURE_ROAD) || (s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART && s.structureType != STRUCTURE_ROAD)
-    });
-    if (target) {
-        if (creep.repair(target) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
-        }
-        return;
-    }
-    if (filter == undefined) {
-        let wall_rampart_hits_ladder = [100000, 1000000, 10000000, 50000000, 100000000];
-        for (let i = 0; i < wall_rampart_hits_ladder.length; i++) {
-            if (wall_rampart_hits != undefined) {
-                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (s) => (s.hits < wall_rampart_hits && s.hits < 0.9 * s.hitsMax && s.hits < wall_rampart_hits_ladder[i]) && (s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL)
-                });
-            }
-            else {
-                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (s) => (s.hits < 0.9 * s.hitsMax && s.hits < wall_rampart_hits_ladder[i]) && (s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL)
-                });
-            }
-            if (target) {
-                if (creep.repair(target) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
-                }
-                return;
-            }
-        }
-    }
-    else {
-        target = creep.pos.findClosestByPath(FIND_STRUCTURES, filter);
-        if (target) {
-            if (creep.repair(target) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
-            }
-            return;
-        }
-    }
-    creep.memory.role = 'hb';
-};
-
-/*
-function:
-harvest, transfer, repair
-
-spawnCreep reqiure:bodys, name
-creep.memory.role:'hr'
-creep.memory.source_idx
-
-run require:
-Memory.rooms[creep.room.name].sources_id
-
-other:
-harvest_build_work
-*/
-const harvest_repair_work = function (creep) {
-    let priority = 15;
-    let minTicksToLive = 150;
-    if (creep.ticksToLive == minTicksToLive) {
-        const data = {
-            name: creep.memory.role,
-            memory: {
-                role: creep.memory.role,
-                source_idx: creep.memory.source_idx
-            }
-        };
-        creep.room.addSpawnTask(priority, data);
-    }
-    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
-        creep.memory.is_working = false;
-        creep.say('🔄 采');
-    }
-    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
-        creep.memory.is_working = true;
-        delete creep.memory.dontPullMe;
-        creep.say('🚧 修');
-    }
-    if (creep.memory.is_working) {
-        go_to_repair(creep);
-    }
-    else {
-        if (creep.memory.source_idx == undefined)
-            creep.memory.source_idx = 0;
-        let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
-        if (creep.memory.help) {
-            if (source.energy == 0) {
-                if (Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx] != undefined) {
-                    let tmp_source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx]);
-                    if (tmp_source.energy != 0) {
-                        source = tmp_source;
-                        creep.memory.source_idx = 1 - creep.memory.source_idx;
-                    }
-                }
-            }
-        }
-        go_to_harvest(creep, source);
-    }
-};
-
 const level2_logic = function (roomName) {
-    for (let name in Memory.creeps) {
-        let creep = Game.creeps[name];
-        if (!creep) {
-            delete Memory.creeps[name];
-        }
-        else {
-            if (creep.memory.role == 'hu') {
-                harvest_upgrade_work(creep);
-            }
-            else if (creep.memory.role == 'hb') {
-                harvest_build_work(creep);
-            }
-            else if (creep.memory.role == 'hf') {
-                harvest_fill_work(creep);
-            }
-            else if (creep.memory.role == 'hr') {
-                harvest_repair_work(creep);
-            }
-        }
-    }
     let room = Game.rooms[roomName];
     if (room.memory.check_spawn_queue_flag || Game.time % 100 == 0 ||
         (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName)) {
@@ -1388,6 +1647,8 @@ const level3_check_spawn_queue = function (roomName) {
     check_one_role(room, 'builder');
     check_one_role(room, 'repairer');
     check_one_role(room, 'base_transfer');
+    check_one_role(room, 'hus');
+    check_one_role(room, 'upgrader_link');
 };
 
 /*
@@ -1414,26 +1675,6 @@ const level3_logic = function (roomName) {
         }
         tower_work(roomName);
     }
-    for (let name in Memory.creeps) {
-        let creep = Game.creeps[name];
-        if (!creep) {
-            delete Memory.creeps[name];
-        }
-        else {
-            if (creep.memory.role == 'hu') {
-                harvest_upgrade_work(creep);
-            }
-            else if (creep.memory.role == 'hb') {
-                harvest_build_work(creep);
-            }
-            else if (creep.memory.role == 'hf') {
-                harvest_fill_work(creep);
-            }
-            else if (creep.memory.role == 'hr') {
-                harvest_repair_work(creep);
-            }
-        }
-    }
     if (room.memory.check_spawn_queue_flag || Game.time % 100 == 0 ||
         (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName)) {
         level3_check_spawn_queue(roomName);
@@ -1441,258 +1682,6 @@ const level3_logic = function (roomName) {
             delete room.memory.check_spawn_queue_flag;
         if (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName) {
             Game.flags.check_spawn_queue_flag.remove();
-        }
-    }
-};
-
-const base_transfer_work = function (creep) {
-    // creep.say('👋 base transfer');
-    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
-        // 如果在transfer状态，且没有能量了，那么退出transfer状态
-        creep.memory.is_working = false;
-        creep.say('🚧 withdraw');
-    }
-    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
-        //如果在withdraw状态，且取不了了，装满了，退出withdraw状态
-        creep.memory.is_working = true;
-        creep.say('🔄 transfer');
-    }
-    if (creep.memory.is_working) {
-        if (go_to_fill(creep) == false) {
-            creep.memory.role = 'cleaner';
-        }
-    }
-    else {
-        if (creep.room.storage && creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
-            if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.storage, { visualizePathStyle: { stroke: '#808080' } });
-            }
-            return;
-        }
-        if (creep.room.terminal && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
-            if (creep.withdraw(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.terminal, { visualizePathStyle: { stroke: '#808080' } });
-            }
-            return;
-        }
-    }
-};
-
-const builder_work = function (creep) {
-    // creep.say('🔄 Here');
-    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
-        creep.memory.is_working = false;
-        creep.memory.path = null;
-        creep.say('🔄 harvest');
-    }
-    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
-        creep.memory.is_working = true;
-        creep.memory.path = null;
-        creep.say('🚧 build');
-    }
-    if (creep.memory.is_working) {
-        let constructions = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
-        if (constructions.length > 0) {
-            if (creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(constructions[0], { visualizePathStyle: { stroke: '#008cff' } });
-            }
-            return;
-        }
-        else {
-            creep.memory.role = 'repairer';
-        }
-    }
-    else {
-        if (creep.room.storage && creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
-            if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.storage, { visualizePathStyle: { stroke: '#808080' } });
-            }
-            return;
-        }
-        if (creep.room.terminal && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
-            if (creep.withdraw(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.terminal, { visualizePathStyle: { stroke: '#808080' } });
-            }
-            return;
-        }
-        if (creep.memory.source_idx == undefined)
-            creep.memory.source_idx = 0;
-        go_to_harvest(creep, Game.getObjectById(creep.room.memory.sources_id[creep.memory.source_idx]));
-    }
-};
-
-const repairer_work = function (creep) {
-    // creep.say('🔄 Here');    
-    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
-        creep.memory.is_working = false;
-        creep.say('🔄 harvest');
-    }
-    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
-        creep.memory.is_working = true;
-        creep.say('🚧 repair');
-    }
-    if (creep.memory.is_working) {
-        go_to_repair(creep);
-        if ((creep.room.name == 'W47S14' || creep.room.name == 'W48S12') && creep.memory.role == 'hb') {
-            creep.memory.role = 'builder';
-        }
-    }
-    else {
-        if (creep.room.storage && creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
-            if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.storage, { visualizePathStyle: { stroke: '#808080' } });
-            }
-            return;
-        }
-        if (creep.room.terminal && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
-            if (creep.withdraw(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.terminal, { visualizePathStyle: { stroke: '#808080' } });
-            }
-            return;
-        }
-        if (creep.memory.source_idx == undefined)
-            creep.memory.source_idx = 0;
-        go_to_harvest(creep, Game.getObjectById(creep.room.memory.sources_id[creep.memory.source_idx]));
-    }
-};
-
-const cleaner_work = function (creep) {
-    // creep.say('🔄 Here');
-    creep.memory.dontPullMe = false;
-    if (creep.room.energyAvailable < 0.2 * creep.room.energyCapacityAvailable)
-        creep.memory.role = 'base_transfer';
-    if (creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
-        // 如果在捡东西状态，装满了，那么退出工作状态
-        creep.memory.is_working = false;
-        creep.say('🔄 transfer');
-    }
-    if (!creep.memory.is_working && creep.store.getFreeCapacity() == creep.store.getCapacity()) {
-        // if(!creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
-        //如果在运东西状态，且没有能量了，退出运输状态
-        creep.memory.is_working = true;
-        creep.say('🚧 pickup');
-    }
-    if (creep.memory.is_working) {
-        let res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-        if (res != null) {
-            if (creep.pickup(res) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(res, { visualizePathStyle: { stroke: '#ffff00' } });
-            }
-        }
-        else {
-            let tomb = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
-                filter: (structure) => {
-                    return (structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
-                }
-            });
-            if (tomb != null) {
-                if (creep.withdraw(tomb, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(tomb, { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-            }
-            else {
-                let ruin = creep.pos.findClosestByRange(FIND_RUINS, {
-                    filter: (structure) => {
-                        return (structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
-                    }
-                });
-                if (ruin != null) {
-                    if (creep.withdraw(ruin, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(ruin, { visualizePathStyle: { stroke: '#ffff00' } });
-                    }
-                }
-                else {
-                    creep.memory.role = 'base_transfer';
-                }
-            }
-        }
-    }
-    else {
-        if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0 && creep.store.getUsedCapacity() != 0) {
-            let targets = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_STORAGE);
-                }
-            });
-            if (targets.length > 0) {
-                if (creep.transfer(targets[0], RESOURCE_GHODIUM_OXIDE) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-                if (creep.transfer(targets[0], RESOURCE_ZYNTHIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-                if (creep.transfer(targets[0], RESOURCE_KEANIUM_OXIDE) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-                if (creep.transfer(targets[0], RESOURCE_UTRIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-                if (creep.transfer(targets[0], RESOURCE_HYDROGEN) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-            }
-            else {
-                let targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_TERMINAL);
-                    }
-                });
-                if (creep.transfer(targets[0], RESOURCE_GHODIUM_OXIDE) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-                if (creep.transfer(targets[0], RESOURCE_ZYNTHIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-                if (creep.transfer(targets[0], RESOURCE_KEANIUM_OXIDE) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-                if (creep.transfer(targets[0], RESOURCE_UTRIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-                if (creep.transfer(targets[0], RESOURCE_HYDROGEN) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-            }
-        }
-        else {
-            let targets = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION ||
-                        structure.structureType == STRUCTURE_SPAWN) &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                }
-            });
-            if (targets.length > 0) {
-                if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                }
-            }
-            else {
-                let targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE) &&
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                    }
-                });
-                if (targets.length > 0) {
-                    if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                    }
-                }
-                else {
-                    let targets = creep.room.find(FIND_STRUCTURES, {
-                        filter: (structure) => {
-                            return (structure.structureType == STRUCTURE_TOWER &&
-                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-                        }
-                    });
-                    if (targets.length > 0) {
-                        if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
-                        }
-                    }
-                }
-            }
         }
     }
 };
@@ -1732,38 +1721,6 @@ const level4_logic = function (roomName) {
             Game.flags.check_towers_id_flag.remove();
         }
         tower_work(roomName);
-    }
-    for (let name in Memory.creeps) {
-        let creep = Game.creeps[name];
-        if (!creep) {
-            delete Memory.creeps[name];
-        }
-        else {
-            if (creep.memory.role == 'hu') {
-                harvest_upgrade_work(creep);
-            }
-            else if (creep.memory.role == 'hb') {
-                harvest_build_work(creep);
-            }
-            else if (creep.memory.role == 'hf') {
-                harvest_fill_work(creep);
-            }
-            else if (creep.memory.role == 'hr') {
-                harvest_repair_work(creep);
-            }
-            else if (creep.memory.role == 'base_transfer') {
-                base_transfer_work(creep);
-            }
-            else if (creep.memory.role == 'builder') {
-                builder_work(creep);
-            }
-            else if (creep.memory.role == 'repairer') {
-                repairer_work(creep);
-            }
-            else if (creep.memory.role == 'cleaner') {
-                cleaner_work(creep);
-            }
-        }
     }
     if (room.memory.check_spawn_queue_flag || Game.time % 100 == 0 ||
         (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName)) {
@@ -1861,8 +1818,10 @@ Spawn.prototype.work = function () {
         new FlatQueue_1(Memory.rooms[this.room.name].spawnQueue);
         return;
     }
-    if (this.spawning)
+    if (this.spawning) {
+        this.room.memory.spawning = true;
         return;
+    }
     // 进行生成
     let data = spawnQueue.pop();
     if (data == undefined)
@@ -5274,7 +5233,7 @@ let coreLayoutRange = 3; // 核心布局半径，在离storage这个范围内频
 // let avoidRooms = ['E18S8', 'E19S9', 'E21S9', 'E24S8', 'E35N6', 'E25S9',
 //     'E19N2', 'E18N3', 'E29N5', 'E29N3', 'E28N8', 'E33N9', 'E34N8',
 //     'E37N6', 'E41N8', 'E39N11', 'E39N12', 'E39N13', 'E17S9']      // 永不踏入这些房间
-let avoidRooms = ['W46S14', 'W46S11', 'W47S9', 'W46S9', 'W45S9', 'W44S9'];      // 永不踏入这些房间
+let avoidRooms = ['W46S14', 'W46S11', 'W47S9', 'W46S9', 'W45S9', 'W44S9', "W15N14", "W14N14"];      // 永不踏入这些房间
 /** @type {{id:string, roomName:string, taskQueue:{path:MyPath, idx:number, roomName:string}[]}[]} */
 // let observers = ['5e3646219c6dc78024fd7097', '5e55e9b8673548d9468a2d3d', '5e36372d00fab883d281d95e'];  // 如果想用ob寻路，把ob的id放这里
 let observers = ['617ab31dd8dc485dfd4310d7'];  // 如果想用ob寻路，把ob的id放这里
@@ -6495,27 +6454,1443 @@ observers = observers.reduce((temp, id) => {
 // Creep.prototype.move = wrapFn(config.changeMove? betterMove : originMove, 'move');
 Creep.prototype.moveTo = wrapFn(betterMoveTo , 'moveTo');
 
+const judge_source_depend_structure = function (roomName, source_idx) {
+    let source = Game.getObjectById(Game.rooms[roomName].memory.sources_id[source_idx]);
+    if (source == undefined) {
+        console.log(Game.time, roomName, 'source ', source_idx, 'undefined');
+    }
+    let pos = source.pos;
+    let terrain = new Room.Terrain(roomName);
+    let end_flag = false;
+    for (let x = pos.x - 2; x <= pos.x + 2; x++) {
+        for (let y = pos.y - 2; y <= pos.y + 2; y++) {
+            if (x == y)
+                continue;
+            if (terrain.get(x, y) != TERRAIN_MASK_WALL) {
+                for (let s of source.room.lookForAt(LOOK_STRUCTURES, x, y).values()) {
+                    if (s.structureType == STRUCTURE_LINK) {
+                        source.room.memory.source_link_ids[source_idx] = s.id;
+                        end_flag = true;
+                        break;
+                    }
+                }
+                if (end_flag)
+                    break;
+                if (source.pos.inRangeTo(x, y, 1)) {
+                    for (let s of source.room.lookForAt(LOOK_STRUCTURES, x, y).values()) {
+                        if (s.structureType == STRUCTURE_CONTAINER) {
+                            source.room.memory.source_container_ids[source_idx] = s.id;
+                            end_flag = true;
+                            break;
+                        }
+                    }
+                    if (end_flag)
+                        break;
+                }
+            }
+        }
+        if (end_flag)
+            break;
+    }
+    return end_flag;
+};
+function source_energy_mine(roomName) {
+    let room = Game.rooms[roomName];
+    if (room == undefined) {
+        console.log(Game.time, roomName, 'undefined');
+    }
+    // if (room.memory.spawning) return
+    let sources_num;
+    if (room.memory.sources_id == undefined) {
+        let sources = room.find(FIND_SOURCES);
+        sources_num = sources.length;
+        if (sources_num == 0) {
+            console.log(Game.time, roomName, 'have no source');
+            return;
+        }
+        room.memory.sources_id = new Array(sources_num);
+        for (let i = 0; i < sources_num; i++) {
+            room.memory.sources_id[i] = sources[i].id;
+        }
+    }
+    else
+        sources_num = room.memory.sources_id.length;
+    if (room.memory.source_link_ids == undefined)
+        room.memory.source_link_ids = new Array(sources_num);
+    for (let i = 0; i < sources_num; i++) {
+        if (judge_source_depend_structure(roomName, i)) {
+            if (room.memory.source_link_ids[i] != undefined) {
+                check_one_role(room, 'hl', 2, 1, undefined, i);
+            }
+            else {
+                check_one_role(room, 'hl', 2, 1, undefined, i);
+            }
+        }
+    }
+}
+
+global.harvest_err_code = new Map([
+    [0, 'OK'],
+    [-1, 'ERR_NOT_OWNER'],
+    [-4, 'ERR_BUSY'],
+    [-5, 'ERR_NOT_FOUND'],
+    [-6, 'ERR_NOT_ENOUGH_RESOURCES'],
+    [-7, 'ERR_INVALID_TARGET'],
+    [-9, 'ERR_NOT_IN_RANGE'],
+    [-11, 'ERR_TIRED'],
+    [-12, 'ERR_NO_BODYPART']
+]);
+const go_to_harvest = function (creep, source, pos) {
+    if (creep.pos.isNearTo(source)) {
+        if (!creep.memory.dontPullMe) {
+            creep.memory.dontPullMe = true;
+        }
+        let code = creep.harvest(source);
+        if (code != OK) {
+            if (code == ERR_NO_BODYPART) {
+                console.log(Game.time, global.harvest_err_code.get(code));
+                creep.suicide();
+                return;
+            }
+            else if (code == ERR_NOT_ENOUGH_ENERGY) {
+                // console.log(Game.time, global.harvest_err_code.get(code))
+                return code;
+            }
+            else if (code != ERR_BUSY && code != ERR_NOT_OWNER) {
+                // ERR_BUSY: spawning
+                // ERR_NOT_ENOUGH_ENERGY
+                // ERR_NOT_OWNER: controller is reserved by other player of Invader
+                console.log(Game.time, global.harvest_err_code.get(code));
+                return code;
+            }
+        }
+    }
+    else {
+        if (!pos) {
+            creep.moveTo(source);
+        }
+        else {
+            creep.moveTo(pos);
+        }
+    }
+};
+
+/*
+function:
+harvest, transfer, upgrade
+
+spawnCreep reqiure:bodys, name
+creep.memory.role:'hu'
+creep.memory.source_idx
+
+run require:
+Memory.rooms[creep.room.name].sources_id
+creep.room.controller
+ */
+const harvest_upgrade_work = function (creep) {
+    let priority = 10;
+    let minTicksToLive = 100;
+    if (creep.ticksToLive == minTicksToLive) {
+        const data = {
+            name: creep.memory.role,
+            memory: {
+                role: creep.memory.role,
+                source_idx: creep.memory.source_idx
+            }
+        };
+        creep.room.addSpawnTask(priority, data);
+    }
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.say('🔄 采');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        delete creep.memory.dontPullMe;
+        creep.say('🚧 升');
+    }
+    if (creep.memory.is_working) {
+        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#4fcf30' } });
+        }
+    }
+    else {
+        let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+        go_to_harvest(creep, source);
+    }
+};
+
+const go_to_build = function (creep, type) {
+    if (type != undefined) {
+        let construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
+            filter: (structure) => {
+                return (structure.structureType == type);
+            }
+        });
+        if (construction) {
+            if (creep.build(construction) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(construction, { visualizePathStyle: { stroke: '#008cff' } });
+            }
+            return;
+        }
+    }
+    let constructions = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+    if (constructions.length > 0) {
+        if (creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(constructions[0], { visualizePathStyle: { stroke: '#008cff' } });
+        }
+        return;
+    }
+    creep.memory.role = 'hr';
+};
+
+/*
+function:
+harvest, transfer, build
+
+spawnCreep reqiure:bodys, name
+creep.memory.role:'hb'
+creep.memory.source_idx
+
+run require:
+Memory.rooms[creep.room.name].sources_id
+
+other:
+harvest_repair_worker
+*/
+const harvest_build_work = function (creep) {
+    let priority = 20;
+    let minTicksToLive = 150;
+    if (creep.ticksToLive == minTicksToLive) {
+        const data = {
+            name: creep.memory.role,
+            memory: {
+                role: creep.memory.role,
+                source_idx: creep.memory.source_idx
+            }
+        };
+        creep.room.addSpawnTask(priority, data);
+    }
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.say('🔄 采');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        delete creep.memory.dontPullMe;
+        creep.say('🚧 建');
+    }
+    if (creep.memory.is_working) {
+        go_to_build(creep);
+    }
+    else {
+        if (creep.memory.source_idx == undefined)
+            creep.memory.source_idx = 0;
+        let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+        if (creep.memory.help) {
+            if (source.energy == 0) {
+                if (Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx] != undefined) {
+                    let tmp_source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[1 - creep.memory.source_idx]);
+                    if (tmp_source.energy != 0) {
+                        source = tmp_source;
+                        creep.memory.source_idx = 1 - creep.memory.source_idx;
+                    }
+                }
+            }
+        }
+        go_to_harvest(creep, source);
+    }
+};
+
+const go_to_fill = function (creep, tower_first = false) {
+    let target;
+    // if (creep.room.memory.towers_id ? creep.room.memory.towers_id.length == 1 : false && Game.time%100 == 1){
+    //     target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+    //         filter: (structure) => {
+    //             return (structure.structureType == STRUCTURE_TOWER) &&
+    //                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.4*structure.store.getCapacity(RESOURCE_ENERGY);
+    //         }
+    //     });
+    //     if(target) {
+    //         if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+    //             creep.moveTo(target)
+    //         }
+    //         return
+    //     }
+    // }
+    if (tower_first && creep.room.memory.towers_id) {
+        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_TOWER) &&
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2 * structure.store.getCapacity(RESOURCE_ENERGY);
+            }
+        });
+        if (target) {
+            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
+            return;
+        }
+    }
+    if (creep.room.energyAvailable < creep.room.energyCapacityAvailable) {
+        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_EXTENSION ||
+                    structure.structureType == STRUCTURE_SPAWN) &&
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+        });
+        if (target) {
+            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
+            return;
+        }
+    }
+    if (!tower_first && creep.room.memory.towers_id) {
+        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_TOWER) &&
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2 * structure.store.getCapacity(RESOURCE_ENERGY);
+            }
+        });
+        if (target) {
+            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
+            return;
+        }
+    }
+    // if (creep.room.storage && creep.room.storage.store.getFreeCapacity() >= creep.store.getUsedCapacity()){
+    //     if(creep.transfer(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+    //         creep.moveTo(creep.room.storage)
+    //     }
+    //     return
+    // }
+    // if (creep.room.terminal && creep.room.terminal.store.getFreeCapacity() >= creep.store.getUsedCapacity()){
+    //     if(creep.transfer(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+    //         creep.moveTo(creep.room.terminal)
+    //     }
+    //     return
+    // }
+    if (creep.room.controller.my ? creep.room.controller.level >= 6 : false) {
+        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_LAB) &&
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+        });
+        if (target) {
+            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
+            return;
+        }
+    }
+    if (creep.room.controller.my ? creep.room.controller.level == 8 : false) {
+        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_POWER_SPAWN) &&
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+        });
+        if (target) {
+            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
+            return;
+        }
+        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_NUKER) &&
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+        });
+        if (target) {
+            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
+            return;
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+};
+
+/*
+function:
+harvest, transfer, fill extension, spawn, tower
+
+spawnCreep reqiure:bodys, name
+creep.memory.role:'hf'
+creep.memory.source_idx
+
+run require:
+Memory.rooms[creep.room.name].sources_id
+ */
+const harvest_fill_work = function (creep) {
+    let priority = 0;
+    let minTicksToLive = 200;
+    if (creep.ticksToLive == minTicksToLive) {
+        const data = {
+            name: creep.memory.role,
+            memory: {
+                role: creep.memory.role,
+                source_idx: creep.memory.source_idx
+            }
+        };
+        creep.room.addSpawnTask(priority, data);
+    }
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.say('🔄 采');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        delete creep.memory.dontPullMe;
+        creep.say('🚧 填');
+    }
+    if (creep.memory.is_working) {
+        if (creep.room.energyCapacityAvailable == creep.room.energyAvailable || creep.room.memory.war_flag) {
+            go_to_fill(creep, true);
+        }
+        else {
+            go_to_fill(creep);
+        }
+    }
+    else {
+        let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+        go_to_harvest(creep, source);
+    }
+};
+
+const go_to_repair = function (creep, wall_rampart_hits, filter) {
+    let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+        filter: (s) => (s.hits < 10000) && (s.structureType == STRUCTURE_RAMPART)
+    });
+    if (target) {
+        if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
+        }
+        return;
+    }
+    target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+        filter: (s) => (s.hits < 10000) && (s.structureType == STRUCTURE_WALL)
+    });
+    if (target) {
+        if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
+        }
+        return;
+    }
+    target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+        filter: (s) => (s.hits < 0.7 * s.hitsMax && s.structureType == STRUCTURE_ROAD) || (s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART && s.structureType != STRUCTURE_ROAD)
+    });
+    if (target) {
+        if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
+        }
+        return;
+    }
+    if (filter == undefined) {
+        let wall_rampart_hits_ladder = [100000, 1000000, 10000000, 50000000, 100000000];
+        for (let i = 0; i < wall_rampart_hits_ladder.length; i++) {
+            if (wall_rampart_hits != undefined) {
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (s) => (s.hits < wall_rampart_hits && s.hits < 0.9 * s.hitsMax && s.hits < wall_rampart_hits_ladder[i]) && (s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL)
+                });
+            }
+            else {
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (s) => (s.hits < 0.9 * s.hitsMax && s.hits < wall_rampart_hits_ladder[i]) && (s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL)
+                });
+            }
+            if (target) {
+                if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
+                }
+                return;
+            }
+        }
+    }
+    else {
+        target = creep.pos.findClosestByPath(FIND_STRUCTURES, filter);
+        if (target) {
+            if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
+            }
+            return;
+        }
+    }
+};
+
+/*
+function:
+harvest, transfer, repair
+
+spawnCreep reqiure:bodys, name
+creep.memory.role:'hr'
+creep.memory.source_idx
+
+run require:
+Memory.rooms[creep.room.name].sources_id
+
+other:
+harvest_build_work
+*/
+const harvest_repair_work = function (creep) {
+    let priority = 15;
+    let minTicksToLive = 100;
+    if (creep.ticksToLive == minTicksToLive) {
+        const data = {
+            name: creep.memory.role,
+            memory: {
+                role: creep.memory.role,
+                source_idx: creep.memory.source_idx
+            }
+        };
+        creep.room.addSpawnTask(priority, data);
+    }
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.say('🔄 采');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        delete creep.memory.dontPullMe;
+        creep.say('🚧 修');
+    }
+    if (creep.memory.is_working) {
+        go_to_repair(creep);
+    }
+    else {
+        let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+        go_to_harvest(creep, source);
+    }
+};
+
+const base_transfer_work = function (creep) {
+    // creep.say('👋 base transfer');
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        // 如果在transfer状态，且没有能量了，那么退出transfer状态
+        creep.memory.is_working = false;
+        creep.say('🚧 withdraw');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        //如果在withdraw状态，且取不了了，装满了，退出withdraw状态
+        creep.memory.is_working = true;
+        creep.say('🔄 transfer');
+    }
+    if (creep.memory.is_working) {
+        if (go_to_fill(creep) == false) {
+            creep.memory.role = 'cleaner';
+        }
+    }
+    else {
+        if (creep.room.storage && creep.room.terminal && (creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) - creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) >= 20000 ||
+            creep.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) < 20000)) {
+            if (creep.room.terminal && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
+                if (creep.withdraw(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(creep.room.terminal, { visualizePathStyle: { stroke: '#808080' } });
+                }
+                return;
+            }
+        }
+        if (creep.room.storage && creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
+            if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.storage, { visualizePathStyle: { stroke: '#808080' } });
+            }
+            return;
+        }
+        if (creep.room.terminal && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
+            if (creep.withdraw(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.terminal, { visualizePathStyle: { stroke: '#808080' } });
+            }
+            return;
+        }
+    }
+};
+
+const builder_work = function (creep) {
+    // creep.say('🔄 Here');
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.memory.path = null;
+        creep.say('🔄 harvest');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        creep.memory.path = null;
+        creep.say('🚧 build');
+    }
+    if (creep.memory.is_working) {
+        let constructions = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+        if (constructions.length > 0) {
+            if (creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(constructions[0], { visualizePathStyle: { stroke: '#008cff' } });
+            }
+            return;
+        }
+        else {
+            creep.memory.role = 'repairer';
+        }
+    }
+    else {
+        if (creep.room.storage && creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
+            if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.storage, { visualizePathStyle: { stroke: '#808080' } });
+            }
+            return;
+        }
+        if (creep.room.terminal && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
+            if (creep.withdraw(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.terminal, { visualizePathStyle: { stroke: '#808080' } });
+            }
+            return;
+        }
+        if (creep.memory.source_idx == undefined)
+            creep.memory.source_idx = 0;
+        go_to_harvest(creep, Game.getObjectById(creep.room.memory.sources_id[creep.memory.source_idx]));
+    }
+};
+
+const repairer_work = function (creep) {
+    // creep.say('🔄 Here');    
+    if (creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        creep.memory.is_working = false;
+        creep.say('🔄 harvest');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        creep.memory.is_working = true;
+        creep.say('🚧 repair');
+    }
+    if (creep.memory.is_working) {
+        go_to_repair(creep);
+        if (creep.memory.role == 'hb') {
+            creep.memory.role = 'builder';
+        }
+    }
+    else {
+        if (creep.room.storage && creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
+            if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.storage, { visualizePathStyle: { stroke: '#808080' } });
+            }
+            return;
+        }
+        if (creep.room.terminal && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200) {
+            if (creep.withdraw(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.terminal, { visualizePathStyle: { stroke: '#808080' } });
+            }
+            return;
+        }
+        if (creep.memory.source_idx == undefined)
+            creep.memory.source_idx = 0;
+        go_to_harvest(creep, Game.getObjectById(creep.room.memory.sources_id[creep.memory.source_idx]));
+    }
+};
+
+/*
+function:
+harvest, transfer, upgrade
+
+spawnCreep reqiure:bodys, name
+creep.memory.role:'hu'
+creep.memory.source_idx
+
+run require:
+Memory.rooms[creep.room.name].sources_id
+creep.room.controller
+ */
+const harvest_upgrade_same_work = function (creep) {
+    let priority = 10;
+    let minTicksToLive = 100;
+    if (creep.ticksToLive == minTicksToLive) {
+        const data = {
+            name: creep.memory.role,
+            memory: {
+                role: creep.memory.role,
+                source_idx: creep.memory.source_idx
+            }
+        };
+        creep.room.addSpawnTask(priority, data);
+    }
+    if (creep.memory.is_working) {
+        if (creep.store[RESOURCE_ENERGY] <= creep.getActiveBodyparts(WORK)) {
+            if (creep.memory.source_idx == undefined)
+                creep.memory.source_idx = 0;
+            let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+            go_to_harvest(creep, source);
+            if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#4fcf30' } });
+            }
+        }
+        else {
+            if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#4fcf30' } });
+            }
+        }
+    }
+    else {
+        if (creep.store[RESOURCE_ENERGY] == 0) {
+            if (creep.memory.source_idx == undefined)
+                creep.memory.source_idx = 0;
+            let source = Game.getObjectById(Memory.rooms[creep.room.name].sources_id[creep.memory.source_idx]);
+            go_to_harvest(creep, source);
+            if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#4fcf30' } });
+            }
+        }
+        if (creep.store.getFreeCapacity() != 0) {
+            creep.memory.is_working = true;
+        }
+    }
+};
+
+const cleaner_work = function (creep) {
+    // creep.say('🔄 Here');
+    creep.memory.dontPullMe = false;
+    if (creep.room.energyAvailable < 0.2 * creep.room.energyCapacityAvailable)
+        creep.memory.role = 'base_transfer';
+    if (creep.memory.is_working && creep.store.getFreeCapacity() == 0) {
+        // 如果在捡东西状态，装满了，那么退出工作状态
+        creep.memory.is_working = false;
+        creep.say('🔄 transfer');
+    }
+    if (!creep.memory.is_working && creep.store.getFreeCapacity() == creep.store.getCapacity()) {
+        // if(!creep.memory.is_working && creep.store[RESOURCE_ENERGY] == 0) {
+        //如果在运东西状态，且没有能量了，退出运输状态
+        creep.memory.is_working = true;
+        creep.say('🚧 pickup');
+    }
+    if (creep.memory.is_working) {
+        let res = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+        if (res != null) {
+            if (creep.pickup(res) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(res, { visualizePathStyle: { stroke: '#ffff00' } });
+            }
+        }
+        else {
+            let tomb = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
+                filter: (structure) => {
+                    return (structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
+                }
+            });
+            if (tomb != null) {
+                if (creep.withdraw(tomb, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(tomb, { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+            }
+            else {
+                let ruin = creep.pos.findClosestByRange(FIND_RUINS, {
+                    filter: (structure) => {
+                        return (structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0);
+                    }
+                });
+                if (ruin != null) {
+                    if (creep.withdraw(ruin, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(ruin, { visualizePathStyle: { stroke: '#ffff00' } });
+                    }
+                }
+                else {
+                    creep.memory.role = 'base_transfer';
+                }
+            }
+        }
+    }
+    else {
+        if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0 && creep.store.getUsedCapacity() != 0) {
+            let targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_STORAGE);
+                }
+            });
+            if (targets.length > 0) {
+                if (creep.transfer(targets[0], RESOURCE_GHODIUM_OXIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+                if (creep.transfer(targets[0], RESOURCE_ZYNTHIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+                if (creep.transfer(targets[0], RESOURCE_KEANIUM_OXIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+                if (creep.transfer(targets[0], RESOURCE_UTRIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+                if (creep.transfer(targets[0], RESOURCE_HYDROGEN) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+            }
+            else {
+                let targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_TERMINAL);
+                    }
+                });
+                if (creep.transfer(targets[0], RESOURCE_GHODIUM_OXIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+                if (creep.transfer(targets[0], RESOURCE_ZYNTHIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+                if (creep.transfer(targets[0], RESOURCE_KEANIUM_OXIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+                if (creep.transfer(targets[0], RESOURCE_UTRIUM_HYDRIDE) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+                if (creep.transfer(targets[0], RESOURCE_HYDROGEN) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+            }
+        }
+        else {
+            let targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_EXTENSION ||
+                        structure.structureType == STRUCTURE_SPAWN) &&
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                }
+            });
+            if (targets.length > 0) {
+                if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                }
+            }
+            else {
+                let targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_STORAGE) &&
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                    }
+                });
+                if (targets.length > 0) {
+                    if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                    }
+                }
+                else {
+                    let targets = creep.room.find(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_TOWER &&
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+                        }
+                    });
+                    if (targets.length > 0) {
+                        if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffff00' } });
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+
+// Game.spawns['Spawn4'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], 'tmp_attack1', {memory: {role: 'tmp_attack'}});
+// Game.spawns['Spawn1'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], 'tmp_attack2', {memory: {role: 'tmp_attack'}});
+// Game.spawns['Spawn1'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], 'tmp_attack3', {memory: {role: 'tmp_attack'}});
+const tmp_attack_work = function (creep) {
+    // if (creep.body[6].boost == undefined){
+    //     if (creep.memory.dontPullMe == undefined){
+    //         creep.memory.dontPullMe = true;
+    //     }
+    //     if (creep.pos.x != 11 || creep.pos.y != 16){
+    //         creep.moveTo(new RoomPosition(11, 16, 'W47S14'))
+    //     }
+    //     else{
+    //         // let lab_lho2: StructureLab = Game.getObjectById('615b67b909f7903134462c0d')
+    //         // lab_lho2.boostCreep(creep)
+    //         let lab_zho2: StructureLab = Game.getObjectById('615bb25d94d216562f056f23')
+    //         lab_zho2.boostCreep(creep)
+    //         // let lab_gho2: StructureLab = Game.getObjectById('615b2fe7b781a147a5c49b07')
+    //         // lab_gho2.boostCreep(creep)
+    //     }
+    // }
+    // else if (creep.room.name != 'W46S15') creep.moveTo(new RoomPosition(25, 25, 'W46S15'))
+    // else {
+    //     if (creep.hitsMax > creep.hits) creep.heal(creep)
+    //     if (creep.pos.x < 1) creep.moveTo(new RoomPosition(25, 25, 'W46S15'))
+    // }
+    // if (creep.body[6].boost != undefined && Game.flags.attack){
+    //     if (creep.hitsMax - creep.hits >= 1200){
+    //         creep.moveTo(new RoomPosition(1, 41, 'W46S15'))
+    //     }
+    //     else{
+    //         let li = ['61c0dd7d28ba3ca9d621bae2', '61c0a3d4d448f4e872ad27e7']
+    //         for (let i in li){
+    //             let obj: Structure = Game.getObjectById(li[i])
+    //             if (obj != undefined){
+    //                 if (creep.attack(obj) != OK){
+    //                     creep.moveTo(obj)
+    //                 }
+    //                 break
+    //             }
+    //             if (i == '61c0dd7d28ba3ca9d621bae2'){
+    //                 let code = creep.withdraw(Game.getObjectById('61c0dd7d28ba3c10a221bae0'), RESOURCE_PURIFIER)
+    //                 if (code == ERR_NOT_IN_RANGE){
+    //                     creep.moveTo(new RoomPosition(21, 30, 'W46S15'))
+    //                 }
+    //                 else {
+    //                     if (creep.withdraw(Game.getObjectById('61c0dd7d28ba3c10a221bae0'), RESOURCE_UTRIUM_BAR) != OK){
+    //                         creep.withdraw(Game.getObjectById('61c0dd7d28ba3c10a221bae0'), RESOURCE_PURIFIER)
+    //                     }
+    //                 }
+    //                 if (creep.store.getFreeCapacity() == 0){
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // if (creep.room.name != 'W47S14') creep.moveTo(Game.rooms['W47S14'].terminal)
+    // else{
+    //     let code = creep.transfer(Game.rooms['W47S14'].terminal, RESOURCE_PURIFIER)
+    //     if (code == ERR_NOT_IN_RANGE){
+    //         creep.moveTo(new RoomPosition(21, 30, 'W46S15'))
+    //     }
+    //     else {
+    //         if (creep.transfer(Game.rooms['W47S14'].terminal, RESOURCE_UTRIUM_BAR) != OK){
+    //             creep.transfer(Game.rooms['W47S14'].terminal, RESOURCE_LIQUID)
+    //         }
+    //     }
+    // }
+    // if (creep.room.name != 'W41S7') creep.moveTo(new RoomPosition(25, 25, 'W41S7'))
+    // else{
+    //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //     creep.moveTo(new RoomPosition(25, 25, 'W41S7'))
+    //     let obj: StructureSpawn = Game.getObjectById('61cbd70b3f190b3f79cf6b68')
+    //     if (obj != undefined){
+    //         if (creep.attack(obj) != OK){
+    //             creep.moveTo(obj)
+    //         }
+    //     }
+    //     else{
+    //         let invade_targets = creep.room.find(FIND_HOSTILE_CREEPS, {
+    //             filter: (creep) => (!global.white_list.has(creep.owner.username))
+    //         });
+    //         if (invade_targets.length > 0)
+    //         {
+    //             creep.room.memory.war_flag = true
+    //             creep.room.memory.enemy_num = invade_targets.length
+    //             if (creep.attack(invade_targets[0]) != OK)
+    //             {
+    //                 creep.moveTo(invade_targets[0])
+    //             }
+    //         }
+    //     }
+    // }
+    // if (creep.room.name != 'W44S12'){
+    //     creep.moveTo(new RoomPosition(25, 25, "W44S12"))
+    // }
+    // else{
+    //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //         creep.moveTo(new RoomPosition(25, 25, "W44S12"))
+    //     if (creep.claimController(creep.room.controller) != OK){
+    //         creep.moveTo(creep.room.controller)
+    //     }
+    // }
+    // ezberci
+    // Game.spawns['Spawn1'].spawnCreep([MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK], 'tmp_attack1', {memory: {role: 'tmp_attack'}});
+    // if (creep.room.name != 'W13N13'){
+    //     creep.moveTo(new RoomPosition(25, 25, "W13N13"))
+    // }
+    // else{
+    //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //         creep.moveTo(new RoomPosition(25, 25, "W13N13"))
+    //     else if (Game.getObjectById("62347cf4ef360790a2af5e76"))
+    //     {
+    //         if (creep.attack(Game.getObjectById("62347cf4ef360790a2af5e76")) != OK)
+    //         {
+    //             creep.moveTo(Game.getObjectById("62347cf4ef360790a2af5e76"))
+    //         }
+    //     }
+    // }
+    // Gribbit
+    // let room_name = "W12N15"
+    // if (creep.room.name != room_name){
+    //     creep.moveTo(new RoomPosition(25, 25, room_name))
+    // }
+    // else{
+    //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //         creep.moveTo(new RoomPosition(25, 25, room_name))
+    //     else if (Game.getObjectById("6201a3222b249db1c02df43d"))
+    //     {
+    //         if (creep.attack(Game.getObjectById("6201a3222b249db1c02df43d")) != OK)
+    //         {
+    //             creep.moveTo(Game.getObjectById("6201a3222b249db1c02df43d"))
+    //         }
+    //     }
+    // }
+    // let room_name = "W12N13"
+    // let dest_id: string = "6239c14f3199284539e18358" // wall
+    // if (creep.room.name != room_name){
+    //     creep.moveTo(new RoomPosition(25, 25, room_name))
+    // }
+    // else{
+    //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //         creep.moveTo(new RoomPosition(25, 25, room_name))
+    //     else if (Game.getObjectById(dest_id))
+    //     {
+    //         if (creep.attack(Game.getObjectById(dest_id)) != OK)
+    //         {
+    //             creep.moveTo(Game.getObjectById(dest_id))
+    //         }
+    //     }
+    // }
+    // Gribbit
+    // Game.spawns['Spawn1'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM], 'tmp_attack1', {memory: {role: 'tmp_attack'}});
+    // let room_name = "W12N15"
+    // let dest_id: string = "5bbcac3c9099fc012e635237" // controller
+    // if (creep.room.name != room_name){
+    //     creep.moveTo(new RoomPosition(25, 25, room_name))
+    // }
+    // else{
+    //     let c: StructureController = Game.getObjectById(dest_id)
+    //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //         creep.moveTo(new RoomPosition(25, 25, room_name))
+    //     else if (!c.my)
+    //     {
+    //         if (creep.attackController(Game.getObjectById(dest_id)) != OK)
+    //         {
+    //             creep.moveTo(Game.getObjectById(dest_id))
+    //         }
+    //     }
+    // }
+    if (creep.getActiveBodyparts(CLAIM) != 0) {
+        // let room_name = "W12N15"
+        // let dest_id: string = "5bbcac3c9099fc012e635237" // controller
+        // if (creep.room.name != room_name){
+        //     creep.moveTo(new RoomPosition(25, 25, room_name))
+        // }
+        // else{
+        //     let c: StructureController = Game.getObjectById(dest_id)
+        //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+        //         creep.moveTo(new RoomPosition(25, 25, room_name))
+        //     else if (!c.my)
+        //     {
+        //         if (creep.attackController(Game.getObjectById(dest_id)) != OK)
+        //         {
+        //             creep.moveTo(Game.getObjectById(dest_id))
+        //         }
+        //     }
+        // }
+        let room_name = "W12N15";
+        let dest_id = "5bbcac3c9099fc012e635237";
+        if (creep.room.name != room_name) {
+            creep.moveTo(new RoomPosition(25, 25, room_name));
+        }
+        else {
+            Game.getObjectById(dest_id);
+            if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+                creep.moveTo(new RoomPosition(25, 25, room_name));
+            try {
+                if (creep.attackController(Game.getObjectById(dest_id)) != OK) {
+                    creep.moveTo(Game.getObjectById(dest_id));
+                }
+                else {
+                    creep.reserveController(Game.getObjectById(dest_id));
+                }
+            }
+            catch (_a) {
+            }
+        }
+        // else if (c.reservation? c.reservation.username == "Invader": false)
+        // {
+        //     if (creep.attackController(Game.getObjectById(dest_id)) != OK)
+        //     {
+        //         creep.moveTo(Game.getObjectById(dest_id))
+        //     }
+        // }
+        // else{
+        //     if (creep.reserveController(Game.getObjectById(dest_id)) != OK)
+        //     {
+        //         creep.moveTo(Game.getObjectById(dest_id))
+        //     }
+        // }
+    }
+    else {
+        // Game.spawns['Spawn1'].spawnCreep([MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK], 'tmp_attack1', {memory: {role: 'tmp_attack'}});
+        let room_name = "W12N13";
+        let invader_core_id = "6239e8070e2a57233b3c9c72";
+        if (creep.room.name != room_name) {
+            creep.moveTo(new RoomPosition(25, 25, room_name));
+        }
+        else {
+            if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+                creep.moveTo(new RoomPosition(25, 25, room_name));
+            else if (Game.getObjectById(invader_core_id)) {
+                if (creep.attack(Game.getObjectById(invader_core_id)) != OK) {
+                    creep.moveTo(Game.getObjectById(invader_core_id));
+                }
+            }
+        }
+    }
+};
+
+// Game.spawns['Spawn3'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,CLAIM], 'c', {memory: {role: 'occupy'}})
+const occupy_work = function (creep) {
+    // creep.say('🔄 Here');
+    let controller = Game.getObjectById('5bbcac499099fc012e6353b2');
+    let room_name = "W11N19";
+    if (creep.room.name != room_name) {
+        if (creep.room.name == "W14N12")
+            creep.moveTo(new RoomPosition(25, 25, "W14N13"));
+        if (creep.room.name == "W14N13")
+            creep.moveTo(new RoomPosition(25, 25, "W13N13"));
+        if (creep.room.name == "W13N13")
+            creep.moveTo(new RoomPosition(25, 25, "W12N13"));
+        if (creep.room.name == "W12N13")
+            creep.moveTo(new RoomPosition(25, 25, "W12N14"));
+        if (creep.room.name == "W12N14")
+            creep.moveTo(new RoomPosition(25, 25, "W12N15"));
+        if (creep.room.name == "W12N15")
+            creep.moveTo(new RoomPosition(25, 25, "W11N15"));
+        if (creep.room.name == "W11N15")
+            creep.moveTo(new RoomPosition(25, 25, "W11N16"));
+        if (creep.room.name == "W11N16")
+            creep.moveTo(new RoomPosition(25, 25, "W11N17"));
+        if (creep.room.name == "W11N17")
+            creep.moveTo(new RoomPosition(25, 25, "W11N18"));
+        if (creep.room.name == "W11N18")
+            creep.moveTo(new RoomPosition(25, 25, "W10N18"));
+        if (creep.room.name == "W10N18")
+            creep.moveTo(new RoomPosition(25, 25, "W10N19"));
+        if (creep.room.name == "W10N19")
+            creep.moveTo(new RoomPosition(25, 25, "W11N19"));
+        // creep.moveTo(new RoomPosition(25, 25, room_name))
+    }
+    else {
+        if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47) {
+            creep.moveTo(new RoomPosition(25, 25, room_name));
+        }
+        else {
+            let code = creep.claimController(controller);
+            if (code == ERR_NOT_IN_RANGE) {
+                creep.moveTo(controller);
+            }
+            else {
+                creep.signController(controller, "6g3y yyds.");
+            }
+        }
+    }
+};
+
+// Game.spawns['Spawn2'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'help' + Game.time, {memory: {role: 'help', source_idx: 0, dest_roomName: 'W12N13'}})
+const help_work = function (creep) {
+    if (creep.memory.dest_roomName == 'W11N19') {
+        let dest_roomName = 'W11N19';
+        if (creep.room.name != dest_roomName) {
+            if (creep.room.name == "W14N12")
+                creep.moveTo(new RoomPosition(25, 25, "W14N13"));
+            if (creep.room.name == "W14N13")
+                creep.moveTo(new RoomPosition(25, 25, "W13N13"));
+            if (creep.room.name == "W13N13")
+                creep.moveTo(new RoomPosition(25, 25, "W12N13"));
+            if (creep.room.name == "W12N13")
+                creep.moveTo(new RoomPosition(25, 25, "W12N14"));
+            if (creep.room.name == "W12N14")
+                creep.moveTo(new RoomPosition(25, 25, "W12N15"));
+            if (creep.room.name == "W12N15")
+                creep.moveTo(new RoomPosition(25, 25, "W11N15"));
+            if (creep.room.name == "W11N15")
+                creep.moveTo(new RoomPosition(25, 25, "W11N16"));
+            if (creep.room.name == "W11N16")
+                creep.moveTo(new RoomPosition(25, 25, "W11N17"));
+            if (creep.room.name == "W11N17")
+                creep.moveTo(new RoomPosition(25, 25, "W11N18"));
+            if (creep.room.name == "W11N18")
+                creep.moveTo(new RoomPosition(25, 25, "W11N19"));
+            // creep.moveTo(new RoomPosition(25, 25, dest_roomName))
+        }
+        else {
+            if ((creep.pos.x < 2 || creep.pos.y < 2 || creep.pos.x > 47 || creep.pos.y > 47) && creep.room.name == dest_roomName)
+                creep.moveTo(new RoomPosition(25, 25, dest_roomName));
+            else {
+                // creep.memory.role = 'builder'
+                creep.memory.help = true;
+                if (get_role_workers('hu', dest_roomName, 0).length > 0)
+                    creep.memory.role = 'hb';
+                else {
+                    creep.memory.role = 'hu';
+                }
+            }
+        }
+    }
+    else if (creep.memory.dest_roomName == 'W12N13') {
+        let dest_roomName = 'W12N13';
+        if (creep.room.name != dest_roomName) {
+            creep.moveTo(new RoomPosition(25, 25, dest_roomName));
+        }
+        else {
+            if ((creep.pos.x < 2 || creep.pos.y < 2 || creep.pos.x > 47 || creep.pos.y > 47) && creep.room.name == dest_roomName)
+                creep.moveTo(new RoomPosition(25, 25, dest_roomName));
+            else {
+                // creep.memory.role = 'builder'
+                creep.memory.help = true;
+                if (get_role_workers('hu', dest_roomName, 0).length > 0)
+                    creep.memory.role = 'hb';
+                else {
+                    creep.memory.role = 'hu';
+                }
+            }
+        }
+    }
+    else if (creep.memory.dest_roomName == 'W12N15') {
+        let dest_roomName = 'W12N15';
+        if (creep.room.name != dest_roomName) {
+            if (creep.room.name == "W14N12")
+                creep.moveTo(new RoomPosition(25, 25, "W14N13"));
+            if (creep.room.name == "W14N13")
+                creep.moveTo(new RoomPosition(25, 25, "W13N13"));
+            if (creep.room.name == "W13N13")
+                creep.moveTo(new RoomPosition(25, 25, "W12N13"));
+            if (creep.room.name == "W12N13")
+                creep.moveTo(new RoomPosition(25, 25, "W12N14"));
+            if (creep.room.name == "W12N14")
+                creep.moveTo(new RoomPosition(25, 25, "W12N15"));
+            // creep.moveTo(new RoomPosition(25, 25, dest_roomName))
+        }
+        else {
+            if ((creep.pos.x < 2 || creep.pos.y < 2 || creep.pos.x > 47 || creep.pos.y > 47) && creep.room.name == dest_roomName)
+                creep.moveTo(new RoomPosition(25, 25, dest_roomName));
+            else {
+                // creep.memory.role = 'builder'
+                creep.memory.help = true;
+                if (get_role_workers('hu', dest_roomName, 0).length > 0) {
+                    creep.memory.role = 'hb';
+                    creep.memory.source_idx = 1;
+                    delete creep.memory.help;
+                }
+                else {
+                    creep.memory.role = 'hus';
+                    creep.memory.source_idx = 0;
+                    delete creep.memory.help;
+                }
+            }
+        }
+    }
+};
+
+const energy_harvester_link_work = function (creep) {
+    // role: hl
+    let link = Game.getObjectById(creep.room.memory.source_link_ids[creep.memory.source_idx]);
+    if (link == undefined) {
+        console.log(Game.time, "energy_harvester_link_work source link id:", creep.room.memory.source_link_ids[creep.memory.source_idx], 'index:', creep.memory.source_idx, 'undefined');
+        return;
+    }
+    creep.transfer(link, RESOURCE_ENERGY);
+    if (creep.memory.source_roomName == undefined)
+        creep.memory.source_roomName = creep.room.name;
+    let source_room = Game.rooms[creep.memory.source_roomName];
+    if (source_room == undefined) {
+        console.log(Game.time, "energy_harvester_link_work", creep.memory.source_roomName, 'undefined');
+        return;
+    }
+    let source = Game.getObjectById(source_room.memory.sources_id[creep.memory.source_idx]);
+    if (link.store.getFreeCapacity(RESOURCE_ENERGY) != 0) {
+        if (creep.pos.isNearTo(source) && creep.pos.isNearTo(link))
+            go_to_harvest(creep, source);
+        else {
+            let x;
+            let y;
+            let terrain = new Room.Terrain(source.room.name);
+            if ((source.pos.x - link.pos.x) % 2 == 0)
+                x = (source.pos.x + link.pos.x) / 2;
+            if ((source.pos.y - link.pos.y) % 2 == 0)
+                y = (source.pos.y + link.pos.y) / 2;
+            if (x == undefined)
+                if (terrain.get(source.pos.x, y) == 1)
+                    x = link.pos.x;
+                else
+                    x = source.pos.x;
+            if (y == undefined)
+                if (terrain.get(x, source.pos.y) == 1)
+                    y = link.pos.y;
+                else
+                    y = source.pos.y;
+            let pos = new RoomPosition(x, y, creep.memory.source_roomName);
+            creep.moveTo(pos);
+        }
+    }
+};
+
+const upgrader_link_work = function (creep) {
+    let link;
+    if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(creep.room.controller);
+    }
+    if (creep.room.name == "W47S14")
+        link = Game.getObjectById('615a13005237858c5056f75f');
+    if (creep.room.name == "W48S12")
+        link = Game.getObjectById('61a918350a3fbfbce67837dc');
+    if (creep.room.name == 'W41S6')
+        link = Game.getObjectById('61b06bfa6d593b099f24763d');
+    if (creep.room.name == "W9N11")
+        link = Game.getObjectById('61b0fb9d91f12d45ad64a2bc');
+    if (link) {
+        if (creep.withdraw(link, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(link);
+        }
+    }
+};
+
+const carrier_W9N11_work = function (creep) {
+    // creep.say('🔄 Here');
+    if (creep.memory.dontPullMe == undefined) {
+        creep.memory.dontPullMe = true;
+    }
+    if (creep.pos.x != 37 || creep.pos.y != 43) {
+        creep.moveTo(new RoomPosition(37, 43, 'W9N11'), { visualizePathStyle: { stroke: '#00ff0e' } });
+    }
+    else {
+        let link = Game.getObjectById("619bdff527ccd47b68938bab");
+        let storage = creep.room.storage;
+        let terminal = creep.room.terminal;
+        let upgrade_link = Game.getObjectById("61b0fb9d91f12d45ad64a2bc");
+        if (upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) <= 30 && link.cooldown < 3) {
+            if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+                creep.withdraw(storage, RESOURCE_ENERGY);
+            }
+            else {
+                creep.transfer(link, RESOURCE_ENERGY);
+            }
+            return;
+        }
+        if (link.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
+            if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+                creep.withdraw(link, RESOURCE_ENERGY);
+            }
+            else {
+                if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY) && terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                    creep.transfer(terminal, RESOURCE_ENERGY);
+                }
+                else {
+                    creep.transfer(storage, RESOURCE_ENERGY);
+                }
+            }
+        }
+        else {
+            if ((terminal.store.getUsedCapacity(RESOURCE_ENERGY) <= 150000 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY)) ||
+                (storage.store.getFreeCapacity(RESOURCE_ENERGY) < 10000)) {
+                if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+                    creep.withdraw(storage, RESOURCE_ENERGY);
+                }
+                else {
+                    creep.transfer(terminal, RESOURCE_ENERGY);
+                }
+            }
+            else if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 155000 && storage.store.getFreeCapacity(RESOURCE_ENERGY) > 5000) {
+                if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+                    creep.withdraw(terminal, RESOURCE_ENERGY);
+                }
+                else {
+                    creep.transfer(storage, RESOURCE_ENERGY);
+                }
+            }
+        }
+        if (creep.store.getUsedCapacity(RESOURCE_ENERGY) != 0) {
+            if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY) && terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                creep.transfer(terminal, RESOURCE_ENERGY);
+            }
+            else {
+                creep.transfer(storage, RESOURCE_ENERGY);
+            }
+        }
+    }
+};
+
 // import "./modules/strategy_marketPrice"
-if (Game.flags.Appassionata) {
-    console.log(Game.time, 'Appassionata new push');
-    let rooms = ['W14N12'];
+if (Game.flags.GlennGould) {
+    console.log(Game.time, 'GlennGould new push');
+    let rooms = ['W9N11'];
     for (let idx in rooms) {
         Memory.rooms[rooms[idx]].check_spawn_queue_flag = true;
     }
 }
 const loop = errorMapper(() => {
-    if (Game.shard.name == 'shard2') {
+    if (Game.flags.GlennGould) {
         if (Game.cpu.bucket == 10000) {
             Game.cpu.generatePixel();
         }
-        return;
-    }
-    if (Game.flags.Appassionata) {
-        if (Game.cpu.bucket == 10000) {
-            Game.cpu.generatePixel();
-        }
-        let rooms = ['W14N12'];
+        let rooms = ['W9N11'];
         mainUniversal(rooms);
+        if (Game.rooms['W9N11'].memory.check_spawn_queue_flag || Game.time % 100 == 0 ||
+            (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == 'W9N11')) {
+            check_one_role(Game.rooms['W9N11'], 'carrier_W9N11');
+        }
+        let source_link0 = Game.getObjectById(Memory.rooms['W9N11'].source_link_ids[0]);
+        let source_link1 = Game.getObjectById(Memory.rooms['W9N11'].source_link_ids[1]);
+        let center_link = Game.getObjectById("619bdff527ccd47b68938bab");
+        let upgrade_link = Game.getObjectById("61b0fb9d91f12d45ad64a2bc");
+        if (source_link0.store.getUsedCapacity(RESOURCE_ENERGY) == 800) {
+            source_link0.transferEnergy(center_link);
+        }
+        if (source_link1.store.getUsedCapacity(RESOURCE_ENERGY) == 800) {
+            source_link1.transferEnergy(center_link);
+        }
+        if (source_link1.store.getUsedCapacity(RESOURCE_ENERGY) > 600 && upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) < 100) {
+            source_link1.transferEnergy(upgrade_link);
+        }
+        if (Game.time % 100 == 2)
+            source_energy_mine('W9N11');
+    }
+    for (let name in Memory.creeps) {
+        let creep = Game.creeps[name];
+        if (!creep) {
+            delete Memory.creeps[name];
+        }
+        else {
+            if (creep.memory.role == 'hu') {
+                harvest_upgrade_work(creep);
+            }
+            if (creep.memory.role == 'carrier_W9N11') {
+                carrier_W9N11_work(creep);
+            }
+            else if (creep.memory.role == 'upgrader_link') {
+                upgrader_link_work(creep);
+            }
+            else if (creep.memory.role == 'hb') {
+                harvest_build_work(creep);
+            }
+            else if (creep.memory.role == 'hf') {
+                harvest_fill_work(creep);
+            }
+            else if (creep.memory.role == 'hl') {
+                energy_harvester_link_work(creep);
+            }
+            else if (creep.memory.role == 'hr') {
+                harvest_repair_work(creep);
+            }
+            else if (creep.memory.role == 'base_transfer') {
+                base_transfer_work(creep);
+            }
+            else if (creep.memory.role == 'builder') {
+                builder_work(creep);
+            }
+            else if (creep.memory.role == 'repairer') {
+                repairer_work(creep);
+            }
+            else if (creep.memory.role == 'cleaner') {
+                cleaner_work(creep);
+            }
+            else if (creep.memory.role == 'hus') {
+                harvest_upgrade_same_work(creep);
+            }
+            else if (creep.memory.role == 'tmp_attack') {
+                tmp_attack_work(creep);
+            }
+            else if (creep.memory.role == 'occupy') {
+                occupy_work(creep);
+            }
+            // Game.spawns['Spawn3'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,CLAIM], 'c', {memory: {role: 'occupy'}})
+            else if (creep.memory.role == 'help') {
+                help_work(creep);
+            }
+        }
     }
     // if (Game.flags.test){
     //     // todo

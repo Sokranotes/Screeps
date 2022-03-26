@@ -14,7 +14,7 @@ export const repairer_work = function(creep: Creep){
     }
     if(creep.memory.is_working) {
         go_to_repair(creep)
-        if ((creep.room.name == 'W47S14' || creep.room.name == 'W48S12') && creep.memory.role == 'hb'){
+        if (creep.memory.role == 'hb'){
             creep.memory.role = 'builder'
         }
     }

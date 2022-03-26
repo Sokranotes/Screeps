@@ -44,7 +44,7 @@ export const Sokranotes = function(){
 
     room_W41S6_running('W41S6')
 
-    room_logic('W44S12')
+    // room_logic('W44S12')
 
     if (Game.time % 10 == 4){
         let spawnName = 'Spawn4'

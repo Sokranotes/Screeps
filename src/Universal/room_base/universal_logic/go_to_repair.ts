@@ -58,5 +58,4 @@ export const go_to_repair = function(creep: Creep, wall_rampart_hits?: number, f
             return
         }
     }
-    creep.memory.role = 'hb'
 }

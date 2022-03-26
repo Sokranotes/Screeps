@@ -83,7 +83,7 @@ let coreLayoutRange = 3; // 核心布局半径，在离storage这个范围内频
 // let avoidRooms = ['E18S8', 'E19S9', 'E21S9', 'E24S8', 'E35N6', 'E25S9',
 //     'E19N2', 'E18N3', 'E29N5', 'E29N3', 'E28N8', 'E33N9', 'E34N8',
 //     'E37N6', 'E41N8', 'E39N11', 'E39N12', 'E39N13', 'E17S9']      // 永不踏入这些房间
-let avoidRooms = ['W46S14', 'W46S11', 'W47S9', 'W46S9', 'W45S9', 'W44S9']      // 永不踏入这些房间
+let avoidRooms = ['W46S14', 'W46S11', 'W47S9', 'W46S9', 'W45S9', 'W44S9', "W15N14", "W14N14"]      // 永不踏入这些房间
 let avoidExits = {
     // 'E35N7': 'E35N6',
     'W47S14': 'W46S14',

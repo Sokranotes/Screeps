@@ -18,6 +18,16 @@ export const base_transfer_work = function(creep: Creep){
         }
     }
     else{
+        if (creep.room.storage && creep.room.terminal && (creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) - creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) >= 20000 || 
+        creep.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) < 20000))
+        {
+            if (creep.room.terminal && creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) > 200){
+                if(creep.withdraw(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(creep.room.terminal, {visualizePathStyle: {stroke: '#808080'}});
+                }
+                return
+            }
+        }
         if (creep.room.storage && creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 200){
             if(creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.storage, {visualizePathStyle: {stroke: '#808080'}});

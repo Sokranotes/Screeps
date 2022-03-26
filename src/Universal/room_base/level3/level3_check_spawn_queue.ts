@@ -12,4 +12,6 @@ export const level3_check_spawn_queue = function(roomName: string){
     check_one_role(room, 'builder')
     check_one_role(room, 'repairer')
     check_one_role(room, 'base_transfer')
+    check_one_role(room, 'hus')
+    check_one_role(room, 'upgrader_link')
 }

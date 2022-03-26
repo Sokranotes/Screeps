@@ -1,22 +1,82 @@
-// Game.spawns['Spawn4'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'help' + Game.time, {memory: {role: 'help', source_idx: 0}})
+// Game.spawns['Spawn2'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'help' + Game.time, {memory: {role: 'help', source_idx: 0, dest_roomName: 'W12N13'}})
 
 import { get_role_workers } from "@/Universal/room_base/universal_logic/check_spawn_queue"
 
 export const help_work = function(creep: Creep){
-    let dest_roomName: string = 'W44S12'
-    if (creep.room.name != dest_roomName){
-        creep.moveTo(new RoomPosition(25, 25, dest_roomName))
-    }
-    else{
-        if ((creep.pos.x < 2 || creep.pos.y < 2 || creep.pos.x > 47 || creep.pos.y > 47) && creep.room.name == dest_roomName)
-            creep.moveTo(new RoomPosition(25, 25, dest_roomName))
+    if (creep.memory.dest_roomName == 'W11N19'){
+        let dest_roomName: string = 'W11N19'
+        if (creep.room.name != dest_roomName){
+            if (creep.room.name == "W14N12") creep.moveTo(new RoomPosition(25, 25, "W14N13"))
+            if (creep.room.name == "W14N13") creep.moveTo(new RoomPosition(25, 25, "W13N13"))
+            if (creep.room.name == "W13N13") creep.moveTo(new RoomPosition(25, 25, "W12N13"))
+            if (creep.room.name == "W12N13") creep.moveTo(new RoomPosition(25, 25, "W12N14"))
+            if (creep.room.name == "W12N14") creep.moveTo(new RoomPosition(25, 25, "W12N15"))
+            if (creep.room.name == "W12N15") creep.moveTo(new RoomPosition(25, 25, "W11N15"))
+            if (creep.room.name == "W11N15") creep.moveTo(new RoomPosition(25, 25, "W11N16"))
+            if (creep.room.name == "W11N16") creep.moveTo(new RoomPosition(25, 25, "W11N17"))
+            if (creep.room.name == "W11N17") creep.moveTo(new RoomPosition(25, 25, "W11N18"))
+            if (creep.room.name == "W11N18") creep.moveTo(new RoomPosition(25, 25, "W11N19"))
+            // creep.moveTo(new RoomPosition(25, 25, dest_roomName))
+        }
         else{
-            // creep.memory.role = 'builder'
-            creep.memory.help = true
-            if (get_role_workers('hu', dest_roomName, 0).length > 0)
-                creep.memory.role = 'hb'
+            if ((creep.pos.x < 2 || creep.pos.y < 2 || creep.pos.x > 47 || creep.pos.y > 47) && creep.room.name == dest_roomName)
+                creep.moveTo(new RoomPosition(25, 25, dest_roomName))
             else{
-                creep.memory.role = 'hu'
+                // creep.memory.role = 'builder'
+                creep.memory.help = true
+                if (get_role_workers('hu', dest_roomName, 0).length > 0)
+                    creep.memory.role = 'hb'
+                else{
+                    creep.memory.role = 'hu'
+                }
+            }
+        }
+    }
+    else if (creep.memory.dest_roomName == 'W12N13'){
+        let dest_roomName: string = 'W12N13'
+        if (creep.room.name != dest_roomName){
+            creep.moveTo(new RoomPosition(25, 25, dest_roomName))
+        }
+        else{
+            if ((creep.pos.x < 2 || creep.pos.y < 2 || creep.pos.x > 47 || creep.pos.y > 47) && creep.room.name == dest_roomName)
+                creep.moveTo(new RoomPosition(25, 25, dest_roomName))
+            else{
+                // creep.memory.role = 'builder'
+                creep.memory.help = true
+                if (get_role_workers('hu', dest_roomName, 0).length > 0)
+                    creep.memory.role = 'hb'
+                else{
+                    creep.memory.role = 'hu'
+                }
+            }
+        }
+    }
+    else if (creep.memory.dest_roomName == 'W12N15'){
+        let dest_roomName: string = 'W12N15'
+        if (creep.room.name != dest_roomName){
+            if (creep.room.name == "W14N12") creep.moveTo(new RoomPosition(25, 25, "W14N13"))
+            if (creep.room.name == "W14N13") creep.moveTo(new RoomPosition(25, 25, "W13N13"))
+            if (creep.room.name == "W13N13") creep.moveTo(new RoomPosition(25, 25, "W12N13"))
+            if (creep.room.name == "W12N13") creep.moveTo(new RoomPosition(25, 25, "W12N14"))
+            if (creep.room.name == "W12N14") creep.moveTo(new RoomPosition(25, 25, "W12N15"))
+            // creep.moveTo(new RoomPosition(25, 25, dest_roomName))
+        }
+        else{
+            if ((creep.pos.x < 2 || creep.pos.y < 2 || creep.pos.x > 47 || creep.pos.y > 47) && creep.room.name == dest_roomName)
+                creep.moveTo(new RoomPosition(25, 25, dest_roomName))
+            else{
+                // creep.memory.role = 'builder'
+                creep.memory.help = true
+                if (get_role_workers('hu', dest_roomName, 0).length > 0){
+                    creep.memory.role = 'hb'
+                    creep.memory.source_idx = 1
+                    delete creep.memory.help
+                }
+                else{
+                    creep.memory.role = 'hus'
+                    creep.memory.source_idx = 0
+                    delete creep.memory.help
+                }
             }
         }
     }

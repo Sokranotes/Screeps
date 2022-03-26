@@ -9,10 +9,6 @@ harvester place is not enough
 tower attack priority and judge
 */
 
-import { harvest_upgrade_work } from "../level1/harvest_upgrade_worker";
-import { harvest_build_work } from "../level2/harvest_build_worker";
-import { harvest_repair_work } from "../level2/harvest_repair_worker";
-import { harvest_fill_work } from "../level2/harvest_fill_worker";
 import { check_towers_id, tower_work } from "./tower";
 import { level3_check_spawn_queue } from "./level3_check_spawn_queue";
 
@@ -29,27 +25,6 @@ export const level3_logic = function(roomName){
             Game.flags.check_towers_id_flag.remove()
         }
         tower_work(roomName)
-    }
-
-    for(let name in Memory.creeps) {
-        let creep = Game.creeps[name]
-        if(!creep) {
-            delete Memory.creeps[name];
-        }
-        else{
-            if(creep.memory.role == 'hu') {
-                harvest_upgrade_work(creep);
-            }
-            else if (creep.memory.role == 'hb'){
-                harvest_build_work(creep)
-            }
-            else if (creep.memory.role == 'hf'){
-                harvest_fill_work(creep)
-            }
-            else if (creep.memory.role == 'hr'){
-                harvest_repair_work(creep)
-            }
-        }
     }
     
     if (room.memory.check_spawn_queue_flag || Game.time % 100 == 0 ||

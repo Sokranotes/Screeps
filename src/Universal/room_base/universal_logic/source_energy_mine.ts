@@ -57,6 +57,7 @@ export function source_energy_mine(roomName: string){
         }
     }
     else sources_num = room.memory.sources_id.length
+    if (room.memory.source_link_ids == undefined) room.memory.source_link_ids = new Array(sources_num)
     for (let i: number = 0; i < sources_num; i++){
         if (judge_source_depend_structure(roomName, i)){
             if (room.memory.source_link_ids[i] != undefined){

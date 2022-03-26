@@ -70,7 +70,7 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
         if (room.controller.level == 8){
             roleNum = 1
         }
-        if (room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 50000 || room.controller.ticksToDowngrade > 150000){
+        if (room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 || room.controller.ticksToDowngrade > 150000){
             roleNum = 0
             return
         }
@@ -79,7 +79,7 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
         if (room.controller.level == 8){
             roleNum = 1
         }
-        if (room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 50000){
+        if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 50000 : false){
             roleNum = 0
             return
         }

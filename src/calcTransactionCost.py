@@ -1,14 +1,18 @@
 import math
 
+# Game.rooms["W12N15"].find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_WALL || (s.structureType === STRUCTURE_RAMPART && !s.my)}).forEach(w => w.destroy())
+# Game.rooms["W12N15"].find(FIND_STRUCTURES, {filter: s => !s.my}).forEach(w => w.destroy())
+
 # 挂单
 # Game.market.createOrder({type: ORDER_SELL, resourceType: RESOURCE_ENERGY, price: 100000, totalAmount: 1, roomName: "W1N1"});
 # Game.market.createOrder({type: ORDER_BUY, resourceType: PIXEL, price: 0.001, totalAmount: 500});
 # Game.market.deal('61cdb24c4215334c4fd2a1e5', 2000);
 # Game.market.createOrder({type: ORDER_BUY, resourceType: RESOURCE_ENERGY, price: 0.001, totalAmount: 300000, roomName: "W1N1"});
+# Game.market.changeOrderPrice("6231b0122a7a9f518b7ac9fe", 2.62)
 
 def main():
-    distance = 25
-    price = 1
+    distance =20
+    price = 0.7
 
     amount = 100000
 
