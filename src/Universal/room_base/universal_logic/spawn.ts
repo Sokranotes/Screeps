@@ -4,68 +4,7 @@ import FlatQueue from './FlatQueue'
 Spawn.prototype.mainSpawn = function(data: spawnData): ScreepsReturnCode{
     let bodys: BodyPartConstant[]
     if (data.bodyParts == undefined){
-        bodys = [WORK, CARRY, MOVE, MOVE]
-        if (data.memory.role == 'hf' || data.memory.role == 'hu' || data.memory.role == 'hr' || data.memory.role == 'hb'){
-            let road_flag = true
-            if (!Memory.rooms[this.room.name].restart_flag){
-                if (road_flag){
-                    switch (this.room.energyCapacityAvailable){
-                        case 300:
-                        case 350:
-                            bodys = [WORK, CARRY, MOVE]
-                            break
-                        case 400:
-                        case 450:
-                        case 500:
-                        case 550:
-                            bodys = [WORK, WORK, CARRY, CARRY, MOVE, MOVE]
-                            break
-                        case 600:
-                        case 650:
-                        case 700:
-                        case 750:
-                            bodys = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
-                            break
-                        case 800:
-                        case 850:
-                        case 900:
-                        case 950:
-                            bodys = [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
-                            break
-                        case 1000:
-                            bodys = [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
-                            break
-                        default:
-                            bodys = [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
-                    }
-                }
-                else{
-                    switch (this.room.energyCapacityAvailable){
-                        case 300:
-                        case 350:
-                            bodys = [WORK, CARRY, MOVE, MOVE]
-                            break
-                        case 400:
-                        case 450:
-                            bodys = [WORK, WORK, CARRY, MOVE, MOVE, MOVE]
-                            break
-                        case 500:
-                        case 550:
-                        case 600:
-                            bodys = [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
-                            break
-                        case 650:
-                        case 700:
-                        case 750:
-                        case 800:
-                            bodys = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
-                            break
-                        default:
-                            bodys = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
-                    }
-                }
-            }
-        }
+        console.log(this.room.name, this.name, data.role, ' data.bodyParts == undefined')
     }
     else{
         bodys = data.bodyParts

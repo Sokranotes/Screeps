@@ -1,58 +1,103 @@
 import { mainUniversal } from './Universal/mainUniversal';
 import { errorMapper } from './modules/errorMapper'
 import "./modules/超级移动优化"
-import { source_energy_mine } from '@/Universal/room_base/universal_logic/source_energy_mine';
-import { harvest_upgrade_work } from '@/Sokranotes/low_level/harvest_upgrade_worker';
-import { harvest_build_work } from '@/Universal/room_base/level2/harvest_build_worker';
-import { harvest_fill_work } from '@/Sokranotes/low_level/harvest_fill_worker';
-import { harvest_repair_work } from '@/Sokranotes/low_level/harvest_repair_worker';
-import { base_transfer_work } from '@/Sokranotes/room_base/base_transfer';
-import { builder_work } from '@/Sokranotes/room_base/builder';
-import { repairer_work } from '@/Sokranotes/room_base/repairer';
-import { harvest_upgrade_same_work } from '@/Universal/room_base/level1/harvest_upgrade_same_worker';
-import { cleaner_work } from '@/Sokranotes/room_base/cleaner';
-import { tmp_attack_work } from '@/Sokranotes/room_base/tmp_attack';
-import { occupy_work } from '@/Sokranotes/occupy/occupy';
-import { help_work } from '@/Sokranotes/room_base/help_worker';
-import { energy_harvester_link_work } from '@/Sokranotes/room_base/energy_harvester_link';
-import { upgrader_link_work } from '@/Sokranotes/room_base/upgrader_link';
-import { check_one_role } from './Universal/room_base/universal_logic/check_spawn_queue';
-import { carrier_W9N11_work } from './Sokranotes/carrier_W9N11';
 // import "./modules/strategy_marketPrice"
 
-if (Game.flags.GlennGould){
-    console.log(Game.time, 'GlennGould new push')
-    let rooms: string[] = ['W9N11']
+import { base_transfer_work } from "@/Sokranotes/room_base/base_transfer";
+import { builder_work } from "@/Sokranotes/room_base/builder";
+import { repairer_work } from "@/Sokranotes/room_base/repairer";
+import { cleaner_work } from "@/Sokranotes/room_base/cleaner";
+import { tmp_attack_work } from "@/Sokranotes/room_base/tmp_attack";
+import { occupy_work } from "@/Sokranotes/occupy/occupy";
+import { help_work } from "@/Sokranotes/room_base/help_worker";
+import { harvest_upgrade_work } from './Sokranotes/low_level/harvest_upgrade_worker';
+import { harvest_build_work } from './Universal/room_base/level2/harvest_build_worker';
+import { harvest_fill_work } from './Sokranotes/low_level/harvest_fill_worker';
+import { harvest_repair_work } from './Sokranotes/low_level/harvest_repair_worker';
+import { harvest_upgrade_same_work } from './Universal/room_base/level1/harvest_upgrade_same_worker';
+import { source_energy_mine } from '@/Universal/room_base/universal_logic/source_energy_mine';
+import { energy_harvester_link_work } from '@/Sokranotes/room_base/energy_harvester_link';
+import { upgrader_link_work } from '@/Sokranotes/room_base/upgrader_link';
+
+global.white_list = new Set(['Mofeng']);
+
+if (Game.flags.Appassionata){
+    console.log(Game.time, 'Appassionata new push')
+    let rooms: string[] = ['W14N12']
     for (let idx in rooms){
         Memory.rooms[rooms[idx]].check_spawn_queue_flag = true
     }
 }
 
 export const loop = errorMapper(() => {
-    if (Game.flags.GlennGould){
+    if (Game.shard.name == 'shard2'){
         if(Game.cpu.bucket == 10000) {
             Game.cpu.generatePixel();
         }
-        let rooms: string[] = ['W9N11']
-        mainUniversal(rooms)
-        if (Game.rooms['W9N11'].memory.check_spawn_queue_flag || Game.time % 100 == 0 ||
-            (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == 'W9N11')){
-                check_one_role(Game.rooms['W9N11'], 'carrier_W9N11')
+        return
+    }
+    if (Game.flags.Appassionata){
+        if(Game.cpu.bucket == 10000) {
+            Game.cpu.generatePixel();
         }
-        let source_link0: StructureLink = Game.getObjectById(Memory.rooms['W9N11'].source_link_ids[0])
-        let source_link1: StructureLink = Game.getObjectById(Memory.rooms['W9N11'].source_link_ids[1])
-        let center_link: StructureLink = Game.getObjectById("619bdff527ccd47b68938bab")
-        let upgrade_link: StructureLink = Game.getObjectById("61b0fb9d91f12d45ad64a2bc")
-        if (source_link0.store.getUsedCapacity(RESOURCE_ENERGY) == 800){
-            source_link0.transferEnergy(center_link)
+        let rooms: string[]
+        let roomName = 'E29N3'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
+            mainUniversal(rooms)
         }
-        if (source_link1.store.getUsedCapacity(RESOURCE_ENERGY) == 800){
-            source_link1.transferEnergy(center_link)
+        roomName = 'W12N15'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
+            mainUniversal(rooms)
         }
-        if (source_link1.store.getUsedCapacity(RESOURCE_ENERGY) > 600 && upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) < 100){
-            source_link1.transferEnergy(upgrade_link)
+        roomName = 'W12N13'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
+            mainUniversal(rooms)
         }
-        if (Game.time % 100 == 2) source_energy_mine('W9N11')
+        roomName = 'W11N19'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
+            mainUniversal(rooms)
+        }
+        roomName = 'W14N12'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
+            mainUniversal(rooms)
+        }
+        // if (Game.time % 100 == 2) source_energy_mine('W14N12')
+        if (Game.flags.showControllerInfo) Game.flags.showControllerInfo.remove();
     }
 
     for(let name in Memory.creeps) {
@@ -60,13 +105,9 @@ export const loop = errorMapper(() => {
         if(!creep) {
             delete Memory.creeps[name];
         }
-        else
-        {
+        else{
             if(creep.memory.role == 'hu') {
                 harvest_upgrade_work(creep);
-            }
-            if(creep.memory.role == 'carrier_W9N11') {
-                carrier_W9N11_work(creep);
             }
             else if(creep.memory.role == 'upgrader_link') {
                 upgrader_link_work(creep);
@@ -74,7 +115,7 @@ export const loop = errorMapper(() => {
             else if (creep.memory.role == 'hb'){
                 harvest_build_work(creep)
             }
-            else if (creep.memory.role == 'hf'){
+            else if (creep.memory.role == 'hf' || creep.memory.role == '_2hf'){
                 harvest_fill_work(creep)
             }
             else if (creep.memory.role == 'hl'){
@@ -83,7 +124,7 @@ export const loop = errorMapper(() => {
             else if (creep.memory.role == 'hr'){
                 harvest_repair_work(creep)
             }
-            else if (creep.memory.role == 'base_transfer'){
+            else if (creep.memory.role == 'base_transfer' || creep.memory.role == '_1bs'){
                 base_transfer_work(creep)
             }
             else if(creep.memory.role == 'builder') {
@@ -97,6 +138,9 @@ export const loop = errorMapper(() => {
             }
             else if(creep.memory.role == 'hus') {
                 harvest_upgrade_same_work(creep);
+            }
+            else if (creep.memory.role == 'tmp_attack') {
+                tmp_attack_work(creep)
             }
             else if (creep.memory.role == 'tmp_attack') {
                 tmp_attack_work(creep)

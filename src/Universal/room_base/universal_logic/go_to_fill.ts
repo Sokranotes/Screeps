@@ -57,19 +57,6 @@ export const go_to_fill = function(creep: Creep, tower_first: boolean = false){
             return
         }
     }
-    // if (creep.room.storage && creep.room.storage.store.getFreeCapacity() >= creep.store.getUsedCapacity()){
-    //     if(creep.transfer(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-    //         creep.moveTo(creep.room.storage)
-    //     }
-    //     return
-    // }
-
-    // if (creep.room.terminal && creep.room.terminal.store.getFreeCapacity() >= creep.store.getUsedCapacity()){
-    //     if(creep.transfer(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-    //         creep.moveTo(creep.room.terminal)
-    //     }
-    //     return
-    // }
 
     if (creep.room.controller.my? creep.room.controller.level >= 6 : false){
         target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -110,11 +97,20 @@ export const go_to_fill = function(creep: Creep, tower_first: boolean = false){
             }
             return
         }
-        else{
-            return false
+    }
+    if (creep.room.terminal && creep.room.terminal.store.getFreeCapacity() >= creep.store.getUsedCapacity()){
+        if(creep.transfer(creep.room.terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(creep.room.terminal)
         }
+        return
+    }
+    if (creep.room.storage && creep.room.storage.store.getFreeCapacity() >= creep.store.getUsedCapacity()){
+        if(creep.transfer(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(creep.room.storage)
+        }
+        return
     }
     else{
         return false
-    } 
+    }
 }

@@ -19,6 +19,7 @@ import { source_energy_mine } from '@/Universal/room_base/universal_logic/source
 import { energy_harvester_link_work } from '@/Sokranotes/room_base/energy_harvester_link';
 import { upgrader_link_work } from '@/Sokranotes/room_base/upgrader_link';
 
+global.white_list = new Set(['Mofeng']);
 
 if (Game.flags.Appassionata){
     console.log(Game.time, 'Appassionata new push')
@@ -40,21 +41,63 @@ export const loop = errorMapper(() => {
             Game.cpu.generatePixel();
         }
         let rooms: string[]
-        if (Game.rooms['W12N15']){
-            rooms = ['W12N15']
+        let roomName = 'E29N3'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
             mainUniversal(rooms)
         }
-        if (Game.rooms['W12N13']){
-            rooms = ['W12N13']
+        roomName = 'W12N15'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
             mainUniversal(rooms)
         }
-        if (Game.rooms['W11N19']){
-            rooms = ['W11N19']
+        roomName = 'W12N13'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
             mainUniversal(rooms)
         }
-        rooms = ['W14N12']
-        mainUniversal(rooms)
-        if (Game.time % 100 == 2) source_energy_mine('W14N12')
+        roomName = 'W11N19'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
+            mainUniversal(rooms)
+        }
+        roomName = 'W14N12'
+        if (Game.rooms[roomName]){
+            rooms = [roomName]
+            if (Game.flags.showControllerInfo){
+                if (Game.rooms[roomName]? Game.rooms[roomName].controller ? Game.rooms[roomName].controller.my ? true: false : false : false)
+                    console.log(roomName, ' level:', Game.rooms[roomName].controller.level, ' ticksToDowngrade:', Game.rooms[roomName].controller.ticksToDowngrade, ' rate:', Game.rooms[roomName].controller.progress/Game.rooms[roomName].controller.progressTotal, ' need:', Game.rooms[roomName].controller.progressTotal - Game.rooms[roomName].controller.progress)
+                else
+                    console.log(roomName, ' is not mine.')
+            }
+            mainUniversal(rooms)
+        }
+        // if (Game.time % 100 == 2) source_energy_mine('W14N12')
+        if (Game.flags.showControllerInfo) Game.flags.showControllerInfo.remove();
     }
 
     for(let name in Memory.creeps) {
@@ -72,7 +115,7 @@ export const loop = errorMapper(() => {
             else if (creep.memory.role == 'hb'){
                 harvest_build_work(creep)
             }
-            else if (creep.memory.role == 'hf'){
+            else if (creep.memory.role == 'hf' || creep.memory.role == '_2hf'){
                 harvest_fill_work(creep)
             }
             else if (creep.memory.role == 'hl'){
@@ -81,7 +124,7 @@ export const loop = errorMapper(() => {
             else if (creep.memory.role == 'hr'){
                 harvest_repair_work(creep)
             }
-            else if (creep.memory.role == 'base_transfer'){
+            else if (creep.memory.role == 'base_transfer' || creep.memory.role == '_1bs'){
                 base_transfer_work(creep)
             }
             else if(creep.memory.role == 'builder') {

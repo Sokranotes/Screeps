@@ -70,7 +70,7 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
         if (room.controller.level == 8){
             roleNum = 1
         }
-        if (room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 || room.controller.ticksToDowngrade > 150000){
+        if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false || room.controller.ticksToDowngrade > 150000){
             roleNum = 0
             return
         }
@@ -84,18 +84,38 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
             return
         }
     }
-    let role_workers_length: number
-    if (role == 'hf'){
-        if (role_workers_length == 0){
-            Memory.rooms[room.name].restart_flag = true
-        }
-        else{
-            delete Memory.rooms[room.name].restart_flag
-        }
-    }
     roleNum = roleNum == undefined? room_config[room.name][config_level][role]['num'] : roleNum
+    let role_workers_length: number
     if (source_idx == undefined && room_config[room.name][config_level][role]['source_idx'] == undefined){
         role_workers_length = get_role_workers(role, room.name, room_config[room.name][config_level][role]['ticksToLive']).length
+        if (role == 'base_transfer' && roleNum != 0){
+            if (role_workers_length == 0){
+                if (get_role_workers("_1bs", room.name, room_config[room.name][config_level][role]['ticksToLive']).length == 0 && Memory.rooms[room.name].restart_flag == undefined)
+                {
+                    if (room.storage ? room.storage.store.getCapacity(RESOURCE_ENERGY) > 5000 : false || room.terminal ? room.terminal.store.getCapacity(RESOURCE_ENERGY) > 5000 : false){
+                        let data1: spawnData = {
+                            name: "_1bs" + Game.time,
+                            bodyParts: [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE],
+                            memory: {
+                                role: '_1bs',
+                            }
+                        }
+                        let data2: spawnData = {
+                            name: "_1bs" + Game.time,
+                            bodyParts: [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE],
+                            memory: {
+                                role: '_1bs',
+                            }
+                        }
+                        room.addSpawnTask(-1, data1)
+                        room.addSpawnTask(-1, data2)
+                        Memory.rooms[room.name].restart_flag = true
+                        return
+                    }
+                }
+            }
+        }
+        else delete Memory.rooms[room.name].restart_flag
         for (let i = roleNum - role_workers_length; i > 0; i--){
             let data: spawnData = {
                 name: (i == 1 ? role : role + i),
@@ -110,6 +130,33 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
     else{
         source_idx = source_idx == undefined? room_config[room.name][config_level][role]['source_idx']: source_idx
         role_workers_length = get_role_workers(role, room.name, room_config[room.name][config_level][role]['ticksToLive'], '', source_idx=source_idx).length
+        if (role == 'hf' && roleNum != 0){
+            if (role_workers_length == 0){
+                if (get_role_workers("_2hf", room.name, room_config[room.name][config_level][role]['ticksToLive']).length == 0 && Memory.rooms[room.name].restart_flag == undefined)
+                {
+                    let data1: spawnData = {
+                        name: "_2hf" + Game.time,
+                        bodyParts: [WORK, CARRY, MOVE, MOVE],
+                        memory: {
+                            role: '_2hf',
+                            source_idx: source_idx,
+                        }
+                    }
+                    let data2: spawnData = {
+                        name: "_2hf" + Game.time,
+                        bodyParts: [WORK, CARRY, MOVE, MOVE],
+                        memory: {
+                            role: '_2hf',
+                            source_idx: source_idx,
+                        }
+                    }
+                    room.addSpawnTask(-2, data1)
+                    room.addSpawnTask(-2, data2)
+                    Memory.rooms[room.name].restart_flag = true
+                }
+            }
+        }
+        else delete Memory.rooms[room.name].restart_flag
         for (let i = roleNum - role_workers_length; i > 0; i--){
             let data: spawnData = {
                 name: (i == 1 ? role : role + i),
