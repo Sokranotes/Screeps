@@ -16,9 +16,13 @@ import { go_to_harvest } from "../universal_logic/go_to_harvest";
 export const harvest_upgrade_same_work = function(creep: Creep){
     let priority: number = 10
     let minTicksToLive = 100
-    if (creep.ticksToLive == minTicksToLive){
+    if (creep.ticksToLive == minTicksToLive && creep.memory.role == 'hus'){
+        let level = global.room_config[creep.room.name]['level'+creep.room.controller.level] == undefined ? 
+            'default' : 'level'+creep.room.controller.level
+        let bodyParts = global.room_config[creep.room.name][level][creep.memory.role]['bodyParts']
         const data = {
             name: creep.memory.role, 
+            bodyParts: bodyParts,
             memory: {
                 role: creep.memory.role,
                 source_idx: creep.memory.source_idx

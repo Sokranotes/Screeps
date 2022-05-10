@@ -20,9 +20,13 @@ export const harvest_build_work = function(creep: Creep){
     let priority: number = 20
     let minTicksToLive = 150
 
-    if (creep.ticksToLive == minTicksToLive){
+    if (creep.ticksToLive == minTicksToLive && creep.memory.role == 'hb'){
+        let level = global.room_config[creep.room.name]['level'+creep.room.controller.level] == undefined ? 
+            'default' : 'level'+creep.room.controller.level
+        let bodyParts = global.room_config[creep.room.name][level][creep.memory.role]['bodyParts']
         const data = {
             name: creep.memory.role, 
+            bodyParts: bodyParts,
             memory: {
                 role: creep.memory.role,
                 source_idx: creep.memory.source_idx

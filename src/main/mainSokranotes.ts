@@ -6,7 +6,9 @@ import { HelperRoomResource } from "./modules/全局资源显示插件v1.0/helpe
 
 global.HelperCpuUsed = HelperCpuUsed;
 global.HelperRoomResource = HelperRoomResource;
-global.white_list = new Set(['scp002']);
+global.white_list = new Set(['scp002', 'Mr-tang']);
+global.group_friends = new Set(['6g3y', 'mikumikumiku', 'scp002', 'MiHack', 'Nemophilist'])
+global.group_friends_rooms = new Set(['W49S15', 'W49S17', 'W49S19', 'W48S18', 'W47S19', 'W41S41', 'W39S23', 'W39S35', 'W38S28', 'W31S39', 'W42S43', 'W46S11', 'W44S2', 'W42S2', 'W39S8', 'W14N12', 'W12N15', 'W12N13', 'W11N19', 'E29N3', 'W41S11', 'W19N21', 'W9N51', 'W9S49', 'E19N19', 'E19N11', 'E29S21', 'E29S29'])
 let rooms: string[] = ['W48S12']
 for (let idx in rooms){
     Memory.rooms[rooms[idx]].check_spawn_queue_flag = true

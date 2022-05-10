@@ -1,5 +1,8 @@
 // Game.spawns['Spawn4'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], 'tmp_attack1', {memory: {role: 'tmp_attack'}});
 // Game.spawns['Spawn1'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], 'tmp_attack2', {memory: {role: 'tmp_attack'}});
+
+import { random } from "lodash"
+
 // Game.spawns['Spawn1'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], 'tmp_attack3', {memory: {role: 'tmp_attack'}});
 export const tmp_attack_work = function(creep: Creep){
     // if (creep.body[6].boost == undefined){
@@ -176,80 +179,267 @@ export const tmp_attack_work = function(creep: Creep){
     //     }
     // }
     
-    if (creep.getActiveBodyparts(CLAIM) != 0){
-        // let room_name = "W12N15"
-        // let dest_id: string = "5bbcac3c9099fc012e635237" // controller
-        // if (creep.room.name != room_name){
-        //     creep.moveTo(new RoomPosition(25, 25, room_name))
-        // }
-        // else{
-        //     let c: StructureController = Game.getObjectById(dest_id)
-        //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
-        //         creep.moveTo(new RoomPosition(25, 25, room_name))
-        //     else if (!c.my)
-        //     {
-        //         if (creep.attackController(Game.getObjectById(dest_id)) != OK)
-        //         {
-        //             creep.moveTo(Game.getObjectById(dest_id))
-        //         }
-        //     }
-        // }
+    // if (creep.getActiveBodyparts(CLAIM) != 0){
+    //     // let room_name = "W12N15"
+    //     // let dest_id: string = "5bbcac3c9099fc012e635237" // controller
+    //     // if (creep.room.name != room_name){
+    //     //     creep.moveTo(new RoomPosition(25, 25, room_name))
+    //     // }
+    //     // else{
+    //     //     let c: StructureController = Game.getObjectById(dest_id)
+    //     //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //     //         creep.moveTo(new RoomPosition(25, 25, room_name))
+    //     //     else if (!c.my)
+    //     //     {
+    //     //         if (creep.attackController(Game.getObjectById(dest_id)) != OK)
+    //     //         {
+    //     //             creep.moveTo(Game.getObjectById(dest_id))
+    //     //         }
+    //     //     }
+    //     // }
 
-        let room_name = "W12N15"
-        let dest_id: string = "5bbcac3c9099fc012e635237"
-        if (creep.room.name != room_name){
-            creep.moveTo(new RoomPosition(25, 25, room_name))
-        }
-        else{
-            let c: StructureController = Game.getObjectById(dest_id)
-            if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
-                creep.moveTo(new RoomPosition(25, 25, room_name))
-            try{
-                if (creep.attackController(Game.getObjectById(dest_id)) != OK)
-                {
-                    creep.moveTo(Game.getObjectById(dest_id))
-                }
-                else{
-                    creep.reserveController(Game.getObjectById(dest_id))
-                }
-            }
-            catch{
+    //     let room_name = "W12N15"
+    //     let dest_id: string = "5bbcac3c9099fc012e635237"
+    //     if (creep.room.name != room_name){
+    //         creep.moveTo(new RoomPosition(25, 25, room_name))
+    //     }
+    //     else{
+    //         let c: StructureController = Game.getObjectById(dest_id)
+    //         if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //             creep.moveTo(new RoomPosition(25, 25, room_name))
+    //         try{
+    //             if (creep.attackController(Game.getObjectById(dest_id)) != OK)
+    //             {
+    //                 creep.moveTo(Game.getObjectById(dest_id))
+    //             }
+    //             else{
+    //                 creep.reserveController(Game.getObjectById(dest_id))
+    //             }
+    //         }
+    //         catch{
 
-            }
-        }
+    //         }
+    //     }
 
 
-            // else if (c.reservation? c.reservation.username == "Invader": false)
-            // {
-            //     if (creep.attackController(Game.getObjectById(dest_id)) != OK)
-            //     {
-            //         creep.moveTo(Game.getObjectById(dest_id))
-            //     }
-            // }
-            // else{
-            //     if (creep.reserveController(Game.getObjectById(dest_id)) != OK)
-            //     {
-            //         creep.moveTo(Game.getObjectById(dest_id))
-            //     }
-            // }
-    }
-    else{
-        // Game.spawns['Spawn1'].spawnCreep([MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK], 'tmp_attack1', {memory: {role: 'tmp_attack'}});
-        let room_name: string = "W12N13"
-        let invader_core_id: string = "6239e8070e2a57233b3c9c72"
-        if (creep.room.name != room_name){
-            creep.moveTo(new RoomPosition(25, 25, room_name))
+    //         // else if (c.reservation? c.reservation.username == "Invader": false)
+    //         // {
+    //         //     if (creep.attackController(Game.getObjectById(dest_id)) != OK)
+    //         //     {
+    //         //         creep.moveTo(Game.getObjectById(dest_id))
+    //         //     }
+    //         // }
+    //         // else{
+    //         //     if (creep.reserveController(Game.getObjectById(dest_id)) != OK)
+    //         //     {
+    //         //         creep.moveTo(Game.getObjectById(dest_id))
+    //         //     }
+    //         // }
+    // }
+    // else{
+    //     // Game.spawns['Spawn1'].spawnCreep([MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK], 'tmp_attack1', {memory: {role: 'tmp_attack'}});
+    //     let room_name: string = "W12N13"
+    //     let invader_core_id: string = "6239e8070e2a57233b3c9c72"
+    //     if (creep.room.name != room_name){
+    //         creep.moveTo(new RoomPosition(25, 25, room_name))
+    //     }
+    //     else{
+    //         if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //             creep.moveTo(new RoomPosition(25, 25, room_name))
+    //         else if (Game.getObjectById(invader_core_id))
+    //         {
+    //             if (creep.attack(Game.getObjectById(invader_core_id)) != OK)
+    //             {
+    //                 creep.moveTo(Game.getObjectById(invader_core_id))
+    //             }
+    //         }
+    //     }
+    // }
+
+    // if (creep.getActiveBodyparts(CLAIM) != 0){
+    //     let room_name = "W44S12"
+    //     let dest_id: string = "5bbcaaa49099fc012e631df8"
+    //     if (creep.room.name != room_name){
+    //         creep.moveTo(new RoomPosition(25, 25, room_name))
+    //     }
+    //     else{
+    //         let c: StructureController = Game.getObjectById(dest_id)
+    //         if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //             creep.moveTo(new RoomPosition(25, 25, room_name))
+    //         try{
+    //             if (c.reservation? c.reservation.username == "Invader": false)
+    //             {
+    //                 if (creep.attackController(Game.getObjectById(dest_id)) != OK)
+    //                 {
+    //                     creep.moveTo(Game.getObjectById(dest_id))
+    //                 }
+    //             }
+    //             else{
+    //                 if (creep.claimController(Game.getObjectById(dest_id)) != OK)
+    //                 {
+    //                     creep.moveTo(Game.getObjectById(dest_id))
+    //                 }
+    //             }
+    //         }
+    //         catch{
+
+    //         }
+    //     }
+    // }
+    // else{
+    //     // Game.spawns['Spawn1'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK], 'tmp_attack1', {memory: {role: 'tmp_attack'}});
+    //     let room_name: string = "W44S12"
+    //     let invader_core_id: string = "62583374fcd74b24d7bac416"
+    //     if (creep.room.name != room_name){
+    //         creep.moveTo(new RoomPosition(25, 25, room_name))
+    //     }
+    //     else{
+    //         if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
+    //             creep.moveTo(new RoomPosition(25, 25, room_name))
+    //         else if (Game.getObjectById(invader_core_id))
+    //         {
+    //             if (creep.attack(Game.getObjectById(invader_core_id)) != OK)
+    //             {
+    //                 creep.moveTo(Game.getObjectById(invader_core_id))
+    //             }
+    //         }
+    //     }
+    // }
+
+    // MrJakob64
+    // Game.rooms['W12N13'].addSpawnTask(5, {name: "tmp_attack" + Game.time, bodyParts: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],memory: {role: 'tmp_attack',}})
+    // [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL]
+    // if (creep.getActiveBodyparts(HEAL) != 0){
+    //     // if (creep.body[creep.body.length-1].boost == undefined){
+    //     //     let lab_xlho2: StructureLab = Game.getObjectById('6256e8527e57d682008f93a4')
+    //     //     if (!creep.pos.isNearTo(lab_xlho2)){
+    //     //         creep.moveTo(lab_xlho2)
+    //     //         return
+    //     //     }
+    //     //     else{
+    //     //         lab_xlho2.boostCreep(creep)
+    //     //         return
+    //     //     }
+    //     // }
+    //     // creep.heal(creep)
+    //     // if (creep.room.name != 'W12N12'){
+    //     //     creep.moveTo(new RoomPosition(25, 25, 'W12N12'))
+    //     // }
+    //     // else{
+    //     //     if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47){
+    //     //         creep.moveTo(new RoomPosition(25, 25, 'W12N12'))
+    //     //         return
+    //     //     }
+    //     //     // 禁止踏入该区域 x < 34 && y > 21
+    //     //     if (creep.pos.x == 33){
+    //     //         creep.move(BOTTOM_RIGHT)
+    //     //     }
+    //     //     else if (creep.pos.y == 21){
+    //     //         creep.move(RIGHT)
+    //     //     }
+    //     //     else{
+    //     //         let link: StructureLink = Game.getObjectById('623c845931a34425f943e035')
+    //     //         if (link){
+    //     //             if (!creep.pos.isNearTo(link)){
+    //     //                 creep.moveTo(link)
+    //     //             }
+    //     //             else{
+    //     //                 let creep1: Creep = Game.getObjectById('625fa7910c3de0f47a19ccba')
+    //     //                 if (creep1)
+    //     //                     if (creep.rangedAttack(creep1) == OK)
+    //     //                         creep.rangedMassAttack()
+    //     //                 else
+    //     //                     creep.rangedMassAttack()
+    //     //             }
+    //     //         }
+    //     //     }
+    //     // }
+
+    //     // let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS)
+    //     let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: s => s.structureType != STRUCTURE_STORAGE && s.structureType != STRUCTURE_ROAD&& s.structureType != STRUCTURE_CONTAINER})
+    //     if (target)
+    //         if (!creep.pos.isNearTo(target)) creep.moveTo(target)
+    //     creep.rangedMassAttack()
+    // }
+    // else if (creep.getActiveBodyparts(ATTACK) != 0){
+    //     // if (Game.flags.tmp_attack){
+    //     //     if (!creep.pos.isNearTo(Game.flags.tmp_attack)){
+    //     //         creep.moveTo(Game.flags.tmp_attack)
+    //     //         return
+    //     //     }
+    //     // }
+    //     // let link1: StructureLink = Game.getObjectById('625fb4ddae1c7464a7296f2e')
+    //     // if (link1)
+    //     //     if (creep.attack(link1) == OK)
+    //     //         return
+    //     // if (creep.room.name != 'W12N12'){
+    //     //     creep.moveTo(new RoomPosition(25, 25, 'W12N12'))
+    //     // }
+    //     // else{
+    //     //     if (creep.pos.x < 3 || creep.pos.x > 47 || creep.pos.y < 3 || creep.pos.y > 47) {
+    //     //         creep.moveTo(new RoomPosition(25, 25, 'W12N12'))
+    //     //         return
+    //     //     }
+    //     //     // let creep2: Creep = Game.getObjectById('625fb4ddae1c7464a7296f2e')
+    //     //     // if (creep2)
+    //     //     //     if (!creep.pos.isNearTo(creep2)){
+    //     //     //         creep.moveTo(creep2)
+    //     //     //     }
+    //     //     //     else{
+    //     //     //         creep.attack(creep2)
+    //     //     //     }
+    //     //     // let tower1: StructureTower = Game.getObjectById('62299f08475f3e52df4c46ae')
+    //     //     // let tower2: StructureTower = Game.getObjectById('6234f9474cc76831ab4b9348')
+    //     //     // if (tower1 && tower2)
+    //     //     //     if (tower1.store.getUsedCapacity(RESOURCE_ENERGY) > 0 && tower2.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
+    //     //     //         ;
+    //     //     //     }
+    //     //     //     else{
+    //     //     //         if (tower1)
+    //     //     //             if (!creep.pos.isNearTo(tower1)) creep.moveTo(tower1)
+    //     //     //             else creep.attack(tower1)
+    //     //     //         else if (tower2)
+    //     //     //             if (!creep.pos.isNearTo(tower2)) creep.moveTo(tower2)
+    //     //     //             else creep.attack(tower2)
+    //     //     //     }
+    //     //     // if (tower2)
+    //     //     //     if (tower2.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
+    //     //     //         ;
+    //     //     //     }
+    //     //     //     else{
+    //     //     //         if (!creep.pos.isNearTo(tower2)) creep.moveTo(tower2)
+    //     //     //         else creep.attack(tower2)
+    //     //     //     }
+
+    //     //     // let tower1: StructureTower = Game.getObjectById('623c845931a34425f943e035')
+    //     //     // let res = creep.room.find(FIND_STRUCTURES, {filter: s => s.pos.x > 24 && s.pos.y > 29 && s.structureType != STRUCTURE_ROAD && s.structureType != STRUCTURE_CONTAINER})
+    //     //     // let tower1 = res[0]
+
+    //     //     // let tower1: StructureTower = Game.getObjectById('622779eb8de18e2d9324cf66')
+    //     //     // if (tower1)
+    //     //     //     if (!creep.pos.isNearTo(tower1)) creep.moveTo(tower1)
+    //     //     //     else creep.attack(tower1)
+
+    //     //     let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS)
+    //     //     if (target){
+    //     //         creep.attack(target)
+    //     //     }
+    //     // }
+
+    //     // let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS)
+    //     let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: s => s.structureType != STRUCTURE_STORAGE && s.structureType != STRUCTURE_ROAD&& s.structureType != STRUCTURE_CONTAINER})
+    //     if (target){
+    //         if (!creep.pos.isNearTo(target)) creep.moveTo(target)
+    //         else
+    //         creep.attack(target)
+    //     }
+    // }
+
+    if (Game.flags.tmp_attack){
+        if (!creep.pos.isNearTo(Game.flags.tmp_attack)){
+            creep.moveTo(Game.flags.tmp_attack)
+            return
         }
-        else{
-            if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47)
-                creep.moveTo(new RoomPosition(25, 25, room_name))
-            else if (Game.getObjectById(invader_core_id))
-            {
-                if (creep.attack(Game.getObjectById(invader_core_id)) != OK)
-                {
-                    creep.moveTo(Game.getObjectById(invader_core_id))
-                }
-            }
-        }
+        creep.suicide()
     }
 }

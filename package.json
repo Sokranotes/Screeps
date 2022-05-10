@@ -21,7 +21,8 @@
     "build": "rollup -cw",
     "push": "rollup -cw --environment DEST:main",
     "local": "rollup -cw --environment DEST:local",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "echo": "echo hello world & echo world & echo goodbye world"
   },
   "repository": {
     "type": "git",

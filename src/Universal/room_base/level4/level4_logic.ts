@@ -40,8 +40,8 @@ export const level4_logic = function(roomName){
         tower_work(roomName)
     }
     
-    if (room.memory.check_spawn_queue_flag || Game.time % 100 == 0 ||
-        (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName)){
+    if (room.memory.spawning == undefined && (room.memory.check_spawn_queue_flag || 
+        (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName))){
         level3_check_spawn_queue(roomName)
         if (room.memory.check_spawn_queue_flag)
             delete room.memory.check_spawn_queue_flag

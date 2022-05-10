@@ -16,6 +16,9 @@ import { occupy_work } from '@/Sokranotes/occupy/occupy';
 import { help_work } from '@/Sokranotes/room_base/help_worker';
 import { energy_harvester_link_work } from '@/Sokranotes/room_base/energy_harvester_link';
 import { upgrader_link_work } from '@/Sokranotes/room_base/upgrader_link';
+import { doing } from '@/Universal/room_base/universal_logic/spawn';
+import { check_one_role } from './Universal/room_base/universal_logic/check_spawn_queue';
+import { carrier_W9N11_work } from './Sokranotes/carrier_W9N11';
 // import "./modules/strategy_marketPrice"
 
 if (Game.flags.GlennGould){
@@ -31,10 +34,19 @@ export const loop = errorMapper(() => {
         if(Game.cpu.bucket == 10000) {
             Game.cpu.generatePixel();
         }
+        if (Game.time % 100 == 77){
+            let rooms: string[] = ['W9N11']
+            for (let idx in rooms){
+                Memory.rooms[rooms[idx]].check_spawn_queue_flag = true
+            }
+        }
         let rooms: string[] = ['W9N11']
         mainUniversal(rooms)
-        let source_link0: StructureLink = Game.getObjectById(Memory.rooms[rooms[0]].links_id[0])
-        let source_link1: StructureLink = Game.getObjectById(Memory.rooms[rooms[0]].links_id[1])
+        if (Game.rooms['W9N11'].memory.spawning == undefined && (Game.time % 100 == 77)){
+                check_one_role(Game.rooms['W9N11'], 'carrier_W9N11')
+        }
+        let source_link0: StructureLink = Game.getObjectById('619bef3f9376bd1df981188f')
+        let source_link1: StructureLink = Game.getObjectById('61a6c491e0032fc27f5402c1')
         let center_link: StructureLink = Game.getObjectById("619bdff527ccd47b68938bab")
         let upgrade_link: StructureLink = Game.getObjectById("61b0fb9d91f12d45ad64a2bc")
         if (source_link0.store.getUsedCapacity(RESOURCE_ENERGY) == 800){
@@ -48,14 +60,15 @@ export const loop = errorMapper(() => {
         }
         if (Game.time % 100 == 2) source_energy_mine('W9N11')
     }
-
+    delete Game.rooms['W9N11'].memory.spawning
+    doing(Game.spawns)
     for(let name in Memory.creeps) {
         let creep = Game.creeps[name]
         if(!creep) {
             delete Memory.creeps[name];
         }
         else{
-            if(creep.memory.role == 'hu') {
+            if(creep.memory.role == 'hu' || creep.memory.role == '_1hu') {
                 harvest_upgrade_work(creep);
             }
             else if(creep.memory.role == 'upgrader_link') {
@@ -64,16 +77,19 @@ export const loop = errorMapper(() => {
             else if (creep.memory.role == 'hb'){
                 harvest_build_work(creep)
             }
-            else if (creep.memory.role == 'hf'){
+            else if (creep.memory.role == 'hf' || creep.memory.role == '_2hf'){
                 harvest_fill_work(creep)
+            }
+            else if (creep.memory.role == 'carrier_W9N11'){
+                carrier_W9N11_work(creep)
             }
             else if (creep.memory.role == 'hl'){
                 energy_harvester_link_work(creep)
             }
-            else if (creep.memory.role == 'hr'){
+            else if (creep.memory.role == 'hr' || creep.memory.role == '_1hr'){
                 harvest_repair_work(creep)
             }
-            else if (creep.memory.role == 'base_transfer'){
+            else if (creep.memory.role == 'base_transfer' || creep.memory.role == '_1bs'){
                 base_transfer_work(creep)
             }
             else if(creep.memory.role == 'builder') {

@@ -9,30 +9,62 @@ import math
 # Game.market.deal('61cdb24c4215334c4fd2a1e5', 2000);
 # Game.market.createOrder({type: ORDER_BUY, resourceType: RESOURCE_ENERGY, price: 0.001, totalAmount: 300000, roomName: "W1N1"});
 # Game.market.changeOrderPrice("6231b0122a7a9f518b7ac9fe", 2.62)
+# Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')
+
+# python src/calcTransactionCost.py
+
+import os
 
 def main():
-    distance =20
-    price = 0.7
+    os.system('cls')
+    prices = [3, 4.012, 3.647, 3.737, 4.033, 0.783, 4.289, ]
+    distances = [10, 15, 15, 6, 18, 37, 56]
 
     amount = 100000
 
-    cost = math.ceil(amount * (1 - pow(math.e, (-1*(distance)/30))))
+    if (len(distances) == 1):
+        distances = [distances] * len(prices)
 
-    print('#######卖')
-    print('距离:', distance)
-    print('运费:', cost)
-    print('出价:', price)
-    print('减去运输费之后:')
-    print('实价:', (price*amount)/(cost + amount))
-    print('差价:', price - (price*amount)/(cost + amount))
-    print('占比:', (price - (price*amount)/(cost + amount))/price)
+    print('---------------------------卖--------------------------')
+    print('距离:\t', end='')
+    for idx in range(len(prices)):
+        print(round(distances[idx], 4), end='\t')
+    print()
 
-    print('#######买')
-    print('距离:', distance)
-    print('运费:', cost)
-    print('出价:', price)
-    print('减去运输费之后:')
-    print('实价:', ((price*amount)/(amount-cost)))
+    # print('运费:', cost)
+    print('出价:\t', end='')
+    for idx in range(len(prices)):
+        print(round(prices[idx], 4), end='\t')
+    print()
+    # print('减去运输费之后:')
+    print('实价:\t', end='')
+    for idx in range(len(prices)):
+        cost = math.ceil(amount * (1 - pow(math.e, (-1*(distances[idx])/30))))
+        print(round((prices[idx]*amount)/(cost + amount), 4), end='\t')
+    print()
+    
+    # print('差价:', price - (price*amount)/(cost + amount))
+    # print('占比:', (price - (price*amount)/(cost + amount))/price)
+
+    print('---------------------------买--------------------------')
+
+    print('距离:\t', end='')
+    for idx in range(len(prices)):
+        print(round(distances[idx], 4), end='\t')
+    print()
+    # print('运费:', cost)
+    print('出价:\t', end='')
+    for idx in range(len(prices)):
+        print(round(prices[idx], 4), end='\t')
+    print()
+    # print('减去运输费之后:')
+    # print('实价:', ((price*amount)/(amount-cost)))
+
+    print('实价:\t', end='')
+    for idx in range(len(prices)):
+        cost = math.ceil(amount * (1 - pow(math.e, (-1*(distances[idx])/30))))
+        print(round((prices[idx]*amount)/(amount - cost), 4), end='\t')
+    print()
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,6 @@
 import FlatQueue from './../universal_logic/FlatQueue'
 import {room_config} from './../config'
+import { CalculateEnergy } from '@/Universal/utils'
 
 export const clear_spawn_queue = function(roomName: string){
     Memory.rooms[roomName].spawnQueue = {}
@@ -70,6 +71,11 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
         if (room.controller.level == 8){
             roleNum = 1
         }
+        // energy is too much, avoid blowing up
+        if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 850000: false){
+            roleNum = 1
+            return
+        }
         if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false || room.controller.ticksToDowngrade > 150000){
             roleNum = 0
             return
@@ -86,11 +92,12 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
     }
     roleNum = roleNum == undefined? room_config[room.name][config_level][role]['num'] : roleNum
     let role_workers_length: number
+    bodyParts = room_config[room.name][config_level][role]['bodyParts']
     if (source_idx == undefined && room_config[room.name][config_level][role]['source_idx'] == undefined){
-        role_workers_length = get_role_workers(role, room.name, room_config[room.name][config_level][role]['ticksToLive']).length
+        role_workers_length = get_role_workers(role, room.name).length
         if (role == 'base_transfer' && roleNum != 0){
-            if (role_workers_length == 0){
-                if (get_role_workers("_1bs", room.name, room_config[room.name][config_level][role]['ticksToLive']).length == 0 && Memory.rooms[room.name].restart_flag == undefined)
+            if (role_workers_length == 0 && room.energyAvailable < CalculateEnergy(bodyParts)){
+                if (get_role_workers("_1bs", room.name).length == 0 && Memory.rooms[room.name].restart_flag == undefined)
                 {
                     if (room.storage ? room.storage.store.getCapacity(RESOURCE_ENERGY) > 5000 : false || room.terminal ? room.terminal.store.getCapacity(RESOURCE_ENERGY) > 5000 : false){
                         let data1: spawnData = {
@@ -117,9 +124,13 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
         }
         else delete Memory.rooms[room.name].restart_flag
         for (let i = roleNum - role_workers_length; i > 0; i--){
+            if (bodyParts == undefined){
+                console.log(room.name, role, ' bodyParts == undefined')
+                return
+            }
             let data: spawnData = {
                 name: (i == 1 ? role : role + i),
-                bodyParts: bodyParts == undefined? room_config[room.name][config_level][role]['bodyParts']: bodyParts,
+                bodyParts: bodyParts,
                 memory: {
                     role: role,
                 }
@@ -131,8 +142,18 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
         source_idx = source_idx == undefined? room_config[room.name][config_level][role]['source_idx']: source_idx
         role_workers_length = get_role_workers(role, room.name, room_config[room.name][config_level][role]['ticksToLive'], '', source_idx=source_idx).length
         if (role == 'hf' && roleNum != 0){
-            if (role_workers_length == 0){
-                if (get_role_workers("_2hf", room.name, room_config[room.name][config_level][role]['ticksToLive']).length == 0 && Memory.rooms[room.name].restart_flag == undefined)
+            if (role_workers_length == 0 && room.energyAvailable < CalculateEnergy(bodyParts)){
+                if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 5000 : false){
+                    let data: spawnData = {
+                        name: "_1bs" + Game.time,
+                        bodyParts: [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE],
+                        memory: {
+                            role: '_1bs',
+                        }
+                    }
+                    room.addSpawnTask(-1, data)
+                }
+                else if (get_role_workers("_1bs", room.name).length == 0 && get_role_workers("_2hf", room.name).length == 0 && Memory.rooms[room.name].restart_flag == undefined)
                 {
                     let data1: spawnData = {
                         name: "_2hf" + Game.time,
@@ -150,17 +171,21 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
                             source_idx: source_idx,
                         }
                     }
-                    room.addSpawnTask(-2, data1)
-                    room.addSpawnTask(-2, data2)
+                    room.addSpawnTask(-1, data1)
+                    room.addSpawnTask(-1, data2)
                     Memory.rooms[room.name].restart_flag = true
                 }
             }
         }
         else delete Memory.rooms[room.name].restart_flag
         for (let i = roleNum - role_workers_length; i > 0; i--){
+            if (bodyParts == undefined){
+                console.log(room.name, role, ' bodyParts == undefined')
+                return
+            }
             let data: spawnData = {
                 name: (i == 1 ? role : role + i),
-                bodyParts: bodyParts == undefined? room_config[room.name][config_level][role]['bodyParts']: bodyParts,
+                bodyParts: bodyParts,
                 memory: {
                     role: role,
                     source_idx: source_idx,

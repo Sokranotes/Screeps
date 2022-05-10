@@ -21,12 +21,18 @@ export const room_W47S14_running = function(roomName: string){
     let room: Room = Game.rooms[roomName]
     tower_work(roomName)
 
-    if ((Game.time % 100 == 0 && Game.rooms[roomName].memory.spawnQueue.length == 0) || Memory.rooms[roomName].check_spawn_queue_flag){
-        if (Memory.rooms[roomName].check_spawn_queue_flag)
+    if (room.memory.spawning == undefined && (room.memory.check_spawn_queue_flag || 
+        (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName))){
+        if (Memory.rooms[roomName].check_spawn_queue_flag){
             delete Memory.rooms[roomName].check_spawn_queue_flag
+        }
+        if (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName){
+            Game.flags.check_spawn_queue_flag.remove()
+        }
         let room = Game.rooms[roomName]
         clear_spawn_queue(roomName)
 
+        if (Game.rooms['W47S14'].controller.ticksToDowngrade < 150000)
         check_one_role(room, 'upgrader_link')
         check_one_role(room, 'builder')
         check_one_role(room, 'repairer')
@@ -70,87 +76,6 @@ export const room_W47S14_running = function(roomName: string){
     //         }
     //     }
     // }
-
-    if (Game.time % 23 == 0 || (Game.flags.sell_energy && Game.flags.sell_energy.room.name == roomName)){
-        if (Game.flags.sell_energy){
-            Game.flags.sell_energy.remove()
-        }
-        if (room.storage && room.terminal){
-            if (room.storage.store.getFreeCapacity(RESOURCE_ENERGY) < 0.2*room.storage.store.getCapacity() && 
-            room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) < 0.2*room.terminal.store.getCapacity()){
-                let capacity = room.storage.store.getUsedCapacity(RESOURCE_ENERGY) - 0.5*room.storage.store.getCapacity(RESOURCE_ENERGY)
-                // console.log('capacity:', capacity)
-                let history = Game.market.getHistory(RESOURCE_ENERGY)
-                let avgPrice = 0
-                let stddevPrice = 0
-                if (history[history.length - 1].volume > history[history.length - 2].volume*0.2){
-                    avgPrice = history[history.length - 1].avgPrice
-                    stddevPrice = history[history.length - 1].stddevPrice
-                }
-                else{
-                    avgPrice = history[history.length - 2].avgPrice
-                    stddevPrice = history[history.length - 2].stddevPrice
-                }
-                if (avgPrice > 3){
-                    // console.log('avgPrice:', avgPrice)
-                    let raw_orders: orderData[] = Game.market.getAllOrders({type: ORDER_BUY, resourceType: RESOURCE_ENERGY})
-                    if (global.group_friends_rooms == undefined) global.group_friends_rooms = new Set(['6g3y'])
-                    let group_friends_orders: orderData[] = raw_orders.filter(order=>order.price>0.8*avgPrice)
-                    let orders: orderData[]
-                    if (group_friends_orders.length == 0){
-                        // orders = raw_orders.filter(order=>order.price>avgPrice && order.price/(1+Game.market.calcTransactionCost(10000, roomName, order.roomName)/10000) > avgPrice-stddevPrice)
-                        orders = raw_orders.filter(order=>order.price>avgPrice && order.amount >= 10000)
-                    }
-                    else{
-                        orders = group_friends_orders
-                    }
-                    // console.log(orders.length)
-                    for (let order of orders){
-                        if (order.amount <= capacity){
-                            let code = Game.market.deal(order.id, order.amount, roomName)
-                            if (code == OK){
-                                capacity = capacity - order.amount
-                                console.log(roomName, 'deal buy:', order.price, order.amount, order.roomName, 
-                                Game.market.calcTransactionCost(order.amount, roomName, order.roomName))
-                            }
-                            else if (code == ERR_INVALID_ARGS) {
-                                code = Game.market.deal(order.id, Math.floor(2/3*order.amount), roomName)
-                                if (code == OK){
-                                    capacity = capacity - Math.floor(2/3*order.amount)
-                                    console.log(roomName, 'deal buy:', order.price, Math.floor(2/3*order.amount), order.roomName, 
-                                    Game.market.calcTransactionCost(Math.floor(2/3*order.amount), roomName, order.roomName))
-                                }
-                                else if (code == ERR_FULL) return
-                                else if (code == ERR_TIRED) return
-                            }
-                            else if (code == ERR_FULL) return
-                            else if (code == ERR_TIRED) return
-                        }
-                        else{
-                            let code = Game.market.deal(order.id, capacity, roomName)
-                            if (code == OK){
-                                console.log(roomName, 'deal buy:', order.price, capacity, order.roomName, 
-                                Game.market.calcTransactionCost(capacity, roomName, order.roomName))
-                                return
-                            }
-                            else if (code == ERR_INVALID_ARGS) {
-                                code = Game.market.deal(order.id, Math.floor(2/3*order.amount), roomName)
-                                if (code == OK){
-                                    capacity = capacity - Math.floor(2/3*order.amount)
-                                    console.log(roomName, 'deal buy:', order.price, Math.floor(2/3*order.amount), order.roomName, 
-                                    Game.market.calcTransactionCost(Math.floor(2/3*order.amount), roomName, order.roomName))
-                                }
-                                else if (code == ERR_FULL) return
-                                else if (code == ERR_TIRED) return
-                            }
-                            else if (code == ERR_FULL) return
-                            else if (code == ERR_TIRED) return
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     if (Game.time % 135 > 125){
         if (room.terminal.store.getFreeCapacity() < 5000 && room.storage.store.getFreeCapacity(RESOURCE_ENERGY) < 5000){

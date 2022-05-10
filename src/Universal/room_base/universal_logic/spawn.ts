@@ -1,10 +1,12 @@
+import { room_claim } from '@/Universal/room_claim'
 import FlatQueue from './FlatQueue'
 
 // creep 生成主要实现
 Spawn.prototype.mainSpawn = function(data: spawnData): ScreepsReturnCode{
     let bodys: BodyPartConstant[]
     if (data.bodyParts == undefined){
-        console.log(this.room.name, this.name, data.role, ' data.bodyParts == undefined')
+        console.log(this.room.name, this.name, data.memory.role, ' data.bodyParts == undefined')
+        console.log(JSON.stringify(data))
     }
     else{
         bodys = data.bodyParts
@@ -15,6 +17,7 @@ Spawn.prototype.mainSpawn = function(data: spawnData): ScreepsReturnCode{
     if (code != OK){
         data.name = raw_name
     }
+    else this.room.memory.spawning = true
     return code
 }
 
@@ -32,18 +35,20 @@ Spawn.prototype.work = function() {
     if (Memory.rooms[this.room.name].spawnQueue.length == 0 && Memory.rooms[this.room.name].spawnQueue.data.length != 0) {
         Memory.rooms[this.room.name].spawnQueue = {}
         new FlatQueue(Memory.rooms[this.room.name].spawnQueue);
-        return
     }
     if (this.spawning) {
         this.room.memory.spawning = true
         return
     }
+    let priority = spawnQueue.peekPriority()
     // 进行生成
     let data = spawnQueue.pop()
     if  (data == undefined) return
     let code: ScreepsReturnCode = this.mainSpawn(data)
     // 生成成功后移除任务
-    if (code != OK) spawnQueue.push(data)
+    if (code != OK){
+        spawnQueue.push(priority, data)
+    }
 }
 
 // 所有spawns执行工作

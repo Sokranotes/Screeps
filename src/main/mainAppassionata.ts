@@ -10,20 +10,22 @@ import { cleaner_work } from "@/Sokranotes/room_base/cleaner";
 import { tmp_attack_work } from "@/Sokranotes/room_base/tmp_attack";
 import { occupy_work } from "@/Sokranotes/occupy/occupy";
 import { help_work } from "@/Sokranotes/room_base/help_worker";
-import { harvest_upgrade_work } from './Sokranotes/low_level/harvest_upgrade_worker';
 import { harvest_build_work } from './Universal/room_base/level2/harvest_build_worker';
-import { harvest_fill_work } from './Sokranotes/low_level/harvest_fill_worker';
-import { harvest_repair_work } from './Sokranotes/low_level/harvest_repair_worker';
 import { harvest_upgrade_same_work } from './Universal/room_base/level1/harvest_upgrade_same_worker';
 import { source_energy_mine } from '@/Universal/room_base/universal_logic/source_energy_mine';
 import { energy_harvester_link_work } from '@/Sokranotes/room_base/energy_harvester_link';
 import { upgrader_link_work } from '@/Sokranotes/room_base/upgrader_link';
+import { doing } from './Universal/room_base/universal_logic/spawn';
+import { harvest_upgrade_work } from './Universal/room_base/level1/harvest_upgrade_worker';
+import { harvest_fill_work } from './Universal/room_base/level2/harvest_fill_worker';
+import { harvest_repair_work } from './Universal/room_base/level2/harvest_repair_worker';
+import { tmp_transfer_work } from './Sokranotes/room_base/tmp_transfer';
 
-global.white_list = new Set(['Mofeng']);
+global.white_list = new Set(['Mofeng', 'ExtraDim']);
 
 if (Game.flags.Appassionata){
     console.log(Game.time, 'Appassionata new push')
-    let rooms: string[] = ['W14N12']
+    let rooms: string[] = ['W14N12', 'E29N3', 'W12N15', 'W12N13', 'W11N19']
     for (let idx in rooms){
         Memory.rooms[rooms[idx]].check_spawn_queue_flag = true
     }
@@ -37,8 +39,15 @@ export const loop = errorMapper(() => {
         return
     }
     if (Game.flags.Appassionata){
+
         if(Game.cpu.bucket == 10000) {
             Game.cpu.generatePixel();
+        }
+        if (Game.time % 100 == 77){
+            let rooms: string[] = ['W14N12', 'E29N3', 'W12N15', 'W12N13', 'W11N19']
+            for (let idx in rooms){
+                Memory.rooms[rooms[idx]].check_spawn_queue_flag = true
+            }
         }
         let rooms: string[]
         let roomName = 'E29N3'
@@ -95,18 +104,37 @@ export const loop = errorMapper(() => {
                     console.log(roomName, ' is not mine.')
             }
             mainUniversal(rooms)
+            // if (Game.rooms['W12N12']){
+            //     if (Game.time % 1000 == 350){
+            //         if (Game.rooms['W12N12'].controller.owner.username == 'MrJakob64'){
+            //             Game.rooms['W12N13'].addSpawnTask(23, {name: "tmp_transfer" + Game.time, bodyParts: [MOVE,MOVE,MOVE,CLAIM,CLAIM,CLAIM],memory: {role: 'tmp_transfer',}})
+            //         }
+            //     }
+            // }
+            if (Game.time % 1500 == 750){
+                let storage: StructureStorage = Game.getObjectById('623527ec6bc5f46100654f52')
+                if (storage){
+                    if (storage.store.energy > 5000){
+                        Game.rooms['W12N13'].addSpawnTask(25, {name: "tmp_transfer" + Game.time, bodyParts: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],memory: {role: 'tmp_transfer',}})
+                    }
+                }
+            }
         }
         // if (Game.time % 100 == 2) source_energy_mine('W14N12')
         if (Game.flags.showControllerInfo) Game.flags.showControllerInfo.remove();
     }
-
+    let rooms: string[] = ['W14N12', 'E29N3', 'W12N15', 'W12N13', 'W11N19']
+    for (let idx in rooms){
+        delete Game.rooms[rooms[idx]].memory.spawning
+    }
+    doing(Game.spawns)
     for(let name in Memory.creeps) {
         let creep = Game.creeps[name]
         if(!creep) {
             delete Memory.creeps[name];
         }
         else{
-            if(creep.memory.role == 'hu') {
+            if(creep.memory.role == 'hu' || creep.memory.role == '_1hu') {
                 harvest_upgrade_work(creep);
             }
             else if(creep.memory.role == 'upgrader_link') {
@@ -121,7 +149,7 @@ export const loop = errorMapper(() => {
             else if (creep.memory.role == 'hl'){
                 energy_harvester_link_work(creep)
             }
-            else if (creep.memory.role == 'hr'){
+            else if (creep.memory.role == 'hr' || creep.memory.role == '_1hr'){
                 harvest_repair_work(creep)
             }
             else if (creep.memory.role == 'base_transfer' || creep.memory.role == '_1bs'){
@@ -142,8 +170,8 @@ export const loop = errorMapper(() => {
             else if (creep.memory.role == 'tmp_attack') {
                 tmp_attack_work(creep)
             }
-            else if (creep.memory.role == 'tmp_attack') {
-                tmp_attack_work(creep)
+            else if (creep.memory.role == 'tmp_transfer') {
+                tmp_transfer_work(creep)
             }
             else if (creep.memory.role == 'occupy'){
                 occupy_work(creep)
