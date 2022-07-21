@@ -10,6 +10,9 @@ import math
 # Game.market.createOrder({type: ORDER_BUY, resourceType: RESOURCE_ENERGY, price: 0.001, totalAmount: 300000, roomName: "W1N1"});
 # Game.market.changeOrderPrice("6231b0122a7a9f518b7ac9fe", 2.62)
 # Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')
+# Game.rooms['W12N15'].terminal.send(RESOURCE_ENERGY, 100000, 'W11N19', 'free')
+# Game.rooms['W11N19'].terminal.send(RESOURCE_ENERGY, 50000, 'W14N12', 'free')
+
 
 # python src/calcTransactionCost.py
 

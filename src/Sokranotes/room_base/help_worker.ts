@@ -119,7 +119,7 @@ export const help_work = function(creep: Creep){
                 creep.moveTo(new RoomPosition(49, 3, "E27N3"))
             }
             else if (creep.room.name == "E28N3"){
-                let con: StructureContainer = Game.getObjectById("62496d61d02368325f9a3fe4")
+                let con: StructureContainer = Game.getObjectById<StructureContainer>("62496d61d02368325f9a3fe4" as Id<StructureContainer>)
                 if (creep.store.getFreeCapacity() == 0 && con){
                     if (creep.pos.isNearTo(con)) creep.withdraw(con, RESOURCE_ENERGY)
                     else creep.moveTo(con)

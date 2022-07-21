@@ -32,7 +32,7 @@ export const room_W47S14_running = function(roomName: string){
         let room = Game.rooms[roomName]
         clear_spawn_queue(roomName)
 
-        if (Game.rooms['W47S14'].controller.ticksToDowngrade < 150000)
+        // if (Game.rooms['W47S14'].controller.ticksToDowngrade < 150000)
         check_one_role(room, 'upgrader_link')
         check_one_role(room, 'builder')
         check_one_role(room, 'repairer')

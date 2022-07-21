@@ -12,11 +12,16 @@ export const sell_energy = function(roomName: string, interval: number = 77 + ra
                 let history = Game.market.getHistory(RESOURCE_ENERGY)
                 let avgPrice = 0
                 let historyAvgPrice = 0
+                let historyAvgStddevPrice = 0
                 let stddevPrice = 0
+                let sell_avg_rate = 0.9
+                let f_sell_avg_rate = 0.8
                 for (let i = 0; i < history.length; i++){
                     historyAvgPrice += history[i].avgPrice
+                    historyAvgStddevPrice += history[i].stddevPrice
                 }
                 historyAvgPrice = historyAvgPrice / history.length
+                historyAvgStddevPrice = historyAvgStddevPrice / history.length
                 if (history[history.length - 1].volume > history[history.length - 2].volume*0.2){
                     avgPrice = history[history.length - 1].avgPrice
                     stddevPrice = history[history.length - 1].stddevPrice
@@ -26,18 +31,28 @@ export const sell_energy = function(roomName: string, interval: number = 77 + ra
                     avgPrice = history[history.length - 2].avgPrice
                     stddevPrice = history[history.length - 2].stddevPrice
                 }
-                // 市场出现大幅度降价，不卖了
-                if (avgPrice < historyAvgPrice) { return }
+                // 市场出现大幅度降价
+                if (avgPrice < 0.9*historyAvgPrice){
+                    sell_avg_rate = 0.75
+                    f_sell_avg_rate = 0.7
+                }
+                if (stddevPrice > 1.3){
+                    stddevPrice = 0.8
+                }
                 // console.log(roomName, 'avgPrice', avgPrice, 'stddevPrice', stddevPrice)
 
                 if (global.group_friends_rooms == undefined) global.group_friends_rooms = new Set([])
-                let orders: orderData[] = Game.market.getAllOrders({type: ORDER_BUY, resourceType: RESOURCE_ENERGY}).filter(order=>((order.price>0.95*avgPrice && order.amount >= 10000) || (order=>order.price>0.8*avgPrice && order.amount >= 10000 && global.group_friends_rooms.has(order.roomName))))
+                let orders: orderData[] = Game.market.getAllOrders({type: ORDER_BUY, resourceType: RESOURCE_ENERGY}).filter(order=>((order.price>sell_avg_rate*avgPrice && order.amount >= 10000) || (order=>order.price>f_sell_avg_rate*avgPrice && order.amount >= 10000 && global.group_friends_rooms.has(order.roomName))))
                 // console.log(JSON.stringify(orders[0]))
                 for (let order of orders){
                     order.price = order.price * (100/(Game.market.calcTransactionCost(100, roomName, order.roomName) + 100))
                 }
                 // 均价太低的不卖
                 orders = orders.filter(order=>(order.price>avgPrice-stddevPrice))
+                if (Game.flags.show_sell_price != undefined){
+                    Game.flags.show_sell_price.remove()
+                    console.log('now avgPrice:', avgPrice, 'historyAvgPrice:', historyAvgPrice, 'stddevPrice:', stddevPrice, "sell_avg_rate:", sell_avg_rate, "sell_avg_rate*avgPrice:", sell_avg_rate*avgPrice, 'f_sell_avg_rate*avgPrice:', f_sell_avg_rate*avgPrice, 'avgPrice-stddevPrice:', avgPrice-stddevPrice)
+                }
                 let sortedOrders: orderData[] = orders.sort((a, b)=>a.price - b.price).reverse()
 
                 let capacity: number = room.terminal.store.getCapacity(RESOURCE_ENERGY)

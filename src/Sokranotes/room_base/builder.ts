@@ -30,6 +30,7 @@ export const builder_work = function(creep: Creep){
         creep.memory.path = null
         creep.say('🚧 build')
     }
+    console.log(creep.name, creep.memory.is_working)
     if(creep.memory.is_working) {
         let constructions = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
         if(constructions.length > 0) {
@@ -55,8 +56,8 @@ export const builder_work = function(creep: Creep){
             }
             return
         }
-        if (creep.memory.source_idx == undefined)
-        creep.memory.source_idx  = 0
-        go_to_harvest(creep, Game.getObjectById(creep.room.memory.sources_id[creep.memory.source_idx]))
+        if (creep.memory.source_idx == undefined) creep.memory.source_idx  = 0
+        console.log(creep.name, creep.room.memory.sources_id[creep.memory.source_idx])
+        go_to_harvest(creep, Game.getObjectById(Game.rooms[creep.memory.source_roomName].memory.sources_id[creep.memory.source_idx]))
     }
 }

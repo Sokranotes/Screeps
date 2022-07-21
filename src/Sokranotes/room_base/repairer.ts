@@ -49,6 +49,6 @@ export const repairer_work = function(creep: Creep){
         }
         if (creep.memory.source_idx == undefined)
         creep.memory.source_idx  = 0
-        go_to_harvest(creep, Game.getObjectById(creep.room.memory.sources_id[creep.memory.source_idx]))
+        go_to_harvest(creep, Game.getObjectById(Game.rooms[creep.memory.source_roomName].memory.sources_id[creep.memory.source_idx]))
     }
 }

@@ -74,14 +74,15 @@ export const Sokranotes = function(){
         sell_energy(rooms[idx])
     }
 
-    if (Game.rooms['W48S12'] != undefined){
-        if (Game.rooms['W48S12'].terminal ? Game.rooms['W48S12'].storage.store.getFreeCapacity() < 100000 : false){
-            if (Game.rooms['W47S14'].terminal ? Game.rooms['W47S14'].terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 30000 : false){
-                Game.rooms['W48S12'].terminal.send(RESOURCE_ENERGY, 30000, 'W47S14', 'resource allocation')
-                console.log('W48S12 -> W47S14 energy', 30000)
+    if (Game.time % 10 == 7)
+        if (Game.rooms['W48S12'] != undefined){
+            if (Game.rooms['W48S12'].terminal ? Game.rooms['W48S12'].storage.store.getFreeCapacity() < 100000 : false){
+                if (Game.rooms['W47S14'].terminal ? Game.rooms['W47S14'].terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 30000 : false){
+                    Game.rooms['W48S12'].terminal.send(RESOURCE_ENERGY, 30000, 'W47S14', 'resource allocation')
+                    console.log('W48S12 -> W47S14 energy', 30000)
+                }
             }
         }
-    }
 
     // Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], '简单一体机', {memory: {role: 'simple_one_machine'}})
 }

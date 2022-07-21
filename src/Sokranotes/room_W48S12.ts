@@ -23,10 +23,13 @@ export const room_W48S12_running = function(roomName: string){
         (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName))){
         if (Memory.rooms[roomName].check_spawn_queue_flag)
             delete Memory.rooms[roomName].check_spawn_queue_flag
+        if (Game.flags.check_spawn_queue_flag && Game.flags.check_spawn_queue_flag.room.name == roomName){
+            Game.flags.check_spawn_queue_flag.remove()
+        }
         let room = Game.rooms[roomName]
         clear_spawn_queue(roomName)
 
-        if (Game.rooms['W48S12'].controller.ticksToDowngrade < 150000)
+        // if (Game.rooms['W48S12'].controller.ticksToDowngrade < 150000)
         check_one_role(room, 'upgrader_link')
         check_one_role(room, 'builder')
         check_one_role(room, 'repairer')

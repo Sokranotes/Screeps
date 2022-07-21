@@ -1,4 +1,3 @@
-import { room_claim } from '@/Universal/room_claim'
 import FlatQueue from './FlatQueue'
 
 // creep 生成主要实现

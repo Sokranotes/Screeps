@@ -1,5 +1,5 @@
 {
-  "name": "Screeps",
+  "name": "screeps",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
@@ -9,8 +9,8 @@
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@types/lodash": "^3.10.1",
-    "@types/screeps": "^3.2.4",
-    "rollup": "^2.56.3",
+    "@types/screeps": "^3.3.0",
+    "rollup": "^2.75.7",
     "rollup-plugin-clear": "^2.0.7",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-screeps": "^1.0.1",
@@ -21,6 +21,9 @@
     "build": "rollup -cw",
     "push": "rollup -cw --environment DEST:main",
     "local": "rollup -cw --environment DEST:local",
+    "s": "rollup -cw --environment DEST:Sokranotes",
+    "a": "rollup -cw --environment DEST:Appassionata",
+    "g": "rollup -cw --environment DEST:GlennGould",
     "test": "echo \"Error: no test specified\" && exit 1",
     "echo": "echo hello world & echo world & echo goodbye world"
   },
@@ -38,5 +41,5 @@
   "directories": {
     "doc": "doc"
   },
-  "description": ""
+  "description": "1 Node.js"
 }

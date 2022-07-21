@@ -11,11 +11,16 @@ global.harvest_err_code = new Map([
 ])
 
 export const go_to_harvest = function(creep: Creep, source: Source, pos?: RoomPosition){
+    if (source == undefined) {
+        console.log(creep.name, creep.pos, 'source undefined')
+        return
+    }
     if (creep.pos.isNearTo(source)){
         if (!creep.memory.dontPullMe){
             creep.memory.dontPullMe = true
         }
         let code: CreepActionReturnCode | ERR_NOT_FOUND | ERR_NOT_ENOUGH_RESOURCES = creep.harvest(source)
+        // console.log(creep.name, creep.pos, code)
         if (code != OK){
             if (code == ERR_NO_BODYPART){
                 console.log(Game.time, global.harvest_err_code.get(code))

@@ -79,7 +79,7 @@ export const occupy_work = function(creep: Creep){
                 creep.moveTo(new RoomPosition(30, 11, room_name))
             }
             else{
-                let controller: StructureController = Game.getObjectById('5bbcaea59099fc012e6395ef')
+                let controller: StructureController = Game.getObjectById<StructureController>('5bbcaea59099fc012e6395ef' as Id<StructureController>)
                 creep.claimController(controller)
                 creep.signController(controller, "Thanks to ExtraDim for the gift.")
             }

@@ -5,11 +5,11 @@ interface CreepMemory {
     role: string
     is_working?: boolean // 工作状态，区别于非工作状态
 
-    source_roomName?: string // 外矿所在的房间名
-    dest_roomName?: string // 采集资源的目的地
-
+    source_roomName?: string // 外矿所在的房间
     // 外矿相关
     source_idx?: number // harvester.ts 存采集的source对应id的下标
+    dest_roomName?: string // 采集资源的目的地
+
     source_container_idx?: number
     container_pos_x?: number // 固定点取能量的creep的固定点，即container位置
     container_pos_y?: number

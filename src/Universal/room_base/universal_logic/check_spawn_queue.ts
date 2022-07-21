@@ -41,7 +41,7 @@ export const get_role_workers = function(role: string, roomName: string, min_tic
     }
 }
 
-export const check_one_role = function(room: Room, role: string, priority?: number, roleNum?: number, bodyParts?: BodyPartConstant[], source_idx?: number){
+export const check_one_role = function(room: Room, role: string, priority?: number, roleNum?: number, bodyParts?: BodyPartConstant[], source_roomName?: string, source_idx?: number){
     if (priority == undefined){
         priority = room_config['priority'][role] == undefined ? room_config['priority']['hb'] + 1: room_config['priority'][role]
     }
@@ -74,9 +74,8 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
         // energy is too much, avoid blowing up
         if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 850000: false){
             roleNum = 1
-            return
         }
-        if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false || room.controller.ticksToDowngrade > 150000){
+        else if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false || room.controller.ticksToDowngrade > 150000){
             roleNum = 0
             return
         }
@@ -139,6 +138,8 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
         }
     }
     else{
+        source_roomName = source_roomName == undefined? room_config[room.name][config_level][role]['source_roomName']: source_roomName
+        source_roomName = source_roomName == undefined? room.name: source_roomName
         source_idx = source_idx == undefined? room_config[room.name][config_level][role]['source_idx']: source_idx
         role_workers_length = get_role_workers(role, room.name, room_config[room.name][config_level][role]['ticksToLive'], '', source_idx=source_idx).length
         if (role == 'hf' && roleNum != 0){
