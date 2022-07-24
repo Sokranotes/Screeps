@@ -120,44 +120,49 @@ export const room_config = {
             'upgrader_link': {
                 'num': 0,
                 'ticksToLive': 100,
-                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
-                    WORK,WORK,WORK,WORK,CARRY]
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
             },
             'hl': {
                 'num': 0,
+                'source_roomName': 'W14N12',
                 'source_idx': 0,
                 'ticksToLive': 100,
-                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
-                    WORK,WORK,WORK,WORK,CARRY]
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
             },
             'hf': {
                 'num': 1,
                 'source_idx': 0,
+                'source_roomName': 'W14N12',
                 'ticksToLive': 100,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,]
             },
-            'hu':{
+            'hu': {
                 'num': 0,
                 'source_idx': 1,
+                'source_roomName': 'W14N12',
                 'ticksToLive': 100,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE]
             },
-            'hus':{
+            'hus': {
                 'num': 1,
                 'source_idx': 1,
+                'source_roomName': 'W14N12',
                 'ticksToLive': 100,
-                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
-                    WORK,WORK,WORK,WORK,CARRY]
+                'bodyParts': [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, CARRY]
             },
             'hr': {
                 'num': 0,
+                'source_roomName': 'W14N12',
                 'source_idx': 0,
                 'ticksToLive': 150,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
@@ -167,6 +172,7 @@ export const room_config = {
             'hb': {
                 'num': 0,
                 'source_idx': 0,
+                'source_roomName': 'W14N12',
                 'ticksToLive': 150,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
@@ -174,6 +180,8 @@ export const room_config = {
             },
             'builder': {
                 'num': 1,
+                'source_idx': 0,
+                'source_roomName': 'W14N12',
                 'ticksToLive': 100,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
@@ -182,6 +190,7 @@ export const room_config = {
             'repairer': {
                 'num': 1,
                 'ticksToLive': 100,
+                'source_roomName': 'W14N12',
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
@@ -562,7 +571,67 @@ export const room_config = {
         //         'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
         //     },
         // },
-        'level7': {
+        // 'level7': {
+        //     'upgrader_link': {
+        //         'num': 0,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+        //             WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+        //             WORK,WORK,WORK,WORK,CARRY]
+        //     },
+        //     'hf': {
+        //         'num': 1,
+        //         'source_idx': 0,
+        //         'ticksToLive': 200,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+        //     },
+        //     'hu':{
+        //         'num': 2,
+        //         'source_idx': 1,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+        //     },
+        //     'hr': {
+        //         'num': 1,
+        //         'source_idx': 0,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+        //     },
+        //     'hb': {
+        //         'num': 1,
+        //         'source_idx': 0,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+        //     },
+        //     'hus':{
+        //         'num': 0,
+        //         'source_idx': 1,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'builder': {
+        //         'num': 0,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'repairer': {
+        //         'num': 0,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'base_transfer': {
+        //         'num': 1,
+        //         'ticksToLive': 200,
+        //         'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+        //     },
+        // },
+        'level8': {
             'upgrader_link': {
                 'num': 0,
                 'ticksToLive': 100,
@@ -677,7 +746,7 @@ export const room_config = {
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
             },
             'base_transfer': {
-                'num': 0,
+                'num': 1,
                 'ticksToLive': 200,
                 'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
             },
@@ -1589,7 +1658,7 @@ export const room_config = {
             'hu':{
                 'num': 0,
                 'source_idx': 0,
-                'ticksToLive': 150,
+                'ticksToLive': 100,
                 'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
             },
             'hus':{
@@ -1625,7 +1694,7 @@ export const room_config = {
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
             },
             'base_transfer': {
-                'num': 0,
+                'num': 1,
                 'ticksToLive': 200,
                 'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
             },

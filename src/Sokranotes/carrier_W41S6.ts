@@ -36,8 +36,8 @@ export const carrier_W41S6_work = function(creep: Creep){
         if (creep.memory.dontPullMe == undefined){
             creep.memory.dontPullMe = true;
         }
-        let link: StructureLink = Game.getObjectById(centerLinkId)
-        let upgrade_link: StructureLink = Game.getObjectById(upgradeLinkId)
+        let link: StructureLink = Game.getObjectById<StructureLink>(centerLinkId as Id<StructureLink>)
+        let upgrade_link: StructureLink = Game.getObjectById<StructureLink>(upgradeLinkId as Id<StructureLink>)
         let storage: StructureStorage = creep.room.storage
         let terminal: StructureTerminal = creep.room.terminal
 

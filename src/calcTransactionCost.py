@@ -6,7 +6,7 @@ import math
 # 挂单
 # Game.market.createOrder({type: ORDER_SELL, resourceType: RESOURCE_ENERGY, price: 100000, totalAmount: 1, roomName: "W1N1"});
 # Game.market.createOrder({type: ORDER_BUY, resourceType: PIXEL, price: 0.001, totalAmount: 500});
-# Game.market.deal('61cdb24c4215334c4fd2a1e5', 2000);
+# Game.market.deal('62bf0946ed98fd87eda6574c', 2000);
 # Game.market.createOrder({type: ORDER_BUY, resourceType: RESOURCE_ENERGY, price: 0.001, totalAmount: 300000, roomName: "W1N1"});
 # Game.market.changeOrderPrice("6231b0122a7a9f518b7ac9fe", 2.62)
 # Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')
@@ -20,8 +20,8 @@ import os
 
 def main():
     os.system('cls')
-    prices = [3, 4.012, 3.647, 3.737, 4.033, 0.783, 4.289, ]
-    distances = [10, 15, 15, 6, 18, 37, 56]
+    prices = [3, 4.012, 3.647, 3.737, 4.033, 0.783, 4.289, 3]
+    distances = [10, 15, 15, 6, 18, 37, 56, 13]
 
     amount = 100000
 
@@ -79,6 +79,9 @@ if __name__ == "__main__":
 
 # Game.market.deal('61cd485b4215337cf7ad2d3f', 30056, 'W47S14');
 # Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')
+
+# Game.market.deal('62bf0946ed98fd87eda6574c', 10000, 'W14N12');
+
 
 # 卖的实际价格
 # 3.374/(1+(Game.market.calcTransactionCost(10000, 'W41S11', 'W33S21')/10000))

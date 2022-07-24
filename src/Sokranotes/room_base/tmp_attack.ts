@@ -435,11 +435,90 @@ export const tmp_attack_work = function(creep: Creep){
     //     }
     // }
 
-    if (Game.flags.tmp_attack){
-        if (!creep.pos.isNearTo(Game.flags.tmp_attack)){
-            creep.moveTo(Game.flags.tmp_attack)
+    // if (Game.flags.tmp_attack){
+    //     if (!creep.pos.isNearTo(Game.flags.tmp_attack)){
+    //         creep.moveTo(Game.flags.tmp_attack)
+    //         return
+    //     }
+    //     creep.suicide()
+    // }
+
+    let midwallid = '60b3eaa7f5d18ab1e5618094'
+    
+    creep.heal(creep)
+    if (creep.room.name == 'W9N11'){
+        creep.moveTo(new RoomPosition(25, 25, 'W8N11'))
+        return
+    }
+    else if (creep.room.name == 'W8N11'){
+        if (creep.pos.x == 0){
+            creep.move(RIGHT)
             return
         }
-        creep.suicide()
+        else{
+            let target: StructureWall = Game.getObjectById(midwallid as Id<StructureWall>)
+            if (target != undefined){
+                if (!creep.pos.isNearTo(target)) creep.moveTo(target)
+                else creep.rangedMassAttack()
+                return
+            }
+            else{
+                creep.moveTo(new RoomPosition(49, 43, 'W8N11'))
+            }
+        }
+    }
+    else if (creep.room.name == 'W7N11'){
+        if (creep.pos.x == 0){
+            creep.move(RIGHT)
+            return
+        }
+        else{
+            let target: StructureWall = Game.getObjectById<StructureWall>(midwallid as Id<StructureWall>)
+            if (target != undefined){
+                if (!creep.pos.isNearTo(target)) creep.moveTo(target)
+                else creep.rangedMassAttack()
+                return
+            }
+            else{
+                creep.moveTo(new RoomPosition(49, 43, 'W8N11'))
+            }
+        }
     }
 }
+
+// Game.getObjectById('6231bded6a2b149d8da6247f').observeRoom('W7N11')
+// Game.rooms.W9N11.find(FIND_STRUCTURES, {filter: s => s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL})
+// new RoomVisual('W9N11').text("100M", 25, 42, {color: 'red', font: 0.5})
+
+// Game.getObjectById('6231bded6a2b149d8da6247f').observeRoom('W7N11')
+// Game.rooms.W7N11.find(FIND_STRUCTURES, {filter: s => (s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL)}).forEach(element => {
+//     new RoomVisual('W7N11').text(element.hits > 1000000 ? String(Math.floor(element.hits/1000000)) + 'M': element.hits > 1000 ? String(Math.floor(element.hits/1000)) + 'K': String(Math.floor(element.hits)), element.pos.x, element.pos.y, {color: 'red', font: 0.3})
+// });
+
+// Game.getObjectById('6231bded6a2b149d8da6247f').observeRoom('W11N11')
+// Game.rooms.W11N11.find(FIND_STRUCTURES, {filter: s => (s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL)}).forEach(element => {
+//     new RoomVisual('W11N11').text(element.hits > 1000000 ? String(Math.floor(element.hits/1000000)) + 'M': element.hits > 1000 ? String(Math.floor(element.hits/1000)) + 'K': String(Math.floor(element.hits)), element.pos.x, element.pos.y, {color: 'red', font: 0.3})
+// });
+
+// Game.rooms.W7N11.find(FIND_STRUCTURES, {filter: s => (s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL)}).forEach(element => {
+//     new RoomVisual('W7N11').text(element.hits > 1000000 ? String(Math.floor(element.hits/1000000)) + 'M': element.hits > 1000 ? String(Math.floor(element.hits/1000)) + 'K': String(Math.floor(element.hits)), element.pos.x, element.pos.y, {color: 'red', font: 0.3})
+// });
+
+// Game.creeps.forEach(creep => creep.moveTo(new RoomPosition(11, 35, 'W10N10')));
+
+// for (creep in Game.creeps){
+//     if (creep.memory == undefined){
+//         console.log(creep.pos, creep.id, creep.name)
+//         // if (Game.getObjectById(creep.id).pos.isNearTo(Game.rooms.W9N11.storage)){
+//         //     creep.transfer(Game.rooms.W9N11.storage, RESOURCE_ENERGY, RESOURCE_CONDENSATE)
+//         // }
+//         // else{
+//         //     creep.goTo(Game.rooms.W9N11.storage)
+//         // }
+//     }
+// }
+// for (creep in Game.creeps){
+//     if (creep.memory == undefined){
+//         creep.moveTo(Game.rooms.W9N11.storage)
+//     }
+// }

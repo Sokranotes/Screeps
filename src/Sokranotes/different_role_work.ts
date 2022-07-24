@@ -55,8 +55,10 @@ export const different_role_work = function(){
             delete Memory.creeps[name];
         }
         else{
+            if (creep.spawning){;
+            }
             // base running
-            if (creep.memory.role == 'base_transfer' || creep.memory.role == '_1bs'){
+            else if (creep.memory.role == 'base_transfer' || creep.memory.role == '_1bs'){
                 base_transfer_work(creep)
             }
             if (creep.memory.role == 'tower_transfer'){

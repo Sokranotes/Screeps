@@ -156,20 +156,44 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
                 }
                 else if (get_role_workers("_1bs", room.name).length == 0 && get_role_workers("_2hf", room.name).length == 0 && Memory.rooms[room.name].restart_flag == undefined)
                 {
-                    let data1: spawnData = {
-                        name: "_2hf" + Game.time,
-                        bodyParts: [WORK, CARRY, MOVE, MOVE],
-                        memory: {
-                            role: '_2hf',
-                            source_idx: source_idx,
+                    let data1: spawnData
+                    let data2: spawnData
+                    if (source_roomName != undefined){
+                        data1 = {
+                            name: "_2hf" + Game.time,
+                            bodyParts: [WORK, CARRY, MOVE, MOVE],
+                            memory: {
+                                role: '_2hf',
+                                source_idx: source_idx,
+                                source_roomName: source_roomName,
+                            }
+                        }
+                        data2 = {
+                            name: "_2hf" + Game.time,
+                            bodyParts: [WORK, CARRY, MOVE, MOVE],
+                            memory: {
+                                role: '_2hf',
+                                source_idx: source_idx,
+                                source_roomName: source_roomName,
+                            }
                         }
                     }
-                    let data2: spawnData = {
-                        name: "_2hf" + Game.time,
-                        bodyParts: [WORK, CARRY, MOVE, MOVE],
-                        memory: {
-                            role: '_2hf',
-                            source_idx: source_idx,
+                    else{
+                        data1 = {
+                            name: "_2hf" + Game.time,
+                            bodyParts: [WORK, CARRY, MOVE, MOVE],
+                            memory: {
+                                role: '_2hf',
+                                source_idx: source_idx,
+                            }
+                        }
+                        data2 = {
+                            name: "_2hf" + Game.time,
+                            bodyParts: [WORK, CARRY, MOVE, MOVE],
+                            memory: {
+                                role: '_2hf',
+                                source_idx: source_idx,
+                            }
                         }
                     }
                     room.addSpawnTask(-1, data1)
@@ -184,12 +208,26 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
                 console.log(room.name, role, ' bodyParts == undefined')
                 return
             }
-            let data: spawnData = {
-                name: (i == 1 ? role : role + i),
-                bodyParts: bodyParts,
-                memory: {
-                    role: role,
-                    source_idx: source_idx,
+            let data: spawnData
+            if (source_roomName != undefined){
+                data = {
+                    name: (i == 1 ? role : role + i),
+                    bodyParts: bodyParts,
+                    memory: {
+                        role: role,
+                        source_idx: source_idx,
+                        source_roomName: source_roomName,
+                    }
+                }
+            }
+            else{
+                data = {
+                    name: (i == 1 ? role : role + i),
+                    bodyParts: bodyParts,
+                    memory: {
+                        role: role,
+                        source_idx: source_idx,
+                    }
                 }
             }
             room.addSpawnTask(priority, data)

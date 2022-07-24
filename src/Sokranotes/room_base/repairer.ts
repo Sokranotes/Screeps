@@ -15,7 +15,8 @@ export const repairer_work = function(creep: Creep){
             bodyParts: bodyParts,
             memory: {
                 role: creep.memory.role,
-                source_idx: creep.memory.source_idx
+                source_idx: creep.memory.source_idx,
+                source_roomName: creep.memory.source_roomName
             }
         }
         creep.room.addSpawnTask(priority, data)
