@@ -7,6 +7,7 @@ import math
 # Game.market.createOrder({type: ORDER_SELL, resourceType: RESOURCE_ENERGY, price: 100000, totalAmount: 1, roomName: "W1N1"});
 # Game.market.createOrder({type: ORDER_BUY, resourceType: PIXEL, price: 0.001, totalAmount: 500});
 # Game.market.deal('62bf0946ed98fd87eda6574c', 2000);
+# Game.market.deal('62e64d92061438023297c5a6', 10000);
 # Game.market.createOrder({type: ORDER_BUY, resourceType: RESOURCE_ENERGY, price: 0.001, totalAmount: 300000, roomName: "W1N1"});
 # Game.market.changeOrderPrice("6231b0122a7a9f518b7ac9fe", 2.62)
 # Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 20000, 'W41S11', 'free')

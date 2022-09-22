@@ -21,34 +21,36 @@ import { harvest_fill_work } from './Universal/room_base/level2/harvest_fill_wor
 import { harvest_repair_work } from './Universal/room_base/level2/harvest_repair_worker';
 // import "./modules/strategy_marketPrice"
 
-if (Game.flags.GlennGould){
-    console.log(Game.time, 'GlennGould new push')
-    let rooms: string[] = ['W9N11']
+// Astro_angelfish
+
+if (Game.flags.scp002){
+    console.log(Game.time, 'scp002 new push')
+    let rooms: string[] = ['W46S11']
     for (let idx in rooms){
         Memory.rooms[rooms[idx]].check_spawn_queue_flag = true
     }
 }
 
 export const loop = errorMapper(() => {
-    if (Game.flags.GlennGould){
+    if (Game.flags.scp002){
         if(Game.cpu.bucket == 10000) {
             Game.cpu.generatePixel();
         }
         if (Game.time % 100 == 77){
-            let rooms: string[] = ['W9N11']
+            let rooms: string[] = ['W46S11']
             for (let idx in rooms){
                 Memory.rooms[rooms[idx]].check_spawn_queue_flag = true
             }
         }
-        let rooms: string[] = ['W9N11']
+        let rooms: string[] = ['W46S11']
         mainUniversal(rooms)
-        if (Game.rooms['W9N11'].memory.spawning == undefined && (Game.time % 100 == 77)){
-                check_one_role(Game.rooms['W9N11'], 'carrier_W9N11')
+        if (Game.rooms['W46S11'].memory.spawning == undefined && (Game.time % 100 == 77)){
+                check_one_role(Game.rooms['W46S11'], 'carrier_W46S11')
         }
-        let source_link0: StructureLink = Game.getObjectById<StructureLink>('619bef3f9376bd1df981188f' as Id<StructureLink>)
-        let source_link1: StructureLink = Game.getObjectById<StructureLink>('61a6c491e0032fc27f5402c1' as Id<StructureLink>)
-        let center_link: StructureLink = Game.getObjectById<StructureLink>("619bdff527ccd47b68938bab" as Id<StructureLink>)
-        let upgrade_link: StructureLink = Game.getObjectById<StructureLink>("61b0fb9d91f12d45ad64a2bc" as Id<StructureLink>)
+        let source_link0: StructureLink = Game.getObjectById<StructureLink>('61aed908329a194b3277ef3a' as Id<StructureLink>)
+        let source_link1: StructureLink = Game.getObjectById<StructureLink>('61aeda5e64bbf345b49361f4' as Id<StructureLink>)
+        let center_link: StructureLink = Game.getObjectById<StructureLink>("6085773a27c18514b4602f28" as Id<StructureLink>)
+        let upgrade_link: StructureLink = Game.getObjectById<StructureLink>("61aed908329a194b3277ef3a" as Id<StructureLink>)
         if (source_link0.store.getUsedCapacity(RESOURCE_ENERGY) == 800){
             source_link0.transferEnergy(center_link)
         }
@@ -58,9 +60,9 @@ export const loop = errorMapper(() => {
         if (source_link1.store.getUsedCapacity(RESOURCE_ENERGY) > 600 && upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) < 100){
             source_link1.transferEnergy(upgrade_link)
         }
-        if (Game.time % 100 == 2) source_energy_mine('W9N11')
+        if (Game.time % 100 == 2) source_energy_mine('W46S11')
     }
-    delete Game.rooms['W9N11'].memory.spawning
+    delete Game.rooms['W46S11'].memory.spawning
     doing(Game.spawns)
     for(let name in Memory.creeps) {
         let creep = Game.creeps[name]
@@ -80,7 +82,7 @@ export const loop = errorMapper(() => {
             else if (creep.memory.role == 'hf' || creep.memory.role == '_2hf'){
                 harvest_fill_work(creep)
             }
-            else if (creep.memory.role == 'carrier_W9N11'){
+            else if (creep.memory.role == 'carrier_W46S11'){
                 carrier_W9N11_work(creep)
             }
             else if (creep.memory.role == 'hl'){

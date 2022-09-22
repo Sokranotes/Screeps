@@ -22,6 +22,7 @@ Spawn.prototype.mainSpawn = function(data: spawnData): ScreepsReturnCode{
 
 // 检查任务队列
 Spawn.prototype.work = function() {
+    if (this.isActive() == false) return
     // spawn safe mode
     if (this.notifyWhenAttacked(true) == OK && this.hits < 0.6*this.hitsMax){
         this.room.controller.activateSafeMode()

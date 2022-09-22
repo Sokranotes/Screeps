@@ -35,23 +35,85 @@ const pluginDeploy = config && config.copyPath ?
     // 更新 .map 到 .map.js 并上传
     screeps({ config, dryRun: !config })
 
-export default {
-    input: 'src/main.ts',
-    output: {
-        file: 'dest/main.js',
-        format: 'cjs',
-        sourcemap: true
+export default [
+    {
+        input: 'src/main.ts',
+        output: {
+            file: 'dest/main.js',
+            format: 'cjs',
+            sourcemap: true
+        },
+        plugins: [
+            // 清除上次编译成果
+            clear({ targets: ["dest"] }),
+            // 打包依赖
+            resolve(),
+            // 模块化依赖
+            commonjs(),
+            // 编译 ts
+            typescript({ tsconfig: "./tsconfig.json" }), // <== 新增这一行，注意先后顺序不要搞错了
+            // 执行上传或者复制
+            pluginDeploy
+        ]
     },
-    plugins: [
-        // 清除上次编译成果
-        clear({ targets: ["dest"] }),
-        // 打包依赖
-        resolve(),
-        // 模块化依赖
-        commonjs(),
-        // 编译 ts
-        typescript({ tsconfig: "./tsconfig.json" }), // <== 新增这一行，注意先后顺序不要搞错了
-        // 执行上传或者复制
-        pluginDeploy
-    ]
-};
+    // {
+    //     input: 'src/main/mainSokranotes.ts',
+    //     output: {
+    //         file: 'dest/Sokranotes/main.js',
+    //         format: 'cjs',
+    //         sourcemap: true
+    //     },
+    //     plugins: [
+    //         // 清除上次编译成果
+    //         clear({ targets: ["dest/Sokranotes"] }),
+    //         // 打包依赖
+    //         resolve(),
+    //         // 模块化依赖
+    //         commonjs(),
+    //         // 编译 ts
+    //         typescript({ tsconfig: "./tsconfigSokranotes.json" }), // <== 新增这一行，注意先后顺序不要搞错了
+    //         // 执行上传或者复制
+    //         pluginDeploy
+    //     ]
+    // },
+    // {
+    //     input: 'src/main/mainAppassionata.ts',
+    //     output: {
+    //         file: 'dest/Appassionata/main.js',
+    //         format: 'cjs',
+    //         sourcemap: true
+    //     },
+    //     plugins: [
+    //         // 清除上次编译成果
+    //         clear({ targets: ["dest/Appassionata"] }),
+    //         // 打包依赖
+    //         resolve(),
+    //         // 模块化依赖
+    //         commonjs(),
+    //         // 编译 ts
+    //         typescript({ tsconfig: "./tsconfigAppassionata.json" }), // <== 新增这一行，注意先后顺序不要搞错了
+    //         // 执行上传或者复制
+    //         pluginDeploy
+    //     ]
+    // },
+    // {
+    //     input: 'src/main/mainGlennGould.ts',
+    //     output: {
+    //         file: 'dest/GlennGould/main.js',
+    //         format: 'cjs',
+    //         sourcemap: true
+    //     },
+    //     plugins: [
+    //         // 清除上次编译成果
+    //         clear({ targets: ["dest/GlennGould"] }),
+    //         // 打包依赖
+    //         resolve(),
+    //         // 模块化依赖
+    //         commonjs(),
+    //         // 编译 ts
+    //         typescript({ tsconfig: "./tsconfigGlennGould.json" }), // <== 新增这一行，注意先后顺序不要搞错了
+    //         // 执行上传或者复制
+    //         pluginDeploy
+    //     ]
+    // }
+];

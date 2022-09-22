@@ -10,6 +10,8 @@
 
 4 npm install -D rollup
 
+5 npm install rollup-plugin-clear rollup-plugin-screeps rollup-plugin-copy -D
+
 ### 运行配置
 
 1 Node.js

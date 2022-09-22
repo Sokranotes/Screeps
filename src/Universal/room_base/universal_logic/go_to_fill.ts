@@ -18,7 +18,7 @@ export const go_to_fill = function(creep: Creep, tower_first: boolean = false){
         target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_TOWER) &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2*structure.store.getCapacity(RESOURCE_ENERGY);
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2*structure.store.getCapacity(RESOURCE_ENERGY) && structure.isActive();
             }
         });
         if(target) {
@@ -33,7 +33,7 @@ export const go_to_fill = function(creep: Creep, tower_first: boolean = false){
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_EXTENSION || 
                     structure.structureType == STRUCTURE_SPAWN) &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && structure.isActive();
             }
         });
         if(target) {
@@ -47,7 +47,7 @@ export const go_to_fill = function(creep: Creep, tower_first: boolean = false){
         target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_TOWER) &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2*structure.store.getCapacity(RESOURCE_ENERGY);
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0.2*structure.store.getCapacity(RESOURCE_ENERGY) && structure.isActive();
             }
         });
         if(target) {
@@ -62,7 +62,7 @@ export const go_to_fill = function(creep: Creep, tower_first: boolean = false){
         target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_LAB) &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && structure.isActive();
             }
         });
         if(target) {
@@ -76,7 +76,7 @@ export const go_to_fill = function(creep: Creep, tower_first: boolean = false){
         target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_POWER_SPAWN) &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && structure.isActive();
             }
         });
         if(target) {
@@ -88,7 +88,7 @@ export const go_to_fill = function(creep: Creep, tower_first: boolean = false){
         target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_NUKER) &&
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && structure.isActive();
             }
         });
         if(target) {

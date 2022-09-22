@@ -27,6 +27,7 @@ export const base_transfer_work = function(creep: Creep){
         creep.memory.is_working = true;
         // creep.say('🔄 transfer');
     }
+    // console.log(creep.name, creep.pos, creep.memory.is_working)
     if (creep.memory.is_working){
         if (go_to_fill(creep) == false && Game.time % 20 == 11){
             creep.memory.role = 'cleaner'
