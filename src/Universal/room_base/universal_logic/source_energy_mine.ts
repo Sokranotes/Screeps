@@ -60,7 +60,7 @@ export function source_energy_mine(roomName: string){
     if (room.memory.source_link_ids == undefined) room.memory.source_link_ids = new Array(sources_num)
     for (let i: number = 0; i < sources_num; i++){
         if (judge_source_depend_structure(roomName, i)){
-            if (room.memory.source_link_ids[i] != undefined){
+            if (room.memory.source_link_ids[i] != undefined && Game.getObjectById(room.memory.source_link_ids[i]).isActive()){
                 check_one_role(room, 'hl', 2, 1, undefined, room.name, i)
             }
             else{

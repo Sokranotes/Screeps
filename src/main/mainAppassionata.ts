@@ -1,6 +1,6 @@
-import { mainUniversal } from './Universal/mainUniversal';
-import { errorMapper } from './modules/errorMapper'
-import "./modules/超级移动优化"
+import { mainUniversal } from '../Universal/mainUniversal';
+import { errorMapper } from '../modules/errorMapper'
+import "../modules/超级移动优化"
 // import "./modules/strategy_marketPrice"
 
 import { base_transfer_work } from "@/Sokranotes/room_base/base_transfer";
@@ -10,17 +10,17 @@ import { cleaner_work } from "@/Sokranotes/room_base/cleaner";
 import { tmp_attack_work } from "@/Sokranotes/room_base/tmp_attack";
 import { occupy_work } from "@/Sokranotes/occupy/occupy";
 import { help_work } from "@/Sokranotes/room_base/help_worker";
-import { harvest_build_work } from './Universal/room_base/level2/harvest_build_worker';
-import { harvest_upgrade_same_work } from './Universal/room_base/level1/harvest_upgrade_same_worker';
+import { harvest_build_work } from '../Universal/room_base/level2/harvest_build_worker';
+import { harvest_upgrade_same_work } from '../Universal/room_base/level1/harvest_upgrade_same_worker';
 import { source_energy_mine } from '@/Universal/room_base/universal_logic/source_energy_mine';
 import { energy_harvester_link_work } from '@/Sokranotes/room_base/energy_harvester_link';
 import { upgrader_link_work } from '@/Sokranotes/room_base/upgrader_link';
-import { doing } from './Universal/room_base/universal_logic/spawn';
-import { harvest_upgrade_work } from './Universal/room_base/level1/harvest_upgrade_worker';
-import { harvest_fill_work } from './Universal/room_base/level2/harvest_fill_worker';
-import { harvest_repair_work } from './Universal/room_base/level2/harvest_repair_worker';
-import { tmp_transfer_work } from './Sokranotes/room_base/tmp_transfer';
-import { sell_energy } from './Sokranotes/sell_energy';
+import { doing } from '../Universal/room_base/universal_logic/spawn';
+import { harvest_upgrade_work } from '../Universal/room_base/level1/harvest_upgrade_worker';
+import { harvest_fill_work } from '../Universal/room_base/level2/harvest_fill_worker';
+import { harvest_repair_work } from '../Universal/room_base/level2/harvest_repair_worker';
+import { tmp_transfer_work } from '../Sokranotes/room_base/tmp_transfer';
+import { sell_energy } from '../Sokranotes/sell_energy';
 
 global.group_friends_rooms = new Set(['W49S15', 'W49S17', 'W49S19', 'W48S18', 'W47S19', 'W41S41', 'W39S23', 'W39S35', 'W38S28', 'W31S39', 'W42S43', 'W46S11', 'W44S2', 'W42S2', 'W39S8', 'W14N12', 'W12N15', 'W12N13', 'W11N19', 'E29N3', 'W41S11', 'W19N21', 'W9N51', 'W9S49', 'E19N19', 'E19N11', 'E29S21', 'E29S29'])
 

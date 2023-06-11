@@ -150,4 +150,21 @@ export const help_work = function(creep: Creep){
             }
         }
     }
+    else if (creep.memory.dest_roomName == 'W41S6'){
+        // Game.spawns['Spawn2'].spawnCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CLAIM], 'help' + Game.time, {memory: {role: 'help', source_idx: 0, dest_roomName: 'W41S6'}})
+        if (creep.room.name != "W41S6"){
+            creep.moveTo(new RoomPosition(35, 25, "W41S6"))
+        }
+        else{
+            if (creep.pos.x < 2 || creep.pos.x > 47 || creep.pos.y < 2 || creep.pos.y > 47){
+                creep.moveTo(new RoomPosition(30, 11, "W41S6"))
+            }
+            else{
+                creep.moveTo(new RoomPosition(29, 28, "W41S6"))
+                if (creep.pos.x == 29 && creep.pos.y == 28){
+                    creep.claimController(Game.getObjectById("5bbcaac79099fc012e6322e0" as Id<StructureController>))
+                }
+            }
+        }
+    }
 }

@@ -1,6 +1,6 @@
-import { mainUniversal } from './Universal/mainUniversal';
 import { errorMapper } from './modules/errorMapper'
 import "./modules/超级移动优化"
+
 import { source_energy_mine } from '@/Universal/room_base/universal_logic/source_energy_mine';
 import { harvest_build_work } from '@/Universal/room_base/level2/harvest_build_worker';
 import { base_transfer_work } from '@/Sokranotes/room_base/base_transfer';
@@ -14,43 +14,46 @@ import { help_work } from '@/Sokranotes/room_base/help_worker';
 import { energy_harvester_link_work } from '@/Sokranotes/room_base/energy_harvester_link';
 import { upgrader_link_work } from '@/Sokranotes/room_base/upgrader_link';
 import { doing } from '@/Universal/room_base/universal_logic/spawn';
+import { sell_energy } from '@/Sokranotes/sell_energy';
 import { check_one_role } from './Universal/room_base/universal_logic/check_spawn_queue';
-import { carrier_W9N11_work } from './Sokranotes/carrier_W9N11';
-import { harvest_upgrade_work } from './Universal/room_base/level1/harvest_upgrade_worker';
-import { harvest_fill_work } from './Universal/room_base/level2/harvest_fill_worker';
-import { harvest_repair_work } from './Universal/room_base/level2/harvest_repair_worker';
+import { mainUniversal } from "./Universal/mainUniversal";
+import { harvest_upgrade_work } from "./Universal/room_base/level1/harvest_upgrade_worker";
+import { harvest_fill_work } from "./Universal/room_base/level2/harvest_fill_worker";
+import { carrier_W9N11_work } from "./Sokranotes/carrier_W9N11";
+import { harvest_repair_work } from "./Universal/room_base/level2/harvest_repair_worker";
 // import "./modules/strategy_marketPrice"
 
-// Astro_angelfish
-
-if (Game.flags.scp002){
-    console.log(Game.time, 'scp002 new push')
-    let rooms: string[] = ['W46S11']
+if (Game.flags.GlennGould){
+    console.log(Game.time, 'GlennGould new push')
+    let rooms: string[] = ['W9N11']
     for (let idx in rooms){
         Memory.rooms[rooms[idx]].check_spawn_queue_flag = true
     }
 }
 
 export const loop = errorMapper(() => {
-    if (Game.flags.scp002){
+    if (Game.flags.GlennGould){
         if(Game.cpu.bucket == 10000) {
             Game.cpu.generatePixel();
         }
         if (Game.time % 100 == 77){
-            let rooms: string[] = ['W46S11']
+            let rooms: string[] = ['W9N11']
             for (let idx in rooms){
                 Memory.rooms[rooms[idx]].check_spawn_queue_flag = true
             }
         }
-        let rooms: string[] = ['W46S11']
+        let rooms: string[] = ['W9N11']
         mainUniversal(rooms)
-        if (Game.rooms['W46S11'].memory.spawning == undefined && (Game.time % 100 == 77)){
-                check_one_role(Game.rooms['W46S11'], 'carrier_W46S11')
+        for (let idx in rooms){
+            sell_energy(rooms[idx])
         }
-        let source_link0: StructureLink = Game.getObjectById<StructureLink>('61aed908329a194b3277ef3a' as Id<StructureLink>)
-        let source_link1: StructureLink = Game.getObjectById<StructureLink>('61aeda5e64bbf345b49361f4' as Id<StructureLink>)
-        let center_link: StructureLink = Game.getObjectById<StructureLink>("6085773a27c18514b4602f28" as Id<StructureLink>)
-        let upgrade_link: StructureLink = Game.getObjectById<StructureLink>("61aed908329a194b3277ef3a" as Id<StructureLink>)
+        if (Game.rooms['W9N11'].memory.spawning == undefined && (Game.time % 100 == 77)){
+                check_one_role(Game.rooms['W9N11'], 'carrier_W9N11')
+        }
+        let source_link0: StructureLink = Game.getObjectById<StructureLink>('619bef3f9376bd1df981188f' as Id<StructureLink>)
+        let source_link1: StructureLink = Game.getObjectById<StructureLink>('61a6c491e0032fc27f5402c1' as Id<StructureLink>)
+        let center_link: StructureLink = Game.getObjectById<StructureLink>("619bdff527ccd47b68938bab" as Id<StructureLink>)
+        let upgrade_link: StructureLink = Game.getObjectById<StructureLink>("61b0fb9d91f12d45ad64a2bc" as Id<StructureLink>)
         if (source_link0.store.getUsedCapacity(RESOURCE_ENERGY) == 800){
             source_link0.transferEnergy(center_link)
         }
@@ -60,9 +63,9 @@ export const loop = errorMapper(() => {
         if (source_link1.store.getUsedCapacity(RESOURCE_ENERGY) > 600 && upgrade_link.store.getUsedCapacity(RESOURCE_ENERGY) < 100){
             source_link1.transferEnergy(upgrade_link)
         }
-        if (Game.time % 100 == 2) source_energy_mine('W46S11')
+        if (Game.time % 100 == 2) source_energy_mine('W9N11')
     }
-    delete Game.rooms['W46S11'].memory.spawning
+    delete Game.rooms['W9N11'].memory.spawning
     doing(Game.spawns)
     for(let name in Memory.creeps) {
         let creep = Game.creeps[name]
@@ -82,7 +85,7 @@ export const loop = errorMapper(() => {
             else if (creep.memory.role == 'hf' || creep.memory.role == '_2hf'){
                 harvest_fill_work(creep)
             }
-            else if (creep.memory.role == 'carrier_W46S11'){
+            else if (creep.memory.role == 'carrier_W9N11'){
                 carrier_W9N11_work(creep)
             }
             else if (creep.memory.role == 'hl'){

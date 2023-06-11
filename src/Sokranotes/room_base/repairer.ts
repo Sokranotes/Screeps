@@ -7,6 +7,9 @@ export const repairer_work = function(creep: Creep){
     let priority: number = 15
     let minTicksToLive = 100
     if (creep.ticksToLive == minTicksToLive){
+        if (creep.room.storage? creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false){
+            return
+        }
         let level = global.room_config[creep.room.name]['level'+creep.room.controller.level] == undefined ? 
             'default' : 'level'+creep.room.controller.level
         let bodyParts = global.room_config[creep.room.name][level][creep.memory.role]['bodyParts']
@@ -50,6 +53,8 @@ export const repairer_work = function(creep: Creep){
         }
         if (creep.memory.source_idx == undefined)
         creep.memory.source_idx  = 0
-        go_to_harvest(creep, Game.getObjectById(Game.rooms[creep.memory.source_roomName].memory.sources_id[creep.memory.source_idx]))
+        if (creep.memory.source_idx && Game.rooms[creep.memory.source_roomName].memory.sources_id){
+            go_to_harvest(creep, Game.getObjectById(Game.rooms[creep.memory.source_roomName].memory.sources_id[creep.memory.source_idx]))
+        }
     }
 }

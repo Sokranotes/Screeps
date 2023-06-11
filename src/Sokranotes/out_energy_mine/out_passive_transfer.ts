@@ -15,15 +15,15 @@ export const out_passive_transfer_work = function(creep: Creep){
         }
         if (creep.memory.is_working == true){
             if (creep.memory.source_roomName == 'W47S13' || creep.memory.source_roomName == 'W46S13'){
-                let storage: StructureStorage = Game.getObjectById('6159fc1609f790175f45c6be')
+                let storage: StructureStorage = Game.getObjectById('6159fc1609f790175f45c6be' as Id<StructureStorage>)
                 let code = creep.transfer(storage, RESOURCE_ENERGY)
                 if(code == ERR_NOT_IN_RANGE) {
                     creep.moveTo(storage)
                 }
             }
             else{
-                let link1: StructureLink = Game.getObjectById('615d6e761b8f40360c7387dd')
-                let link2: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
+                let link1: StructureLink = Game.getObjectById('615d6e761b8f40360c7387dd' as Id<StructureLink>)
+                let link2: StructureLink = Game.getObjectById('61450b41047f4458ae00790f' as Id<StructureLink>)
                 if (creep.pos.isNearTo(link1) || creep.pos.isNearTo(link2)){
                     if (link2.store.getUsedCapacity(RESOURCE_ENERGY) < 800){
                         let code = creep.transfer(link2, RESOURCE_ENERGY)

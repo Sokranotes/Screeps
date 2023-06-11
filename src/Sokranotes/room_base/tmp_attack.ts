@@ -5,6 +5,89 @@ import { random } from "lodash"
 
 // Game.spawns['Spawn1'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], 'tmp_attack3', {memory: {role: 'tmp_attack'}});
 export const tmp_attack_work = function(creep: Creep){
+    // Game.rooms['W41S6'].addSpawnTask(5, {name: "tmp_attack" + Game.time, bodyParts: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],memory: {role: 'tmp_attack',}})
+    // Game.rooms['W41S6'].addSpawnTask(5, {name: "tmp_attack" + Game.time, bodyParts: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],memory: {role: 'tmp_attack',}})
+    let attack_room = 'W41S7'
+    let source_room = "W41S6"
+
+    let target_x = Game.flags.attack_target.pos.x, target_y = Game.flags.attack_target.pos.y
+    let tmp_x = Game.flags.tmp_target_position.pos.x, tmp_y = Game.flags.tmp_target_position.pos.y
+    let target_id = "638ed166d657ab65a9153b18"
+    if (creep.getActiveBodyparts(HEAL) != 0){
+        if (creep.room.name == "W41S6" && creep.hits < creep.hitsMax || creep.room.name == "W41S7"){
+            creep.heal(creep)
+        }
+    }
+    if (creep.room.name != attack_room){
+        if (creep.hits == creep.hitsMax){
+            creep.moveTo(new RoomPosition(25, 25, attack_room))
+        }
+        else if(creep.pos.x == 0 || creep.pos.x == 49 || creep.pos.y == 0 || creep.pos.y == 49){
+            creep.moveTo(new RoomPosition(25, 25, source_room))
+        }
+    }
+    else{
+        if (creep.getActiveBodyparts(HEAL) != 0){
+            creep.rangedMassAttack();
+        }
+        if (Game.flags.attack_this_room && Game.flags.attack_this_room.room.name == attack_room){
+            let target: any = Game.getObjectById(target_id as Id<any>)
+            if (target){
+                attack_object(creep, target)
+            }
+            else{
+                let invade_targets = creep.room.find(FIND_HOSTILE_CREEPS, {
+                    filter: (creep) => (!global.white_list.has(creep.owner.username))
+                });
+                if (invade_targets.length > 0)
+                {
+                    if (creep.attack(invade_targets[0]) != OK)
+                    {
+                        creep.moveTo(invade_targets[0])
+                    }
+                }
+                else{
+                    target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType != STRUCTURE_CONTAINER && structure.structureType != STRUCTURE_CONTROLLER&& structure.structureType != STRUCTURE_WALL);
+                        }
+                    });
+                    if(target) {
+                        if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(target)
+                        }
+                        return
+                    }
+                    else{
+                        creep.suicide();
+                    }
+                }
+            }
+        }
+        else{
+            if (creep.hits < creep.hitsMax ){
+                creep.moveTo(new RoomPosition(25, 25, source_room))
+            }
+            else{
+            // if (Math.abs(creep.pos.x - target_x) > 20 || Math.abs(creep.pos.y - target_y) > 20){
+                creep.moveTo(new RoomPosition(tmp_x, tmp_y, attack_room))
+            }
+        }
+    }
+}
+
+const attack_object = function(creep: Creep, target: any){
+    if (!creep.pos.isNearTo(target)){
+        creep.moveTo(target)
+    }
+    else if (creep.getActiveBodyparts(ATTACK) != 0){
+        creep.attack(target)
+    }
+}
+
+
+
+    // // boost直接攻击
     // if (creep.body[6].boost == undefined){
     //     if (creep.memory.dontPullMe == undefined){
     //         creep.memory.dontPullMe = true;
@@ -306,7 +389,7 @@ export const tmp_attack_work = function(creep: Creep){
     //     }
     // }
 
-    // MrJakob64
+    // // 拉扯 MrJakob64
     // Game.rooms['W12N13'].addSpawnTask(5, {name: "tmp_attack" + Game.time, bodyParts: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],memory: {role: 'tmp_attack',}})
     // [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL]
     // if (creep.getActiveBodyparts(HEAL) != 0){
@@ -443,48 +526,48 @@ export const tmp_attack_work = function(creep: Creep){
     //     creep.suicide()
     // }
 
-    let midwallid = '60b3eaa7f5d18ab1e5618094'
+//     let midwallid = '60b3eaa7f5d18ab1e5618094'
     
-    creep.heal(creep)
-    if (creep.room.name == 'W9N11'){
-        creep.moveTo(new RoomPosition(25, 25, 'W8N11'))
-        return
-    }
-    else if (creep.room.name == 'W8N11'){
-        if (creep.pos.x == 0){
-            creep.move(RIGHT)
-            return
-        }
-        else{
-            let target: StructureWall = Game.getObjectById(midwallid as Id<StructureWall>)
-            if (target != undefined){
-                if (!creep.pos.isNearTo(target)) creep.moveTo(target)
-                else creep.rangedMassAttack()
-                return
-            }
-            else{
-                creep.moveTo(new RoomPosition(49, 43, 'W8N11'))
-            }
-        }
-    }
-    else if (creep.room.name == 'W7N11'){
-        if (creep.pos.x == 0){
-            creep.move(RIGHT)
-            return
-        }
-        else{
-            let target: StructureWall = Game.getObjectById<StructureWall>(midwallid as Id<StructureWall>)
-            if (target != undefined){
-                if (!creep.pos.isNearTo(target)) creep.moveTo(target)
-                else creep.rangedMassAttack()
-                return
-            }
-            else{
-                creep.moveTo(new RoomPosition(49, 43, 'W8N11'))
-            }
-        }
-    }
-}
+//     creep.heal(creep)
+//     if (creep.room.name == 'W9N11'){
+//         creep.moveTo(new RoomPosition(25, 25, 'W8N11'))
+//         return
+//     }
+//     else if (creep.room.name == 'W8N11'){
+//         if (creep.pos.x == 0){
+//             creep.move(RIGHT)
+//             return
+//         }
+//         else{
+//             let target: StructureWall = Game.getObjectById(midwallid as Id<StructureWall>)
+//             if (target != undefined){
+//                 if (!creep.pos.isNearTo(target)) creep.moveTo(target)
+//                 else creep.rangedMassAttack()
+//                 return
+//             }
+//             else{
+//                 creep.moveTo(new RoomPosition(49, 43, 'W8N11'))
+//             }
+//         }
+//     }
+//     else if (creep.room.name == 'W7N11'){
+//         if (creep.pos.x == 0){
+//             creep.move(RIGHT)
+//             return
+//         }
+//         else{
+//             let target: StructureWall = Game.getObjectById<StructureWall>(midwallid as Id<StructureWall>)
+//             if (target != undefined){
+//                 if (!creep.pos.isNearTo(target)) creep.moveTo(target)
+//                 else creep.rangedMassAttack()
+//                 return
+//             }
+//             else{
+//                 creep.moveTo(new RoomPosition(49, 43, 'W8N11'))
+//             }
+//         }
+//     }
+// }
 
 // Game.getObjectById('6231bded6a2b149d8da6247f').observeRoom('W7N11')
 // Game.rooms.W9N11.find(FIND_STRUCTURES, {filter: s => s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL})

@@ -1,6 +1,6 @@
-import { mainUniversal } from './Universal/mainUniversal';
 import { errorMapper } from './modules/errorMapper'
 import "./modules/超级移动优化"
+
 import { source_energy_mine } from '@/Universal/room_base/universal_logic/source_energy_mine';
 import { harvest_build_work } from '@/Universal/room_base/level2/harvest_build_worker';
 import { base_transfer_work } from '@/Sokranotes/room_base/base_transfer';
@@ -14,11 +14,13 @@ import { help_work } from '@/Sokranotes/room_base/help_worker';
 import { energy_harvester_link_work } from '@/Sokranotes/room_base/energy_harvester_link';
 import { upgrader_link_work } from '@/Sokranotes/room_base/upgrader_link';
 import { doing } from '@/Universal/room_base/universal_logic/spawn';
+import { sell_energy } from '@/Sokranotes/sell_energy';
 import { check_one_role } from './Universal/room_base/universal_logic/check_spawn_queue';
-import { carrier_W9N11_work } from './Sokranotes/carrier_W9N11';
-import { harvest_upgrade_work } from './Universal/room_base/level1/harvest_upgrade_worker';
-import { harvest_fill_work } from './Universal/room_base/level2/harvest_fill_worker';
-import { harvest_repair_work } from './Universal/room_base/level2/harvest_repair_worker';
+import { mainUniversal } from "./Universal/mainUniversal";
+import { harvest_upgrade_work } from "./Universal/room_base/level1/harvest_upgrade_worker";
+import { harvest_fill_work } from "./Universal/room_base/level2/harvest_fill_worker";
+import { carrier_W9N11_work } from "./Sokranotes/carrier_W9N11";
+import { harvest_repair_work } from "./Universal/room_base/level2/harvest_repair_worker";
 // import "./modules/strategy_marketPrice"
 
 if (Game.flags.GlennGould){
@@ -42,6 +44,9 @@ export const loop = errorMapper(() => {
         }
         let rooms: string[] = ['W9N11']
         mainUniversal(rooms)
+        for (let idx in rooms){
+            sell_energy(rooms[idx])
+        }
         if (Game.rooms['W9N11'].memory.spawning == undefined && (Game.time % 100 == 77)){
                 check_one_role(Game.rooms['W9N11'], 'carrier_W9N11')
         }

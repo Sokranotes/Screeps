@@ -79,7 +79,7 @@ export const room_W47S14_running = function(roomName: string){
 
     if (Game.time % 135 > 125){
         if (room.terminal.store.getFreeCapacity() < 5000 && room.storage.store.getFreeCapacity(RESOURCE_ENERGY) < 5000){
-            let s: StructureStorage = Game.getObjectById('6185354e103ba6667086b991')
+            let s: StructureStorage = Game.getObjectById('6185354e103ba6667086b991' as Id<StructureStorage>)
             if (s.store.getUsedCapacity(RESOURCE_ENERGY) < 0.5*s.store.getCapacity(RESOURCE_ENERGY)){
                 Game.rooms['W47S14'].terminal.send(RESOURCE_ENERGY, 50000, 'W48S12', 'free')
             }
@@ -105,10 +105,10 @@ export const room_W47S14_running = function(roomName: string){
         }
     }
 
-    let source1_link: StructureLink = Game.getObjectById('615d6e761b8f40360c7387dd')
-    let source2_link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f')
-    let dest_link: StructureLink = Game.getObjectById('6159d59ae59fcf2038ecf56c')
-    let upgrade_link: StructureLink = Game.getObjectById('615a13005237858c5056f75f')
+    let source1_link: StructureLink = Game.getObjectById('615d6e761b8f40360c7387dd' as Id<StructureLink>)
+    let source2_link: StructureLink = Game.getObjectById('61450b41047f4458ae00790f' as Id<StructureLink>)
+    let dest_link: StructureLink = Game.getObjectById('6159d59ae59fcf2038ecf56c' as Id<StructureLink>)
+    let upgrade_link: StructureLink = Game.getObjectById('615a13005237858c5056f75f' as Id<StructureLink>)
     if (source1_link.store.getUsedCapacity(RESOURCE_ENERGY) == 800){
         source1_link.transferEnergy(dest_link)
     }
@@ -119,8 +119,8 @@ export const room_W47S14_running = function(roomName: string){
         dest_link.transferEnergy(upgrade_link)
     }
 
-    let source_link0: StructureLink = Game.getObjectById('61b71e864eb930d5d56d313c')
-    let source_link1: StructureLink = Game.getObjectById('61b721afb715dd95dcccacdb')
+    let source_link0: StructureLink = Game.getObjectById('61b71e864eb930d5d56d313c' as Id<StructureLink>)
+    let source_link1: StructureLink = Game.getObjectById('61b721afb715dd95dcccacdb' as Id<StructureLink>)
     if (source_link0.store.getUsedCapacity(RESOURCE_ENERGY) == 800){
         source_link0.transferEnergy(dest_link)
     }

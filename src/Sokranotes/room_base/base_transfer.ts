@@ -29,9 +29,10 @@ export const base_transfer_work = function(creep: Creep){
     }
     // console.log(creep.name, creep.pos, creep.memory.is_working)
     if (creep.memory.is_working){
-        if (go_to_fill(creep) == false && Game.time % 20 == 11){
-            creep.memory.role = 'cleaner'
-        }
+        go_to_fill(creep)
+        // if (go_to_fill(creep) == false && Game.time % 20 == 11){
+        //     creep.memory.role = 'cleaner'
+        // }
     }
     else{
         if (creep.room.storage && creep.room.terminal && (creep.room.terminal.store.getUsedCapacity(RESOURCE_ENERGY) - creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) >= 20000 || 

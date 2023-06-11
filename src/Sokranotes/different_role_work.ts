@@ -41,6 +41,7 @@ import { nuker_transfer_work } from "./room_base/nuker_transfer";
 import { tmp_transfer_work } from "./room_base/tmp_transfer";
 import { harvest_fill_work } from "@/Universal/room_base/level2/harvest_fill_worker";
 import { harvest_repair_work } from "@/Universal/room_base/level2/harvest_repair_worker";
+import { carrier_W44S12_work } from "./carrier_W44S12";
 // import { harvest_upgrade_work } from "./low_level/harvest_upgrade_worker";
 // import { harvest_fill_work } from "./low_level/harvest_fill_worker";
 // import { help_work } from "./room_base/help_worker";
@@ -88,6 +89,9 @@ export const different_role_work = function(){
             }
             else if (creep.memory.role == 'carrier_W48S12'){
                 carrier_W48S12_work(creep)
+            }
+            else if (creep.memory.role == 'carrier_W44S12'){
+                carrier_W44S12_work(creep)
             }
             // basic function
             else if(creep.memory.role == 'upgrader_link') {

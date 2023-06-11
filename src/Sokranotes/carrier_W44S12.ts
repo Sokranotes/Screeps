@@ -1,8 +1,8 @@
-export const carrier_W47S14_work = function(creep: Creep){
-    let centerPos = new RoomPosition(8, 19, 'W47S14')
-    let centerLinkId = "6159d59ae59fcf2038ecf56c"
-    let upgradeLinkId = '615a13005237858c5056f75f'
-
+export const carrier_W44S12_work = function(creep: Creep){
+    let centerPos = new RoomPosition(27, 17, 'W44S12')
+    let centerLinkId = "626fd45c7a513505e20ba04d"
+    let upgradeLinkId = '62638a9a2b85988ea16f1a22'
+    
     let terminal_energy_bottom_limit: number // terminal中最低能量
     let terminal_energy_top_limit: number // terminal中最高能量
     let terminal_energy_bottom_free_limit: number // free capacity 大于该值往terminal中放能量

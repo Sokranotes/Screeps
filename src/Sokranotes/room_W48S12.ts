@@ -37,12 +37,12 @@ export const room_W48S12_running = function(roomName: string){
         check_one_role(room, 'base_transfer')
     }
 
-    let source_link: StructureLink = Game.getObjectById('61696ef057b6d60ae7c5968c')
-    let dest_link: StructureLink = Game.getObjectById('61739e3ab6a4e1f3750c4432')
+    let source_link: StructureLink = Game.getObjectById('61696ef057b6d60ae7c5968c' as Id<StructureLink>)
+    let dest_link: StructureLink = Game.getObjectById('61739e3ab6a4e1f3750c4432' as Id<StructureLink>)
     if (source_link.store.getUsedCapacity(RESOURCE_ENERGY) > 0.8*source_link.store.getCapacity(RESOURCE_ENERGY))
         source_link.transferEnergy(dest_link)
-    let ulink: StructureLink = Game.getObjectById("61a918350a3fbfbce67837dc")
-    let source1_link: StructureLink = Game.getObjectById("619c783f4ba031498e0336b9")
+    let ulink: StructureLink = Game.getObjectById("61a918350a3fbfbce67837dc" as Id<StructureLink>)
+    let source1_link: StructureLink = Game.getObjectById("619c783f4ba031498e0336b9" as Id<StructureLink>)
     if (ulink.store.getUsedCapacity(RESOURCE_ENERGY) < 200){
         dest_link.transferEnergy(ulink)
         if (source1_link.store.getUsedCapacity(RESOURCE_ENERGY) > 0.8*source1_link.store.getCapacity(RESOURCE_ENERGY))

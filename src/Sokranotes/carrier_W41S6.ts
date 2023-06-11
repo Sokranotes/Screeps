@@ -9,7 +9,7 @@ export const carrier_W41S6_work = function(creep: Creep){
     let terminal_energy_top_free_limit: number // free capacity小于该值从terminal中取出能量
 
     if (terminal_energy_bottom_limit == undefined) terminal_energy_bottom_limit = global.terminal_energy_bottom_limit == undefined? 50000 : global.terminal_energy_bottom_limit;
-    if (terminal_energy_top_limit == undefined) terminal_energy_top_limit = global.terminal_energy_top_limit == undefined? 150000 : global.terminal_energy_top_limit;
+    if (terminal_energy_top_limit == undefined) terminal_energy_top_limit = global.terminal_energy_top_limit == undefined? 100000 : global.terminal_energy_top_limit;
     if (terminal_energy_bottom_free_limit == undefined) terminal_energy_bottom_free_limit = global.terminal_energy_bottom_free_limit == undefined? 50000 : global.terminal_energy_bottom_free_limit;
     if (terminal_energy_top_free_limit == undefined) terminal_energy_top_free_limit = global.terminal_energy_top_free_limit == undefined? 30000 : global.terminal_energy_top_free_limit;
 
@@ -56,7 +56,7 @@ export const carrier_W41S6_work = function(creep: Creep){
             }
             else{
                 // 往哪里放能量
-                if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY) && terminal.store.getFreeCapacity(RESOURCE_ENERGY) > terminal_energy_bottom_free_limit){
+                if (storage.store.getUsedCapacity(RESOURCE_ENERGY)-2000 > terminal.store.getUsedCapacity(RESOURCE_ENERGY) && terminal.store.getFreeCapacity(RESOURCE_ENERGY) > terminal_energy_bottom_free_limit){
                     if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) < terminal_energy_top_limit){
                         creep.transfer(terminal, RESOURCE_ENERGY)
                     }
@@ -73,10 +73,8 @@ export const carrier_W41S6_work = function(creep: Creep){
                 if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY) && terminal.store.getFreeCapacity(RESOURCE_ENERGY) > terminal_energy_bottom_free_limit){
                     creep.withdraw(storage, RESOURCE_ENERGY)
                 }
-                else if(terminal.store.getFreeCapacity(RESOURCE_ENERGY) < terminal_energy_top_free_limit){
-                    if (terminal.store.getUsedCapacity(RESOURCE_ENERGY) > terminal_energy_bottom_limit){
+                else if(terminal.store.getFreeCapacity(RESOURCE_ENERGY) < terminal_energy_top_free_limit || terminal.store.getUsedCapacity(RESOURCE_ENERGY) > terminal_energy_bottom_limit){
                         creep.withdraw(terminal, RESOURCE_ENERGY)
-                    }
                 }
             }
             else{
@@ -86,6 +84,9 @@ export const carrier_W41S6_work = function(creep: Creep){
                     }
                 }
                 else {
+                    if (storage.store.getUsedCapacity(RESOURCE_ENERGY) > terminal.store.getUsedCapacity(RESOURCE_ENERGY) && terminal.store.getFreeCapacity(RESOURCE_ENERGY) > terminal_energy_bottom_free_limit){
+                        return
+                    }
                     creep.transfer(storage, RESOURCE_ENERGY)
                 }
             }

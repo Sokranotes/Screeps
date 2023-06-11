@@ -19,11 +19,11 @@ const pluginDeploy = config && config.copyPath ?
     copy({
         targets: [
             {
-                src: 'dest/main.js',
+                src: 'dest/Sokranotes/main.js',
                 dest: config.copyPath
             },
             {
-                src: 'dest/main.js.map',
+                src: 'dest/Sokranotes/main.js.map',
                 dest: config.copyPath,
                 rename: name => name + '.map.js',
                 transform: contents => `module.exports = ${contents.toString()};`
@@ -37,23 +37,23 @@ const pluginDeploy = config && config.copyPath ?
 
 export default [
     {
-        input: 'src/main.ts',
+        input: 'src/main/mainSokranotes.ts',
         output: {
-            file: 'dest/main.js',
+            file: 'dest/Sokranotes/main.js',
             format: 'cjs',
             sourcemap: true
         },
         plugins: [
             // 清除上次编译成果
-            clear({ targets: ["dest"] }),
+            clear({ targets: ["dest/Sokranotes"] }),
             // 打包依赖
             resolve(),
             // 模块化依赖
             commonjs(),
             // 编译 ts
-            typescript({ tsconfig: "./tsconfig.json" }), // <== 新增这一行，注意先后顺序不要搞错了
+            typescript({ tsconfig: "./tsconfigSokranotes.json" }), // <== 新增这一行，注意先后顺序不要搞错了
             // 执行上传或者复制
             pluginDeploy
         ]
-    },
+    }
 ];

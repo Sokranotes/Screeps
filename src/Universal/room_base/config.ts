@@ -10,6 +10,7 @@ export const room_config = {
         'carrier_W47S14': 2,
         'carrier_W48S12': 2,
         'carrier_W9N11': 2,
+        'carrier_W44S12': 2,
         'hl': 3,
         'upgrader_link': 10,
         'hr': 15,
@@ -2380,39 +2381,365 @@ export const room_config = {
         },
     },
     'W41S6': {
-        // 'level7': {
-        //     'upgrader_link': {
-        //         'num': 1,
-        //         'ticksToLive': 100,
-        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-        //             WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
-        //             WORK,WORK,WORK,WORK,CARRY]
-        //     },
-        //     'builder': {
-        //         'num': 1,
-        //         'ticksToLive': 100,
-        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
-        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
-        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
-        //     },
-        //     'repairer': {
-        //         'num': 1,
-        //         'ticksToLive': 100,
-        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
-        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
-        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
-        //     },
-        //     'carrier_W41S6': {
-        //         'num': 1,
-        //         'ticksToLive': 100,
-        //         'bodyParts': [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE]
-        //     },
-        //     'base_transfer': {
-        //         'num': 1,
-        //         'ticksToLive': 100,
-        //         'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
-        //     },
-        // },
+        'level1': {
+            'hf': {
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hu':{
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hus':{
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 0,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE]
+            }
+        },
+        'level2': {
+            'hf': {
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hu':{
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hus':{
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            }
+        },
+        'level3': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,CARRY]
+            },
+            'hf': {
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 200,
+                'bodyParts': [WORK, CARRY, MOVE]
+            },
+            'hu':{
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hus':{
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'hb': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [WORK, CARRY, MOVE, WORK, CARRY, MOVE]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 0,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+        'level4': {
+            'upgrader_link': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,CARRY]
+            },
+            'hf': {
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 200,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hu':{
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hus':{
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hb': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 0,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+        'level5': {
+            'upgrader_link': {
+                'num': 2,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'carrier_W41S6': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE]
+            },
+            'hf': {
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 200,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hu':{
+                'num': 3,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hus':{
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hb': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 0,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+        'level6': {
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,CARRY]
+            },
+            'upgrader_link': {
+                'num': 4,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,CARRY]
+            },
+            'carrier_W41S6': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE]
+            },
+            'hf': {
+                'num': 2,
+                'source_idx': 0,
+                'ticksToLive': 200,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hu':{
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY, 
+                    MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hus':{
+                'num': 0,
+                'source_idx': 0,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hr': {
+                'num': 1,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'hb': {
+                'num': 2,
+                'source_idx': 1,
+                'ticksToLive': 150,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            'builder': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 0,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'base_transfer': {
+                'num': 1,
+                'ticksToLive': 200,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
+        'level7': {
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,CARRY]
+            },
+            'upgrader_link': {
+                'num': 1,
+                'ticksToLive': 100,
+                // 'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                //     WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                //     WORK,WORK,WORK,WORK,CARRY]
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY]
+            },
+            'builder': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'repairer': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+            },
+            'carrier_W41S6': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE]
+            },
+            'base_transfer': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+            },
+        },
         'level8': {
             'hl': {
                 'num': 1,
@@ -2428,6 +2755,9 @@ export const room_config = {
                 'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
                     WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
                     WORK,WORK,WORK,WORK,CARRY]
+                // 'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                //     WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                //     WORK,WORK,WORK,WORK,CARRY]
             },
             'builder': {
                 'num': 1,
@@ -2809,61 +3139,102 @@ export const room_config = {
         //             WORK,WORK,WORK,WORK,CARRY]
         //     },
         // },
-        'level7': {
-            'upgrader_link': {
-                'num': 0,
+        // 'level7': {
+        //     'upgrader_link': {
+        //         'num': 0,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+        //             WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+        //             WORK,WORK,WORK,WORK,CARRY]
+        //     },
+        //     'hf': {
+        //         'num': 1,
+        //         'source_idx': 0,
+        //         'ticksToLive': 200,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+        //     },
+        //     'hu':{
+        //         'num': 3,
+        //         'source_idx': 0,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+        //     },
+        //     'hus':{
+        //         'num': 0,
+        //         'source_idx': 0,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+        //     },
+        //     'hr': {
+        //         'num': 1,
+        //         'source_idx': 1,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+        //     },
+        //     'hb': {
+        //         'num': 1,
+        //         'source_idx': 1,
+        //         'ticksToLive': 150,
+        //         'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+        //     },
+        //     'builder': {
+        //         'num': 0,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'repairer': {
+        //         'num': 0,
+        //         'ticksToLive': 100,
+        //         'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
+        //             WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        //     },
+        //     'base_transfer': {
+        //         'num': 0,
+        //         'ticksToLive': 200,
+        //         'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
+        //     },
+        // },
+        'level8': {
+            'hl': {
+                'num': 1,
+                'source_idx': 0,
                 'ticksToLive': 100,
                 'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
                     WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
                     WORK,WORK,WORK,WORK,CARRY]
             },
-            'hf': {
+            'upgrader_link': {
                 'num': 1,
-                'source_idx': 0,
-                'ticksToLive': 200,
-                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
-            },
-            'hu':{
-                'num': 3,
-                'source_idx': 0,
-                'ticksToLive': 150,
-                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
-            },
-            'hus':{
-                'num': 0,
-                'source_idx': 0,
-                'ticksToLive': 150,
-                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
-            },
-            'hr': {
-                'num': 1,
-                'source_idx': 1,
-                'ticksToLive': 150,
-                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
-            },
-            'hb': {
-                'num': 1,
-                'source_idx': 1,
-                'ticksToLive': 150,
-                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY]
+                'ticksToLive': 100,
+                'bodyParts': [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,CARRY]
             },
             'builder': {
-                'num': 0,
+                'num': 1,
                 'ticksToLive': 100,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
             },
             'repairer': {
-                'num': 0,
+                'num': 1,
                 'ticksToLive': 100,
                 'bodyParts': [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
             },
+            'carrier_W44S12': {
+                'num': 1,
+                'ticksToLive': 100,
+                'bodyParts': [MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
             'base_transfer': {
-                'num': 0,
-                'ticksToLive': 200,
+                'num': 1,
+                'ticksToLive': 100,
                 'bodyParts': [CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE, CARRY, CARRY, MOVE]
             },
         },

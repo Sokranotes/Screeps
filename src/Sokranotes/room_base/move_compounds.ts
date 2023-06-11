@@ -2,7 +2,7 @@
 
 export const move_compounds_work = function(creep: Creep){
     // creep.say('👋 move_compounds');
-    let target: StructureNuker = Game.getObjectById('617aaa764e2090a11364025d')
+    let target: StructureNuker = Game.getObjectById('617aaa764e2090a11364025d' as Id<StructureNuker>)
     let type: CommodityConstant | MineralConstant | RESOURCE_ENERGY | RESOURCE_GHODIUM = RESOURCE_GHODIUM
     
     if(creep.memory.is_working && creep.store[type] == 0) {

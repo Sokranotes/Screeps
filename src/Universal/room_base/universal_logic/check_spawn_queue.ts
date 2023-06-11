@@ -70,12 +70,16 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
     if (role == 'upgrader_link'){
         if (room.controller.level == 8){
             roleNum = 1
+            if (room.controller.ticksToDowngrade > 50000){
+                roleNum = 0
+            }
         }
         // energy is too much, avoid blowing up
         if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 850000: false){
-            roleNum = 1
+            roleNum  += 1
         }
-        else if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false || room.controller.ticksToDowngrade > 150000){
+        // else if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false){
+        if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false){
             roleNum = 0
             return
         }
@@ -84,7 +88,7 @@ export const check_one_role = function(room: Room, role: string, priority?: numb
         if (room.controller.level == 8){
             roleNum = 1
         }
-        if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 50000 : false){
+        if (room.storage? room.storage.store.getUsedCapacity(RESOURCE_ENERGY) < 20000 : false){
             roleNum = 0
             return
         }

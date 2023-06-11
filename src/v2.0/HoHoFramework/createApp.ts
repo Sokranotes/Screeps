@@ -9,7 +9,7 @@ import { collectCost, showCpuCost, SHOW_BASE_CPU_COST } from './cpuLogger'
 const BOT_NAME_SUFFIX = 'Framework'
 
 const DEFAULT_OPTIONS: CreateOptions = {
-    name: `hopgoldy${BOT_NAME_SUFFIX}`
+    name: `Sokranotes-${BOT_NAME_SUFFIX}`
 }
 
 /**
